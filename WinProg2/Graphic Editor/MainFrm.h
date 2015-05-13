@@ -13,6 +13,7 @@
 //
 
 #pragma once
+#include "PropertiesWnd.h"
 
 class CMainFrame : public CMDIFrameWndEx
 {
@@ -43,13 +44,20 @@ protected:  // 컨트롤 모음이 포함된 멤버입니다.
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
 	CMFCRibbonStatusBar  m_wndStatusBar;
+	CPropertiesWnd    m_wndProperties;
 
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
+	afx_msg void OnApplicationLook(UINT id);
+	afx_msg void OnUpdateApplicationLook(CCmdUI* pCmdUI);
+	afx_msg void OnViewPropertiesWindow();
+	afx_msg void OnUpdateViewPropertiesWindow(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
 
+	BOOL CreateDockingWindows();
+	void SetDockingWindowIcons(BOOL bHiColorIcons);
 };
 
 

@@ -19,8 +19,8 @@
 #include "MainFrm.h"
 
 #include "ChildFrm.h"
-#include "Graphic EditorDoc.h"
-#include "Graphic EditorView.h"
+#include "Graphic Editor Doc.h"
+#include "Graphic Editor View.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,6 +43,8 @@ END_MESSAGE_MAP()
 
 CGraphicEditorApp::CGraphicEditorApp()
 {
+	m_bHiColorIcons = TRUE;
+
 	// 다시 시작 관리자 지원
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
 #ifdef _MANAGED
@@ -89,7 +91,7 @@ BOOL CGraphicEditorApp::InitInstance()
 		return FALSE;
 	}
 
-	EnableTaskbarInteraction();
+	EnableTaskbarInteraction(FALSE);
 
 	// RichEdit 컨트롤을 사용하려면  AfxInitRichEdit2()가 있어야 합니다.	
 	// AfxInitRichEdit2();
@@ -118,7 +120,7 @@ BOOL CGraphicEditorApp::InitInstance()
 	// 응용 프로그램의 문서 템플릿을 등록합니다.  문서 템플릿은
 	//  문서, 프레임 창 및 뷰 사이의 연결 역할을 합니다.
 	CMultiDocTemplate* pDocTemplate;
-	pDocTemplate = new CMultiDocTemplate(IDR_GraphicEditorTYPE,
+	pDocTemplate = new CMultiDocTemplate(IDR_ImageTYPE,
 		RUNTIME_CLASS(CGraphicEditorDoc),
 		RUNTIME_CLASS(CChildFrame), // 사용자 지정 MDI 자식 프레임입니다.
 		RUNTIME_CLASS(CGraphicEditorView));
@@ -135,11 +137,18 @@ BOOL CGraphicEditorApp::InitInstance()
 	}
 	m_pMainWnd = pMainFrame;
 
+	// 접미사가 있을 경우에만 DragAcceptFiles를 호출합니다.
+	//  MDI 응용 프로그램에서는 m_pMainWnd를 설정한 후 바로 이러한 호출이 발생해야 합니다.
+	// 끌어서 놓기에 대한 열기를 활성화합니다.
+	m_pMainWnd->DragAcceptFiles();
 
 	// 표준 셸 명령, DDE, 파일 열기에 대한 명령줄을 구문 분석합니다.
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
+	// DDE Execute 열기를 활성화합니다.
+	EnableShellOpen();
+	RegisterShellFileTypes(TRUE);
 
 
 	// 명령줄에 지정된 명령을 디스패치합니다.

@@ -33,13 +33,16 @@
     <ClInclude Include="ChildFrm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic EditorDoc.h">
+    <ClInclude Include="Graphic Editor Doc.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Graphic EditorView.h">
+    <ClInclude Include="Graphic Editor View.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,12 +59,24 @@
     <ClCompile Include="ChildFrm.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic EditorDoc.cpp">
+    <ClCompile Include="Graphic Editor Doc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic EditorView.cpp">
+    <ClCompile Include="Graphic Editor View.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphic Editor.reg" />
+    <None Include="res\ribbon.mfcribbon-ms">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="res\GraphicEditor.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Graphic Editor.rc">
@@ -69,6 +84,18 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\properties_wnd.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\properties_wnd_hc.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\properties.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\properties_hc.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
     <Image Include="res\buttons.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
@@ -99,13 +126,8 @@
     <Image Include="res\Toolbar256.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\ribbon.mfcribbon-ms">
+    <Image Include="res\bitmap1.bmp">
       <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="res\GraphicEditor.rc2">
-      <Filter>리소스 파일</Filter>
-    </None>
+    </Image>
   </ItemGroup>
 </Project>

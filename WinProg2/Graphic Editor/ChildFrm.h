@@ -22,7 +22,7 @@ public:
 
 // 특성입니다.
 protected:
-	CSplitterWndEx m_wndSplitter;
+	CSplitterWnd m_wndSplitter;
 public:
 
 // 작업입니다.
