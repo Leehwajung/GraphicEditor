@@ -96,15 +96,15 @@
 #define ID_ARRANGE_GROUPING             32852
 #define ID_OUTLINE_COLOR                32853
 #define ID_FILL_COLOR                   32854
-#define ID_IMAGE_CAN                    32855
 #define ID_IMAGE_CANVAS_SIZE            32855
+#define ID_OUTLINE_WIDTH                32856
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32856
+#define _APS_NEXT_COMMAND_VALUE         32857
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
