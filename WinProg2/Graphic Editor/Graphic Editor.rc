@@ -331,15 +331,15 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "041204B0"
+        BLOCK "041204b0"
         BEGIN
-            VALUE "CompanyName", "TODO: <회사 이름>"
+            VALUE "CompanyName", "WinProg2 Team No.6"
             VALUE "FileDescription", "Graphic Editor"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "Graphic Editor.exe"
-            VALUE "LegalCopyright", "TODO: (c) <회사 이름>.  All rights reserved."
+            VALUE "LegalCopyright", "WinProg2 Team No.6.  All rights reserved."
             VALUE "OriginalFilename", "Graphic Editor.exe"
-            VALUE "ProductName", "TODO: <제품 이름>"
+            VALUE "ProductName", "Graphic Editor"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
