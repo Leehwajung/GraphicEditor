@@ -317,7 +317,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
+ FILEVERSION 1,0,0,2
  PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -335,7 +335,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "WinProg2 Team No.6"
             VALUE "FileDescription", "Graphic Editor"
-            VALUE "FileVersion", "1.0.0.1"
+            VALUE "FileVersion", "1.0.0.2"
             VALUE "InternalName", "Graphic Editor.exe"
             VALUE "LegalCopyright", "WinProg2 Team No.6.  All rights reserved."
             VALUE "OriginalFilename", "Graphic Editor.exe"
