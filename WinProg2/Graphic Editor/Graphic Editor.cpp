@@ -10,7 +10,7 @@
 // All rights reserved.
 
 // Graphic Editor.cpp : 응용 프로그램에 대한 클래스 동작을 정의합니다.
-// 풀 테스트를 위한 푸시
+//
 
 #include "stdafx.h"
 #include "afxwinappex.h"
