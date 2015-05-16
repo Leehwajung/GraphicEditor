@@ -54,6 +54,9 @@
     <ClInclude Include="Figure.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -78,6 +81,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Figure.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
   </ItemGroup>
