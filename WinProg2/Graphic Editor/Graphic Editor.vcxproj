@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="FigureSetting.h" />
     <ClInclude Include="Graphic Editor Doc.h" />
     <ClInclude Include="Graphic Editor View.h" />
     <ClInclude Include="Graphic Editor.h" />
@@ -116,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="Figure.cpp" />
+    <ClCompile Include="FigureSetting.cpp" />
     <ClCompile Include="Graphic Editor Doc.cpp" />
     <ClCompile Include="Graphic Editor View.cpp" />
     <ClCompile Include="Graphic Editor.cpp" />
