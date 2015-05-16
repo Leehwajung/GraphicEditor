@@ -95,6 +95,9 @@
     <ClCompile Include="FigureSetting.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Graphic Editor.reg" />
