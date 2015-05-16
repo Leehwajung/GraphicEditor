@@ -25,8 +25,12 @@ public:
 
 	virtual void destroy();									// 도형 삭제
 
-	void setDC(CDC* dc);
 	CDC* getDC();
+	void setDC(CDC* dc);
+
+	CPoint& getStartingPoint();
+	void setStartingPoint(CPoint StartingPoint);
+	
 
 public:
 	enum resizeFlags {
@@ -36,7 +40,7 @@ public:
 
 protected:
 	CDC* m_lpdc;
-	Color m_lineColor;
 	CPoint m_startingPoint;
+	Color m_lineColor;
 };
 

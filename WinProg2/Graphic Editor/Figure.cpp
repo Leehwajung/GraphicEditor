@@ -49,3 +49,19 @@ void CFigure::resize(CPoint point, int resizeFlags) {
 void CFigure::destroy() {
 
 }
+
+CDC* CFigure::getDC() {
+	return this->m_lpdc;
+}
+
+void CFigure::setDC(CDC* dc) {
+	this->m_lpdc = dc;
+}
+
+CPoint& CFigure::getStartingPoint() {
+	return this->m_startingPoint;
+}
+
+void CFigure::setStartingPoint(CPoint StartingPoint) {
+	this->m_startingPoint = StartingPoint;
+}
