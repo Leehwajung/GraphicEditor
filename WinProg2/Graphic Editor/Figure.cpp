@@ -14,11 +14,11 @@ CFigure::~CFigure()
 {
 }
 
-void CFigure::Create(CPoint startingPoint) {
-
+void CFigure::Create(CPoint StartingPoint) {
+	this->m_startingPoint = StartingPoint;
 }
 
-void CFigure::setLineColor(Color lineColor) {
+void CFigure::setLineColor(Color LineColor) {
 
 }
 
@@ -26,23 +26,23 @@ void CFigure::setFillColor(Color FillColor) {
 
 }
 
-void CFigure::setLineWidth(int lineWidth) {
+void CFigure::setLineWidth(int LineWidth) {
 
 }
 
-void CFigure::setLinePattern(int linePattern) {
+void CFigure::setLinePattern(int LinePattern) {
 
 }
 
-void CFigure::setFillPattern(int fillPattern) {
+void CFigure::setFillPattern(int FillPattern) {
 
 }
 
-void CFigure::move(CPoint target) {
+void CFigure::move(CPoint Target) {
 
 }
 
-void CFigure::resize(CPoint point, int resizeFlags) {
+void CFigure::resize(CPoint Point, int resizeFlags) {
 
 }
 

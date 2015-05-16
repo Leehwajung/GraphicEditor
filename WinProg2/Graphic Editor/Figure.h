@@ -31,7 +31,6 @@ public:
 	CPoint& getStartingPoint();
 	void setStartingPoint(CPoint StartingPoint);
 	
-
 public:
 	enum resizeFlags {
 		Free			= (int)0x00000,
