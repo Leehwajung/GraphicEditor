@@ -7,39 +7,65 @@ using namespace Gdiplus;
 class CFigure : public CObject
 {
 public:
+	enum operationModeFlags {
+		None = (int)0x00000,
+		Create = (int)0x00001,
+		Move,
+		Resize
+	};
+
+	enum resizeFlags {
+		Free = (int)0x00000,
+		Proportional = (int)0x00001
+	};
+
+public:
 	CFigure();
 	CFigure(CDC* dc);
 	~CFigure();
 
 public:
-	virtual void Create(CPoint startingPoint);				// 도형 생성
+	// LButtonDown
+	virtual void create(CPoint startingPoint);					// 개체 생성
+	virtual operationModeFlags cursorPosition(CPoint point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
 
-	virtual void setLineColor(Color lineColor);				// 윤곽선 색 설정
-	virtual void setFillColor(Color FillColor);				// 칠하기 색 설정
-	virtual void setLineWidth(int lineWidth);				// 윤곽선 두께 설정
-	virtual void setLinePattern(int linePattern);			// 윤곽선 패턴 설정
-	virtual void setFillPattern(int fillPattern);			// 칠하기 패턴 설정
-	
-	virtual void move(CPoint target);						// 도형 이동
-	virtual void resize(CPoint point, int resizeFlags);	// 도형 크기 변경
+	// OnMouseMove
+	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수
+	virtual void creating(UINT nFlags, CPoint point);			// 생성 그리기
+	virtual void moving(UINT nFlags, CPoint point);				// 이동 그리기
+	virtual void resizing(UINT nFlags, CPoint point);			// 크기 변경 그리기
 
-	virtual void destroy();									// 도형 삭제
+	// LButtonUp / LButtonDlk
+	virtual void addPoint(CPoint point);						// 점 추가
+	virtual void move(CPoint target);							// 개체 이동
+	virtual void resize(CPoint point, int resizeFlags);			// 개체 크기 변경
 
+	// OnDraw / OnPaint
+	virtual void draw();										// 개체 그리기
+
+	// Menu Item
+	virtual void destroy();										// 개체 삭제
+
+	virtual void setLineColor(Color lineColor);					// 윤곽선 색 설정
+	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
+	virtual void setLineWidth(int lineWidth);					// 윤곽선 두께 설정
+	virtual void setLinePattern(int linePattern);				// 윤곽선 패턴 설정
+	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
+
+	// Getter / Setter
 	CDC* getDC();
 	void setDC(CDC* dc);
 
 	CPoint& getStartingPoint();
 	void setStartingPoint(CPoint StartingPoint);
-	
-public:
-	enum resizeFlags {
-		Free			= (int)0x00000,
-		Proportional	= (int)0x00001
-	};
+
+	operationModeFlags getOperationMode();
+	void setOperationMode(operationModeFlags OperationMode);
 
 protected:
 	CDC* m_lpdc;
 	CPoint m_startingPoint;
+	operationModeFlags m_OperationMode;
 	Color m_lineColor;
 };
 

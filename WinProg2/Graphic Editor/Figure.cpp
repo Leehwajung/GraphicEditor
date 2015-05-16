@@ -14,7 +14,7 @@ CFigure::~CFigure()
 {
 }
 
-void CFigure::Create(CPoint StartingPoint) {
+void CFigure::create(CPoint StartingPoint) {
 	this->m_startingPoint = StartingPoint;
 }
 
