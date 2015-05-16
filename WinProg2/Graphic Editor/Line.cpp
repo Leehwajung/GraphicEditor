@@ -26,11 +26,11 @@ void CLine::setLineColor(Color lineColor) {
 }
 
 void CLine::setLineWidth(int lineWidth) {
-	 // m_lineWidth = lineWidth;
+	 m_lineWidth = lineWidth;
 }
 
 void CLine::setLinePattern(int linePattern) {
-	// m_linePattern = linePattern;
+	m_linePattern = linePattern;
 }
 
 

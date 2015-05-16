@@ -42,6 +42,14 @@ private:
 	/* 그리기 위한 펜 */
 	CPen m_LinePen;
 
+	/* 선 두께 */
+	int m_lineWidth;
+
+	/* 선 패턴 */
+	int m_linePattern;
+
+
+
 
 };
 
