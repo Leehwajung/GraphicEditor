@@ -30,8 +30,8 @@ public:
 
 public:
 	enum resizeFlags {
-		Free = (int)0x00000,
-		Proportional = (int)0x00001
+		Free			= (int)0x00000,
+		Proportional	= (int)0x00001
 	};
 
 protected:

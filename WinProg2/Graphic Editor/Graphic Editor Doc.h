@@ -12,7 +12,6 @@
 // Graphic Editor Doc.h : CGraphicEditorDoc 클래스의 인터페이스
 //
 
-
 #pragma once
 
 

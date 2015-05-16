@@ -454,6 +454,7 @@ STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "다음 창으로 전환합니다.\n다음 창"
     ID_PREV_PANE            "이전 창으로 전환합니다.\n이전 창"
+    ID_IMAGE_CANVAS_SIZE    "캔버스의 크기를 변경합니다.\n캔버스 크기 변경"
 END
 
 STRINGTABLE
@@ -474,6 +475,7 @@ BEGIN
     ID_EDIT_CUT             "선택한 개체를 잘라내어 클립보드에 넣습니다.\n잘라내기"
     ID_EDIT_FIND            "지정한 텍스트를 찾습니다.\n찾기"
     ID_EDIT_PASTE           "클립보드 내용을 삽입합니다.\n붙여넣기"
+    ID_EDIT_DELETE          "선택한 개체를 삭제합니다.\n삭제"
     ID_EDIT_REPEAT          "마지막 작업을 반복합니다.\n반복"
     ID_EDIT_REPLACE         "특정 텍스트를 다른 텍스트로 바꿉니다.\n바꾸기"
     ID_EDIT_SELECT_ALL      "전체 개체를선택합니다.\n모두 선택"
@@ -528,12 +530,64 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_EDIT_DELETE          "선택한 개체를 삭제합니다.\n삭제"
+    ID_INSERT_PENCIL        "자유형 선을 그립니다.\n펜"
+    ID_INSERT_LINE          "직선을 그립니다.\n직선"
+    ID_INSERT_POLYLINE      "지정한 점을 기준으로 꺽인 선을 그립니다.\n꺽인 선"
+    ID_INSERT_SPLINE        "지정한 점을 기준으로 곡선을 그립니다.\n곡선"
+    ID_INSERT_RECTANGLE     "직사각형을 그립니다.\n사각형"
+    ID_INSERT_TRIANGLE      "삼각형을 그립니다.\n삼각형"
+    ID_INSERT_ELLIPSE       "타원을 그립니다.\n타원"
+    ID_INSERT_SHAPE         "특별한 형태의 도형을 그립니다.\n특별한 도형"
+    ID_INSERT_STRING        "문자열을 삽입합니다.\n문자열"
+    ID_ARRANGE_ORDER        "개체의 순서를 변경합니다.\n개체 순서"
+    ID_ARRANGE_BRING_FRONT  "선택한 개체를 다른 모든 개체 앞으로 가져옵니다.\n맨 앞으로 가져오기"
 END
 
 STRINGTABLE
 BEGIN
-    ID_BUTTON58             "AG"
+    ID_ARRANGE_SEND_BACK    "선택한 개체를 다른 모든 개체 뒤로 보냅니다.\n맨 뒤로 보내기"
+    ID_ARRANGE_BRING_FORWARD 
+                            "앞에 놓인 개체의 수가 줄어들도록, 선택한 개체를 한 수준 앞으로 가져옵니다.\n앞으로 가져오기"
+    ID_ARRANGE_SEND_BACKWARD 
+                            "앞에 놓인 개체의 수가 늘어나도록, 선택한 개체를 한 수준 뒤로 보냅니다.\n뒤로 보내기"
+    ID_ARRANGE_GROUPING     "여러 개체를 함께 조인해 한 개체처럼 한꺼번에 이동하고 서식을 지정합니다.\n개체 그룹화"
+    ID_ARRANGE_GROUP        "여러 개체를 함께 조인해 한 개체처럼 한꺼번에 이동하고 서식을 지정합니다.\n그룹"
+    ID_ARRANGE_UNGROUP      "그룹화된 개체를 다시 개별적으로 이동시킬 수 있도록 해제합니다.\n그룹 해제"
+    ID_OUTLINE_COLOR        "도형 윤곽선의 색을 선택합니다. 또는 문자열의 색을 변경합니다.\n윤곽선 색상 및 글꼴 색"
+    ID_OUTLINE_WIDTH        "도형 윤곽선의 두께를 선택합니다.\n윤곽선 두께"
+    ID_OUTLINE_PATTERN      "도형 윤곽선의 패턴을 선택합니다.\n윤곽선 패턴"
+    ID_FILL_COLOR           "그라데이션을 선택하지 않으면, 선택한 도형을 단색으로 채웁니다. 선택하면 그라데이션의 첫 번째 색입니다. 또는 선택한 문자열의 배경에 음영을 지정합니다.\n도형 채우기 및 음영 색"
+    ID_FILL_GRADATION       "그라데이션의 두 번째 색을 지정하여, 선택한 도형을 그라데이션으로 채웁니다.\n그라데이션"
+    ID_FILL_PATTERN         "선택한 도형을 패턴으로 채웁니다.\n도형 패턴"
+END
+
+STRINGTABLE
+BEGIN
+    ID_ZOOM_IN              "현재 그림을 확대합니다.\n확대"
+    ID_ZOOM_OUT             "현재 그림을 축소합니다.\n축소"
+    ID_ZOOM_100             "100% 배율로 확대/축소합니다.\n원래 크기"
+END
+
+STRINGTABLE
+BEGIN
+    ID_POSITION_VERTICAL    "도형의 세로 위치를 변경합니다.\n세로 위치"
+    ID_POSITION_HORIZONTAL  "도형의 가로 위치를 변경합니다.\n가로 위치"
+    ID_SIZE_HEIGHT          "도형의 높이를 변경합니다.\n도형 높이"
+    ID_SIZE_WIDTH           "도형의 너비를 변경합니다.\n도형 너비"
+    ID_FONT_CHARSET         "문자열의 새로운 글꼴을 선택합니다.\n글꼴"
+    ID_FONT_SIZE            "문자열의 크기를 변경합니다.\n글꼴 크기"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FONT_BOLD            "문자열을 굵게 표시합니다.\n굵게"
+    ID_FONT_ITALIC          "문자열을 기울임꼴로 표시합니다.\n기울임꼴"
+    ID_FONT_UNDERLINE       "문자열에 밑줄을 표시합니다.\n밑줄"
+END
+
+STRINGTABLE
+BEGIN
+    32854                   "선택한 문자열의 배경에 음영을 지정합니다.\n음영 색"
 END
 
 #endif    // 한국어(대한민국) resources

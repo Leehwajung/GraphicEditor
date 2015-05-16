@@ -8,7 +8,7 @@ CText::CText(){
 
 ///////////////////////////  Defalt ¼Ó¼º  //////////////////////////////////
 
-void CText::FontDisplay(){//related information Derived from CFigureSetting
+void CText::FontDisplay(){//related information Derived from CFigureProperties
 }
 ////////////////////////////////////////////////////////////////////////////
 

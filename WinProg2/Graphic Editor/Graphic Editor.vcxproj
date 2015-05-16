@@ -103,7 +103,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="Figure.h" />
-    <ClInclude Include="FigureSetting.h" />
+    <ClInclude Include="FigureProperties.h" />
     <ClInclude Include="Graphic Editor Doc.h" />
     <ClInclude Include="Graphic Editor View.h" />
     <ClInclude Include="Graphic Editor.h" />
@@ -118,7 +118,7 @@
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="Figure.cpp" />
-    <ClCompile Include="FigureSetting.cpp" />
+    <ClCompile Include="FigureProperties.cpp" />
     <ClCompile Include="Graphic Editor Doc.cpp" />
     <ClCompile Include="Graphic Editor View.cpp" />
     <ClCompile Include="Graphic Editor.cpp" />
@@ -140,7 +140,6 @@
     <ResourceCompile Include="Graphic Editor.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />

@@ -1,152 +1,152 @@
 #include "stdafx.h"
-#include "FigureSetting.h"
+#include "FigureProperties.h"
 
 
-CFigureSetting::CFigureSetting()
+CFigureProperties::CFigureProperties()
 {
 }
 
 
-CFigureSetting::~CFigureSetting()
+CFigureProperties::~CFigureProperties()
 {
 }
 
 /**
  * return the LineColor
  */
-Color CFigureSetting::getLineColor() {
+Color CFigureProperties::getLineColor() {
 	return m_LineColor;
 }
 
 /**
  * param LineColor the LineColor to set
  */
-void CFigureSetting::setLineColor(Color LineColor) {
+void CFigureProperties::setLineColor(Color LineColor) {
 	this->m_LineColor = LineColor;
 }
 
 /**
  * return the LinePattern
  */
-int CFigureSetting::getLinePattern() {
+int CFigureProperties::getLinePattern() {
 	return m_LinePattern;
 }
 
 /**
  * param LinePattern the LinePattern to set
  */
-void CFigureSetting::setLinePattern(int LinePattern) {
+void CFigureProperties::setLinePattern(int LinePattern) {
 	this->m_LinePattern = LinePattern;
 }
 
 /**
  * return the LineWidth
  */
-int CFigureSetting::getLineWidth() {
+int CFigureProperties::getLineWidth() {
 	return m_LineWidth;
 }
 
 /**
  * param LineWidth the LineWidth to set
  */
-void CFigureSetting::setLineWidth(int LineWidth) {
+void CFigureProperties::setLineWidth(int LineWidth) {
 	this->m_LineWidth = LineWidth;
 }
 
 /**
  * return the FillColor
  */
-Color CFigureSetting::getFillColor() {
+Color CFigureProperties::getFillColor() {
 	return m_FillColor;
 }
 
 /**
  * param FillColor the FillColor to set
  */
-void CFigureSetting::setFillColor(Color FillColor) {
+void CFigureProperties::setFillColor(Color FillColor) {
 	this->m_FillColor = FillColor;
 }
 
 /**
  * return the FillPattern
  */
-int CFigureSetting::getFillPattern() {
+int CFigureProperties::getFillPattern() {
 	return m_FillPattern;
 }
 
 /**
  * param FillPattern the FillPattern to set
  */
-void CFigureSetting::setFillPattern(int FillPattern) {
+void CFigureProperties::setFillPattern(int FillPattern) {
 	this->m_FillPattern = FillPattern;
 }
 
 /**
  * return the FontName
  */
-CString CFigureSetting::getFontName() {
+CString CFigureProperties::getFontName() {
 	return m_FontName;
 }
 
 /**
  * param FontName the FontName to set
  */
-void CFigureSetting::setFontName(CString FontName) {
+void CFigureProperties::setFontName(CString FontName) {
 	this->m_FontName = FontName;
 }
 
 /**
  * return the FontSize
  */
-int CFigureSetting::getFontSize() {
+int CFigureProperties::getFontSize() {
 	return m_FontSize;
 }
 
 /**
  * param FontSize the FontSize to set
  */
-void CFigureSetting::setFontSize(int FontSize) {
+void CFigureProperties::setFontSize(int FontSize) {
 	this->m_FontSize = FontSize;
 }
 
 /**
  * return the FontBold
  */
-BOOL CFigureSetting::getFontBold() {
+BOOL CFigureProperties::getFontBold() {
 	return m_FontBold;
 }
 
 /**
  * param FontBold the FontBold to set
  */
-void CFigureSetting::setFontBold(BOOL FontBold) {
+void CFigureProperties::setFontBold(BOOL FontBold) {
 	this->m_FontBold = FontBold;
 }
 
 /**
  * return the FontItalic
  */
-BOOL CFigureSetting::getFontItalic() {
+BOOL CFigureProperties::getFontItalic() {
 	return m_FontItalic;
 }
 
 /**
  * param FontItalic the FontItalic to set
  */
-void CFigureSetting::setFontItalic(BOOL FontItalic) {
+void CFigureProperties::setFontItalic(BOOL FontItalic) {
 	this->m_FontItalic = FontItalic;
 }
 
 /**
  * return the FontUnderline
  */
-BOOL CFigureSetting::getFontUnderline() {
+BOOL CFigureProperties::getFontUnderline() {
 	return m_FontUnderline;
 }
 
 /**
  * param FontUnderline the FontUnderline to set
  */
-void CFigureSetting::setFontUnderline(BOOL FontUnderline) {
+void CFigureProperties::setFontUnderline(BOOL FontUnderline) {
 	this->m_FontUnderline = FontUnderline;
 }

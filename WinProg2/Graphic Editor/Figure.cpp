@@ -42,11 +42,7 @@ void CFigure::move(CPoint target) {
 
 }
 
-void CFigure::resize(CPoint point) {
-
-}
-
-void CFigure::propResize(CPoint point) {
+void CFigure::resize(CPoint point, int resizeFlags) {
 
 }
 

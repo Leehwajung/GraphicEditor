@@ -4,11 +4,11 @@
 
 using namespace Gdiplus;
 
-class CFigureSetting : public CObject
+class CFigureProperties : public CObject
 {
 public:
-	CFigureSetting();
-	~CFigureSetting();
+	CFigureProperties();
+	~CFigureProperties();
 
 public:
 	Color getLineColor();
