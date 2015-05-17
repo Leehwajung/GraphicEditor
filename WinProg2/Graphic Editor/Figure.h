@@ -28,9 +28,9 @@ public:
 	// LButtonDown
 	virtual void create(CPoint startingPoint);					// 개체 생성
 	virtual operationModeFlags cursorPosition(CPoint point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-
+	
 	// OnMouseMove
-	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수
+	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 	virtual void creating(UINT nFlags, CPoint point);			// 생성 그리기
 	virtual void moving(UINT nFlags, CPoint point);				// 이동 그리기
 	virtual void resizing(UINT nFlags, CPoint point);			// 크기 변경 그리기
@@ -47,9 +47,9 @@ public:
 	virtual void destroy();										// 개체 삭제
 
 	virtual void setLineColor(Color lineColor);					// 윤곽선 색 설정
-	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
 	virtual void setLineWidth(int lineWidth);					// 윤곽선 두께 설정
 	virtual void setLinePattern(int linePattern);				// 윤곽선 패턴 설정
+	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
 	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
 
 	// Getter / Setter

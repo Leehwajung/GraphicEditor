@@ -14,41 +14,88 @@ CFigure::~CFigure()
 {
 }
 
+/* 개체 생성 */
 void CFigure::create(CPoint StartingPoint) {
 	this->m_startingPoint = StartingPoint;
 }
 
-void CFigure::setLineColor(Color LineColor) {
+/* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지) */
+CFigure::operationModeFlags CFigure::cursorPosition(CPoint point) {
+	return None;
+}
+
+/* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
+void CFigure::mouseMoveOperation(UINT nFlags, CPoint point) {
 
 }
 
-void CFigure::setFillColor(Color FillColor) {
+/* 생성 그리기 */
+void CFigure::creating(UINT nFlags, CPoint point) {
 
 }
 
-void CFigure::setLineWidth(int LineWidth) {
+/* 이동 그리기 */
+void CFigure::moving(UINT nFlags, CPoint point) {
 
 }
 
-void CFigure::setLinePattern(int LinePattern) {
+/* 크기 변경 그리기 */
+void CFigure::resizing(UINT nFlags, CPoint point) {
 
 }
 
-void CFigure::setFillPattern(int FillPattern) {
+/* 점 추가 */
+void CFigure::addPoint(CPoint point) {
 
 }
 
+/* 개체 이동 */
 void CFigure::move(CPoint Target) {
 
 }
 
+/* 개체 크기 변경 */
 void CFigure::resize(CPoint Point, int resizeFlags) {
 
 }
 
+/* 개체 그리기 */
+void CFigure::draw() {
+
+}
+
+/* 개체 삭제 */
 void CFigure::destroy() {
 
 }
+
+/* 윤곽선 색 설정 */
+void CFigure::setLineColor(Color LineColor) {
+
+}
+
+/* 윤곽선 두께 설정 */
+void CFigure::setLineWidth(int LineWidth) {
+
+}
+
+/* 윤곽선 패턴 설정 */
+void CFigure::setLinePattern(int LinePattern) {
+
+}
+
+/* 칠하기 색 설정 */
+void CFigure::setFillColor(Color FillColor) {
+
+}
+
+/* 칠하기 패턴 설정 */
+void CFigure::setFillPattern(int FillPattern) {
+
+}
+
+
+/* Getter / Setter */
 
 CDC* CFigure::getDC() {
 	return this->m_lpdc;
@@ -64,4 +111,12 @@ CPoint& CFigure::getStartingPoint() {
 
 void CFigure::setStartingPoint(CPoint StartingPoint) {
 	this->m_startingPoint = StartingPoint;
+}
+
+CFigure::operationModeFlags CFigure::getOperationMode() {
+	return this->m_OperationMode;
+}
+
+void CFigure::setOperationMode(operationModeFlags OperationMode) {
+
 }
