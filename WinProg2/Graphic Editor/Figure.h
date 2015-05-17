@@ -1,34 +1,40 @@
+// Figure.h : CFigure 클래스의 인터페이스
+//
+
 #pragma once
-#include "afx.h"
-#include <gdiplus.h>
+
+//#include "afx.h"
+//#include <gdiplus.h>
 
 using namespace Gdiplus;
+
+// CFigure 명령 대상입니다.
 
 class CFigure : public CObject
 {
 public:
 	enum operationModeFlags {
-		None = (int)0x00000,
-		Create = (int)0x00001,
-		Move,
-		Resize
+		None			= (int) 0x00000,
+		Create			= (int) 0x00001,
+		Move			= (int) 0x00002,
+		Resize			= (int) 0x00004
 	};
 
 	enum resizeFlags {
-		Free = (int)0x00000,
-		Proportional = (int)0x00001
+		Free			= (int) 0x00000,
+		Proportional	= (int) 0x00001
 	};
 
 public:
 	CFigure();
 	CFigure(CDC* dc);
-	~CFigure();
+	virtual ~CFigure();
 
 public:
 	// LButtonDown
 	virtual void create(CPoint startingPoint);					// 개체 생성
 	virtual operationModeFlags cursorPosition(CPoint point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-	
+
 	// OnMouseMove
 	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 	virtual void creating(UINT nFlags, CPoint point);			// 생성 그리기
@@ -68,4 +74,5 @@ protected:
 	operationModeFlags m_OperationMode;
 	Color m_lineColor;
 };
+
 

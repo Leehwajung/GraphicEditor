@@ -1,15 +1,21 @@
+// FigureProperties.h : CFigureProperties 클래스의 인터페이스
+//
+
 #pragma once
+
 #include "afx.h"
-#include <gdiplus.h>
+//#include <gdiplus.h>
 
 using namespace Gdiplus;
+
+// CFigureProperties 명령 대상입니다.
 
 class CFigureProperties : public CObject
 {
 	
 public:
 	CFigureProperties();
-	~CFigureProperties();
+	virtual ~CFigureProperties();
 
 public:
 	// 윤곽선

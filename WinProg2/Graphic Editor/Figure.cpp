@@ -1,6 +1,13 @@
+// Figure.cpp : CFigure 클래스의 구현
+//
+
 #include "stdafx.h"
+#include "Graphic Editor.h"
 #include "Figure.h"
 
+using namespace Gdiplus;
+
+// CFigure
 
 CFigure::CFigure()
 {
@@ -13,6 +20,9 @@ CFigure::CFigure(CDC* dc)
 CFigure::~CFigure()
 {
 }
+
+
+// CFigure 멤버 함수
 
 /* 개체 생성 */
 void CFigure::create(CPoint StartingPoint) {
@@ -118,5 +128,5 @@ CFigure::operationModeFlags CFigure::getOperationMode() {
 }
 
 void CFigure::setOperationMode(operationModeFlags OperationMode) {
-
+	this->m_OperationMode = OperationMode;
 }

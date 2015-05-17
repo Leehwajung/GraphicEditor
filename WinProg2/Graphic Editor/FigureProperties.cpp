@@ -1,6 +1,12 @@
+// FigureProperties.cpp : CFigureProperties 클래스의 구현
+//
+
 #include "stdafx.h"
 #include "FigureProperties.h"
 
+using namespace Gdiplus;
+
+// CFigureProperties
 
 CFigureProperties::CFigureProperties()
 {
@@ -10,6 +16,8 @@ CFigureProperties::CFigureProperties()
 CFigureProperties::~CFigureProperties()
 {
 }
+
+// CFigureProperties 멤버 함수
 
 /**
  * return the LineColor
