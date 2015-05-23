@@ -1,37 +1,42 @@
 #pragma once
 #include "Figure.h"
 
+
+// Make and Edit by Byun Jun
 class CLine : public CFigure
 {
 public:
 	CLine();
 	~CLine();
 
-	/* 선 생성*/
-	virtual void Create(CPoint startingPoint);
+	// LButtonDown
+	virtual void Create(CPoint startingPoint);               // 선 생성
+	virtual operationModeFlags cursorPosition(CPoint point); // 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
 
-	/* 선 색 변경 */
-	virtual void setLineColor(Color lineColor);
+	// OnMouseMove
+	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	virtual void creating(UINT nFlags, CPoint point);			// 생성 그리기
+	virtual void moving(UINT nFlags, CPoint point);				// 이동 그리기
+	virtual void resizing(UINT nFlags, CPoint point);			// 크기 변경 그리기
 
-	/* 선 두께*/
-	virtual void setLineWidth(int lineWidth);
+	// LButtonUp / LButtonDlk
+	virtual void addPoint(CPoint point);						// 점 추가
+	virtual void move(CPoint target);							// 개체 이동
+	virtual void resize(CPoint point, int resizeFlags);			// 개체 크기 변경
 
-	/* 선 패턴*/
-	virtual void setLinePattern(int linePattern);
+	// OnDraw / OnPaint
+	virtual void draw();										// 개체 그리기
 
-	/* 전체 이동*/
-	virtual void move(CPoint target);
+	// Menu Item
+	virtual void destroy();										// 개체 삭제
 
-	/* 크기 변경 */
-	virtual void resize(CPoint point);
+	virtual void setLineColor(Color lineColor);					// 선 색 설정
+	virtual void setLineWidth(int lineWidth);					// 선 두께 설정
+	virtual void setLinePattern(int linePattern);				// 선 패턴 설정
+	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
+	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
 
-	/* 정비례 크기*/
-	virtual void propResize(CPoint point);
-
-	/* 삭제 */
-	virtual void destroy();
-
-	/**/
+	// Getter
 	CList<CPoint, CPoint&>& GetPointsList();
 
 private:
