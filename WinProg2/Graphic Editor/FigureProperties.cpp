@@ -41,7 +41,7 @@ int CFigureProperties::getLinePattern() {
 }
 
 /**
- * param LinePattern the LinePattern to set
+ * param Lineint the Lineint to set
  */
 void CFigureProperties::setLinePattern(int LinePattern) {
 	this->m_LinePattern = LinePattern;
@@ -83,78 +83,36 @@ int CFigureProperties::getFillPattern() {
 }
 
 /**
- * param FillPattern the FillPattern to set
+ * param Fillint the Fillint to set
  */
 void CFigureProperties::setFillPattern(int FillPattern) {
 	this->m_FillPattern = FillPattern;
 }
 
 /**
- * return the FontName
- */
-CString CFigureProperties::getFontName() {
-	return m_FontName;
+* return the FontColor
+*/
+Color CFigureProperties::getFontColor() {
+	return m_FontColor;
 }
 
 /**
- * param FontName the FontName to set
- */
-void CFigureProperties::setFontName(CString FontName) {
-	this->m_FontName = FontName;
+* param FontColor the FontColor to set
+*/
+void CFigureProperties::setFontColor(Color FontColor) {
+	this->m_FontColor = FontColor;
 }
 
 /**
- * return the FontSize
+ * return the m_FontLog
  */
-int CFigureProperties::getFontSize() {
-	return m_FontSize;
+LOGFONT CFigureProperties::getFontLog() {
+	return m_FontLog;
 }
 
 /**
- * param FontSize the FontSize to set
+ * param FontLog the m_FontLog to set
  */
-void CFigureProperties::setFontSize(int FontSize) {
-	this->m_FontSize = FontSize;
-}
-
-/**
- * return the FontBold
- */
-BOOL CFigureProperties::getFontBold() {
-	return m_FontBold;
-}
-
-/**
- * param FontBold the FontBold to set
- */
-void CFigureProperties::setFontBold(BOOL FontBold) {
-	this->m_FontBold = FontBold;
-}
-
-/**
- * return the FontItalic
- */
-BOOL CFigureProperties::getFontItalic() {
-	return m_FontItalic;
-}
-
-/**
- * param FontItalic the FontItalic to set
- */
-void CFigureProperties::setFontItalic(BOOL FontItalic) {
-	this->m_FontItalic = FontItalic;
-}
-
-/**
- * return the FontUnderline
- */
-BOOL CFigureProperties::getFontUnderline() {
-	return m_FontUnderline;
-}
-
-/**
- * param FontUnderline the FontUnderline to set
- */
-void CFigureProperties::setFontUnderline(BOOL FontUnderline) {
-	this->m_FontUnderline = FontUnderline;
+void CFigureProperties::setFontLog(LOGFONT FontLog) {
+	this->m_FontLog = FontLog;
 }

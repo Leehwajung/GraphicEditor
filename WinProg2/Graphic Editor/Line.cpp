@@ -17,7 +17,7 @@ CLine::~CLine()
 void CLine::Create(CPoint startingPoint)
 {
 	//나중에 상대 좌표를 사용할 꺼임
-	this->m_startingPoint = startingPoint;
+	this->m_StartingPoint = startingPoint;
 	m_PointsList.AddHead(CPoint(0,0));
 }
 
@@ -85,17 +85,17 @@ void CLine::destroy() {
 // 속성에 관한 부분은 Property class를 이용하기로 했음
 /* 선 색 설정 */
 void CLine::setLineColor(Color lineColor) {
-	m_lineColor = lineColor;
+	m_LineColor = lineColor;
 }
 
 /* 선 두께 설정 */
 void CLine::setLineWidth(int lineWidth) {
-	 m_lineWidth = lineWidth;
+	 m_LineWidth = lineWidth;
 }
 
 /* 선 패턴 설정 */
 void CLine::setLinePattern(int linePattern) {
-	m_linePattern = linePattern;
+	m_LinePattern = linePattern;
 }
 
 

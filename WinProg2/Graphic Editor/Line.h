@@ -48,10 +48,10 @@ private:
 	CPen m_LinePen;
 
 	/* 선 두께 */
-	int m_lineWidth;
+	int m_LineWidth;
 
 	/* 선 패턴 */
-	int m_linePattern;
+	int m_LinePattern;
 
 
 

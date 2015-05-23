@@ -33,21 +33,15 @@ public:
 	void setFillPattern(int FillPattern);
 
 	// ±Û²Ã
-	CString getFontName();
-	void setFontName(CString FontName);
-	int getFontSize();
-	void setFontSize(int FontSize);
-	BOOL getFontBold();
-	void setFontBold(BOOL FontBold);
-	BOOL getFontItalic();
-	void setFontItalic(BOOL FontItalic);
-	BOOL getFontUnderline();
-	void setFontUnderline(BOOL FontUnderline);
+	Color getFontColor();
+	void setFontColor(Color FontColor);
+	LOGFONT getFontLog();
+	void setFontLog(LOGFONT FontLog);
 
 private:
 	// À±°û¼±
 	Color m_LineColor;		// À±°û¼± »ö»ó
-	Pattern m_LinePattern;	// À±°û¼± ÆÐÅÏ
+	int m_LinePattern;		// À±°û¼± ÆÐÅÏ
 	int m_LineWidth;		// À±°û¼± ±½±â
 
 	// Ã¤¿ì±â

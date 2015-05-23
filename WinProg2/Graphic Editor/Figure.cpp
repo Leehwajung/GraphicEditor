@@ -26,7 +26,7 @@ CFigure::~CFigure()
 
 /* 개체 생성 */
 void CFigure::create(CPoint StartingPoint) {
-	this->m_startingPoint = StartingPoint;
+	this->m_StartingPoint = StartingPoint;
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지) */
@@ -131,11 +131,11 @@ void CFigure::setDC(CDC* dc) {
 }
 
 CPoint& CFigure::getStartingPoint() {
-	return this->m_startingPoint;
+	return this->m_StartingPoint;
 }
 
 void CFigure::setStartingPoint(CPoint StartingPoint) {
-	this->m_startingPoint = StartingPoint;
+	this->m_StartingPoint = StartingPoint;
 }
 
 CFigure::operationModeFlags CFigure::getOperationMode() {
