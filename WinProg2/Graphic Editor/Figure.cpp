@@ -34,6 +34,11 @@ CFigure::operationModeFlags CFigure::cursorPosition(CPoint point) {
 	return None;
 }
 
+/* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
+CFigure::operationModeFlags CFigure::cursorPosition(CRect rect) {
+	return None;
+}
+
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CFigure::mouseMoveOperation(UINT nFlags, CPoint point) {
 
@@ -66,6 +71,11 @@ void CFigure::move(CPoint Target) {
 
 /* 개체 크기 변경 */
 void CFigure::resize(CPoint Point, int resizeFlags) {
+
+}
+
+/* 설정된 값으로 개체 속성 설정 */
+void CFigure::setProperties(CFigureProperties properties) {
 
 }
 

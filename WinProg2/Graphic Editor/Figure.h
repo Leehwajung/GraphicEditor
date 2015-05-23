@@ -5,6 +5,7 @@
 
 //#include "afx.h"
 //#include <gdiplus.h>
+#include "FigureProperties.h"
 
 using namespace Gdiplus;
 
@@ -46,6 +47,7 @@ public:
 	virtual void addPoint(CPoint point);						// 점 추가
 	virtual void move(CPoint target);							// 개체 이동
 	virtual void resize(CPoint point, int resizeFlags);			// 개체 크기 변경
+	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 	// OnDraw / OnPaint
 	virtual void draw();										// 개체 그리기

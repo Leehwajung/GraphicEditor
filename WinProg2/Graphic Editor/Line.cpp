@@ -22,7 +22,12 @@ void CLine::Create(CPoint startingPoint)
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
-CLine::operationModeFlags CLine::cursorPosition(CPoint point) {
+CFigure::operationModeFlags CLine::cursorPosition(CPoint point) {
+	return None;
+}
+
+/* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
+CFigure::operationModeFlags CLine::cursorPosition(CRect rect) {
 	return None;
 }
 
@@ -58,6 +63,11 @@ void CLine::move(CPoint Target) {
 
 /* 선 크기(길이) 변경 */
 void CLine::resize(CPoint Point, int resizeFlags) {
+
+}
+
+/* 설정된 값으로 개체 속성 설정 */
+void CLine::setProperties(CFigureProperties properties) {
 
 }
 
