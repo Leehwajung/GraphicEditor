@@ -33,8 +33,6 @@ public:
 	virtual void setLineColor(Color lineColor);					// 선 색 설정
 	virtual void setLineWidth(int lineWidth);					// 선 두께 설정
 	virtual void setLinePattern(int linePattern);				// 선 패턴 설정
-	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
-	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
 
 	// Getter
 	CList<CPoint, CPoint&>& GetPointsList();
