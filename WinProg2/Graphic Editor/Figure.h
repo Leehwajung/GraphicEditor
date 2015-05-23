@@ -9,6 +9,8 @@
 
 using namespace Gdiplus;
 
+typedef int Pattern;
+
 // CFigure ¸í·É ´ë»óÀÔ´Ï´Ù.
 
 class CFigure : public CObject
@@ -72,11 +74,15 @@ public:
 	operationModeFlags getOperationMode();
 	void setOperationMode(operationModeFlags OperationMode);
 
+// Æ¯¼º
 protected:
 	CDC* m_lpdc;
-	CPoint m_startingPoint;
+	CPoint m_StartingPoint;
 	operationModeFlags m_OperationMode;
-	Color m_lineColor;
+
+	Color m_LineColor;		// À±°û¼± »ö
+	Pattern m_LinePattern;	// À±°û¼± ÆÐÅÏ
+	int m_LineWidth;		// À±°û¼± µÎ²²
 };
 
 

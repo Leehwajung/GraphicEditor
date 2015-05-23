@@ -1,9 +1,9 @@
 #pragma once
-#include "Figure.h"
+#include "Shape.h"
 
 using namespace Gdiplus;
 
-class CText : public CFigure 
+class CText : public CShape 
 {
 public:
 	CText();
@@ -37,19 +37,22 @@ public:
 	//Keyboard Focus
 	virtual void OnKeyboardFocus();// 캐럿표시, WM_SETFOCUS 와 WM_KILLFOCUS메시지 핸들러추가
 
-private://	CPoint points;
+// 특성
+private:
+	CString m_str;		//입력받을 문자열
+
+	Color m_FontColor;	// 글자색
+	LOGFONT m_FontLog;	// 폰트에 대한 정보들(글꼴, 색상)
+
+	//	CPoint points;
 	// 글꼴
 	//CArray <TCHAR, TCHAR> m_str;
-	CString m_str;//입력받을 문자열
-	CFont Font; //폰트
-	//int m_FontName; // 사용자가 선택한 폰트번호저장
-	//int m_FontSize; // 사용자가 입력한 폰트 사이즈
-	Color m_bkColor; //배경색 http://shaeod.tistory.com/382
-	Color m_FontColor; //글자색
-	LOGFONT m_LogFont; //폰트에 대한 정보들(글꼴, 색상)
-
-	BOOL m_FontBold;// 볼드체
-	BOOL m_FontItalic; // 이탤릭체
-	BOOL m_FontUnderline;// 밑줄
+	//CFont m_Font;			//폰트 ()
+	//int m_FontName;	// 사용자가 선택한 폰트번호저장
+	//int m_FontSize;	// 사용자가 입력한 폰트 사이즈
+	//Color m_bkColor;	//배경색 http://shaeod.tistory.com/382
+	//BOOL m_FontBold;	// 볼드체
+	//BOOL m_FontItalic; // 이탤릭체
+	//BOOL m_FontUnderline;// 밑줄
 };
 

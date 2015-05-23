@@ -46,19 +46,16 @@ public:
 
 private:
 	// 윤곽선
-	Color m_LineColor;
-	int m_LinePattern;
-	int m_LineWidth;
+	Color m_LineColor;		// 윤곽선 색상
+	Pattern m_LinePattern;	// 윤곽선 패턴
+	int m_LineWidth;		// 윤곽선 굵기
 
 	// 채우기
-	Color m_FillColor;
-	int m_FillPattern;
+	Color m_FillColor;		// 채우기 색상
+	int m_FillPattern;		// 채우기 패턴
 
 	// 글꼴
-	CString m_FontName;
-	int m_FontSize;
-	BOOL m_FontBold;
-	BOOL m_FontItalic;
-	BOOL m_FontUnderline;
+	Color m_FontColor;		// 글꼴 색상
+	LOGFONT m_FontLog;		// 글꼴 이름, 크기, 굵게, 이탤릭, 밑줄, 취소선 등
 };
 
