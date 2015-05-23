@@ -26,7 +26,7 @@ public:
 
 // 작업입니다.
 public:
-
+	int MODE;
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
