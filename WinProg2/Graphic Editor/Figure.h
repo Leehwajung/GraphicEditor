@@ -1,5 +1,5 @@
 // Figure.h : CFigure 클래스의 인터페이스
-//
+// @Author Lee Hwajung
 
 #pragma once
 
@@ -51,6 +51,7 @@ public:
 
 	// OnDraw / OnPaint
 	virtual void draw();										// 개체 그리기
+	virtual void drawSelect();
 
 	// Menu Item
 	virtual void destroy();										// 개체 삭제

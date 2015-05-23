@@ -1,5 +1,5 @@
 // FigureProperties.h : CFigureProperties 클래스의 인터페이스
-//
+// @Author Lee Hwajung
 
 #pragma once
 
