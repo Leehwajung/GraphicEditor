@@ -1,5 +1,5 @@
 // Figure.cpp : CFigure 클래스의 구현
-//
+// @Author Lee Hwajung
 
 #include "stdafx.h"
 #include "Graphic Editor.h"
@@ -31,7 +31,7 @@ void CFigure::create(CPoint StartingPoint) {
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지) */
 CFigure::operationModeFlags CFigure::cursorPosition(CPoint point) {
-	return None;
+	return None; 
 }
 
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
@@ -82,6 +82,11 @@ void CFigure::setProperties(CFigureProperties properties) {
 /* 개체 그리기 */
 void CFigure::draw() {
 
+}
+
+/* 개체 선택선 그리기 */
+void CFigure::drawSelect() {
+	
 }
 
 /* 개체 삭제 */

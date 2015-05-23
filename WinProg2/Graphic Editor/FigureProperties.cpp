@@ -1,5 +1,5 @@
 // FigureProperties.cpp : CFigureProperties 클래스의 구현
-//
+// @Author Lee Hwajung
 
 #include "stdafx.h"
 #include "FigureProperties.h"
