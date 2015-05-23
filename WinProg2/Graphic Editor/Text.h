@@ -39,7 +39,7 @@ public:
 
 // 특성
 private:
-	CString m_str;		//입력받을 문자열
+	CString m_String;	//입력받을 문자열
 
 	Color m_FontColor;	// 글자색
 	LOGFONT m_FontLog;	// 폰트에 대한 정보들(글꼴, 색상)
