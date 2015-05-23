@@ -1,6 +1,7 @@
 #pragma once
 #include "Figure.h"
-#include <gdiplus.h>
+
+using namespace Gdiplus;
 
 class CText : public CFigure 
 {
@@ -43,8 +44,8 @@ private://	CPoint points;
 	CFont Font; //폰트
 	//int m_FontName; // 사용자가 선택한 폰트번호저장
 	//int m_FontSize; // 사용자가 입력한 폰트 사이즈
-	COLORREF m_bkColor; //배경색 http://shaeod.tistory.com/382
-	COLORREF m_FontColor; //글자색
+	Color m_bkColor; //배경색 http://shaeod.tistory.com/382
+	Color m_FontColor; //글자색
 	LOGFONT m_LogFont; //폰트에 대한 정보들(글꼴, 색상)
 
 	BOOL m_FontBold;// 볼드체
