@@ -53,7 +53,7 @@ END_MESSAGE_MAP()
 CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	m_MouseButtonFlag = NULL;
 }
 
 CGraphicEditorView::~CGraphicEditorView()
@@ -77,7 +77,7 @@ void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-	int m_mode;// 일단 모드라고 해놓겠음.
+	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
 		case 1: // 폴리라인
 			break;
@@ -87,6 +87,7 @@ void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
 
 			break;
 	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
+	// DC 포인터를 멤버 변수(m_lpdc)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
 
 	}
 
@@ -124,59 +125,130 @@ void CGraphicEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_LButtonPoint = point;			// 이벤트 발생 좌표
+		m_MouseButtonFlag = MK_LBUTTON;	// 좌클릭 드래그 중
+		/**************************************/
 
-	CView::OnLButtonDown(nFlags, point);
+		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	CGraphicEditorDoc* pDoc = GetDocument();
+		CView::OnLButtonDown(nFlags, point);
+
+		CGraphicEditorDoc* pDoc = GetDocument();
+	}
 }
 
 void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	Invalidate();
+	if (m_MouseButtonFlag == MK_LBUTTON/* && !(nFlags & MK_RBUTTON)*/) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_LButtonPoint = point;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = NULL;	// 비클릭 상태
+		/**************************************/
 
-	CView::OnLButtonUp(nFlags, point);
+		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+		CView::OnLButtonUp(nFlags, point);
+	}
 }
 
 void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_LButtonPoint = point;			// 이벤트 발생 좌표
+		m_MouseButtonFlag = MK_LBUTTON;	// 좌클릭
+		/**************************************/
 
-	CView::OnLButtonDblClk(nFlags, point);
+		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+		CView::OnLButtonDblClk(nFlags, point);
+	}
 }
 
 void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_RButtonPoint = point;			// 이벤트 발생 좌표
+		m_MouseButtonFlag = MK_RBUTTON;	// 우클릭 드래그 중
+		/**************************************/
 
-	CView::OnRButtonDown(nFlags, point);
+		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+		CView::OnRButtonDown(nFlags, point);
+	}
 }
 
 void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	Invalidate();
+	if (m_MouseButtonFlag == MK_RBUTTON/* && !(nFlags & MK_LBUTTON)*/) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_RButtonPoint = point;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = NULL;	// 비클릭 상태
+		/**************************************/
+
+		ClientToScreen(&point);
+		OnContextMenu(this, point);
+	}
 }
 
 void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
 {
-	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
+		/***** 이 부분은 변경하지 마시오. *****/
+		m_RButtonPoint = point;			// 이벤트 발생 좌표
+		m_MouseButtonFlag = MK_RBUTTON;	// 우클릭
+		/**************************************/
 
-	CView::OnRButtonDblClk(nFlags, point);
+		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+		CView::OnRButtonDblClk(nFlags, point);
+	}
 }
 
 void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	//CView::OnMouseMove(nFlags, point);
 
-	CView::OnMouseMove(nFlags, point);
+	if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
+	
+	}
+
+	else if (m_MouseButtonFlag == MK_LBUTTON) {		// 마우스 왼쪽 버튼 드래그
+		if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
+
+		}
+		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
+
+		}
+		else {							// 보조키 누르지 않고 드리그
+
+		}
+	}
+
+	else if (m_MouseButtonFlag == MK_RBUTTON){	// 마우스 오른쪽 버튼 드래그
+		if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
+
+		}
+		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
+
+		}
+		else {							// 보조키 누르지 않고 드리그
+
+		}
+	}
 }
 
-BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	return CView::OnMouseWheel(nFlags, zDelta, pt);
+	return CView::OnMouseWheel(nFlags, zDelta, point);
 }
 
 void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)

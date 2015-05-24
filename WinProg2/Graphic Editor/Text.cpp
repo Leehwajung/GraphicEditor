@@ -1,3 +1,7 @@
+// Text.cpp : CText 클래스의 구현
+// CText : 문자열 개체를 정의하는 클래스
+//
+
 #include "stdafx.h"
 #include "Text.h"
 

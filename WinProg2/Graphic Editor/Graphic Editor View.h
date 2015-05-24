@@ -13,7 +13,7 @@
 //
 
 #pragma once
-
+#include "Group.h"
 
 class CGraphicEditorView : public CView
 {
@@ -24,6 +24,10 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
+	CGroup m_SelectedFiguresList;			// 사용자가 선택한 개체들의 목록
+	CPoint m_LButtonPoint;					// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
+	CPoint m_RButtonPoint;					// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
+	UINT m_MouseButtonFlag;					// 마우스 버튼이 클릭되어있는 상태 플래그 (MK_LBUTTON , MK_RBUTTON, MK_MBUTTON)
 	int m_mode;
 
 // 작업입니다.

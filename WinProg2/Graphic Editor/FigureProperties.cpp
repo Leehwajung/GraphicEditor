@@ -1,4 +1,5 @@
 // FigureProperties.cpp : CFigureProperties 클래스의 구현
+// CFigureProperties : 도형 생성을 위한 기본 속성 설정을 저장하는 클래스
 // @Author Lee Hwajung
 
 #include "stdafx.h"
@@ -39,7 +40,7 @@ void CFigureProperties::Serialize(CArchive& ar)
  * return the LineColor
  */
 Color CFigureProperties::getLineColor() {
-	return m_LineColor;
+	return this->m_LineColor;
 }
 
 /**
@@ -53,11 +54,11 @@ void CFigureProperties::setLineColor(Color LineColor) {
  * return the LinePattern
  */
 int CFigureProperties::getLinePattern() {
-	return m_LinePattern;
+	return this->m_LinePattern;
 }
 
 /**
- * param Lineint the Lineint to set
+ * param LinePattern the LinePattern to set
  */
 void CFigureProperties::setLinePattern(int LinePattern) {
 	this->m_LinePattern = LinePattern;
@@ -67,7 +68,7 @@ void CFigureProperties::setLinePattern(int LinePattern) {
  * return the LineWidth
  */
 int CFigureProperties::getLineWidth() {
-	return m_LineWidth;
+	return this->m_LineWidth;
 }
 
 /**
@@ -81,7 +82,7 @@ void CFigureProperties::setLineWidth(int LineWidth) {
  * return the FillColor
  */
 Color CFigureProperties::getFillColor() {
-	return m_FillColor;
+	return this->m_FillColor;
 }
 
 /**
@@ -95,11 +96,11 @@ void CFigureProperties::setFillColor(Color FillColor) {
  * return the FillPattern
  */
 int CFigureProperties::getFillPattern() {
-	return m_FillPattern;
+	return this->m_FillPattern;
 }
 
 /**
- * param Fillint the Fillint to set
+ * param FillPattern the FillPattern to set
  */
 void CFigureProperties::setFillPattern(int FillPattern) {
 	this->m_FillPattern = FillPattern;
@@ -109,7 +110,7 @@ void CFigureProperties::setFillPattern(int FillPattern) {
 * return the FontColor
 */
 Color CFigureProperties::getFontColor() {
-	return m_FontColor;
+	return this->m_FontColor;
 }
 
 /**
@@ -123,7 +124,7 @@ void CFigureProperties::setFontColor(Color FontColor) {
  * return the m_FontLog
  */
 LOGFONT CFigureProperties::getFontLog() {
-	return m_FontLog;
+	return this->m_FontLog;
 }
 
 /**
@@ -131,4 +132,88 @@ LOGFONT CFigureProperties::getFontLog() {
  */
 void CFigureProperties::setFontLog(LOGFONT FontLog) {
 	this->m_FontLog = FontLog;
+}
+
+/**
+* return the FontName
+*/
+CString CFigureProperties::getFontName() {
+	return this->m_FontLog.lfFaceName;
+}
+
+/**
+* param FontName the FontName to set
+*/
+void CFigureProperties::setFontName(CString FontName) {
+	_tcscpy_s(this->m_FontLog.lfFaceName, LF_FACESIZE/*_countof(this->m_FontLog.lfFaceName)*/, FontName);
+}
+
+/**
+* return the FontSize
+*/
+int CFigureProperties::getFontSize() {
+	return this->m_FontLog.lfHeight;
+}
+
+/**
+* param FontSize the FontSize to set
+*/
+void CFigureProperties::setFontSize(int FontSize) {
+	this->m_FontLog.lfHeight = FontSize;
+}
+
+/**
+* return the FontBold
+*/
+BOOL CFigureProperties::getFontBold() {
+	return this->m_FontLog.lfWeight;
+}
+
+/**
+* param FontBold the FontBold to set
+*/
+void CFigureProperties::setFontBold(BOOL FontBold) {
+	this->m_FontLog.lfWeight = FontBold;
+}
+
+/**
+* return the FontItalic
+*/
+BOOL CFigureProperties::getFontItalic() {
+	return this->m_FontLog.lfItalic;
+}
+
+/**
+* param FontItalic the FontItalic to set
+*/
+void CFigureProperties::setFontItalic(BOOL FontItalic) {
+	this->m_FontLog.lfItalic = FontItalic;
+}
+
+/**
+* return the FontUnderline
+*/
+BOOL CFigureProperties::getFontUnderline() {
+	return this->m_FontLog.lfUnderline;
+}
+
+/**
+* param FontUnderline the FontUnderline to set
+*/
+void CFigureProperties::setFontUnderline(BOOL FontUnderline) {
+	this->m_FontLog.lfUnderline = FontUnderline;
+}
+
+/**
+* return the FontStrikeOut
+*/
+BOOL CFigureProperties::getFontStrikeOut() {
+	return this->m_FontLog.lfStrikeOut;
+}
+
+/**
+* param FontStrikeOut the FontStrikeOut to set
+*/
+void CFigureProperties::setFontStrikeOut(BOOL StrikeOut) {
+	this->m_FontLog.lfStrikeOut = StrikeOut;
 }

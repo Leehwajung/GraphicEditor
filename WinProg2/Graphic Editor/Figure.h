@@ -1,13 +1,15 @@
 // Figure.h : CFigure 클래스의 인터페이스
+// CFigure : 클라이언트 영역에서 볼 수 있는 개체를 정의하는 클래스 (모든 개체의 조상 클래스)
 // @Author Lee Hwajung
 
 #pragma once
 
-//#include "afx.h"
-//#include <gdiplus.h>
+#include "afx.h"
+#include <gdiplus.h>
+//#include <afxcoll.h>
 #include "FigureProperties.h"
 
-using namespace Gdiplus;
+using Gdiplus::Color;
 
 // CFigure 명령 대상입니다.
 
@@ -23,7 +25,7 @@ public:
 
 	enum resizeFlags {
 		Free			= (int) 0x00000,
-		Proportional	= (int) 0x00100
+		Proportional	= (int) 0x00004
 	};
 
 public:
@@ -46,7 +48,7 @@ public:
 	// LButtonUp / LButtonDlk
 	virtual void addPoint(CPoint point);						// 점 추가
 	virtual void move(CPoint target);							// 개체 이동
-	virtual void resize(CPoint point, int resizeFlags);			// 개체 크기 변경
+	virtual void resize(CPoint point, CPoint* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 	// OnDraw / OnPaint
@@ -80,7 +82,7 @@ protected:
 	CRgn m_Region;			// 도형 영역 https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
 
 	Color m_LineColor;		// 윤곽선 색
-	int m_LinePattern;	// 윤곽선 패턴
+	int m_LinePattern;		// 윤곽선 패턴
 	int m_LineWidth;		// 윤곽선 두께
 };
 

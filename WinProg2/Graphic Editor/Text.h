@@ -1,7 +1,11 @@
+// Text.h : CText 클래스의 인터페이스
+// CText : 문자열 개체를 정의하는 클래스
+// 
+
 #pragma once
 #include "Shape.h"
 
-using namespace Gdiplus;
+//using Gdiplus::Color;
 
 class CText : public CShape 
 {
@@ -36,12 +40,13 @@ public:
 
 	//Keyboard Focus
 	virtual void OnKeyboardFocus(CPoint point);//
+
 // 특성
 private:
 	CString m_String;	//입력받을 문자열
 
 	Color m_FontColor;	// 글자색
-	LOGFONT m_FontLog;	// 폰트에 대한 정보들(글꼴, 색상)
+	LOGFONT m_FontLog;	// 폰트에 대한 정보들 (글꼴, 크기, 굵게, 이탤릭, 밑줄, 취소선 등)
 
 	//	CPoint points;
 	// 글꼴

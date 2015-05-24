@@ -69,6 +69,12 @@
     <ClInclude Include="Shape.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="PolyLine.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -105,6 +111,12 @@
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
+    <ClCompile Include="PolyLine.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
   </ItemGroup>

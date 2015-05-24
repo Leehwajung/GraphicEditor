@@ -107,8 +107,10 @@
     <ClInclude Include="Graphic Editor Doc.h" />
     <ClInclude Include="Graphic Editor View.h" />
     <ClInclude Include="Graphic Editor.h" />
+    <ClInclude Include="Group.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="PolyLine.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Shape.h" />
@@ -123,8 +125,10 @@
     <ClCompile Include="Graphic Editor Doc.cpp" />
     <ClCompile Include="Graphic Editor View.cpp" />
     <ClCompile Include="Graphic Editor.cpp" />
+    <ClCompile Include="Group.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="PolyLine.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="stdafx.cpp">

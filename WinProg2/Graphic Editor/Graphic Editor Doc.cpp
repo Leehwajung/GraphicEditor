@@ -65,7 +65,7 @@ BOOL CGraphicEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
 	if (!CDocument::OnOpenDocument(lpszPathName))
 		return FALSE;
-
+	
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 
 	return TRUE;

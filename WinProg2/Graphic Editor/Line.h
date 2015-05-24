@@ -1,3 +1,7 @@
+// Line.h : CLine 클래스의 인터페이스
+// CLine : 선 개체를 정의하는 클래스 (CPolyLine / CPencil의 기반 클래스)
+// 
+
 #pragma once
 #include "Figure.h"
 
@@ -37,7 +41,7 @@ public:
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 	// Getter
-	CList<CPoint, CPoint&>& GetPointsList();
+	CList <CPoint, CPoint&>& GetPointsList();
 
 private:
 

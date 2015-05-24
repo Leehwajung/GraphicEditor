@@ -1,4 +1,5 @@
 // Figure.cpp : CFigure 클래스의 구현
+// CFigure : 클라이언트 영역에서 볼 수 있는 개체를 정의하는 클래스 (모든 개체의 조상 클래스)
 // @Author Lee Hwajung
 
 #include "stdafx.h"
@@ -70,8 +71,11 @@ void CFigure::move(CPoint Target) {
 }
 
 /* 개체 크기 변경 */
-void CFigure::resize(CPoint Point, int resizeFlags) {
+void CFigure::resize(CPoint Point, CPoint* anchorPoint /*= NULL*/, int resizeFlags /*= Free*/) {
 
+	if (!anchorPoint) {
+		anchorPoint = &m_StartingPoint;
+	}
 }
 
 /* 설정된 값으로 개체 속성 설정 */
