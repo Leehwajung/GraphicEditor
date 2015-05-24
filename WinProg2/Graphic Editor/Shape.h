@@ -18,6 +18,12 @@ public:
 
 // 특성
 protected:
+	CRgn m_Shape;		// 도형 영역
+
+	Color m_LineColor;	// 윤곽선 색
+	int m_LinePattern;	// 윤곽선 패턴
+	int m_LineWidth;	// 윤곽선 두께
+
 	Color m_FillColor;	// 채우기 색상
 	int m_FillPattern;	// 채우기 패턴
 };

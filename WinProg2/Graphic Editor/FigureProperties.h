@@ -23,6 +23,7 @@ public:
 	// 직렬화
 	virtual void Serialize(CArchive& ar);
 
+
 	// 윤곽선
 	Color getLineColor();
 	void setLineColor(Color LineColor);
@@ -31,11 +32,13 @@ public:
 	int getLineWidth();
 	void setLineWidth(int LineWidth);
 
+
 	// 채우기
 	Color getFillColor();
 	void setFillColor(Color FillColor);
 	int getFillPattern();
 	void setFillPattern(int FillPattern);
+
 
 	// 글꼴
 	Color getFontColor();
@@ -45,8 +48,8 @@ public:
 
 	CString getFontName();
 	void setFontName(CString FontName);
-	int getFontSize();
-	void setFontSize(int FontSize);
+	LONG getFontSize();
+	void setFontSize(LONG FontSize);
 	BOOL getFontBold();
 	void setFontBold(BOOL FontBold);
 	BOOL getFontItalic();

@@ -32,20 +32,20 @@ void  CText::FontDestroy(){// 제거
 
 
 // LButtonDown
-void  CText::create(CPoint startingPoint){
+void  CText::create(PointF startingPoint){
 }				// 개체 리전생성
 
 // OnMouseMove
-void  CText::mouseMoveOperation(UINT nFlags, CPoint point){}// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-void  CText::creating(UINT nFlags, CPoint point){		// 생성 그리기
+void  CText::mouseMoveOperation(UINT nFlags, PointF point){}// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+void  CText::creating(UINT nFlags, PointF point){		// 생성 그리기
 }
-void  CText::moving(UINT nFlags, CPoint point){}				// 이동 그리기
-void  CText::resizing(UINT nFlags, CPoint point){}			// 크기 변경 그리기
+void  CText::moving(UINT nFlags, PointF point){}				// 이동 그리기
+void  CText::resizing(UINT nFlags, PointF point){}			// 크기 변경 그리기
 
 // LButtonUp / LButtonDlk
-// void addPoint(CPoint point){}						// 점 추가
-void   CText::move(CPoint target){}							// 개체 이동
-void   CText::resize(CPoint point, int resizeFlags){}			// 개체 크기 변경
+// void addPoint(PointF point){}						// 점 추가
+void   CText::move(PointF target){}							// 개체 이동
+void   CText::resize(PointF point, int resizeFlags){}			// 개체 크기 변경
 
 // OnDraw / OnPaint
 void   CText::draw(CDC * m_lpDC){
@@ -55,7 +55,7 @@ void   CText::draw(CDC * m_lpDC){
 }//CpaintDC 사용
 
 //Keyboard Focus
-void CText::OnKeyboardFocus(CPoint point){
+void CText::OnKeyboardFocus(PointF point){
 	operationModeFlags region_check = cursorPosition(point);
 	if (region_check == Create){//Create 상태면
 		

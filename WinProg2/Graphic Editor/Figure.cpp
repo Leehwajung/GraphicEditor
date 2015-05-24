@@ -14,7 +14,7 @@ CFigure::CFigure()
 {
 }
 
-CFigure::CFigure(CDC* dc)
+CFigure::CFigure(Graphics* lpGraphics)
 {
 }
 
@@ -26,12 +26,12 @@ CFigure::~CFigure()
 // CFigure 멤버 함수
 
 /* 개체 생성 */
-void CFigure::create(CPoint StartingPoint) {
+void CFigure::create(PointF StartingPoint) {
 	this->m_StartingPoint = StartingPoint;
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지) */
-CFigure::operationModeFlags CFigure::cursorPosition(CPoint point) {
+CFigure::operationModeFlags CFigure::cursorPosition(PointF point) {
 	return None; 
 }
 
@@ -41,41 +41,41 @@ CFigure::operationModeFlags CFigure::cursorPosition(CRect rect) {
 }
 
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
-void CFigure::mouseMoveOperation(UINT nFlags, CPoint point) {
+void CFigure::mouseMoveOperation(UINT nFlags, PointF point) {
 
 }
 
 /* 생성 그리기 */
-void CFigure::creating(UINT nFlags, CPoint point) {
+void CFigure::creating(UINT nFlags, PointF point) {
 
 }
 
 /* 이동 그리기 */
-void CFigure::moving(UINT nFlags, CPoint point) {
+void CFigure::moving(UINT nFlags, PointF point) {
 
 }
 
 /* 크기 변경 그리기 */
-void CFigure::resizing(UINT nFlags, CPoint point) {
+void CFigure::resizing(UINT nFlags, PointF point) {
 
 }
 
 /* 점 추가 */
-void CFigure::addPoint(CPoint point) {
+void CFigure::addPoint(PointF point) {
 
 }
 
 /* 개체 이동 */
-void CFigure::move(CPoint Target) {
+void CFigure::move(PointF Target) {
 
 }
 
 /* 개체 크기 변경 */
-void CFigure::resize(CPoint Point, CPoint* anchorPoint /*= NULL*/, int resizeFlags /*= Free*/) {
+void CFigure::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resizeFlags /*= Free*/) {
 
-	if (!anchorPoint) {
-		anchorPoint = &m_StartingPoint;
-	}
+	//if (!anchorPoint) {
+	//	anchorPoint = &m_StartingPoint;
+	//}
 }
 
 /* 설정된 값으로 개체 속성 설정 */
@@ -126,19 +126,19 @@ void CFigure::setFillPattern(int FillPattern) {
 
 /* Getter / Setter */
 
-CDC* CFigure::getDC() {
-	return this->m_lpdc;
+Graphics* CFigure::getGraphics() {
+	return this->m_lpGraphics;
 }
 
-void CFigure::setDC(CDC* dc) {
-	this->m_lpdc = dc;
+void CFigure::setGraphics(Graphics* lpGraphics) {
+	this->m_lpGraphics = lpGraphics;
 }
 
-CPoint& CFigure::getStartingPoint() {
+PointF& CFigure::getStartingPoint() {
 	return this->m_StartingPoint;
 }
 
-void CFigure::setStartingPoint(CPoint StartingPoint) {
+void CFigure::setStartingPoint(PointF StartingPoint) {
 	this->m_StartingPoint = StartingPoint;
 }
 

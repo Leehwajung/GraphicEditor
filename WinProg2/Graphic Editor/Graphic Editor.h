@@ -19,6 +19,10 @@
 
 #include "resource.h"       // 주 기호입니다.
 
+// GDI+
+// https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
+#include <GdiPlus.h>
+using namespace Gdiplus;
 
 // CGraphicEditorApp:
 // 이 클래스의 구현에 대해서는 Graphic Editor.cpp을 참조하십시오.
@@ -45,6 +49,11 @@ public:
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+
+// 특성입니다.
+	// An unsigned LONG_PTR.
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/aa383751(v=vs.85).aspx#ULONG_PTR
+	ULONG_PTR gdiplusToken;
 };
 
 extern CGraphicEditorApp theApp;

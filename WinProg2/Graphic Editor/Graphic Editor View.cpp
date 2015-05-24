@@ -71,12 +71,21 @@ BOOL CGraphicEditorView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CGraphicEditorView 그리기
 
-void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
+void CGraphicEditorView::OnDraw(CDC* pDC)
 {
+	// GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
+	// GDI+ Ref.	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
+	// GDI+ Classes	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
+
 	CGraphicEditorDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+
+	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+
+	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
 		case 1: // 폴리라인
@@ -90,8 +99,11 @@ void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
 	// DC 포인터를 멤버 변수(m_lpdc)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
 
 	}
+	
+	// GDI+ 예제 코드 (사각형 그리기)
+	SolidBrush dd(Color(255,255,0,0));
+	graphics.FillRectangle(&dd, Rect(33, 44, 55, 66));
 
-	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 }
 
 

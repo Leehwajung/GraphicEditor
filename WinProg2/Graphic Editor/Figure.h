@@ -9,7 +9,7 @@
 //#include <afxcoll.h>
 #include "FigureProperties.h"
 
-using Gdiplus::Color;
+using namespace Gdiplus;
 
 // CFigure 명령 대상입니다.
 
@@ -30,25 +30,25 @@ public:
 
 public:
 	CFigure();
-	CFigure(CDC* dc);
+	CFigure(Graphics* lpGraphics);
 	virtual ~CFigure();
 
 public:
 	// LButtonDown
-	virtual void create(CPoint startingPoint);					// 개체 생성
-	virtual operationModeFlags cursorPosition(CPoint point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
+	virtual void create(PointF startingPoint);					// 개체 생성
+	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
 	virtual operationModeFlags cursorPosition(CRect rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
 
 	// OnMouseMove
-	void mouseMoveOperation(UINT nFlags, CPoint point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-	virtual void creating(UINT nFlags, CPoint point);			// 생성 그리기
-	virtual void moving(UINT nFlags, CPoint point);				// 이동 그리기
-	virtual void resizing(UINT nFlags, CPoint point);			// 크기 변경 그리기
+	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
+	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
+	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
 
 	// LButtonUp / LButtonDlk
-	virtual void addPoint(CPoint point);						// 점 추가
-	virtual void move(CPoint target);							// 개체 이동
-	virtual void resize(CPoint point, CPoint* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
+	virtual void addPoint(PointF point);						// 점 추가
+	virtual void move(PointF target);							// 개체 이동
+	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 	// OnDraw / OnPaint
@@ -65,25 +65,21 @@ public:
 	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
 
 	// Getter / Setter
-	CDC* getDC();
-	void setDC(CDC* dc);
+	Graphics* getGraphics();
+	void setGraphics(Graphics* lpGraphics);
 
-	CPoint& getStartingPoint();
-	void setStartingPoint(CPoint StartingPoint);
+	PointF& getStartingPoint();
+	void setStartingPoint(PointF StartingPoint);
 
 	operationModeFlags getOperationMode();
 	void setOperationMode(operationModeFlags OperationMode);
 
 // 특성
 protected:
-	CDC* m_lpdc;
-	CPoint m_StartingPoint;
+	Graphics* m_lpGraphics;
+	PointF m_StartingPoint;
 	operationModeFlags m_OperationMode;
-	CRgn m_Region;			// 도형 영역 https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
-
-	Color m_LineColor;		// 윤곽선 색
-	int m_LinePattern;		// 윤곽선 패턴
-	int m_LineWidth;		// 윤곽선 두께
+	Region m_Region;			// 개체 선택 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
 };
 
 

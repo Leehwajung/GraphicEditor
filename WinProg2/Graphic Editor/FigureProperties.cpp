@@ -151,14 +151,14 @@ void CFigureProperties::setFontName(CString FontName) {
 /**
 * return the FontSize
 */
-int CFigureProperties::getFontSize() {
+LONG CFigureProperties::getFontSize() {
 	return this->m_FontLog.lfHeight;
 }
 
 /**
 * param FontSize the FontSize to set
 */
-void CFigureProperties::setFontSize(int FontSize) {
+void CFigureProperties::setFontSize(LONG FontSize) {
 	this->m_FontLog.lfHeight = FontSize;
 }
 

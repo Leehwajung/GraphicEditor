@@ -8,7 +8,7 @@
 
 CLine::CLine()
 {
-
+	//m_LinePen
 }
 
 
@@ -18,15 +18,15 @@ CLine::~CLine()
 }
 
 /* 선 생성*/
-void CLine::Create(CPoint startingPoint)
+void CLine::Create(PointF startingPoint)
 {
 	//나중에 상대 좌표를 사용할 꺼임
 	this->m_StartingPoint = startingPoint;
-	m_PointsList.AddHead(CPoint(0,0));
+	m_PointsList.AddHead(PointF(0,0));
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
-CFigure::operationModeFlags CLine::cursorPosition(CPoint point) {
+CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
 	return None;
 }
 
@@ -36,37 +36,37 @@ CFigure::operationModeFlags CLine::cursorPosition(CRect rect) {
 }
 
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
-void CLine::mouseMoveOperation(UINT nFlags, CPoint point) {
+void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 }
 
 /* 생성 그리기 */
-void CLine::creating(UINT nFlags, CPoint point) {
+void CLine::creating(UINT nFlags, PointF point) {
 
 }
 
 /* 이동 그리기 */
-void CLine::moving(UINT nFlags, CPoint point) {
+void CLine::moving(UINT nFlags, PointF point) {
 
 }
 
 /* 크기 변경 그리기 */
-void CLine::resizing(UINT nFlags, CPoint point) {
+void CLine::resizing(UINT nFlags, PointF point) {
 
 }
 
 /* 점 추가 */
-void CLine::addPoint(CPoint point) {
+void CLine::addPoint(PointF point) {
 
 }
 
 /* 개체 이동 */
-void CLine::move(CPoint Target) {
+void CLine::move(PointF Target) {
 
 }
 
 /* 선 크기(길이) 변경 */
-void CLine::resize(CPoint Point, int resizeFlags) {
+void CLine::resize(PointF point, PointF* anchorPoint, int resizeFlags) {
 
 }
 
@@ -103,6 +103,6 @@ void CLine::setLinePattern(int linePattern) {
 }
 
 
-CList<CPoint, CPoint&>& CLine::GetPointsList(){
+CList<PointF, PointF&>& CLine::GetPointsList(){
 	return m_PointsList;
 }
