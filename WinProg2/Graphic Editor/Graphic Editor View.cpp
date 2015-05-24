@@ -69,6 +69,18 @@ void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+	int mode;// 일단 모드라고 해놓겠음.
+	switch(mode){
+		case 1: // 폴리라인
+			break;
+		case 2: // 도형
+			break;
+		case 3 :// 텍스트
+
+			break;
+	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
+
+	}
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 }
