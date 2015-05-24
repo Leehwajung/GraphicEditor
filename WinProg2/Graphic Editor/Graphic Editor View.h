@@ -24,10 +24,11 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
+	int m_mode;
 
 // 작업입니다.
 public:
-
+	
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.

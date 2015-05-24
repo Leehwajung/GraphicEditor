@@ -32,11 +32,10 @@ public:
 	virtual void resize(CPoint point, int resizeFlags);			// 개체 크기 변경
 
 	// OnDraw / OnPaint
-	virtual void draw();//CpaintDC 사용
+	virtual void draw(CDC * m_lpDC);//CpaintDC 사용
 
 	//Keyboard Focus
-	virtual void OnKeyboardFocus();// 캐럿표시, WM_SETFOCUS 와 WM_KILLFOCUS메시지 핸들러추가
-
+	virtual void OnKeyboardFocus(CPoint point);//
 // 특성
 private:
 	CString m_String;	//입력받을 문자열
