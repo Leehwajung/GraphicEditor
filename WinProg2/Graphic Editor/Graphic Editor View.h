@@ -27,7 +27,7 @@ public:
 
 // 작업입니다.
 public:
-
+	int mode;
 // 재정의입니다.
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
@@ -55,6 +55,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnButton29();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전
