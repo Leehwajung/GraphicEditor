@@ -47,6 +47,9 @@ CGraphicEditorDoc::~CGraphicEditorDoc()
 {
 }
 
+
+// CGraphicEditorDoc 재정의
+
 BOOL CGraphicEditorDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
@@ -58,7 +61,29 @@ BOOL CGraphicEditorDoc::OnNewDocument()
 	return TRUE;
 }
 
+BOOL CGraphicEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	if (!CDocument::OnOpenDocument(lpszPathName))
+		return FALSE;
 
+	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+
+	return TRUE;
+}
+
+BOOL CGraphicEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	return CDocument::OnSaveDocument(lpszPathName);
+}
+
+void CGraphicEditorDoc::OnCloseDocument()
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+
+	CDocument::OnCloseDocument();
+}
 
 
 // CGraphicEditorDoc serialization
@@ -145,3 +170,4 @@ void CGraphicEditorDoc::Dump(CDumpContext& dc) const
 
 
 // CGraphicEditorDoc 명령
+

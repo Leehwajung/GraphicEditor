@@ -16,8 +16,12 @@ class CFigureProperties : public CObject
 public:
 	CFigureProperties();
 	virtual ~CFigureProperties();
+	DECLARE_SERIAL(CFigureProperties)
 
 public:
+	// Á÷·ÄÈ­
+	virtual void Serialize(CArchive& ar);
+
 	// À±°û¼±
 	Color getLineColor();
 	void setLineColor(Color LineColor);

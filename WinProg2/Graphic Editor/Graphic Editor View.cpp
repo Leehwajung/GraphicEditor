@@ -36,9 +36,17 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CGraphicEditorView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_RBUTTONDOWN()
 	ON_WM_RBUTTONUP()
+	ON_WM_RBUTTONDBLCLK()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
+
 
 // CGraphicEditorView 생성/소멸
 
@@ -60,6 +68,7 @@ BOOL CGraphicEditorView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
+
 // CGraphicEditorView 그리기
 
 void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
@@ -74,7 +83,6 @@ void CGraphicEditorView::OnDraw(CDC* /*pDC*/)
 
 
 // CGraphicEditorView 인쇄
-
 
 void CGraphicEditorView::OnFilePrintPreview()
 {
@@ -99,13 +107,65 @@ void CGraphicEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
 
-void CGraphicEditorView::OnRButtonUp(UINT /* nFlags */, CPoint point)
+
+// CGraphicEditorView 메시지 처리기
+
+void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnLButtonDown(nFlags, point);
+}
+
+void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnLButtonUp(nFlags, point);
+}
+
+void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnLButtonDblClk(nFlags, point);
+}
+
+void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnRButtonDown(nFlags, point);
+}
+
+void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
 
-void CGraphicEditorView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
+void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnRButtonDblClk(nFlags, point);
+}
+
+void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnMouseMove(nFlags, point);
+}
+
+BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 #ifndef SHARED_HANDLERS
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
@@ -134,4 +194,4 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 #endif //_DEBUG
 
 
-// CGraphicEditorView 메시지 처리기
+// CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의

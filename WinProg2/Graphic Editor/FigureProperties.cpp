@@ -6,7 +6,12 @@
 
 using namespace Gdiplus;
 
+
 // CFigureProperties
+
+IMPLEMENT_SERIAL(CFigureProperties, CObject, 1)
+
+// CFigureProperties »ý¼º/¼Ò¸ê
 
 CFigureProperties::CFigureProperties()
 {
@@ -17,7 +22,18 @@ CFigureProperties::~CFigureProperties()
 {
 }
 
+
 // CFigureProperties ¸â¹ö ÇÔ¼ö
+
+void CFigureProperties::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
 
 /**
  * return the LineColor

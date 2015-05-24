@@ -13,7 +13,7 @@
 //
 
 #pragma once
-
+#include "Figure.h"
 
 class CGraphicEditorDoc : public CDocument
 {
@@ -23,6 +23,8 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
+	CList<CFigure*, CFigure*> m_FiguresList;
+	CFigureProperties m_FigureProperties;
 
 // 작업입니다.
 public:
@@ -30,6 +32,9 @@ public:
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual void OnCloseDocument();
 	virtual void Serialize(CArchive& ar);
 #ifdef SHARED_HANDLERS
 	virtual void InitializeSearchContent();
