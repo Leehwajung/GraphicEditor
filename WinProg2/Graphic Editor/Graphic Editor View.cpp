@@ -96,7 +96,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 			break;
 	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
-	// DC 포인터를 멤버 변수(m_lpdc)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
+	// Graphics 포인터를 멤버 변수(m_lpGraphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
 
 	}
 	
