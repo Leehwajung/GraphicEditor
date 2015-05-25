@@ -57,6 +57,8 @@ private:
 	///* ¼± ÆÐÅÏ */
 	//int m_LinePattern;
 
+
+	PointF m_EndPoint;
 	Color m_LineColor;	// À±°û¼± »ö
 	int m_LinePattern;	// À±°û¼± ÆÐÅÏ
 	int m_LineWidth;	// À±°û¼± µÎ²²
