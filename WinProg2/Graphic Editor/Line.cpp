@@ -6,9 +6,12 @@
 #include "Line.h"
 
 
-CLine::CLine()
+CLine::CLine() 
+	: m_LinePen(Pen(Color(255, 0, 0, 0), 1)) // 펜 속성  임시 설정 입니당~ //
 {
 	//m_LinePen
+	
+	
 }
 
 
@@ -20,11 +23,7 @@ CLine::~CLine()
 /* 선 생성*/
 void CLine::Create(PointF startingPoint)
 {
-
-	// 펜 속성 설정 임시. 
-	m_Pen.SetColor(Color(255, 0, 0, 0));
-
-	//나중에 상대 좌표를 사용할 꺼임
+	// 상속 구조가 달라짐에 따라서 Line이 상대좌표로 해야할 필요가 없어짐. Line은 어차피 점이 두 개이기 때문에 절대 좌표를 따르기로 함.
 	this->m_StartingPoint = startingPoint;
 }
 
@@ -57,20 +56,17 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
+	m_lpGraphics->DrawLine(&m_LinePen, m_StartingPoint, point);
 
-	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
-
-	/*CRgn rgn;
-	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
-
-	InvalidateRgn(NULL, rgn, TRUE);
-*/
 }
 
 /* 이동 그리기 */
 void CLine::moving(UINT nFlags, PointF point) {
-	PointF RelativePoint = PointF((point.X - m_StartingPoint.X), (point.Y - m_StartingPoint.Y));
-	//m_lpGraphics->DrawLine(&m_Pen, m_PointsList[0]+ m_StartingPoint + RelativePoint, m_PointsList+ m_StartingPoint + RelativePoint);
+
+	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
+	PointF RelativePoint = PointF(point  - m_StartingPoint);
+
+	m_lpGraphics->DrawLine(&m_LinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -80,7 +76,7 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
-	//m_PointsList.AddTail(point-m_StartingPoint);
+	m_EndPoint = point;
 }
 
 /* 개체 이동 */

@@ -12,6 +12,12 @@ class CPolyLine : public CStrap
 public:
 	CPolyLine();
 	virtual ~CPolyLine();
+
+	// Getter
+	CList <PointF, PointF&>& GetPointsList();
+
+private:
+	CList <PointF, PointF&> m_PointsList;
 };
 
 

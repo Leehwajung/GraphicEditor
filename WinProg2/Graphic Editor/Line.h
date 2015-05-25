@@ -40,9 +40,6 @@ public:
 	virtual void setLinePattern(int linePattern);				// 선 패턴 설정
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
-	// Getter
-	CList <PointF, PointF&>& GetPointsList();
-
 private:
 
 	/* 그리기 위한 펜 */
@@ -54,11 +51,13 @@ private:
 	///* 선 패턴 */
 	//int m_LinePattern;
 
+	Pen m_LinePen;
 
 	PointF m_EndPoint;
-	Color m_LineColor;	// 윤곽선 색
-	int m_LinePattern;	// 윤곽선 패턴
-	int m_LineWidth;	// 윤곽선 두께
+
+	Color m_LineColor;	// 선 색
+	int m_LinePattern;	// 선 패턴
+	int m_LineWidth;	// 선 두께
 };
 
    
