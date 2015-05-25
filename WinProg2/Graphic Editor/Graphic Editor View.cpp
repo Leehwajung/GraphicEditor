@@ -153,7 +153,6 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	Invalidate();
 	if (m_MouseButtonFlag == MK_LBUTTON/* && !(nFlags & MK_RBUTTON)*/) {
 		/***** 이 부분은 변경하지 마시오. *****/
 		m_LButtonPoint = point;		// 이벤트 발생 좌표
@@ -196,7 +195,6 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	Invalidate();
 	if (m_MouseButtonFlag == MK_RBUTTON/* && !(nFlags & MK_LBUTTON)*/) {
 		/***** 이 부분은 변경하지 마시오. *****/
 		m_RButtonPoint = point;		// 이벤트 발생 좌표
