@@ -1,5 +1,5 @@
 // Line.cpp : CLine 클래스의 구현
-// CLine : 선 개체를 정의하는 클래스 (CPolyLine / CPencil의 기반 클래스)
+// CLine : 직선 개체를 정의하는 클래스
 // 
 
 #include "stdafx.h"

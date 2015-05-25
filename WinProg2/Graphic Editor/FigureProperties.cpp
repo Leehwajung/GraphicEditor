@@ -1,7 +1,7 @@
 // FigureProperties.cpp : CFigureProperties 클래스의 구현
 // CFigureProperties : 도형 생성을 위한 기본 속성 설정을 저장하는 클래스
 // @Author Lee Hwajung
-
+/***************이거 갈아 엎어야 함*************/
 #include "stdafx.h"
 #include "FigureProperties.h"
 

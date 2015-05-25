@@ -1,13 +1,13 @@
 // Line.h : CLine 클래스의 인터페이스
-// CLine : 선 개체를 정의하는 클래스 (CPolyLine / CPencil의 기반 클래스)
+// CLine : 직선 개체를 정의하는 클래스
 // 
 
 #pragma once
-#include "Figure.h"
+#include "Strap.h"
 
 
 // Make and Edit by Byun Jun
-class CLine : public CFigure
+class CLine : public CStrap
 {
 public:
 	CLine();

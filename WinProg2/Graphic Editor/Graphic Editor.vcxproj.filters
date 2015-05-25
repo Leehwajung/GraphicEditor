@@ -28,6 +28,18 @@
     <Filter Include="헤더 파일\Assistant">
       <UniqueIdentifier>{efd27aea-4857-4d56-a708-ebb23029f424}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Figure\Strap">
+      <UniqueIdentifier>{b85c2f14-10d7-4272-8998-b8fc39415a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Figure\Shape">
+      <UniqueIdentifier>{b25bf74e-7cfe-41d0-9b28-2ee468128ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Figure\Shape">
+      <UniqueIdentifier>{5d4e20e6-3283-4231-bdfb-3f9463645602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Figure\Strap">
+      <UniqueIdentifier>{2a0fe2ae-42c9-4a31-a093-9c0ffe2974e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -61,32 +73,35 @@
     <ClInclude Include="PropertiesWnd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
     <ClInclude Include="Figure.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
     <ClInclude Include="Group.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
-    <ClInclude Include="PolyLine.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
     <ClInclude Include="FigureProperties.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="Strap.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
+    <ClInclude Include="PolyLine.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
     <ClInclude Include="Ellipse.h">
-      <Filter>헤더 파일\Figure</Filter>
+      <Filter>헤더 파일\Figure\Shape</Filter>
     </ClInclude>
     <ClInclude Include="Rectangle.h">
-      <Filter>헤더 파일\Figure</Filter>
+      <Filter>헤더 파일\Figure\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>헤더 파일\Figure\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>헤더 파일\Figure\Shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,32 +126,35 @@
     <ClCompile Include="PropertiesWnd.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Line.cpp">
-      <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
     <ClCompile Include="Figure.cpp">
-      <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
     <ClCompile Include="Group.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
-    <ClCompile Include="PolyLine.cpp">
-      <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
     <ClCompile Include="FigureProperties.cpp">
       <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
+    <ClCompile Include="PolyLine.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
+    <ClCompile Include="Strap.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
     <ClCompile Include="Ellipse.cpp">
-      <Filter>소스 파일\Figure</Filter>
+      <Filter>소스 파일\Figure\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Rectangle.cpp">
-      <Filter>소스 파일\Figure</Filter>
+      <Filter>소스 파일\Figure\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>소스 파일\Figure\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>소스 파일\Figure\Shape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

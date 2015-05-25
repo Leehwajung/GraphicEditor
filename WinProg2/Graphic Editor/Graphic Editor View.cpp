@@ -104,6 +104,15 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	SolidBrush sb(Color(255,255,0,0));
 	graphics.FillRectangle(&sb, Rect(33, 44, 55, 66));
 
+	// Set up the arc.
+	Pen redPen(Color(255, 255, 0, 0), 3);
+	RectF ellipseRect(0, 0, 200, 100);
+	REAL startAngle = 0.0f;
+	REAL sweepAngle = 90.0f;
+
+	// Draw the arc.
+	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
+
 }
 
 

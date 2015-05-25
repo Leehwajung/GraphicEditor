@@ -1,7 +1,7 @@
 // FigureProperties.h : CFigureProperties 클래스의 인터페이스
 // CFigureProperties : 도형 생성을 위한 기본 속성 설정을 저장하는 클래스
 // @Author Lee Hwajung
-
+/***************이거 갈아 엎어야 함*************/
 #pragma once
 
 #include "afx.h"

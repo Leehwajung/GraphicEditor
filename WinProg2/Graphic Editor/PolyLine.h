@@ -3,11 +3,11 @@
 //
 
 #pragma once
-#include "Line.h"
+#include "Strap.h"
 
 // CPolyLine 명령 대상입니다.
 
-class CPolyLine : public CLine
+class CPolyLine : public CStrap
 {
 public:
 	CPolyLine();
