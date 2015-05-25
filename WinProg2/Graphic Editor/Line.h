@@ -51,9 +51,9 @@ private:
 	///* 선 패턴 */
 	//int m_LinePattern;
 
-	Pen m_LinePen;
-
 	PointF m_EndPoint;
+
+	int gradient;
 
 	Color m_LineColor;	// 선 색
 	int m_LinePattern;	// 선 패턴

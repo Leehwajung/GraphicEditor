@@ -5,13 +5,10 @@
 #include "stdafx.h"
 #include "Line.h"
 
-
 CLine::CLine() 
-	: m_LinePen(Pen(Color(255, 0, 0, 0), 1)) // 펜 속성  임시 설정 입니당~ //
+	:CStrap()
 {
-	//m_LinePen
-	
-	
+	//m_LinePen	
 }
 
 
@@ -20,6 +17,8 @@ CLine::~CLine()
 
 }
 
+
+// LButtonDown
 /* 선 생성*/
 void CLine::Create(PointF startingPoint)
 {
@@ -29,7 +28,14 @@ void CLine::Create(PointF startingPoint)
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
 CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
-	return None;
+	if (){
+	
+	}
+	else if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
+		return Resize;
+	}
+	else if (point.Equals(m_EndPoint) == TRUE)
+		return Move;
 }
 
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
@@ -37,6 +43,8 @@ CFigure::operationModeFlags CLine::cursorPosition(CRect rect) {
 	return None;
 }
 
+
+// OnMouseMove
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
@@ -56,7 +64,7 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
-	m_lpGraphics->DrawLine(&m_LinePen, m_StartingPoint, point);
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
 
 }
 
@@ -66,7 +74,8 @@ void CLine::moving(UINT nFlags, PointF point) {
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = PointF(point  - m_StartingPoint);
 
-	m_lpGraphics->DrawLine(&m_LinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
+	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -74,14 +83,16 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 }
 
+
+// LButtonUp / LButtonDlk
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
 	m_EndPoint = point;
+	gradient = m_StartingPoint
 }
 
 /* 개체 이동 */
 void CLine::move(PointF Target) {
-
 }
 
 /* 선 크기(길이) 변경 */
@@ -94,11 +105,14 @@ void CLine::setProperties(CFigureProperties properties) {
 
 }
 
+// OnDraw / OnPaint
 /* 선 그리기 */
 void CLine::draw() {
 
 }
 
+
+// Menu Item
 /* 선 삭제 */
 void CLine::destroy() {
 
@@ -119,9 +133,4 @@ void CLine::setLineWidth(int lineWidth) {
 /* 선 패턴 설정 */
 void CLine::setLinePattern(int linePattern) {
 	m_LinePattern = linePattern;
-}
-
-
-CList<PointF, PointF&>& CLine::GetPointsList(){
-	return m_PointsList;
 }
