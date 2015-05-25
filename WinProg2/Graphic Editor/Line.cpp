@@ -38,10 +38,27 @@ CFigure::operationModeFlags CLine::cursorPosition(CRect rect) {
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
+	operationModeFlags mode = cursorPosition(point);
+
+	switch (mode){
+	case operationModeFlags::Create:
+		creating(nFlags, point);
+
+	case operationModeFlags::Move:
+		moving(nFlags, point);
+
+	case operationModeFlags::Resize:
+		resizing(nFlags, point);
+	}
 }
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
+
+	CRgn rgn;
+	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
+
+	InvalidateRgn(NULL, rgn, TRUE);
 
 }
 
@@ -57,7 +74,8 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
-
+	m_EndPoint = PointF((point.X - m_StartingPoint.X), (point.Y - m_StartingPoint.Y));
+	m_PointsList.AddTail(m_EndPoint);
 }
 
 /* 개체 이동 */
