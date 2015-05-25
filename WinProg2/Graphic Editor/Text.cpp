@@ -36,7 +36,6 @@ void  CText::FontDestroy(){// 제거
 // LButtonDown
 void  CText::create(PointF startingPoint){//Shape의 외곽선생성과 동일함
 	this->m_StartingPoint = startingPoint;
-	
 }				
 
 
