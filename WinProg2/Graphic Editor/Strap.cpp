@@ -10,6 +10,7 @@
 // CStrap
 
 CStrap::CStrap()
+	: m_Pen(Pen(Color(1,2,3,4)))	// 기본 펜, 수정할것!
 {
 }
 

@@ -81,7 +81,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
+	
 	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.

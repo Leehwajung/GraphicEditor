@@ -5,8 +5,8 @@
 #include "stdafx.h"
 #include "Line.h"
 
+
 CLine::CLine() 
-	:CStrap()
 {
 	//m_LinePen	
 }
@@ -17,13 +17,12 @@ CLine::~CLine()
 
 }
 
-
-// LButtonDown
 /* 선 생성*/
 void CLine::create(PointF startingPoint)
 {
-	// 상속 구조가 달라짐에 따라서 Line이 상대좌표로 해야할 필요가 없어짐. Line은 어차피 점이 두 개이기 때문에 절대 좌표를 따르기로 함.
+	//나중에 상대 좌표를 사용할 꺼임
 	this->m_StartingPoint = startingPoint;
+	m_PointsList.AddHead(PointF(0,0));
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
@@ -62,8 +61,6 @@ CFigure::operationModeFlags CLine::cursorPosition(CRect rect) {
 	return None;
 }
 
-
-// OnMouseMove
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
@@ -83,18 +80,17 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
-	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
+
+	CRgn rgn;
+	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
+
+	InvalidateRgn(NULL, rgn, TRUE);
 
 }
 
 /* 이동 그리기 */
 void CLine::moving(UINT nFlags, PointF point) {
 
-	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
-	PointF RelativePoint = PointF(point  - m_StartingPoint);
-
-	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -102,8 +98,6 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 }
 
-
-// LButtonUp / LButtonDlk
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
 	m_EndPoint = point;
@@ -125,14 +119,11 @@ void CLine::setProperties(CFigureProperties properties) {
 
 }
 
-// OnDraw / OnPaint
 /* 선 그리기 */
 void CLine::draw() {
 
 }
 
-
-// Menu Item
 /* 선 삭제 */
 void CLine::destroy() {
 
@@ -153,4 +144,9 @@ void CLine::setLineWidth(int lineWidth) {
 /* 선 패턴 설정 */
 void CLine::setLinePattern(int linePattern) {
 	m_LinePattern = linePattern;
+}
+
+
+CList<PointF, PointF&>& CLine::GetPointsList(){
+	return m_PointsList;
 }

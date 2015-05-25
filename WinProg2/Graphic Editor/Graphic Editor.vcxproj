@@ -106,6 +106,7 @@
     <ClInclude Include="Ellipse.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FigureProperties.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Graphic Editor Doc.h" />
     <ClInclude Include="Graphic Editor View.h" />
     <ClInclude Include="Graphic Editor.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="Ellipse.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FigureProperties.cpp" />
+    <ClCompile Include="Global.cpp" />
     <ClCompile Include="Graphic Editor Doc.cpp" />
     <ClCompile Include="Graphic Editor View.cpp" />
     <ClCompile Include="Graphic Editor.cpp" />
