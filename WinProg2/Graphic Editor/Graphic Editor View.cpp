@@ -99,10 +99,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Graphics 포인터를 멤버 변수(m_lpGraphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
 
 	}
-	
+
 	// GDI+ 예제 코드 (사각형 그리기)
-	SolidBrush dd(Color(255,255,0,0));
-	graphics.FillRectangle(&dd, Rect(33, 44, 55, 66));
+	SolidBrush sb(Color(255,255,0,0));
+	graphics.FillRectangle(&sb, Rect(33, 44, 55, 66));
 
 }
 
@@ -153,7 +153,6 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	Invalidate();
 	if (m_MouseButtonFlag == MK_LBUTTON/* && !(nFlags & MK_RBUTTON)*/) {
 		/***** 이 부분은 변경하지 마시오. *****/
 		m_LButtonPoint = point;		// 이벤트 발생 좌표
@@ -196,7 +195,6 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 
 void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	Invalidate();
 	if (m_MouseButtonFlag == MK_RBUTTON/* && !(nFlags & MK_LBUTTON)*/) {
 		/***** 이 부분은 변경하지 마시오. *****/
 		m_RButtonPoint = point;		// 이벤트 발생 좌표
