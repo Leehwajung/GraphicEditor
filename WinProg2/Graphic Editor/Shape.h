@@ -25,8 +25,8 @@ public:
 
 // Æ¯¼º
 protected:
-	Pen m_Pen;
-	Brush m_Brush;
+	Pen* m_Pen;
+	Brush* m_Brush;
 };
 
 

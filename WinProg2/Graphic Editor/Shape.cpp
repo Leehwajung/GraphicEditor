@@ -5,13 +5,16 @@
 #include "stdafx.h"
 #include "Graphic Editor.h"
 #include "Shape.h"
+#include "Global.h"
 
 
 // CShape
 
 CShape::CShape()
-	: m_Pen(Pe)
+	: m_Pen(new defaultPen)
+	, m_Brush(new defaultBrush)
 {
+
 }
 
 CShape::~CShape()
