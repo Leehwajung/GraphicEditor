@@ -6,9 +6,10 @@
 #include "Line.h"
 
 
-CLine::CLine()
+CLine::CLine() 
+	:CStrap()
 {
-	//m_LinePen
+	//m_LinePen	
 }
 
 
@@ -18,16 +19,41 @@ CLine::~CLine()
 }
 
 /* 선 생성*/
-void CLine::Create(PointF startingPoint)
+void CLine::create(PointF startingPoint)
 {
-	//나중에 상대 좌표를 사용할 꺼임
+	// 어차피 선은 점을 두 개만 사용할 꺼기때문에 절대 좌표를 사용하기로 함.
 	this->m_StartingPoint = startingPoint;
-	m_PointsList.AddHead(PointF(0,0));
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
 CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
-	return None;
+
+	// 1. 현재 좌표가 StaringPoint인 
+	if ((point.Equals(m_StartingPoint) == FALSE || point.Equals(m_EndPoint) == FALSE)){	
+		
+		
+	}
+
+	// 2. 현재 좌표가  선의 StartingPoint나 EndPoint이면 "Resize모드" 이다. 
+	else if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
+		return Resize;
+	}
+
+	// 3. 현재 좌표가 선의 사이에 있을 때는 "Move모드" 이다.
+	else if ((point.Equals(m_StartingPoint) == FALSE || point.Equals(m_EndPoint) == FALSE)){
+
+		// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
+		int tmp_gradient = (m_StartingPoint.Y - point.Y) / (m_StartingPoint.X - point.X);
+
+		if (tmp_gradient == gradient){
+			return Move;
+		}
+		return None;
+
+	}
+		
+	// 그 외: 아무 모드도 아님
+	else None;
 }
 
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
@@ -54,17 +80,18 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
-
-	CRgn rgn;
-	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
-
-	InvalidateRgn(NULL, rgn, TRUE);
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
 
 }
 
 /* 이동 그리기 */
 void CLine::moving(UINT nFlags, PointF point) {
 
+	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
+	PointF RelativePoint = PointF(point  - m_StartingPoint);
+
+	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -72,10 +99,12 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 }
 
+
+// LButtonUp / LButtonDlk
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
-	m_EndPoint = PointF((point.X - m_StartingPoint.X), (point.Y - m_StartingPoint.Y));
-	m_PointsList.AddTail(m_EndPoint);
+	m_EndPoint = point;
+	gradient = (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
 }
 
 /* 개체 이동 */
@@ -120,7 +149,3 @@ void CLine::setLinePattern(int linePattern) {
 	m_LinePattern = linePattern;
 }
 
-
-CList<PointF, PointF&>& CLine::GetPointsList(){
-	return m_PointsList;
-}
