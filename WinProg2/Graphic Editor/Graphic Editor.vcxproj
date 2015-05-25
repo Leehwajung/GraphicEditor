@@ -98,6 +98,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="Gdi+ Figures List.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

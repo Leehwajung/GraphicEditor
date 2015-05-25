@@ -1,0 +1,35 @@
+1차원 도형 (Draw)
+Arc				Draw	Pen*, RectF&, REAL(startAngle), REAL(sweepAngle)											https://msdn.microsoft.com/en-us/library/windows/desktop/ms536152(v=vs.85).aspx
+Bezier			Draw	Pen*, POINTF&(pt1), POINTF&(pt2), POINTF&(pt3), POINTF&(pt4)								https://msdn.microsoft.com/en-us/library/windows/desktop/ms536149(v=vs.85).aspx
+Beziers			Draw	Pen*, POINTF*(points), INT(count)															https://msdn.microsoft.com/en-us/library/windows/desktop/ms536147(v=vs.85).aspx
+Curve			Draw	Pen*, PointF*(points), INT(count), [[INT(offset), INT(numberOfSegments)], REAL(tension)]	https://msdn.microsoft.com/en-us/library/windows/desktop/ms536140(v=vs.85).aspx
+Line			Draw	Pen*, PointF&(pt1), PointF&(pt2)															https://msdn.microsoft.com/en-us/library/windows/desktop/ms536022(v=vs.85).aspx
+Lines			Draw	Pen*, PointF*(points), INT(count)															https://msdn.microsoft.com/en-us/library/windows/desktop/ms536019(v=vs.85).aspx
+
+
+기타 개체 (Draw)
+CachedBitmap	Draw	CachedBitmap*, INT(x), INT(y)																https://msdn.microsoft.com/en-us/library/windows/desktop/ms535681(v=vs.85).aspx
+DriverString	Draw	...																							https://msdn.microsoft.com/en-us/library/windows/desktop/ms535683(v=vs.85).aspx
+Image			Draw	Image*, ...																(GDI+ classes Link)	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+String			Draw	WCHAR*, INT(length), Font*, RectF&(layoutRect), StringFormat*, Brush*						https://msdn.microsoft.com/en-us/library/windows/desktop/ms535991(v=vs.85).aspx
+
+
+2차원 도형 (Draw / Fill)
+ClosedCurve		Draw	Pen*, PointF*(points), INT(count), [REAL(tension)]											https://msdn.microsoft.com/en-us/library/windows/desktop/ms536144(v=vs.85).aspx
+				Fill	Brush*, PointF*(points), INT(count), [FillMode, REAL(tension)]								https://msdn.microsoft.com/en-us/library/windows/desktop/ms535973(v=vs.85).aspx
+Ellipse			Draw	Pen*, RectF&																				https://msdn.microsoft.com/en-us/library/windows/desktop/ms536062(v=vs.85).aspx
+				Fill	Brush*, RectF&																				https://msdn.microsoft.com/en-us/library/windows/desktop/ms535968(v=vs.85).aspx
+Path			Draw	Pen*, GraphicsPath*(path)																	https://msdn.microsoft.com/en-us/library/windows/desktop/ms535685(v=vs.85).aspx
+				Fill	Brush*, GraphicsPath*(path)																	https://msdn.microsoft.com/en-us/library/windows/desktop/ms535688(v=vs.85).aspx
+Pie				Draw	Pen*, RectF&, REAL(startAngle), REAL(sweepAngle)											https://msdn.microsoft.com/en-us/library/windows/desktop/ms536016(v=vs.85).aspx
+				Fill	Brush*, RectF&, REAL(startAngle), REAL(sweepAngle)											https://msdn.microsoft.com/en-us/library/windows/desktop/ms535965(v=vs.85).aspx
+Polygon			Draw	Pen*, PointF*(points), INT*(count)															https://msdn.microsoft.com/en-us/library/windows/desktop/ms536009(v=vs.85).aspx
+				Fill	Brush*, PointF*(points), INT(count), [FillMode]												https://msdn.microsoft.com/en-us/library/windows/desktop/ms535961(v=vs.85).aspx
+Rectangle		Draw	Pen*, RectF&																				https://msdn.microsoft.com/en-us/library/windows/desktop/ms536006(v=vs.85).aspx
+				Fill	Brush*, RectF&																				https://msdn.microsoft.com/en-us/library/windows/desktop/ms535955(v=vs.85).aspx
+Rectangles		Draw	Pen*, RectF*(rects), INT(count)																https://msdn.microsoft.com/en-us/library/windows/desktop/ms535998(v=vs.85).aspx
+				Fill	Brush*, RectF*(rects), INT(count)															https://msdn.microsoft.com/en-us/library/windows/desktop/ms535953(v=vs.85).aspx
+
+
+영역 (Fill)
+Region			Fill	Brush*, Region*																				https://msdn.microsoft.com/en-us/library/windows/desktop/ms535690(v=vs.85).aspx
