@@ -3,11 +3,11 @@
 // 
 
 #pragma once
-#include "Shape.h"
+#include "Rectangle.h"
 
 //using Gdiplus::Color;
 
-class CText : public CShape 
+class CText : public CRectangle
 {
 public:
 	CText();
