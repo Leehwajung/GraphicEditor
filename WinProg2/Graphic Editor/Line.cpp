@@ -6,7 +6,7 @@
 #include "Line.h"
 
 
-CLine::CLine()
+CLine::CLine() 
 	:CStrap()
 {
 	//m_LinePen	
@@ -19,7 +19,7 @@ CLine::~CLine()
 }
 
 /* 선 생성*/
-void CLine::create(PointF startingPoint)
+void CLine::Create(PointF startingPoint)
 {
 	// 어차피 선은 점을 두 개만 사용할 꺼기때문에 절대 좌표를 사용하기로 함.
 	this->m_StartingPoint = startingPoint;
@@ -80,17 +80,18 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
-
-	CRgn rgn;
-	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
-
-	InvalidateRgn(NULL, rgn, TRUE);
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
 
 }
 
 /* 이동 그리기 */
 void CLine::moving(UINT nFlags, PointF point) {
 
+	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
+	PointF RelativePoint = PointF(point  - m_StartingPoint);
+
+	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -98,6 +99,8 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 }
 
+
+// LButtonUp / LButtonDlk
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
 	m_EndPoint = point;
