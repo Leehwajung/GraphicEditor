@@ -9,10 +9,13 @@ using namespace Gdiplus;
 
 // CGlobal 명령 대상입니다.
 
+#define defaultPen Pen(Color(255,0,0,0))
+#define defaultBrush SolidBrush(Color(255, 0, 0, 0))
+
 static class CGlobal : public CObject
 {
 public:
-
+	
 };
 
 
