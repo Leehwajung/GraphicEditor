@@ -1,6 +1,6 @@
 // Rectangle.cpp : CRectangle 클래스의 구현
 // CRectangle : 직사각형 개체를 정의하는 클래스
-// 
+// @Author Lee Hwajung
 
 #include "stdafx.h"
 #include "Graphic Editor.h"
