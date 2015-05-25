@@ -36,7 +36,7 @@ CFigure::operationModeFlags CFigure::cursorPosition(PointF point) {
 }
 
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
-CFigure::operationModeFlags CFigure::cursorPosition(CRect rect) {
+CFigure::operationModeFlags CFigure::cursorPosition(RectF rect) {
 	return None;
 }
 

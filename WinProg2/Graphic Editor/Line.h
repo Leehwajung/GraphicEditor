@@ -50,6 +50,7 @@ private:
 
 	///* 선 패턴 */
 	//int m_LinePattern;
+	Pen* m_Pen;
 
 	PointF m_EndPoint;
 
@@ -59,5 +60,3 @@ private:
 	int m_LinePattern;	// 선 패턴
 	int m_LineWidth;	// 선 두께
 };
-
-   

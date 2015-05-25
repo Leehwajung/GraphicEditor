@@ -5,12 +5,13 @@
 #include "stdafx.h"
 #include "Graphic Editor.h"
 #include "Strap.h"
+#include "Global.h"
 
 
 // CStrap
 
 CStrap::CStrap()
-	: m_Pen(Pen(Color(1,2,3,4)))	// 기본 펜, 수정할것!
+	//: m_Pen(defaultPen)	// 기본 펜, 수정할것!
 {
 }
 

@@ -8,6 +8,7 @@
 
 CLine::CLine()
 	:CStrap()
+	, m_Pen(new defaultPen)
 {
 	//m_LinePen	
 }
@@ -15,7 +16,7 @@ CLine::CLine()
 
 CLine::~CLine()
 {
-
+	m_Pen->~Pen();
 }
 
 // LButtonDown 
@@ -80,7 +81,7 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
-	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
+	m_lpGraphics->DrawLine(m_Pen, m_StartingPoint, point);
 }
 
 /* 이동 그리기 */
@@ -90,7 +91,7 @@ void CLine::moving(UINT nFlags, PointF point) {
 	PointF RelativePoint = PointF(point  - m_StartingPoint);
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
+	m_lpGraphics->DrawLine(m_Pen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */

@@ -68,7 +68,7 @@ void  CText::mouseMoveOperation(UINT nFlags, PointF point){
 void  CText::creating(UINT nFlags, PointF point){//생성 그리기
 	// 외곽선 그리기는 shape 함수를 이용 //
 	OnKeyboardFocus(point);
-	draw(tDC);
+	//draw(tDC);
 }
 void  CText::moving(UINT nFlags, PointF point){// 이동 그리기
 	/*포인터가 Rect영역안에 있는지 없는지를 체크한 후, Rect 안에 클릭된다면*/
@@ -88,7 +88,7 @@ void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
 
 // OnDraw / OnPaint
 void   CText::draw(CDC * m_lpDC){
-	CRect rect;
+	RectF rect;
 	CFont character;
 
 }//CpaintDC 사용

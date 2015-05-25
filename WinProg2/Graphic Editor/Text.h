@@ -7,7 +7,7 @@
 
 //using Gdiplus::Color;
 
-class CText : public CRectangle
+class CText : public RectFangle
 {
 public:
 	CText();
@@ -24,7 +24,7 @@ public:
 	virtual void create(CDC *pDC, PointF startingPoint);					// 개체 리전생성
 	
 	// OnMouseMove
-	void mouseMoveOperation(CDC *pDC, UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	void mouseMoveOperation(/*CDC *pDC, */UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
 	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
 	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
