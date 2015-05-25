@@ -9,8 +9,9 @@ using namespace Gdiplus;
 
 // CGlobal 명령 대상입니다.
 
-#define defaultPen Pen(Color(255,0,0,0))
-#define defaultBrush SolidBrush(Color(255, 0, 0, 0))
+#define defaultColor Color::Black
+#define defaultPen Pen(Color::Black)
+#define defaultBrush SolidBrush(Color::Black)
 
 static class CGlobal : public CObject
 {

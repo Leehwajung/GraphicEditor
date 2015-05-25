@@ -66,6 +66,52 @@ protected:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	//afx_msg void OnEditClear();
+	//afx_msg void OnEditClearAll();
+	afx_msg void OnEditCopy();
+	afx_msg void OnEditCut();
+	//afx_msg void OnEditFind();
+	afx_msg void OnEditPaste();
+	afx_msg void OnEditDelete();
+	//afx_msg void OnEditRepeat();
+	//afx_msg void OnEditReplace();
+	afx_msg void OnEditSelectAll();
+	afx_msg void OnEditUndo();
+	afx_msg void OnEditRedo();
+	afx_msg void OnImageCanvasSize();
+	afx_msg void OnInsertLine();
+	afx_msg void OnUpdateInsertLine(CCmdUI *pCmdUI);
+	afx_msg void OnInsertPolyline();
+	afx_msg void OnUpdateInsertPolyline(CCmdUI *pCmdUI);
+	afx_msg void OnInsertPencil();
+	afx_msg void OnUpdateInsertPencil(CCmdUI *pCmdUI);
+	afx_msg void OnInsertCurve();
+	afx_msg void OnUpdateInsertCurve(CCmdUI *pCmdUI);
+	afx_msg void OnInsertEllipse();
+	afx_msg void OnUpdateInsertEllipse(CCmdUI *pCmdUI);
+	afx_msg void OnInsertRectangle();
+	afx_msg void OnUpdateInsertRectangle(CCmdUI *pCmdUI);
+	afx_msg void OnInsertString();
+	afx_msg void OnUpdateInsertString(CCmdUI *pCmdUI);
+	afx_msg void OnInsertPolygon();
+	afx_msg void OnUpdateInsertPolygon(CCmdUI *pCmdUI);
+	afx_msg void OnInsertClosedcurve();
+	afx_msg void OnUpdateInsertClosedcurve(CCmdUI *pCmdUI);
+	afx_msg void OnArrangeOrder();
+	afx_msg void OnArrangeBringFront();
+	afx_msg void OnArrangeSendBack();
+	afx_msg void OnArrangeBringForward();
+	afx_msg void OnArrangeSendBackward();
+	afx_msg void OnArrangeGrouping();
+	afx_msg void OnArrangeGroup();
+	afx_msg void OnUpdateArrangeGroup(CCmdUI *pCmdUI);
+	afx_msg void OnArrangeUngroup();
+	afx_msg void OnUpdateArrangeUngroup(CCmdUI *pCmdUI);
+	afx_msg void OnZoomIn();
+	afx_msg void OnZoomOut();
+	afx_msg void OnZoom100();
+	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

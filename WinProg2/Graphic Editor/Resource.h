@@ -49,18 +49,19 @@
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CONTEXTDRAWING               32771
 #define ID_CONTEXTSTRING                32772
-#define ID_FONT_COLOR                   57742
+#define ID_BUTTON2                      32860
+#define ID_BUTTON3                      32861
 #define ID_EDIT_DELETE                  57638
 #define ID_IMAGE_CANVAS_SIZE            57690
-#define ID_INSERT_PENCIL                57700
-#define ID_INSERT_LINE                  57701
-#define ID_INSERT_POLYLINE              57702
-#define ID_INSERT_SPLINE                57703
-#define ID_INSERT_RECTANGLE             57704
-#define ID_INSERT_TRIANGLE              57705
-#define ID_INSERT_ELLIPSE               57706
-#define ID_INSERT_SHAPE                 57707
-#define ID_INSERT_STRING                57708
+#define ID_INSERT_LINE                  57700
+#define ID_INSERT_POLYLINE              57701
+#define ID_INSERT_PENCIL                57702
+#define ID_INSERT_CURVE                 57703
+#define ID_INSERT_ELLIPSE               57705
+#define ID_INSERT_RECTANGLE             57706
+#define ID_INSERT_STRING                57707
+#define ID_INSERT_POLYGON               57708
+#define ID_INSERT_CLOSEDCURVE           57709
 #define ID_ARRANGE_ORDER                57710
 #define ID_ARRANGE_BRING_FRONT          57711
 #define ID_ARRANGE_SEND_BACK            57712
@@ -82,6 +83,7 @@
 #define ID_SIZE_WIDTH                   57736
 #define ID_FONT_CHARSET                 57740
 #define ID_FONT_SIZE                    57741
+#define ID_FONT_COLOR                   57742
 #define ID_FONT_BOLD                    57745
 #define ID_FONT_ITALIC                  57746
 #define ID_FONT_UNDERLINE               57747
@@ -94,7 +96,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32860
+#define _APS_NEXT_COMMAND_VALUE         32862
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

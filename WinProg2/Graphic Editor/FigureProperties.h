@@ -26,11 +26,11 @@ public:
 
 	// À±°û¼±
 	Color getLineColor();
-	void setLineColor(Color LineColor);
+	void setLineColor(const Color& LineColor);
 	int getLinePattern();
-	void setLinePattern(int LinePattern);
+	void setLinePattern(const DashStyle& LinePattern);
 	int getLineWidth();
-	void setLineWidth(int LineWidth);
+	void setLineWidth(const REAL& LineWidth);
 
 
 	// Ã¤¿ì±â

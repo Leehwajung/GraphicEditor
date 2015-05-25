@@ -1,17 +1,17 @@
-// Rectangle.h : RectFangle 클래스의 인터페이스
-// RectFangle : 직사각형 개체를 정의하는 클래스
+// Rectangle.h : CRectangle 클래스의 인터페이스
+// CRectangle : 직사각형 개체를 정의하는 클래스
 // 
 
 #pragma once
 #include "Shape.h"
 
-// RectFangle 명령 대상입니다.
+// CRectangle 명령 대상입니다.
 
-class RectFangle : public CShape
+class CRectangle : public CShape
 {
 public:
-	RectFangle();
-	virtual ~RectFangle();
+	CRectangle();
+	virtual ~CRectangle();
 
 // 특성
 protected:

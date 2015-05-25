@@ -60,11 +60,11 @@ public:
 	// Menu Item
 	virtual void destroy();										// 개체 삭제
 
-	virtual void setLineColor(Color lineColor);					// 윤곽선 색 설정
-	virtual void setLineWidth(int lineWidth);					// 윤곽선 두께 설정
-	virtual void setLinePattern(int linePattern);				// 윤곽선 패턴 설정
-	virtual void setFillColor(Color FillColor);					// 칠하기 색 설정
-	virtual void setFillPattern(int fillPattern);				// 칠하기 패턴 설정
+	virtual void setLineColor(const Color& lineColor);			// 윤곽선 색 설정
+	virtual void setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
+	virtual void setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
+	virtual void setFillColor(const Color& FillColor);			// 칠하기 색 설정
+	virtual void setFillPattern(const int fillPattern);			// 칠하기 패턴 설정
 	// 순수 가상함수로 변경하기
 
 	// Getter / Setter
