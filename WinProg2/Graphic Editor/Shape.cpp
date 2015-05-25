@@ -10,7 +10,7 @@
 // CShape
 
 CShape::CShape()
-	: m_Pen(Pe)
+	: m_Pen()
 {
 }
 

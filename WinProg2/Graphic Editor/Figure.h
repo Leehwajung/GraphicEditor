@@ -78,7 +78,7 @@ public:
 protected:
 	Graphics* m_lpGraphics;
 	PointF m_StartingPoint;
-	operationModeFlags m_OperationMode;
+	operationModeFlags m_OperationMode; //연산모드 결정하는 변수
 	Region m_Region;			// 개체 선택 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
 };
 

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Text.h"
 
-
+// http://warmz.tistory.com/862 CDC
 CText::CText(){
 }
 
@@ -13,37 +13,37 @@ CText::~CText(){//delete
 }
 
 ///////////////////////////  Defalt 속성  //////////////////////////////////
-void CText::FontDisplay(){//related information Derived from CFigureProperties
+void CText::FontDisplay(){
 
 }
 ////////////////////////////////////////////////////////////////////////////
 
-void CText::FontTransform( ){//Font transformation when setting values are changed
+void CText::FontTransform( ){
 	//글자체 변경
 }
 
-void CText::SizeTransform(){//Size transformation when when setting values are changed ex) click event
-	//글자크기 변경
+void CText::SizeTransform(){//글자크기 변경
+
 }
 /////////////////
 
 void  CText::FontDestroy(){// 제거
+	//외각선 사각형도 파괴
 	DestroyCaret();//캐럿파괴
 }
 
 //////////////////////////////////////////////////////////////////////
 
 // LButtonDown
-void  CText::create(PointF startingPoint){//Shape의 외곽선생성과 동일함
+void  CText::create(CDC *pDC, PointF startingPoint){//Shape의 외곽선생성과 동일함
 	this->m_StartingPoint = startingPoint;
 }				
-
 
 // OnMouseMove
 void  CText::mouseMoveOperation(UINT nFlags, PointF point){
 	/* 동작분류 1. creating 모드 2. moving 모드 3. 사이즈변경모드*/
-		
-	operationModeFlags mode = cursorPosition(point);
+	
+	operationModeFlags mode = m_OperationMode; // 오페레이션모드에 따라 동작
 
 	switch (mode){
 		//1. Creating 모드//
@@ -81,8 +81,10 @@ void  CText::resizing(UINT nFlags, PointF point){// 크기 변경 그리기
 ///////////////////////////////////////////////////////////////////////
 // LButtonUp / LButtonDlk
 // void addPoint(PointF point){}						// 점 추가
-void   CText::move(PointF target){}							// 개체 이동
-void   CText::resize(PointF point, int resizeFlags){}			// 개체 크기 변경
+void   CText::move(PointF target){// 개체 이동
+}							
+void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
+}			
 
 // OnDraw / OnPaint
 void   CText::draw(CDC * m_lpDC){
