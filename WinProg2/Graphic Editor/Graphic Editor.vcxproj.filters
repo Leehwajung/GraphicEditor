@@ -22,6 +22,12 @@
     <Filter Include="리소스 파일\Icons">
       <UniqueIdentifier>{4c44344a-75c0-4787-8576-af5718ba573b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Assistant">
+      <UniqueIdentifier>{97b624eb-6a74-4f5f-a831-9c6c809f3a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Assistant">
+      <UniqueIdentifier>{efd27aea-4857-4d56-a708-ebb23029f424}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,9 +66,6 @@
     <ClInclude Include="Text.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
-    <ClInclude Include="FigureProperties.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
     <ClInclude Include="Figure.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
@@ -73,6 +76,15 @@
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
     <ClInclude Include="PolyLine.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="FigureProperties.h">
+      <Filter>헤더 파일\Assistant</Filter>
+    </ClInclude>
+    <ClInclude Include="Ellipse.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,9 +113,6 @@
     <ClCompile Include="Line.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
-    <ClCompile Include="FigureProperties.cpp">
-      <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
     <ClCompile Include="Figure.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
@@ -117,6 +126,15 @@
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
     <ClCompile Include="PolyLine.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
+    <ClCompile Include="FigureProperties.cpp">
+      <Filter>소스 파일\Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="Ellipse.cpp">
+      <Filter>소스 파일\Figure</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
   </ItemGroup>
