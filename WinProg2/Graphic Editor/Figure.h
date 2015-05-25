@@ -8,6 +8,7 @@
 #include <gdiplus.h>
 //#include <afxcoll.h>
 #include "FigureProperties.h"
+#include "Global.h"
 
 using namespace Gdiplus;
 
