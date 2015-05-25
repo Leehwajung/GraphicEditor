@@ -39,6 +39,14 @@ public:
 	virtual void setLineWidth(int lineWidth);					// 끈 두께 설정
 	virtual void setLinePattern(int linePattern);				// 끈 패턴 설정
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
+
+	// Getter / Setter
+	Pen& getPen();
+	void setPen(const Pen& pen);		// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
+
+// 특성
+protected:
+	Pen m_Pen;
 };
 
 

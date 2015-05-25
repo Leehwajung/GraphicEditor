@@ -16,16 +16,17 @@ public:
 	CShape();
 	virtual ~CShape();
 
+// 작업
+public:
+	Pen& getPen();
+	void setPen(const Pen& pen);		// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
+	Brush getBrush();
+	void setBrush(const Brush& brush);	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
+
 // 특성
 protected:
-	CRgn m_Shape;		// 도형 영역
-
-	Color m_LineColor;	// 윤곽선 색
-	int m_LinePattern;	// 윤곽선 패턴
-	int m_LineWidth;	// 윤곽선 두께
-
-	Color m_FillColor;	// 채우기 색상
-	int m_FillPattern;	// 채우기 패턴
+	Pen m_Pen;
+	Brush m_Brush;
 };
 
 
