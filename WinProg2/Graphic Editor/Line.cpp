@@ -19,7 +19,7 @@ CLine::~CLine()
 }
 
 /* 선 생성*/
-void CLine::Create(PointF startingPoint)
+void CLine::create(PointF startingPoint)
 {
 	// 어차피 선은 점을 두 개만 사용할 꺼기때문에 절대 좌표를 사용하기로 함.
 	this->m_StartingPoint = startingPoint;
