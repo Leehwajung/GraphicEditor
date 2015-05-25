@@ -6,7 +6,8 @@
 #include "Line.h"
 
 
-CLine::CLine() 
+CLine::CLine()
+	:CStrap()
 {
 	//m_LinePen	
 }
@@ -20,9 +21,8 @@ CLine::~CLine()
 /* 선 생성*/
 void CLine::create(PointF startingPoint)
 {
-	//나중에 상대 좌표를 사용할 꺼임
+	// 어차피 선은 점을 두 개만 사용할 꺼기때문에 절대 좌표를 사용하기로 함.
 	this->m_StartingPoint = startingPoint;
-	m_PointsList.AddHead(PointF(0,0));
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
@@ -146,7 +146,3 @@ void CLine::setLinePattern(int linePattern) {
 	m_LinePattern = linePattern;
 }
 
-
-CList<PointF, PointF&>& CLine::GetPointsList(){
-	return m_PointsList;
-}
