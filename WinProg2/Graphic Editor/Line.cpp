@@ -20,7 +20,7 @@ CLine::~CLine()
 
 // LButtonDown
 /* 선 생성*/
-void CLine::Create(PointF startingPoint)
+void CLine::create(PointF startingPoint)
 {
 	// 상속 구조가 달라짐에 따라서 Line이 상대좌표로 해야할 필요가 없어짐. Line은 어차피 점이 두 개이기 때문에 절대 좌표를 따르기로 함.
 	this->m_StartingPoint = startingPoint;
@@ -28,14 +28,33 @@ void CLine::Create(PointF startingPoint)
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
 CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
-	if (){
-	
+
+	// 1. 현재 좌표가 StaringPoint인 
+	if ((point.Equals(m_StartingPoint) == FALSE || point.Equals(m_EndPoint) == FALSE)){	
+		
+		
 	}
+
+	// 2. 현재 좌표가  선의 StartingPoint나 EndPoint이면 "Resize모드" 이다. 
 	else if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
 		return Resize;
 	}
-	else if (point.Equals(m_EndPoint) == TRUE)
-		return Move;
+
+	// 3. 현재 좌표가 선의 사이에 있을 때는 "Move모드" 이다.
+	else if ((point.Equals(m_StartingPoint) == FALSE || point.Equals(m_EndPoint) == FALSE)){
+
+		// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
+		int tmp_gradient = (m_StartingPoint.Y - point.Y) / (m_StartingPoint.X - point.X);
+
+		if (tmp_gradient == gradient){
+			return Move;
+		}
+		return None;
+
+	}
+		
+	// 그 외: 아무 모드도 아님
+	else None;
 }
 
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
@@ -88,11 +107,12 @@ void CLine::resizing(UINT nFlags, PointF point) {
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
 	m_EndPoint = point;
-	gradient = m_StartingPoint
+	gradient = (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
 }
 
 /* 개체 이동 */
 void CLine::move(PointF Target) {
+
 }
 
 /* 선 크기(길이) 변경 */

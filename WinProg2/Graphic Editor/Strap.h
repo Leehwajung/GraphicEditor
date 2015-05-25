@@ -14,7 +14,7 @@ public:
 	virtual ~CStrap();
 
 	// LButtonDown
-	virtual void Create(PointF startingPoint);					// 끈 생성
+	virtual void create(PointF startingPoint);					// 끈 생성
 	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
 	virtual operationModeFlags cursorPosition(CRect rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
 
