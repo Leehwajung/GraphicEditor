@@ -58,5 +58,11 @@ private:
 	//BOOL m_FontBold;	// 볼드체
 	//BOOL m_FontItalic; // 이탤릭체
 	//BOOL m_FontUnderline;// 밑줄
+protected :
+	enum { NONE, HORZ, VERT }m_RESIZE;// 크기변경인자
+	
+	HWND hWnd = ::GetActiveWindow();//핸들러
+	HDC hdc = ::GetDC(hWnd);
+	CDC *tDC = CDC::FromHandle(hdc);
 };
 
