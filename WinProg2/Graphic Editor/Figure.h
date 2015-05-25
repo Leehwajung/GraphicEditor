@@ -38,7 +38,7 @@ public:
 	// LButtonDown
 	virtual void create(PointF startingPoint);					// 개체 생성
 	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-	
+
 
 	// OnMouseMove
 	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)

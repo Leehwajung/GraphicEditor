@@ -19,17 +19,27 @@ CShape::CShape()
 
 CShape::~CShape()
 {
+	m_Pen->~Pen();
+	m_Brush->~Brush();
 }
 
 
 // CShape 멤버 함수
-Pen& CShape::getPen(){}
 
-void CShape::setPen(const Pen& pen){
-
-}// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
-Brush CShape::getBrush(){
+Pen* CShape::getPen() {
+	return m_Pen;
 }
-void CShape::setBrush(const Brush& brush){
 
+void CShape::setPen(const Pen* pen) {
+	m_Pen = pen->Clone();
+}
+
+
+Brush* CShape::getBrush() {
+	return m_Brush;
+}
+
+
+void CShape::setBrush(const Brush* brush) {
+	m_Brush = brush->Clone();
 }

@@ -21,11 +21,10 @@ public:
 	virtual void FontDestroy();// 제거
 
 	// LButtonDown
-	virtual void create(PointF startingPoint);					// 개체 리전생성
+	virtual void create(CDC *pDC, PointF startingPoint);					// 개체 리전생성
 	
-
 	// OnMouseMove
-	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	void mouseMoveOperation(CDC *pDC, UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
 	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
 	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
@@ -41,6 +40,11 @@ public:
 	//Keyboard Focus
 	virtual void OnKeyboardFocus(PointF point);//
 
+	static void ss(CView* view) {
+		view->CreateSolidCaret(20, 20);
+		view->SetCaretPos(CPoint(50, 50));
+		view->ShowCaret();
+	}
 // 특성
 private:
 	CString m_String;	// 입력받을 문자열
@@ -60,9 +64,11 @@ private:
 	//BOOL m_FontUnderline;// 밑줄
 protected :
 	enum { NONE, HORZ, VERT }m_RESIZE;// 크기변경인자
-	
+	//
+	//HWND hWnd = ::GetActiveWindow();//핸들러
+	//HDC* hdc = ::GetDC(hWnd);
+	//CDC *tDC = CDC::FromHandle(hdc);
 	HWND hWnd = ::GetActiveWindow();//핸들러
-	HDC hdc = ::GetDC(hWnd);
-	CDC *tDC = CDC::FromHandle(hdc);
+
 };
 
