@@ -1,10 +1,10 @@
 // Shape.h : CShape 클래스의 인터페이스
 // CShape : 2차원 도형 개체를 정의하는 클래스
-// @Author Lee Hwajung
+// 
 
 #pragma once
 #include "Figure.h"
-#include <gdiplus.h> 
+//#include <gdiplus.h>
 
 //using Gdiplus::Color;
 

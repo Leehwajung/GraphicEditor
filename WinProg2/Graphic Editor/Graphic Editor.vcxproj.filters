@@ -28,6 +28,9 @@
     <Filter Include="헤더 파일\Assistant">
       <UniqueIdentifier>{efd27aea-4857-4d56-a708-ebb23029f424}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Figure\Strap">
+      <UniqueIdentifier>{b85c2f14-10d7-4272-8998-b8fc39415a1e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="소스 파일\Figure\Shape">
       <UniqueIdentifier>{b25bf74e-7cfe-41d0-9b28-2ee468128ce3}</UniqueIdentifier>
     </Filter>
@@ -36,9 +39,6 @@
     </Filter>
     <Filter Include="헤더 파일\Figure\Strap">
       <UniqueIdentifier>{2a0fe2ae-42c9-4a31-a093-9c0ffe2974e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Figure\Shape\Strap">
-      <UniqueIdentifier>{b85c2f14-10d7-4272-8998-b8fc39415a1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +103,9 @@
     <ClInclude Include="Text.h">
       <Filter>헤더 파일\Figure\Shape</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>헤더 파일\Assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -136,13 +139,13 @@
       <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>소스 파일\Figure\Shape\Strap</Filter>
+      <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
     <ClCompile Include="PolyLine.cpp">
-      <Filter>소스 파일\Figure\Shape\Strap</Filter>
+      <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
     <ClCompile Include="Strap.cpp">
-      <Filter>소스 파일\Figure\Shape\Strap</Filter>
+      <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
     <ClCompile Include="Ellipse.cpp">
       <Filter>소스 파일\Figure\Shape</Filter>
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="Text.cpp">
       <Filter>소스 파일\Figure\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

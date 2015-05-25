@@ -11,6 +11,7 @@ Brush			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534424(v=vs.8
 PointF			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534488(v=vs.85).aspx
 RectF			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534497(v=vs.85).aspx
 
+Font			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534437(v=vs.85).aspx
 Image			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534462(v=vs.85).aspx
 Region			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534501(v=vs.85).aspx
 

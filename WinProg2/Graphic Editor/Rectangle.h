@@ -15,6 +15,6 @@ public:
 
 // 특성
 protected:
-	RectF m_rect;
+	RectF m_rect;	// 사각형
 };
 
