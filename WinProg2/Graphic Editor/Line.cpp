@@ -20,9 +20,12 @@ CLine::~CLine()
 /* 선 생성*/
 void CLine::Create(PointF startingPoint)
 {
+
+	// 펜 속성 설정 임시. 
+	m_Pen.SetColor(Color(255, 0, 0, 0));
+
 	//나중에 상대 좌표를 사용할 꺼임
 	this->m_StartingPoint = startingPoint;
-	m_PointsList.AddHead(PointF(0,0));
 }
 
 /* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */
@@ -55,16 +58,19 @@ void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 /* 생성 그리기 */
 void CLine::creating(UINT nFlags, PointF point) {
 
-	CRgn rgn;
+	m_lpGraphics->DrawLine(&m_Pen, m_StartingPoint, point);
+
+	/*CRgn rgn;
 	rgn.CreateRectRgn(m_StartingPoint.X, m_StartingPoint.Y, point.X, point.Y);
 
 	InvalidateRgn(NULL, rgn, TRUE);
-
+*/
 }
 
 /* 이동 그리기 */
 void CLine::moving(UINT nFlags, PointF point) {
-
+	PointF RelativePoint = PointF((point.X - m_StartingPoint.X), (point.Y - m_StartingPoint.Y));
+	//m_lpGraphics->DrawLine(&m_Pen, m_PointsList[0]+ m_StartingPoint + RelativePoint, m_PointsList+ m_StartingPoint + RelativePoint);
 }
 
 /* 크기 변경 그리기 */
@@ -74,8 +80,7 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 /* 점 추가 */
 void CLine::addPoint(PointF point) {
-	m_EndPoint = PointF((point.X - m_StartingPoint.X), (point.Y - m_StartingPoint.Y));
-	m_PointsList.AddTail(m_EndPoint);
+	//m_PointsList.AddTail(point-m_StartingPoint);
 }
 
 /* 개체 이동 */

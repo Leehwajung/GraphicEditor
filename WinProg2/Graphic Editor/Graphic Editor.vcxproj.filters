@@ -61,9 +61,6 @@
     <ClInclude Include="PropertiesWnd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>헤더 파일\Figure</Filter>
-    </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
@@ -86,6 +83,9 @@
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
     <ClInclude Include="Rectangle.h">
+      <Filter>헤더 파일\Figure</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
   </ItemGroup>

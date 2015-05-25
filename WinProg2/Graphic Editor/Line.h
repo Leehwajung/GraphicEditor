@@ -45,9 +45,6 @@ public:
 
 private:
 
-	/* µÎ °³ÀÇ ÁÂÇ¥ */
-	CList <PointF, PointF&> m_PointsList;
-
 	/* ±×¸®±â À§ÇÑ Ææ */
 	//Pen m_LinePen;
 
@@ -55,10 +52,12 @@ private:
 	//int m_LineWidth;
 
 	///* ¼± ÆÐÅÏ */
-	//int m_LinePattern;
+	//int m_LinePattern
 
+	Pen m_Pen;          // LineÀ» À§ÇÑ Ææ °´Ã¼
 
 	PointF m_EndPoint;
+
 	Color m_LineColor;	// À±°û¼± »ö
 	int m_LinePattern;	// À±°û¼± ÆÐÅÏ
 	int m_LineWidth;	// À±°û¼± µÎ²²
