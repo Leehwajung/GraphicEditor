@@ -154,7 +154,7 @@ void CLine::setLineColor(const Color& LineColor) {
 
 /* 선 두께 설정 */
 void CLine::setLineWidth(const REAL& LineWidth) {
-	m_LineWidth = LineWidth;
+	 m_LineWidth = LineWidth;
 }
 
 /* 선 패턴 설정 */

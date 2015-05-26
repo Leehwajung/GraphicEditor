@@ -5,7 +5,7 @@
 #pragma once
 
 #include "afx.h"
-#include <gdiplus.h>
+//#include <gdiplus.h>
 //#include <afxcoll.h>
 #include "FigureProperties.h"
 #include "Global.h"
@@ -72,7 +72,7 @@ public:
 	void setGraphics(Graphics* lpGraphics);
 
 	PointF& getStartingPoint();
-	void setStartingPoint(PointF StartingPoint);
+	void setStartingPoint(PointF& StartingPoint);
 
 	operationModeFlags getOperationMode();
 	void setOperationMode(operationModeFlags OperationMode);

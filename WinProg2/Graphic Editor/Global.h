@@ -3,15 +3,19 @@
 // 
 
 #pragma once
-#include <gdiplus.h>
+//#include <gdiplus.h>
 
 using namespace Gdiplus;
 
 // CGlobal 명령 대상입니다.
 
+#ifndef defaultValue
+#define defaultValue
 #define defaultColor Color::Black
 #define defaultPen Pen(Color::Black)
-#define defaultBrush SolidBrush(Color::Black)
+#define defaultBrush SolidBrush(Color::Black)  
+#endif // !defaultValue
+
 
 static class CGlobal : public CObject
 {

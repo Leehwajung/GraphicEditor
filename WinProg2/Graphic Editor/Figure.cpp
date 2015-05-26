@@ -138,8 +138,8 @@ PointF& CFigure::getStartingPoint() {
 	return this->m_StartingPoint;
 }
 
-void CFigure::setStartingPoint(PointF StartingPoint) {
-	this->m_StartingPoint = StartingPoint;
+void CFigure::setStartingPoint(PointF& StartingPoint) {
+	this->m_StartingPoint = StartingPoint;	// 복사 생성자 불림
 }
 
 CFigure::operationModeFlags CFigure::getOperationMode() {
