@@ -10,9 +10,9 @@ using namespace Gdiplus;
 
 // CFigure
 
-//CFigure::CFigure()
-//{
-//}
+CFigure::CFigure()
+{
+}
 
 CFigure::CFigure(Graphics* lpGraphics)
 {

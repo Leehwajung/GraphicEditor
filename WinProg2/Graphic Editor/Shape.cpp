@@ -10,12 +10,15 @@
 
 // CShape
 
+CShape::CShape()
+{
+}
+
 CShape::CShape(CClientDC* lpClientDC)
 	: CFigure(lpClientDC)
 	, m_Pen(new defaultPen)
 	, m_Brush(new defaultBrush)
 {
-
 }
 
 CShape::CShape(Graphics* lpGraphics)
@@ -35,10 +38,10 @@ CShape::CShape(CClientDC* lpClientDC, Pen* pen, SolidBrush* brush)
 
 CShape::~CShape()
 {
-	if (m_Pen) {
+	if (!m_Pen) {
 		m_Pen->~Pen();
 	}
-	if (m_Brush) {
+	if (!m_Brush) {
 		m_Brush->~SolidBrush();
 	}
 }

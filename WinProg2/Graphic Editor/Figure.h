@@ -30,7 +30,7 @@ public:
 	};
 
 public:
-	//CFigure();
+	CFigure();
 	CFigure(CClientDC* lpClientDC);
 	CFigure(Graphics* lpGraphics);
 	virtual ~CFigure();

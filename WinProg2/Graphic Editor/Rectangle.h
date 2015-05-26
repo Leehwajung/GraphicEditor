@@ -10,6 +10,7 @@
 class CRectangle : public CShape
 {
 public:
+	CRectangle();
 	CRectangle(CClientDC* lpClientDC);
 	CRectangle(Graphics* lpGraphics);
 	CRectangle(CClientDC* lpClientDC, RectF& rect);

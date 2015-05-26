@@ -141,7 +141,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
 	//if (m_InsertFlag == LINE)
+	if (!m_CurrentFigure) {
 		m_CurrentFigure->draw();
+	}
+		
 
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
@@ -548,7 +551,7 @@ void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnInsertRectangle()
 {
 	m_InsertFlag = RECTANGLE;	// 수정 금지
-	// TODO: 여기에 명령 처리기ㅌ 코드를 추가합니다.
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	m_CurrentFigure = new CRectangle();
 }
