@@ -14,23 +14,23 @@ CShape::CShape()
 {
 }
 
-CShape::CShape(CClientDC* lpClientDC)
-	: CFigure(lpClientDC)
+CShape::CShape(CClientDC* lpClientDC/*, PointF startingPoint*/)
+	: CFigure(lpClientDC/*, startingPoint*/)
 	, m_Pen(new defaultPen)
 	, m_Brush(new defaultBrush)
 {
 }
 
-CShape::CShape(Graphics* lpGraphics)
-	: CFigure(lpGraphics)
+CShape::CShape(Graphics* lpGraphics/*, PointF startingPoint*/)
+	: CFigure(lpGraphics/*, startingPoint*/)
 	, m_Pen(new defaultPen)
 	, m_Brush(new defaultBrush)
 {
 
 }
 
-CShape::CShape(CClientDC* lpClientDC, Pen* pen, SolidBrush* brush)
-	: CFigure(lpClientDC)
+CShape::CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush)
+	: CFigure(lpClientDC/*, startingPoint*/)
 {
 	m_Pen = pen->Clone();
 	m_Brush = (SolidBrush*)brush->Clone();

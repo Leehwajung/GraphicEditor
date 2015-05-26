@@ -11,10 +11,10 @@ class CRectangle : public CShape
 {
 public:
 	CRectangle();
-	CRectangle(CClientDC* lpClientDC);
-	CRectangle(Graphics* lpGraphics);
-	CRectangle(CClientDC* lpClientDC, RectF& rect);
-	CRectangle(CClientDC* lpClientDC, RectF& rect, Pen* pen, SolidBrush* brush);
+	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/);
+	CRectangle(Graphics* lpGraphics/*, PointF startingPoint*/);
+	//CRectangle(CClientDC* lpClientDC, RectF& rect);
+	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/, /*RectF& rect,*/ Pen* pen, SolidBrush* brush);
 	virtual ~CRectangle();
 
 	// LButtonDown
@@ -43,6 +43,6 @@ public:
 
 // 특성
 protected:
-	RectF& m_Rect;	// 사각형
+	RectF m_Rect;	// 사각형
 };
 

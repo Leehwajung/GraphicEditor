@@ -31,8 +31,8 @@ public:
 
 public:
 	CFigure();
-	CFigure(CClientDC* lpClientDC);
-	CFigure(Graphics* lpGraphics);
+	CFigure(CClientDC* lpClientDC/*, PointF StartingPoint*/);
+	CFigure(Graphics* lpGraphics/*, PointF StartingPoint*/);
 	virtual ~CFigure();
 
 public:

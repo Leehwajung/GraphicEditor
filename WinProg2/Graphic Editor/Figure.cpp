@@ -14,14 +14,16 @@ CFigure::CFigure()
 {
 }
 
-CFigure::CFigure(Graphics* lpGraphics)
+CFigure::CFigure(CClientDC* lpClientDC/*, PointF startingPoint*/)
+	: m_lpGraphics(new Graphics(*lpClientDC))
+	//, m_StartingPoint(startingPoint)
 {
-	m_lpGraphics = lpGraphics;
 }
 
-CFigure::CFigure(CClientDC* lpClientDC)
+CFigure::CFigure(Graphics* lpGraphics/*, PointF startingPoint*/)
+	: m_lpGraphics(lpGraphics)
+	//, m_StartingPoint(startingPoint)
 {
-	m_lpGraphics = new Graphics(*lpClientDC);
 }
 
 CFigure::~CFigure()

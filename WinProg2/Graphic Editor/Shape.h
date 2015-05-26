@@ -11,9 +11,9 @@ class CShape : public CFigure
 {
 public:
 	CShape();
-	CShape(CClientDC* lpClientDC);
-	CShape(Graphics* lpGraphics);
-	CShape(CClientDC* lpClientDC, Pen* pen, SolidBrush* brush);
+	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/);
+	CShape(Graphics* lpGraphics/*, PointF startingPoint*/);
+	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush);
 	virtual ~CShape();
 
 // ÀÛ¾÷
