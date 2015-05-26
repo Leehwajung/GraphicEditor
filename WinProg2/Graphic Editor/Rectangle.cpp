@@ -9,6 +9,11 @@
 
 // CRectangle
 
+CRectangle::CRectangle()
+	: m_Rect(*new defaultRectF)
+{
+}
+
 CRectangle::CRectangle(CClientDC* lpClientDC)
 	: CShape(lpClientDC)
 	, m_Rect(*new defaultRectF)
@@ -37,7 +42,7 @@ CRectangle::CRectangle(CClientDC* lpClientDC, RectF& rect, Pen* pen, SolidBrush*
 
 CRectangle::~CRectangle()
 {
-	if (&m_Rect) {
+	if (!&m_Rect) {
 		m_Rect.~RectF();
 	}
 }

@@ -10,6 +10,7 @@
 class CShape : public CFigure
 {
 public:
+	CShape();
 	CShape(CClientDC* lpClientDC);
 	CShape(Graphics* lpGraphics);
 	CShape(CClientDC* lpClientDC, Pen* pen, SolidBrush* brush);
