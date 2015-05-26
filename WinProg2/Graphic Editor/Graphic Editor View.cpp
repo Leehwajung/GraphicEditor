@@ -170,7 +170,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
-	CText::ss(this);
 }
 
 
@@ -490,7 +489,6 @@ void CGraphicEditorView::OnInsertLine()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 테스트입니다!!
-	m_CurrentFigure = new CLine();
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)

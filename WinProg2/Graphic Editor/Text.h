@@ -4,13 +4,13 @@
 
 #pragma once
 #include "Rectangle.h"
-
+# define RESIZE_POINT 5 // 크기변경시 기본단위
 // CText 명령 대상입니다.
 
 class CText : public CRectangle
 {
 public:
-	CText();
+	CText(CView *view);
 	~CText();//소멸자
 	CText(const CText& pCText);	//복사 생성자
 
@@ -21,10 +21,10 @@ public:
 	virtual void FontDestroy();// 제거
 
 	// LButtonDown
-	virtual void create(CDC *pDC, PointF startingPoint);					// 개체 리전생성
+	virtual void create(PointF startingPoint);					// 개체 리전생성
 	
 	// OnMouseMove
-	void mouseMoveOperation(/*CDC *pDC, */UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
 	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
 	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
@@ -40,15 +40,16 @@ public:
 	//Keyboard Focus
 	virtual void OnKeyboardFocus(PointF point);//
 
-	static void ss(CView* view) {	// 캐럿 테스트 (테스트를 위해 static으로 선언)
-		view->CreateSolidCaret(10, 20);
-		view->SetCaretPos(CPoint(50, 50));
-		view->ShowCaret();
-	}
+	void getview(CView* view);
+	//static void getview(cview* view) {	// 캐럿 테스트 (테스트를 위해 static으로 선언)
+	//	view->createsolidcaret(10, 20);
+	//	view->setcaretpos(cpoint(50, 50));
+	//	view->showcaret();
+	//}
 // 특성
 private:
 	CString m_String;	// 입력받을 문자열
-
+	CView *m_View;
 	Color m_FontColor;	// 글자색
 	LOGFONT m_FontLog;	// 폰트에 대한 정보들 (글꼴, 크기, 굵게, 이탤릭, 밑줄, 취소선 등)
 
@@ -63,12 +64,12 @@ private:
 	//BOOL m_FontItalic; // 이탤릭체
 	//BOOL m_FontUnderline;// 밑줄
 protected :
-	enum { NONE, HORZ, VERT }m_RESIZE;// 크기변경인자
+	enum { NONE, HORZ, VERT, DIAG  }m_RESIZE;// 크기변경인자
 	//
 	//HWND hWnd = ::GetActiveWindow();//핸들러
 	//HDC* hdc = ::GetDC(hWnd);
 	//CDC *tDC = CDC::FromHandle(hdc);
-	HWND hWnd = ::GetActiveWindow();//핸들러
+	//HWND hWnd = ::GetActiveWindow();//핸들러
 
 };
 

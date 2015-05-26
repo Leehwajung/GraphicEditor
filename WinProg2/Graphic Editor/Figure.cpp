@@ -84,11 +84,6 @@ void CFigure::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resizeFla
 	//}
 }
 
-/* 설정된 값으로 개체 속성 설정 */
-void CFigure::setProperties(CFigureProperties properties) {
-
-}
-
 /* 개체 그리기 */
 void CFigure::draw() {
 
