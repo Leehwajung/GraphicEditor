@@ -51,6 +51,8 @@
 #define ID_CONTEXTSTRING                32772
 #define ID_BUTTON2                      32860
 #define ID_BUTTON3                      32861
+#define ID_CONTEXT_DRAWING              32862
+#define ID_CONTEXT_STRING               32863
 #define ID_EDIT_DELETE                  57638
 #define ID_IMAGE_CANVAS_SIZE            57690
 #define ID_INSERT_LINE                  57700
@@ -96,7 +98,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32862
+#define _APS_NEXT_COMMAND_VALUE         32864
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -29,10 +29,27 @@ public:
 	CPoint m_RButtonPoint;					// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
 	UINT m_MouseButtonFlag;					// 마우스 버튼이 클릭되어있는 상태 플래그 (MK_LBUTTON , MK_RBUTTON, MK_MBUTTON)
 	CFigure* currentFigure;					// 현재 선택학 개체
+	
+	enum InsertFlag {
+		NONE			= NULL,					// 버튼이 눌리지 않은 상태
+		LINE			= ID_INSERT_LINE,		// 직선 버튼
+		POLYLINE		= ID_INSERT_POLYLINE,	// 꺽인 선 버튼
+		PENCIL			= ID_INSERT_PENCIL,		// 펜 버튼
+		CURVE			= ID_INSERT_CURVE,		// 곡선 버튼
+		ELLIPSE			= ID_INSERT_ELLIPSE,	// 타원 버튼
+		RECTANGLE		= ID_INSERT_RECTANGLE,	// 사각형 버튼
+		STRING			= ID_INSERT_STRING,		// 문자열 버튼
+		POLYGON			= ID_INSERT_POLYGON,	// 삼각형 버튼
+		CLOSEDCURVE		= ID_INSERT_CLOSEDCURVE	// 도형 버튼
+	};
+
+	InsertFlag m_InsertFlag;
+
 	int m_mode;
 
 // 작업입니다.
 public:
+	void clearInsertFlag();
 	
 // 재정의입니다.
 public:
@@ -55,7 +72,7 @@ protected:
 
 // 생성된 메시지 맵 함수
 protected:
-	afx_msg void OnFilePrintPreview();
+	// 메시지 처리기
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
@@ -64,9 +81,14 @@ protected:
 	afx_msg void OnRButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	DECLARE_MESSAGE_MAP()
-public:
+
+	// 명령 처리기
+	afx_msg void OnFilePrintPreview();
 	//afx_msg void OnEditClear();
 	//afx_msg void OnEditClearAll();
 	afx_msg void OnEditCopy();
@@ -112,6 +134,7 @@ public:
 	afx_msg void OnZoomOut();
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
+	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

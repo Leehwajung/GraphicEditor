@@ -32,10 +32,7 @@
 IMPLEMENT_DYNCREATE(CGraphicEditorView, CView)
 
 BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
-	// 표준 인쇄 명령입니다.
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CGraphicEditorView::OnFilePrintPreview)
+	/* 메시지 처리기 */
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_LBUTTONDBLCLK()
@@ -44,7 +41,18 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_WM_RBUTTONDBLCLK()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
+	ON_WM_SYSKEYDOWN()
+	ON_WM_SYSKEYUP()
 	ON_WM_CONTEXTMENU()
+
+	/* 명령 처리기 */
+	// 표준 인쇄 명령입니다.
+	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CGraphicEditorView::OnFilePrintPreview)
+
 	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClear)
 	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClearAll)
 	ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditCopy)
@@ -160,32 +168,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	CText::ss(this);
 
-}
-
-
-// CGraphicEditorView 인쇄
-
-void CGraphicEditorView::OnFilePrintPreview()
-{
-#ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
-#endif
-}
-
-BOOL CGraphicEditorView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	// 기본적인 준비
-	return DoPreparePrinting(pInfo);
-}
-
-void CGraphicEditorView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: 인쇄하기 전에 추가 초기화 작업을 추가합니다.
-}
-
-void CGraphicEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: 인쇄 후 정리 작업을 추가합니다.
 }
 
 
@@ -317,6 +299,41 @@ BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint point)
 	return CView::OnMouseWheel(nFlags, zDelta, point);
 }
 
+void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	switch (nChar)
+	{
+	case VK_ESCAPE:
+	case VK_CANCEL:
+	case VK_BACK:
+		clearInsertFlag();
+		break;
+	}
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void CGraphicEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+}
+
+void CGraphicEditorView::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnSysKeyDown(nChar, nRepCnt, nFlags);
+}
+
+void CGraphicEditorView::OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	CView::OnSysKeyUp(nChar, nRepCnt, nFlags);
+}
+
 void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 #ifndef SHARED_HANDLERS
@@ -346,276 +363,311 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 #endif //_DEBUG
 
 
-// CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의
+// CGraphicEditorView 인쇄
 
+void CGraphicEditorView::OnFilePrintPreview()
+{
+#ifndef SHARED_HANDLERS
+	AFXPrintPreview(this);
+#endif
+}
+
+BOOL CGraphicEditorView::OnPreparePrinting(CPrintInfo* pInfo)
+{
+	// 기본적인 준비
+	return DoPreparePrinting(pInfo);
+}
+
+void CGraphicEditorView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+{
+	// TODO: 인쇄하기 전에 추가 초기화 작업을 추가합니다.
+}
+
+void CGraphicEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+{
+	// TODO: 인쇄 후 정리 작업을 추가합니다.
+}
+
+
+// CGraphicEditorView 명령 처리기
 
 //void CGraphicEditorView::OnEditClear()
 //{
+//	clearInsertFlag();
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
-
 
 //void CGraphicEditorView::OnEditClearAll()
 //{
+//	clearInsertFlag();
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
-
 
 void CGraphicEditorView::OnEditCopy()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnEditCut()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 //void CGraphicEditorView::OnEditFind()
 //{
+//	clearInsertFlag();
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
-
 
 void CGraphicEditorView::OnEditPaste()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnEditDelete()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 //void CGraphicEditorView::OnEditRepeat()
 //{
+//	clearInsertFlag();
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
-
 
 //void CGraphicEditorView::OnEditReplace()
 //{
+//	clearInsertFlag();
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
-
 void CGraphicEditorView::OnEditSelectAll()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnEditUndo()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnEditRedo()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnImageCanvasSize()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertLine()
 {
+	m_InsertFlag = LINE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == LINE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertPolyline()
 {
+	m_InsertFlag = POLYLINE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertPolyline(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == POLYLINE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertPencil()
 {
+	m_InsertFlag = PENCIL;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertPencil(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == PENCIL);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertCurve()
 {
+	m_InsertFlag = CURVE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == CURVE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertEllipse()
 {
+	m_InsertFlag = ELLIPSE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == ELLIPSE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertRectangle()
 {
+	m_InsertFlag = RECTANGLE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == RECTANGLE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertString()
 {
+	m_InsertFlag = STRING;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
 {
+	pCmdUI->SetCheck(m_InsertFlag == STRING);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
 {
+	m_InsertFlag = POLYGON;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
 {
+	pCmdUI->SetCheck(m_InsertFlag == POLYGON);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnInsertClosedcurve()	// 도형 버튼
 {
+	m_InsertFlag = CLOSEDCURVE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateInsertClosedcurve(CCmdUI *pCmdUI)	// 도형 버튼
 {
+	pCmdUI->SetCheck(m_InsertFlag == CLOSEDCURVE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
-
 void CGraphicEditorView::OnArrangeOrder()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnArrangeBringFront()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
-
 
 void CGraphicEditorView::OnArrangeSendBack()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnArrangeBringForward()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnArrangeSendBackward()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnArrangeGrouping()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnArrangeGroup()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateArrangeGroup(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
-
 void CGraphicEditorView::OnArrangeUngroup()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
-
-
 void CGraphicEditorView::OnZoomIn()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnZoomOut()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnZoom100()
 {
+	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
-
 
 void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
+
+
+// CGraphicEditorView 작업
+
+void CGraphicEditorView::clearInsertFlag()
+{
+	m_InsertFlag = NONE;
+}
+
+
+
+// CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의
+
+
