@@ -289,8 +289,8 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드리그
 			if (m_InsertFlag == LINE){
-				currentFigure->creating(nFlags, CGlobal::getPointF(point));
-				Invalidate();
+			currentFigure->creating(nFlags, CGlobal::getPointF(point));
+			Invalidate();
 			}
 		}
 	}
@@ -491,7 +491,9 @@ void CGraphicEditorView::OnInsertLine()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 테스트입니다!!
-	currentFigure = new CLine();
+	CClientDC dc(this);
+	Graphics gp(dc);
+	currentFigure = new CLine(&gp);
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)

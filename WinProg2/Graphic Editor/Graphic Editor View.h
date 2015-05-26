@@ -49,6 +49,8 @@ public:
 
 	int m_mode;
 
+	Graphics* m_Graphics;
+
 // 작업입니다.
 public:
 	void clearInsertFlag();

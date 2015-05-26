@@ -14,6 +14,14 @@ CLine::CLine()
 	//m_LinePen	
 }
 
+CLine::CLine(Graphics* lpGraphics)
+	: CStrap(new Graphics(*new CDC))
+	, m_Pen(new defaultPen)
+	, isStartingpoint(FALSE)
+{
+	;
+	//m_LinePen	
+}
 
 CLine::~CLine()
 {
@@ -129,10 +137,10 @@ void CLine::addPoint(PointF point) {
 void CLine::move(PointF originPoint, PointF targetPoint) {
 
 	/* 이동한 상대 값을 구하기 위함 */
-	PointF RelativePoint = PointF(Target - m_StartingPoint);
+	//PointF RelativePoint = PointF(Target - m_StartingPoint);
 
-	m_StartingPoint = m_StartingPoint + RelativePoint;
-	m_EndPoint = m_EndPoint + RelativePoint;
+	//m_StartingPoint = m_StartingPoint + RelativePoint;
+	//m_EndPoint = m_EndPoint + RelativePoint;
 
 }
 
@@ -140,7 +148,7 @@ void CLine::move(PointF originPoint, PointF targetPoint) {
 void CLine::resize(PointF point, PointF* anchorPoint, int resizeFlags) {
 	if (isStartingpoint == TRUE){
 		m_StartingPoint = point;
-		isStartingpoint == FALSE;
+		isStartingpoint = FALSE;
 	}
 	else{
 		m_EndPoint = point;

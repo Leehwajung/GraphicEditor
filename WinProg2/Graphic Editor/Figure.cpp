@@ -16,6 +16,7 @@ CFigure::CFigure()
 
 CFigure::CFigure(Graphics* lpGraphics)
 {
+	m_lpGraphics = lpGraphics;
 }
 
 CFigure::~CFigure()

@@ -11,6 +11,7 @@ class CLine : public CStrap
 {
 public:
 	CLine();
+	CLine(Graphics* lpGraphics);
 	~CLine();
 
 	// LButtonDown

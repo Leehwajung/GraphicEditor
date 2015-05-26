@@ -15,6 +15,11 @@ CStrap::CStrap()
 {
 }
 
+CStrap::CStrap(Graphics* lpGraphics)
+	:CFigure(lpGraphics)
+{
+}
+
 CStrap::~CStrap()
 {
 }

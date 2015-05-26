@@ -11,6 +11,7 @@ class CStrap : public CFigure
 {
 public:
 	CStrap();
+	CStrap(Graphics* lpGraphics);
 	virtual ~CStrap();
 
 	//// LButtonDown
