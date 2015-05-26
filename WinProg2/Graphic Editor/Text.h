@@ -7,7 +7,7 @@
 
 //using Gdiplus::Color;
 
-class CText : public RectFangle
+class CText : public CRectangle
 {
 public:
 	CText();

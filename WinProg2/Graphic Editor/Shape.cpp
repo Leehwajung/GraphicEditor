@@ -17,29 +17,71 @@ CShape::CShape()
 
 }
 
+CShape::CShape(Pen* pen, Brush* brush)
+{
+	m_Pen = pen->Clone();
+	m_Brush = brush->Clone();
+}
+
 CShape::~CShape()
 {
-	m_Pen->~Pen();
-	m_Brush->~Brush();
+	if (m_Pen) {
+		m_Pen->~Pen();
+	}
+	if (m_Brush) {
+		m_Brush->~Brush();
+	}
 }
 
 
 // CShape ¸â¹ö ÇÔ¼ö
 
+// ÀÛ¾÷
 Pen* CShape::getPen() {
 	return m_Pen;
 }
 
 void CShape::setPen(const Pen* pen) {
+	if (m_Pen) {
+		m_Pen->~Pen();
+	}
 	m_Pen = pen->Clone();
 }
-
 
 Brush* CShape::getBrush() {
 	return m_Brush;
 }
 
-
 void CShape::setBrush(const Brush* brush) {
+	if (m_Brush) {
+		m_Brush->~Brush();
+	}
 	m_Brush = brush->Clone();
+}
+
+// ÀçÁ¤ÀÇ
+/* À±°û¼± »ö ¼³Á¤ */
+void CShape::setLineColor(const Color& LineColor) {
+	m_Pen->SetColor(LineColor);
+}
+
+/* À±°û¼± µÎ²² ¼³Á¤ */
+void CShape::setLineWidth(const REAL& LineWidth) {
+	m_Pen->SetWidth(LineWidth);
+}
+
+/* À±°û¼± ÆÐÅÏ ¼³Á¤ */
+void CShape::setLinePattern(const DashStyle& LinePattern) {
+	m_Pen->SetDashStyle(LinePattern);
+}
+
+/* Ä¥ÇÏ±â »ö ¼³Á¤ */
+void CShape::setFillColor(const Color& FillColor) {
+	
+}
+
+/* Ä¥ÇÏ±â ÆÐÅÏ ¼³Á¤ */
+void CShape::setFillPattern(const int FillPattern) {
+
+	m_lpGraphics->GetHDC();
 }

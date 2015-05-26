@@ -99,27 +99,27 @@ void CFigure::destroy() {
 }
 
 /* À±°û¼± »ö ¼³Á¤ */
-void CFigure::setLineColor(Color LineColor) {
+void CFigure::setLineColor(const Color& LineColor) {
 
 }
 
 /* À±°û¼± µÎ²² ¼³Á¤ */
-void CFigure::setLineWidth(int LineWidth) {
+void CFigure::setLineWidth(const REAL& LineWidth) {
 
 }
 
 /* À±°û¼± ÆÐÅÏ ¼³Á¤ */
-void CFigure::setLinePattern(int LinePattern) {
+void CFigure::setLinePattern(const DashStyle& LinePattern) {
 
 }
 
 /* Ä¥ÇÏ±â »ö ¼³Á¤ */
-void CFigure::setFillColor(Color FillColor) {
+void CFigure::setFillColor(const Color& FillColor) {
 
 }
 
 /* Ä¥ÇÏ±â ÆÐÅÏ ¼³Á¤ */
-void CFigure::setFillPattern(int FillPattern) {
+void CFigure::setFillPattern(const int FillPattern) {
 
 }
 

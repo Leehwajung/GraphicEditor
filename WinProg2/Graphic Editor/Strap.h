@@ -35,9 +35,9 @@ public:
 	//// Menu Item
 	//virtual void destroy();										// 개체 삭제
 
-	//virtual void setLineColor(Color lineColor);					// 끈 색 설정
-	//virtual void setLineWidth(int lineWidth);					// 끈 두께 설정
-	//virtual void setLinePattern(int linePattern);				// 끈 패턴 설정
+	//virtual void setLineColor(const Color& LineColor);					// 끈 색 설정
+	//virtual void setLineWidth(const REAL& LineWidth);					// 끈 두께 설정
+	//virtual void setLinePattern(const DashStyle& LinePattern);				// 끈 패턴 설정
 	//virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 	// Getter / Setter

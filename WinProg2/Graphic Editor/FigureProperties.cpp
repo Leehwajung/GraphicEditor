@@ -46,7 +46,7 @@ Color CFigureProperties::getLineColor() {
 /**
  * param LineColor the LineColor to set
  */
-void CFigureProperties::setLineColor(Color LineColor) {
+void CFigureProperties::setLineColor(const Color& LineColor) {
 	this->m_LineColor = LineColor;
 }
 
@@ -60,7 +60,7 @@ int CFigureProperties::getLinePattern() {
 /**
  * param LinePattern the LinePattern to set
  */
-void CFigureProperties::setLinePattern(int LinePattern) {
+void CFigureProperties::setLinePattern(const DashStyle& LinePattern) {
 	this->m_LinePattern = LinePattern;
 }
 
@@ -74,7 +74,7 @@ int CFigureProperties::getLineWidth() {
 /**
  * param LineWidth the LineWidth to set
  */
-void CFigureProperties::setLineWidth(int LineWidth) {
+void CFigureProperties::setLineWidth(const REAL& LineWidth) {
 	this->m_LineWidth = LineWidth;
 }
 

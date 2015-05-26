@@ -45,6 +45,51 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
 	ON_WM_CONTEXTMENU()
+	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClear)
+	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClearAll)
+	ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditCopy)
+	ON_COMMAND(ID_EDIT_CUT, &CGraphicEditorView::OnEditCut)
+	//ON_COMMAND(ID_EDIT_PASTE, &CGraphicEditorView::OnEditFind)
+	ON_COMMAND(ID_EDIT_PASTE, &CGraphicEditorView::OnEditPaste)
+	ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditDelete)
+	//ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditRepeat)
+	//ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditReplace)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, &CGraphicEditorView::OnEditSelectAll)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, &CGraphicEditorView::OnEditUndo)
+	ON_COMMAND(ID_EDIT_SELECT_ALL, &CGraphicEditorView::OnEditRedo)
+	ON_COMMAND(ID_IMAGE_CANVAS_SIZE, &CGraphicEditorView::OnImageCanvasSize)
+	ON_COMMAND(ID_INSERT_LINE, &CGraphicEditorView::OnInsertLine)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_LINE, &CGraphicEditorView::OnUpdateInsertLine)
+	ON_COMMAND(ID_INSERT_POLYLINE, &CGraphicEditorView::OnInsertPolyline)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_POLYLINE, &CGraphicEditorView::OnUpdateInsertPolyline)
+	ON_COMMAND(ID_INSERT_PENCIL, &CGraphicEditorView::OnInsertPencil)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_PENCIL, &CGraphicEditorView::OnUpdateInsertPencil)
+	ON_COMMAND(ID_INSERT_CURVE, &CGraphicEditorView::OnInsertCurve)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_CURVE, &CGraphicEditorView::OnUpdateInsertCurve)
+	ON_COMMAND(ID_INSERT_ELLIPSE, &CGraphicEditorView::OnInsertEllipse)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_ELLIPSE, &CGraphicEditorView::OnUpdateInsertEllipse)
+	ON_COMMAND(ID_INSERT_RECTANGLE, &CGraphicEditorView::OnInsertRectangle)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_RECTANGLE, &CGraphicEditorView::OnUpdateInsertRectangle)
+	ON_COMMAND(ID_INSERT_STRING, &CGraphicEditorView::OnInsertString)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_STRING, &CGraphicEditorView::OnUpdateInsertString)
+	ON_COMMAND(ID_INSERT_POLYGON, &CGraphicEditorView::OnInsertPolygon)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_POLYGON, &CGraphicEditorView::OnUpdateInsertPolygon)
+	ON_COMMAND(ID_INSERT_CLOSEDCURVE, &CGraphicEditorView::OnInsertClosedcurve)
+	ON_UPDATE_COMMAND_UI(ID_INSERT_CLOSEDCURVE, &CGraphicEditorView::OnUpdateInsertClosedcurve)
+	ON_COMMAND(ID_ARRANGE_ORDER, &CGraphicEditorView::OnArrangeOrder)
+	ON_COMMAND(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnArrangeBringFront)
+	ON_COMMAND(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnArrangeSendBack)
+	ON_COMMAND(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnArrangeBringForward)
+	ON_COMMAND(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnArrangeSendBackward)
+	ON_COMMAND(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnArrangeGrouping)
+	ON_COMMAND(ID_ARRANGE_GROUP, &CGraphicEditorView::OnArrangeGroup)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_GROUP, &CGraphicEditorView::OnUpdateArrangeGroup)
+	ON_COMMAND(ID_ARRANGE_UNGROUP, &CGraphicEditorView::OnArrangeUngroup)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_UNGROUP, &CGraphicEditorView::OnUpdateArrangeUngroup)
+	ON_COMMAND(ID_ZOOM_IN, &CGraphicEditorView::OnZoomIn)
+	ON_COMMAND(ID_ZOOM_OUT, &CGraphicEditorView::OnZoomOut)
+	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
+	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
 END_MESSAGE_MAP()
 
 
@@ -302,3 +347,275 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 // CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의
+
+
+//void CGraphicEditorView::OnEditClear()
+//{
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
+
+
+//void CGraphicEditorView::OnEditClearAll()
+//{
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
+
+
+void CGraphicEditorView::OnEditCopy()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnEditCut()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+//void CGraphicEditorView::OnEditFind()
+//{
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
+
+
+void CGraphicEditorView::OnEditPaste()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnEditDelete()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+//void CGraphicEditorView::OnEditRepeat()
+//{
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
+
+
+//void CGraphicEditorView::OnEditReplace()
+//{
+//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+//}
+
+
+void CGraphicEditorView::OnEditSelectAll()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnEditUndo()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnEditRedo()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnImageCanvasSize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertLine()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertPolyline()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertPolyline(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertPencil()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertPencil(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertCurve()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertEllipse()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertRectangle()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertString()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnInsertClosedcurve()	// 도형 버튼
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateInsertClosedcurve(CCmdUI *pCmdUI)	// 도형 버튼
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeOrder()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeBringFront()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+
+void CGraphicEditorView::OnArrangeSendBack()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeBringForward()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeSendBackward()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeGrouping()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeGroup()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateArrangeGroup(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnArrangeUngroup()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+
+void CGraphicEditorView::OnZoomIn()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnZoomOut()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnZoom100()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
