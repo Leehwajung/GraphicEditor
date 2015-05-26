@@ -48,7 +48,7 @@ public:
 
 	// LButtonUp
 	virtual void addPoint(PointF point);						// 점 추가
-	virtual void move(PointF target);							// 개체 이동
+	virtual void move(PointF originPoint, PointF targetPoint);	// 개체 이동
 	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
 	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)

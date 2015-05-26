@@ -113,7 +113,7 @@ void CLine::addPoint(PointF point) {
 }
 
 /* 개체 이동 */
-void CLine::move(PointF Target) {
+void CLine::move(PointF originPoint, PointF targetPoint) {
 
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = PointF(Target - m_StartingPoint);

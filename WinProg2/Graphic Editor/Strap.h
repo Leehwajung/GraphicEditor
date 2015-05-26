@@ -26,7 +26,7 @@ public:
 
 	//// LButtonUp / LButtonDlk
 	//virtual void addPoint(PointF point);						// 점 추가
-	//virtual void move(PointF target);							// 개체 이동
+	//virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
 	//virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
 
 	//// OnDraw / OnPaint

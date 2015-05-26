@@ -20,7 +20,7 @@ CShape::CShape()
 CShape::CShape(Pen* pen, Brush* brush)
 {
 	m_Pen = pen->Clone();
-	m_Brush = brush->Clone();
+	m_Brush = (SolidBrush*)brush->Clone();
 }
 
 CShape::~CShape()
@@ -29,7 +29,7 @@ CShape::~CShape()
 		m_Pen->~Pen();
 	}
 	if (m_Brush) {
-		m_Brush->~Brush();
+		m_Brush->~SolidBrush();
 	}
 }
 
@@ -52,11 +52,11 @@ Brush* CShape::getBrush() {
 	return m_Brush;
 }
 
-void CShape::setBrush(const Brush* brush) {
+void CShape::setBrush(const SolidBrush* brush) {
 	if (m_Brush) {
-		m_Brush->~Brush();
+		m_Brush->~SolidBrush();
 	}
-	m_Brush = brush->Clone();
+	m_Brush = (SolidBrush*) brush->Clone();
 }
 
 // 재정의
@@ -77,11 +77,10 @@ void CShape::setLinePattern(const DashStyle& LinePattern) {
 
 /* 칠하기 색 설정 */
 void CShape::setFillColor(const Color& FillColor) {
-	
+	m_Brush->SetColor(FillColor);
 }
 
 /* 칠하기 패턴 설정 */
 void CShape::setFillPattern(const int FillPattern) {
-
-	m_lpGraphics->GetHDC();
+	// 아직 구현 안함
 }
