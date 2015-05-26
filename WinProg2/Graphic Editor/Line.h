@@ -38,7 +38,6 @@ public:
 	virtual void setLineColor(const Color& LineColor);			// 선 색 설정
 	virtual void setLineWidth(const REAL& LineWidth);			// 선 두께 설정
 	virtual void setLinePattern(const DashStyle& LinePattern);	// 선 패턴 설정
-	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 
 private:
 
@@ -56,6 +55,9 @@ private:
 
 	int m_Gradient;
 
+	// 우선 임시 방편! 다시 바꿀 수도 있음. 
+	BOOL isStartingpoint;
+	
 	Color m_LineColor;	// 선 색
 	int m_LinePattern;	// 선 패턴
 	int m_LineWidth;	// 선 두께
