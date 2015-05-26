@@ -170,8 +170,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
-	CText::ss(this);
-
 }
 
 
@@ -206,7 +204,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 		if (m_InsertFlag == LINE){
-			currentFigure->addPoint(CGlobal::getPointF(m_LButtonPoint));
+			currentFigure->endCreate(CGlobal::getPointF(m_LButtonPoint));
 			m_InsertFlag = NONE;
 			Invalidate();
 		}
@@ -491,9 +489,6 @@ void CGraphicEditorView::OnInsertLine()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 테스트입니다!!
-	CClientDC dc(this);
-	Graphics gp(dc);
-	currentFigure = new CLine(&gp);
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)

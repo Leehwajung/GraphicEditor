@@ -41,8 +41,8 @@ CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
 	}
 
 	// 2. 현재 좌표가 선이 있는 영역에 있을 때 원래의 선의 기울기와 같을 때는 "Move모드" 이다.
-	else if (m_Rect.GetLeft() <= point.X && point.X <= m_Rect.GetRight() || m_Rect.GetRight() <= point.X && point.X <= m_Rect.GetLeft()){
-		if (m_Rect.GetTop() <= point.Y && point.Y <= m_Rect.GetBottom()|| m_Rect.GetBottom()<= point.Y && point.Y <= m_Rect.GetTop()){
+	else if (m_Area.GetLeft() <= point.X && point.X <= m_Area.GetRight() || m_Area.GetRight() <= point.X && point.X <= m_Area.GetLeft()){
+		if (m_Area.GetTop() <= point.Y && point.Y <= m_Area.GetBottom() || m_Area.GetBottom() <= point.Y && point.Y <= m_Area.GetTop()){
 
 			// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
 			int tmp_gradient = (m_StartingPoint.Y - point.Y) / (m_StartingPoint.X - point.X);
@@ -118,10 +118,10 @@ void CLine::endCreate(PointF point) {
 	m_EndPoint = point;
 	m_Gradient = (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
 
-	m_Rect.X = m_StartingPoint.X;
-	m_Rect.Y = m_StartingPoint.Y;
-	m_Rect.Width = abs(m_StartingPoint.X - m_EndPoint.X);
-	m_Rect.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
+	m_Area.X = m_StartingPoint.X;
+	m_Area.Y = m_StartingPoint.Y;
+	m_Area.Width = abs(m_StartingPoint.X - m_EndPoint.X);
+	m_Area.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
 }
 
 /* 개체 이동 */
