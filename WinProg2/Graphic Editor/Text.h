@@ -40,8 +40,8 @@ public:
 	//Keyboard Focus
 	virtual void OnKeyboardFocus(PointF point);//
 
-	static void ss(CView* view) {
-		view->CreateSolidCaret(20, 20);
+	static void ss(CView* view) {	// 캐럿 테스트 (테스트를 위해 static으로 선언)
+		view->CreateSolidCaret(10, 20);
 		view->SetCaretPos(CPoint(50, 50));
 		view->ShowCaret();
 	}

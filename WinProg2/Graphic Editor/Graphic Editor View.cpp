@@ -113,7 +113,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
-	CText::ss(this);
+	CText::ss(this);	// Ä³·µÅ×½ºÆ®
 
 }
 
