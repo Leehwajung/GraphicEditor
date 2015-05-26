@@ -61,12 +61,12 @@ void CFigure::resizing(UINT nFlags, PointF point) {
 }
 
 /* 점 추가 */
-void CFigure::addPoint(PointF point) {
+void CFigure::endCreate(PointF point) {
 
 }
 
 /* 개체 이동 */
-void CFigure::move(PointF Target) {
+void CFigure::move(PointF originPoint, PointF targetPoint) {
 
 }
 

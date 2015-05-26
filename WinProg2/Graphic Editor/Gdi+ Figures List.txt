@@ -1,19 +1,24 @@
-GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
-GDI+ Ref.		https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
-GDI+ Classes	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
+GDI+				https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
+GDI+ Ref.			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
+GDI+ Classes		https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
 
 
-Color			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534427(v=vs.85).aspx
+Color				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534427(v=vs.85).aspx
 
-Pen				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534485(v=vs.85).aspx
-Brush			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534424(v=vs.85).aspx
+Pen					https://msdn.microsoft.com/en-us/library/windows/desktop/ms534485(v=vs.85).aspx
+Brush				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534424(v=vs.85).aspx
+SolidBrush			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534508(v=vs.85).aspx
+LinearGradientBrush	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534473(v=vs.85).aspx
+PathGradientBrush	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534483(v=vs.85).aspx
+HatchBrush			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534459(v=vs.85).aspx
+TextureBrush		https://msdn.microsoft.com/en-us/library/windows/desktop/ms534512(v=vs.85).aspx
 
-PointF			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534488(v=vs.85).aspx
-RectF			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534497(v=vs.85).aspx
+PointF				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534488(v=vs.85).aspx
+RectF				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534497(v=vs.85).aspx
 
-Font			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534437(v=vs.85).aspx
-Image			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534462(v=vs.85).aspx
-Region			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534501(v=vs.85).aspx
+Font				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534437(v=vs.85).aspx
+Image				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534462(v=vs.85).aspx
+Region				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534501(v=vs.85).aspx
 
 
 1차원 도형 (Draw)

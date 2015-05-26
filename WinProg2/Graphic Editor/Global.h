@@ -14,13 +14,14 @@ using namespace Gdiplus;
 #define defaultColor Color::Black
 #define defaultPen Pen(Color::Black)
 #define defaultBrush SolidBrush(Color::Black)  
+#define defaultRectF RectF(0,0,0,0)
 #endif // !defaultValue
 
 
 static class CGlobal : public CObject
 {
 public:
-	
+	const static PointF getPointF(const CPoint& point);
 };
 
 

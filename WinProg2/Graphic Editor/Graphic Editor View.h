@@ -14,6 +14,8 @@
 
 #pragma once
 #include "Group.h"
+#include "Line.h"
+#include "Global.h"
 
 class CGraphicEditorView : public CView
 {

@@ -107,6 +107,7 @@ CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_MouseButtonFlag = NULL;
+	m_InsertFlag = NONE;
 }
 
 CGraphicEditorView::~CGraphicEditorView()
@@ -139,19 +140,22 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
-	///*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
-	//switch(m_mode){
-	//	case 1: // 폴리라인
-	//		break;
-	//	case 2: // 도형
-	//		break;
-	//	case 3 :// 텍스트
-	//	
-	//		break;
-	//// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
-	//// Graphics 포인터를 멤버 변수(m_lpGraphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
+	if (m_InsertFlag == LINE)
+		currentFigure->draw();
 
-	//}
+	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
+	switch(m_mode){
+		case 1: // 폴리라인
+			break;
+		case 2: // 도형
+			break;
+		case 3 :// 텍스트
+		
+			break;
+	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
+	// Graphics 포인터를 멤버 변수(m_lpGraphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
+
+	}
 	
 	// GDI+ 예제 코드 (사각형 그리기)
 	SolidBrush sb(Color(255,255,0,0));
@@ -166,7 +170,8 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
-	
+	CText::ss(this);
+
 }
 
 
@@ -181,6 +186,9 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+		if (m_InsertFlag == LINE){
+			currentFigure->create(CGlobal::getPointF(m_LButtonPoint));
+		}
 
 		CView::OnLButtonDown(nFlags, point);
 
@@ -197,6 +205,12 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+		if (m_InsertFlag == LINE){
+			currentFigure->addPoint(CGlobal::getPointF(m_LButtonPoint));
+			m_InsertFlag = NONE;
+			Invalidate();
+		}
+
 
 		CView::OnLButtonUp(nFlags, point);
 	}
@@ -274,7 +288,10 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 		}
 		else {							// 보조키 누르지 않고 드리그
-
+			if (m_InsertFlag == LINE){
+				currentFigure->creating(nFlags, CGlobal::getPointF(point));
+				Invalidate();
+			}
 		}
 	}
 
@@ -472,6 +489,9 @@ void CGraphicEditorView::OnInsertLine()
 {
 	m_InsertFlag = LINE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 테스트입니다!!
+	currentFigure = new CLine();
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)

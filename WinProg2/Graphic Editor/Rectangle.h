@@ -11,10 +11,37 @@ class CRectangle : public CShape
 {
 public:
 	CRectangle();
+	CRectangle(RectF& rect);
+	CRectangle(RectF& rect, Pen* pen, SolidBrush* brush);
 	virtual ~CRectangle();
+
+	// LButtonDown
+	virtual void create(PointF startingPoint);					// 개체 생성
+	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
+
+
+	// OnMouseMove
+	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
+	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
+	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+
+	// LButtonUp
+	virtual void endCreate(PointF point);						// 점 추가
+	virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
+	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
+	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
+	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+
+	// OnDraw / OnPaint
+	virtual void draw();										// 개체 그리기
+	virtual void drawSelect();
+
+	// Menu Item
+	virtual void destroy();										// 개체 삭제
 
 // 특성
 protected:
-	RectF m_rect;	// 사각형
+	RectF m_Rect;	// 사각형
 };
 

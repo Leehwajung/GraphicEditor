@@ -18,8 +18,8 @@ CLine::CLine()
 CLine::~CLine()
 {
 	if (m_Pen) {
-		m_Pen->~Pen();
-	}
+	m_Pen->~Pen();
+}
 }
 
 // LButtonDown 
@@ -70,6 +70,8 @@ CFigure::operationModeFlags CLine::cursorPosition(RectF rect) {
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
 
+	m_OperationMode = cursorPosition(point);
+
 	switch (m_OperationMode){
 	case operationModeFlags::Create:
 		creating(nFlags, point);
@@ -104,7 +106,7 @@ void CLine::moving(UINT nFlags, PointF point) {
 void CLine::resizing(UINT nFlags, PointF point) {
 	if (isStartingpoint == TRUE){
 		m_lpGraphics->DrawLine(m_Pen, point, m_EndPoint);
-	}
+}
 	else{
 		m_lpGraphics->DrawLine(m_Pen, m_StartingPoint, point);
 	}
@@ -113,7 +115,7 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 // LButtonUp
 /* 점 추가 */
-void CLine::addPoint(PointF point){
+void CLine::endCreate(PointF point) {
 	m_EndPoint = point;
 	m_Gradient = (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
 
@@ -124,7 +126,7 @@ void CLine::addPoint(PointF point){
 }
 
 /* 개체 이동 */
-void CLine::move(PointF Target) {
+void CLine::move(PointF originPoint, PointF targetPoint) {
 
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = PointF(Target - m_StartingPoint);
@@ -142,7 +144,7 @@ void CLine::resize(PointF point, PointF* anchorPoint, int resizeFlags) {
 	}
 	else{
 		m_EndPoint = point;
-	}
+}
 
 }
 
@@ -156,7 +158,7 @@ void CLine::draw() {
 // Menu Item
 /* 선 삭제 */
 void CLine::destroy() {
-	
+
 	if (this) {
 		this->~CLine();
 	}
