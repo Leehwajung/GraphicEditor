@@ -9,6 +9,7 @@
 CLine::CLine()
 	:CStrap()
 	, m_Pen(new defaultPen)
+	, isStartingpoint(FALSE)
 {
 	//m_LinePen	
 }
@@ -16,7 +17,9 @@ CLine::CLine()
 
 CLine::~CLine()
 {
+	if (m_Pen) {
 	m_Pen->~Pen();
+}
 }
 
 // LButtonDown 
@@ -32,6 +35,9 @@ CFigure::operationModeFlags CLine::cursorPosition(PointF point) {
 
 	// 1. 현재 좌표가  선의 StartingPoint나 EndPoint이면 "Resize모드" 이다. 
 	if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
+		if (point.Equals(m_StartingPoint) == TRUE)
+			isStartingpoint = TRUE;
+
 		return Resize;
 	}
 
@@ -96,7 +102,12 @@ void CLine::moving(UINT nFlags, PointF point) {
 
 /* 크기 변경 그리기 */
 void CLine::resizing(UINT nFlags, PointF point) {
-
+	if (isStartingpoint == TRUE){
+		m_lpGraphics->DrawLine(m_Pen, point, m_EndPoint);
+}
+	else{
+		m_lpGraphics->DrawLine(m_Pen, m_StartingPoint, point);
+	}
 }
 
 
@@ -125,18 +136,20 @@ void CLine::move(PointF originPoint, PointF targetPoint) {
 
 /* 선 크기(길이) 변경 */
 void CLine::resize(PointF point, PointF* anchorPoint, int resizeFlags) {
-
+	if (isStartingpoint == TRUE){
+		m_StartingPoint = point;
+		isStartingpoint == FALSE;
+	}
+	else{
+		m_EndPoint = point;
 }
-
-/* 설정된 값으로 개체 속성 설정 */
-void CLine::setProperties(CFigureProperties properties) {
 
 }
 
 // OnDraw / OnPaint
 /* 선 그리기 */
 void CLine::draw() {
-
+	m_lpGraphics->DrawLine(m_Pen,m_StartingPoint, m_EndPoint);
 }
 
 
@@ -144,6 +157,10 @@ void CLine::draw() {
 /* 선 삭제 */
 void CLine::destroy() {
 
+	if (this) {
+		this->~CLine();
+	}
+	//invalidate 다른 것들은 일단 보류
 }
 
 // 속성에 관한 부분은 Property class를 이용하기로 했음
