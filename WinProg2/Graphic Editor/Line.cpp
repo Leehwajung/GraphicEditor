@@ -148,17 +148,17 @@ void CLine::destroy() {
 
 // 속성에 관한 부분은 Property class를 이용하기로 했음
 /* 선 색 설정 */
-void CLine::setLineColor(const Color& LineColor) {
-	m_LineColor = LineColor;
+void CLine::setLineColor(Color lineColor) {
+	m_LineColor = lineColor;
 }
 
 /* 선 두께 설정 */
-void CLine::setLineWidth(const REAL& LineWidth) {
-	m_LineWidth = LineWidth;
+void CLine::setLineWidth(int lineWidth) {
+	 m_LineWidth = lineWidth;
 }
 
 /* 선 패턴 설정 */
-void CLine::setLinePattern(const DashStyle& LinePattern) {
-	m_LinePattern = LinePattern;
+void CLine::setLinePattern(int linePattern) {
+	m_LinePattern = linePattern;
 }
 
