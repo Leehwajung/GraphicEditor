@@ -80,7 +80,7 @@ void  CText::resizing(UINT nFlags, PointF point){// 크기 변경 그리기
 }			
 ///////////////////////////////////////////////////////////////////////
 // LButtonUp / LButtonDlk
-// void endCreate(PointF point){}						// 점 추가
+// void endCreate(PointF point){}						// 생성 완료
 void   CText::move(PointF originPoint, PointF targetPoint){// 개체 이동
 }							
 void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경

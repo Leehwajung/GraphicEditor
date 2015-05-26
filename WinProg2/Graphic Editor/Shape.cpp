@@ -10,14 +10,24 @@
 
 // CShape
 
-CShape::CShape()
-	: m_Pen(new defaultPen)
+CShape::CShape(CClientDC* lpClientDC)
+	: CFigure(lpClientDC)
+	, m_Pen(new defaultPen)
 	, m_Brush(new defaultBrush)
 {
 
 }
 
-CShape::CShape(Pen* pen, Brush* brush)
+CShape::CShape(Graphics* lpGraphics)
+	: CFigure(lpGraphics)
+	, m_Pen(new defaultPen)
+	, m_Brush(new defaultBrush)
+{
+
+}
+
+CShape::CShape(CClientDC* lpClientDC, Pen* pen, SolidBrush* brush)
+	: CFigure(lpClientDC)
 {
 	m_Pen = pen->Clone();
 	m_Brush = (SolidBrush*)brush->Clone();
@@ -48,7 +58,7 @@ void CShape::setPen(const Pen* pen) {
 	m_Pen = pen->Clone();
 }
 
-Brush* CShape::getBrush() {
+SolidBrush* CShape::getBrush() {
 	return m_Brush;
 }
 

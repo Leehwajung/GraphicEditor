@@ -140,8 +140,8 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
-	if (m_InsertFlag == LINE)
-		currentFigure->draw();
+	//if (m_InsertFlag == LINE)
+		m_CurrentFigure->draw();
 
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
@@ -171,7 +171,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
 	CText::ss(this);
-
 }
 
 
@@ -187,7 +186,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 		if (m_InsertFlag == LINE){
-			currentFigure->create(CGlobal::getPointF(m_LButtonPoint));
+			m_CurrentFigure->create(CGlobal::getPointF(m_LButtonPoint));
 		}
 
 		CView::OnLButtonDown(nFlags, point);
@@ -206,7 +205,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 		if (m_InsertFlag == LINE){
-			currentFigure->addPoint(CGlobal::getPointF(m_LButtonPoint));
+			m_CurrentFigure->endCreate(CGlobal::getPointF(m_LButtonPoint));
 			m_InsertFlag = NONE;
 			Invalidate();
 		}
@@ -289,7 +288,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드리그
 			if (m_InsertFlag == LINE){
-				currentFigure->creating(nFlags, CGlobal::getPointF(point));
+				m_CurrentFigure->creating(nFlags, CGlobal::getPointF(point));
 				Invalidate();
 			}
 		}
@@ -491,7 +490,7 @@ void CGraphicEditorView::OnInsertLine()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 테스트입니다!!
-	currentFigure = new CLine();
+	m_CurrentFigure = new CLine();
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
@@ -552,6 +551,8 @@ void CGraphicEditorView::OnInsertRectangle()
 {
 	m_InsertFlag = RECTANGLE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	m_CurrentFigure = new CRectangle();
 }
 
 void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)

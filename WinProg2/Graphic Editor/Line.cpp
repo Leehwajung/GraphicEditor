@@ -114,7 +114,7 @@ void CLine::resizing(UINT nFlags, PointF point) {
 
 
 // LButtonUp
-/* 점 추가 */
+/* 생성 완료 */
 void CLine::endCreate(PointF point) {
 	m_EndPoint = point;
 	m_Gradient = (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);

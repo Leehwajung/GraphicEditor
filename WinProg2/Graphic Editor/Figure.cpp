@@ -10,12 +10,18 @@ using namespace Gdiplus;
 
 // CFigure
 
-CFigure::CFigure()
-{
-}
+//CFigure::CFigure()
+//{
+//}
 
 CFigure::CFigure(Graphics* lpGraphics)
 {
+	m_lpGraphics = lpGraphics;
+}
+
+CFigure::CFigure(CClientDC* lpClientDC)
+{
+	m_lpGraphics = new Graphics(*lpClientDC);
 }
 
 CFigure::~CFigure()
@@ -60,7 +66,7 @@ void CFigure::resizing(UINT nFlags, PointF point) {
 
 }
 
-/* 점 추가 */
+/* 생성 완료 */
 void CFigure::endCreate(PointF point) {
 
 }
