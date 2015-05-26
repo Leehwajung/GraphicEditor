@@ -10,7 +10,22 @@
 // CRectangle
 
 CRectangle::CRectangle()
+	: CShape()
+	, m_Rect(defaultRectF)
 {
+}
+
+CRectangle::CRectangle(RectF& rect)
+	: CShape()
+	, m_Rect(rect)
+{
+}
+
+CRectangle::CRectangle(RectF& rect, Pen* pen, SolidBrush* brush)
+	: m_Rect(rect)
+{
+	m_Pen = pen->Clone();
+	m_Brush = (SolidBrush*) brush->Clone();
 }
 
 CRectangle::~CRectangle()
@@ -19,4 +34,78 @@ CRectangle::~CRectangle()
 
 
 // CRectangle 멤버 함수
+
+/* 개체 생성 */
+void CRectangle::create(PointF StartingPoint) {
+	this->m_StartingPoint = StartingPoint;
+}
+
+/* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지) */
+CFigure::operationModeFlags CRectangle::cursorPosition(PointF point) {
+	return None;
+}
+
+/* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
+CFigure::operationModeFlags CRectangle::cursorPosition(RectF rect) {
+	return None;
+}
+
+/* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
+void CRectangle::mouseMoveOperation(UINT nFlags, PointF point) {
+
+}
+
+/* 생성 그리기 */
+void CRectangle::creating(UINT nFlags, PointF point) {
+
+}
+
+/* 이동 그리기 */
+void CRectangle::moving(UINT nFlags, PointF point) {
+
+}
+
+/* 크기 변경 그리기 */
+void CRectangle::resizing(UINT nFlags, PointF point) {
+
+}
+
+/* 점 추가 */
+void CRectangle::addPoint(PointF point) {
+
+}
+
+/* 개체 이동 */
+void CRectangle::move(PointF originPoint, PointF targetPoint) {
+
+}
+
+/* 개체 크기 변경 */
+void CRectangle::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resizeFlags /*= Free*/) {
+
+	//if (!anchorPoint) {
+	//	anchorPoint = &m_StartingPoint;
+	//}
+}
+
+/* 설정된 값으로 개체 속성 설정 */
+void CRectangle::setProperties(CFigureProperties properties) {
+
+}
+
+/* 개체 그리기 */
+void CRectangle::draw() {
+	m_lpGraphics->DrawRectangle(m_Pen, m_Rect);
+	m_lpGraphics->FillRectangle(m_Brush, m_Rect);
+}
+
+/* 개체 선택선 그리기 */
+void CRectangle::drawSelect() {
+
+}
+
+/* 개체 삭제 */
+void CRectangle::destroy() {
+
+}
 

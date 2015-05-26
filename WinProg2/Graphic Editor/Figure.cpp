@@ -66,7 +66,7 @@ void CFigure::addPoint(PointF point) {
 }
 
 /* 개체 이동 */
-void CFigure::move(PointF Target) {
+void CFigure::move(PointF originPoint, PointF targetPoint) {
 
 }
 
