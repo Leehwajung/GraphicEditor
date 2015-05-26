@@ -548,7 +548,7 @@ void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnInsertRectangle()
 {
 	m_InsertFlag = RECTANGLE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	// TODO: 여기에 명령 처리기ㅌ 코드를 추가합니다.
 
 	m_CurrentFigure = new CRectangle();
 }
