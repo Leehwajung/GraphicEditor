@@ -20,7 +20,7 @@ using namespace Gdiplus;
 static class CGlobal : public CObject
 {
 public:
-	
+	const static PointF getPointF(const CPoint& point);
 };
 
 

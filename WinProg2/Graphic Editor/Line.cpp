@@ -69,6 +69,8 @@ CFigure::operationModeFlags CLine::cursorPosition(RectF rect) {
 // OnMouseMove
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
 void CLine::mouseMoveOperation(UINT nFlags, PointF point) {
+	
+	m_OperationMode = cursorPosition(point);
 
 	switch (m_OperationMode){
 	case operationModeFlags::Create:
