@@ -62,7 +62,7 @@ void CFigure::resizing(UINT nFlags, PointF point) {
 }
 
 /* Á¡ Ãß°¡ */
-void CFigure::addPoint(PointF point) {
+void CFigure::endCreate(PointF point) {
 
 }
 

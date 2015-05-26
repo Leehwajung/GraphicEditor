@@ -71,13 +71,15 @@ void CRectangle::resizing(UINT nFlags, PointF point) {
 }
 
 /* 점 추가 */
-void CRectangle::addPoint(PointF point) {
+void CRectangle::endCreate(PointF point) {
 
 }
 
 /* 개체 이동 */
 void CRectangle::move(PointF originPoint, PointF targetPoint) {
-
+	// originPoint: ButtonDown
+	// targetPoint: ButtonUp
+	m_StartingPoint = m_StartingPoint + targetPoint - originPoint;
 }
 
 /* 개체 크기 변경 */
@@ -86,10 +88,10 @@ void CRectangle::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resize
 	//if (!anchorPoint) {
 	//	anchorPoint = &m_StartingPoint;
 	//}
-}
 
-/* 설정된 값으로 개체 속성 설정 */
-void CRectangle::setProperties(CFigureProperties properties) {
+	if (!anchorPoint) {
+		anchorPoint = &Point;
+	}
 
 }
 

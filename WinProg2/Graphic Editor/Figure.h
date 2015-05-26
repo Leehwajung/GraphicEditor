@@ -47,10 +47,10 @@ public:
 	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
 
 	// LButtonUp
-	virtual void addPoint(PointF point);						// 점 추가
+	virtual void endCreate(PointF point);						// 점 추가
 	virtual void move(PointF originPoint, PointF targetPoint);	// 개체 이동
-	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
-	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
+	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);	// 개체 크기 변경
+	
 	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
 
 	// OnDraw / OnPaint
@@ -82,7 +82,7 @@ protected:
 	Graphics* m_lpGraphics;
 	PointF m_StartingPoint;
 	operationModeFlags m_OperationMode;
-	RectF m_Rect;			// 개체 선택 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
+	RectF m_Area;			// 개체 선택 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
 };
 
 
