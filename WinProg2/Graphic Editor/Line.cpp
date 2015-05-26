@@ -14,15 +14,6 @@ CLine::CLine()
 	//m_LinePen	
 }
 
-CLine::CLine(Graphics* lpGraphics)
-	: CStrap(new Graphics(*new CDC))
-	, m_Pen(new defaultPen)
-	, isStartingpoint(FALSE)
-{
-	;
-	//m_LinePen	
-}
-
 CLine::~CLine()
 {
 	if (m_Pen) {
