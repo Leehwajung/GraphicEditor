@@ -4,9 +4,6 @@
 
 #pragma once
 #include "Figure.h"
-//#include <gdiplus.h>
-
-//using Gdiplus::Color;
 
 // CShape 명령 대상입니다.
 

@@ -5,7 +5,7 @@
 #pragma once
 #include "Strap.h"
 
-
+// CLine 명령 대상입니다.
 // Make and Edit by Byun Jun
 class CLine : public CStrap
 {

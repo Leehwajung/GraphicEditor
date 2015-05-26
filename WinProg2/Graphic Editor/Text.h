@@ -5,7 +5,7 @@
 #pragma once
 #include "Rectangle.h"
 
-//using Gdiplus::Color;
+// CText 명령 대상입니다.
 
 class CText : public CRectangle
 {
