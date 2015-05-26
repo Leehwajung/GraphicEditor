@@ -13,3 +13,11 @@
 
 
 // CGlobal ¸â¹ö ÇÔ¼ö
+const PointF CGlobal::getPointF(const CPoint& point){
+	PointF tmp_PointF;
+	
+	tmp_PointF.X = (REAL) point.x;
+	tmp_PointF.Y = (REAL) point.y;
+
+	return tmp_PointF;
+}

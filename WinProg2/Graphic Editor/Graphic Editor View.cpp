@@ -107,6 +107,7 @@ CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_MouseButtonFlag = NULL;
+	m_InsertFlag = NONE;
 }
 
 CGraphicEditorView::~CGraphicEditorView()
@@ -138,6 +139,9 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
+
+	if (m_InsertFlag == LINE)
+		currentFigure->draw();
 
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
@@ -182,6 +186,9 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+		if (m_InsertFlag == LINE){
+			currentFigure->create(CGlobal::getPointF(m_LButtonPoint));
+		}
 
 		CView::OnLButtonDown(nFlags, point);
 
@@ -198,6 +205,12 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+		if (m_InsertFlag == LINE){
+			currentFigure->addPoint(CGlobal::getPointF(m_LButtonPoint));
+			m_InsertFlag = NONE;
+			Invalidate();
+		}
+
 
 		CView::OnLButtonUp(nFlags, point);
 	}
@@ -275,7 +288,10 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 		}
 		else {							// 보조키 누르지 않고 드리그
-
+			if (m_InsertFlag == LINE){
+				currentFigure->creating(nFlags, CGlobal::getPointF(point));
+				Invalidate();
+			}
 		}
 	}
 
@@ -473,6 +489,9 @@ void CGraphicEditorView::OnInsertLine()
 {
 	m_InsertFlag = LINE;	// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	// 테스트입니다!!
+	currentFigure = new CLine();
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
