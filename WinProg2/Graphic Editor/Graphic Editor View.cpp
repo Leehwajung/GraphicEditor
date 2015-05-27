@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ZOOM_OUT, &CGraphicEditorView::OnZoomOut)
 	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
+	ON_WM_CHAR()
 END_MESSAGE_MAP()
 
 
@@ -169,8 +170,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
-
-	CText::ss(this);
 
 }
 
@@ -690,3 +689,11 @@ void CGraphicEditorView::clearInsertFlag()
 // CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의
 
 
+
+
+void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	CView::OnChar(nChar, nRepCnt, nFlags);
+	//캐럿이 생성되어있고, 글자입력모드라면?
+}

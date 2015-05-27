@@ -73,7 +73,7 @@ void  CText::mouseMoveOperation(UINT nFlags, PointF point){// 드래그 중이어야//
 ///// mouseMoveOperation이 호출에 사용할 함수 (생성 / 이동 / 크기 변경 판단)
 void  CText::creating(UINT nFlags, PointF point){//생성 그리기
 	// 외곽선 그리기는 shape 함수를 이용 //
-	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
+
 }
 void  CText::moving(UINT nFlags, PointF point){// 이동 그리기
 	
@@ -82,7 +82,7 @@ void  CText::moving(UINT nFlags, PointF point){// 이동 그리기
 	
 	PointF RelativePoint = PointF(point - m_StartingPoint);
 	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
-		
+		 
 }		
 void  CText::resizing(UINT nFlags, PointF point){// 크기 변경 그리기
 	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
@@ -133,6 +133,15 @@ void   CText::move(PointF target){// 개체 이동
 void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
 
 }			
+// LButtonUp
+void CText::endCreate(PointF point){
+	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
+	CDC *pDC = m_View->GetDC();
+	Graphics graphics(*pDC);
+	WCHAR string;
+	//graphics.DrawString(WCHAR * string, int length, FONT * font, POINTF &origin, BRUSH *brush);
+
+}
 
 // OnDraw / OnPaint
 void   CText::draw(CDC * m_lpDC){
@@ -144,15 +153,11 @@ void   CText::draw(CDC * m_lpDC){
 
 //Keyboard Focus
 void CText::OnKeyboardFocus(PointF point){
-	operationModeFlags region_check = cursorPosition(point);
-	
-	if (region_check == Create){//Create 상태면
-		m_View->CreateSolidCaret(m_StartingPoint.X+10, m_StartingPoint.Y-10);
+	CPoint cur(m_StartingPoint.X, m_StartingPoint.Y);
+		m_View->CreateSolidCaret(10,20);// 캐럿 사이즈
+		m_View->SetCaretPos(cur);
 		m_View->ShowCaret();
-	}
-	else {//이미 만들어져있는 상태로 다시 showcaret
-
-	}
+		character_mode = TRUE; // 캐릭터 입력모드
 }
 
 // http://lab.cliel.com/28  마우스 움직임 제한.

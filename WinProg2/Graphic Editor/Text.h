@@ -6,6 +6,7 @@
 #include "Rectangle.h"
 # define RESIZE_POINT 5 // 크기변경시 기본단위
 // CText 명령 대상입니다.
+#include <afxtempl.h>//CArray 클래스 이용
 
 class CText : public CRectangle
 {
@@ -33,7 +34,7 @@ public:
 	//virtual void addPoint(PointF point);						// 점 추가
 	virtual void move(PointF target);							// 개체 이동
 	virtual void resize(PointF point, int resizeFlags);			// 개체 크기 변경
-
+	virtual void endCreate(PointF point);
 	// OnDraw / OnPaint
 	virtual void draw(CDC * m_lpDC);//CpaintDC 사용
 
@@ -48,14 +49,14 @@ public:
 	//}
 // 특성
 private:
-	CString m_String;	// 입력받을 문자열
+	//CString m_String;	// 입력받을 문자열
 	CView *m_View;
 	Color m_FontColor;	// 글자색
 	LOGFONT m_FontLog;	// 폰트에 대한 정보들 (글꼴, 크기, 굵게, 이탤릭, 밑줄, 취소선 등)
 
 	//	PointF points;
 	// 글꼴
-	//CArray <TCHAR, TCHAR> m_str;
+	CArray <TCHAR, TCHAR> m_str;
 	//CFont m_Font;			//폰트 ()
 	//int m_FontName;	// 사용자가 선택한 폰트번호저장
 	//int m_FontSize;	// 사용자가 입력한 폰트 사이즈
@@ -63,9 +64,11 @@ private:
 	//BOOL m_FontBold;	// 볼드체
 	//BOOL m_FontItalic; // 이탤릭체
 	//BOOL m_FontUnderline;// 밑줄
+	BOOL character_mode = FALSE;
 protected :
 	enum { NONE, HORZ, VERT, DIAG  }m_RESIZE;// 크기변경인자
 	//
+
 	//HWND hWnd = ::GetActiveWindow();//핸들러
 	//HDC* hdc = ::GetDC(hWnd);
 	//CDC *tDC = CDC::FromHandle(hdc);
