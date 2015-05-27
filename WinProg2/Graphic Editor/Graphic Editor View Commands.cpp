@@ -301,15 +301,3 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
-
-
-// CGraphicEditorView 작업
-
-void CGraphicEditorView::clearInsertFlag()
-{
-	m_InsertFlag = NONE;
-}
-
-
-
-// CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의

@@ -433,6 +433,14 @@ void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 }
 
 
+/*** CGraphicEditorView ÀÛ¾÷ ***/
+
+void CGraphicEditorView::clearInsertFlag()
+{
+	m_InsertFlag = NONE;
+}
+
+
 /*** CGraphicEditorView ÀÎ¼â ***/
 
 void CGraphicEditorView::OnFilePrintPreview()
