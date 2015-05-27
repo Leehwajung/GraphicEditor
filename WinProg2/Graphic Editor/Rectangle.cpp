@@ -112,8 +112,8 @@ void CRectangle::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resize
 
 /* 개체 그리기 */
 void CRectangle::draw() {
-	m_lpGraphics->DrawRectangle(m_Pen, m_Rect);
 	m_lpGraphics->FillRectangle(m_Brush, m_Rect);
+	m_lpGraphics->DrawRectangle(m_Pen, m_Rect);
 }
 
 /* 개체 선택선 그리기 */

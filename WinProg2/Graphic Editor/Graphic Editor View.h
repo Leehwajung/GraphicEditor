@@ -26,14 +26,22 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
-	CGroup m_SelectedFiguresList;			// 사용자가 선택한 개체들의 목록
-	CPoint m_LButtonPoint;					// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
-	CPoint m_RButtonPoint;					// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
-	UINT m_MouseButtonFlag;					// 마우스 버튼이 클릭되어있는 상태 플래그 (MK_LBUTTON , MK_RBUTTON, MK_MBUTTON)
+	CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
 	CFigure* m_CurrentFigure;					// 현재 선택학 개체
+
+	PointF m_LButtonPoint;						// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
+	PointF m_RButtonPoint;						// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
+	
+	enum MouseButtonFlag {
+		NBUTTON = NULL,							// 마우스 버튼이 눌리지 않은 상태
+		LBUTTON = MK_LBUTTON,					// 좌클릭 상태
+		RBUTTON = MK_RBUTTON,					// 우클릭 상태
+		MBUTTON = MK_MBUTTON					// 가운데 클릭 상태
+	};
+	MouseButtonFlag m_MouseButtonFlag;			// 마우스 버튼이 클릭되어있는 상태 플래그
 	
 	enum InsertFlag {
-		NONE			= NULL,					// 버튼이 눌리지 않은 상태
+		NONE			= NULL,					// 삽입 패널 버튼이 눌리지 않은 상태
 		LINE			= ID_INSERT_LINE,		// 직선 버튼
 		POLYLINE		= ID_INSERT_POLYLINE,	// 꺽인 선 버튼
 		PENCIL			= ID_INSERT_PENCIL,		// 펜 버튼
@@ -44,7 +52,6 @@ public:
 		POLYGON			= ID_INSERT_POLYGON,	// 삼각형 버튼
 		CLOSEDCURVE		= ID_INSERT_CLOSEDCURVE	// 도형 버튼
 	};
-
 	InsertFlag m_InsertFlag;
 
 	int m_mode;
@@ -57,7 +64,7 @@ public:
 	
 // 재정의입니다.
 public:
-	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
+	virtual void OnDraw(CDC* pDC);		// 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -86,9 +93,13 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	// 명령 처리기
@@ -139,8 +150,6 @@ protected:
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전
