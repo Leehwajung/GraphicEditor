@@ -87,14 +87,32 @@ void CRectangle::resizing(UINT nFlags, PointF point) {
 
 /* 생성 완료 */
 void CRectangle::endCreate(PointF point) {
-	m_Rect = *new RectF(m_StartingPoint.X, m_StartingPoint.Y, point.X - m_StartingPoint.X, point.Y - m_StartingPoint.Y);
+
+	SizeF rectSize;
+	rectSize.Width = m_StartingPoint.X > point.X ? m_StartingPoint.X - point.X : point.X - m_StartingPoint.X;
+	rectSize.Height = m_StartingPoint.Y > point.Y ? m_StartingPoint.Y - point.Y : point.Y - m_StartingPoint.Y;
+
+	if (m_StartingPoint.X > point.X) {
+		m_StartingPoint.X = point.X;
+	}
+
+	if (m_StartingPoint.Y > point.Y) {
+		m_StartingPoint.Y = point.Y;
+	}
+
+	m_Rect = *new RectF(m_StartingPoint, rectSize);
+	resetArea();
 }
 
 /* 개체 이동 */
 void CRectangle::move(PointF originPoint, PointF targetPoint) {
 	// originPoint: ButtonDown
 	// targetPoint: ButtonUp
-	m_StartingPoint = m_StartingPoint + targetPoint - originPoint;
+
+	PointF offset = targetPoint - originPoint;
+	m_StartingPoint = m_StartingPoint + offset;
+	m_Rect.Offset(offset);
+	resetArea();
 }
 
 /* 개체 크기 변경 */
@@ -108,6 +126,7 @@ void CRectangle::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resize
 		anchorPoint = &Point;
 	}
 
+	resetArea();
 }
 
 /* 개체 그리기 */

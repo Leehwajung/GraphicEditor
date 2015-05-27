@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// Graphic Editor View.cpp : CGraphicEditorView 클래스의 구현 (명령 메시지 처리기)
+// Graphic Editor View Commands.cpp : CGraphicEditorView 클래스의 구현 (명령 메시지 처리기)
 //
 
 #include "stdafx.h"

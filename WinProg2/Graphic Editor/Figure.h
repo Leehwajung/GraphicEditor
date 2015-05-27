@@ -24,6 +24,19 @@ public:
 		Resize			= (int) 0x00004
 	};
 
+	enum SelectedPosition {
+		OUTSIDE			= (int) 0x00000,
+		INSIDE			= (int) 0x00001,
+		TOPLEFT			= (int) 0x00008,
+		TOP				= (int) 0x00009,
+		TOPRIGHT		= (int) 0x0000A,
+		RIGHT			= (int) 0x0000B,
+		BUTTOMRIGHT		= (int) 0x0000C,
+		BUTTOM			= (int) 0x0000D,
+		BUTTOMLEFT		= (int) 0x0000E,
+		LEFT			= (int) 0x0000F
+	};
+
 	enum resizeFlags {
 		Free			= (int) 0x00000,
 		Proportional	= (int) 0x00004
@@ -77,6 +90,9 @@ public:
 
 	operationModeFlags getOperationMode();
 	void setOperationMode(operationModeFlags OperationMode);
+
+protected:
+	virtual void resetArea();		// 개체 선택 영역 재설정 (연산 후 호출시켜줌), 외부에서 호출 불가
 
 // 특성
 protected:
