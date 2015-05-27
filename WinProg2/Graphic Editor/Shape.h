@@ -11,14 +11,16 @@ class CShape : public CFigure
 {
 public:
 	CShape();
-	CShape(Pen* pen, Brush* brush);
+	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/);
+	CShape(Graphics* lpGraphics/*, PointF startingPoint*/);
+	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush);
 	virtual ~CShape();
 
 // 작업
 public:
 	Pen* getPen();
 	void setPen(const Pen* pen);		// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
-	Brush* getBrush();
+	SolidBrush* getBrush();
 	void setBrush(const SolidBrush* brush);	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
 
 // 재정의

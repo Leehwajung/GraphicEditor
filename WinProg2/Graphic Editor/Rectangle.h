@@ -11,8 +11,10 @@ class CRectangle : public CShape
 {
 public:
 	CRectangle();
-	CRectangle(RectF& rect);
-	CRectangle(RectF& rect, Pen* pen, SolidBrush* brush);
+	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/);
+	CRectangle(Graphics* lpGraphics/*, PointF startingPoint*/);
+	//CRectangle(CClientDC* lpClientDC, RectF& rect);
+	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/, /*RectF& rect,*/ Pen* pen, SolidBrush* brush);
 	virtual ~CRectangle();
 
 	// LButtonDown
@@ -27,10 +29,9 @@ public:
 	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
 
 	// LButtonUp
-	virtual void endCreate(PointF point);						// 점 추가
+	virtual void endCreate(PointF point);						// 생성 완료
 	virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
 	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
-	virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
 	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
 
 	// OnDraw / OnPaint

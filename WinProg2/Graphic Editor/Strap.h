@@ -25,7 +25,7 @@ public:
 	//virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
 
 	//// LButtonUp / LButtonDlk
-	//virtual void endCreate(PointF point);						// 점 추가
+	//virtual void endCreate(PointF point);						// 생성 완료
 	//virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
 	//virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
 

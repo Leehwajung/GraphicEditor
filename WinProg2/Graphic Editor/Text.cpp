@@ -82,7 +82,7 @@ void  CText::moving(UINT nFlags, PointF point){// 이동 그리기
 	
 	PointF RelativePoint = PointF(point - m_StartingPoint);
 	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
-		 
+		
 }		
 void  CText::resizing(UINT nFlags, PointF point){// 크기 변경 그리기
 	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
@@ -126,9 +126,8 @@ void  CText::resizing(UINT nFlags, PointF point){// 크기 변경 그리기
 
 ///////////////////////////////////////////////////////////////////////
 // LButtonUp / LButtonDlk
-// void addPoint(PointF point){}						// 점 추가
-void   CText::move(PointF target){// 개체 이동
-
+// void endCreate(PointF point){}						// 생성 완료
+void   CText::move(PointF originPoint, PointF targetPoint){// 개체 이동
 }							
 void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
 

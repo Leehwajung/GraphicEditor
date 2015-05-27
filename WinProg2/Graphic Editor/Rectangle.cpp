@@ -10,26 +10,41 @@
 // CRectangle
 
 CRectangle::CRectangle()
-	: CShape()
-	, m_Rect(defaultRectF)
+	//: m_Rect(*new defaultRectF)
 {
 }
 
-CRectangle::CRectangle(RectF& rect)
-	: CShape()
-	, m_Rect(rect)
+CRectangle::CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/)
+	: CShape(lpClientDC/*, startingPoint*/)
+	//, m_Rect(*new defaultRectF)
 {
 }
 
-CRectangle::CRectangle(RectF& rect, Pen* pen, SolidBrush* brush)
-	: m_Rect(rect)
+CRectangle::CRectangle(Graphics* lpGraphics/*, PointF startingPoint*/)
+	: CShape(lpGraphics/*, startingPoint*/)
+	//, m_Rect(*new defaultRectF)
 {
-	m_Pen = pen->Clone();
-	m_Brush = (SolidBrush*) brush->Clone();
+}
+
+//CRectangle::CRectangle(CClientDC* lpClientDC, RectF& rect)
+//	: CShape(lpClientDC)
+//	//, m_Rect(*rect.Clone())
+//{
+//}
+
+CRectangle::CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/, /*RectF& rect, */Pen* pen, SolidBrush* brush)
+	: CShape(lpClientDC/*, startingPoint*/, pen, brush)
+	//, m_Rect(*rect.Clone())
+{
+	//m_Pen = pen->Clone();
+	//m_Brush = (SolidBrush*) brush->Clone();
 }
 
 CRectangle::~CRectangle()
 {
+	if (!&m_Rect) {
+		m_Rect.~RectF();
+	}
 }
 
 
@@ -70,9 +85,9 @@ void CRectangle::resizing(UINT nFlags, PointF point) {
 
 }
 
-/* 점 추가 */
+/* 생성 완료 */
 void CRectangle::endCreate(PointF point) {
-
+	m_Rect = *new RectF(m_StartingPoint.X, m_StartingPoint.Y, point.X - m_StartingPoint.X, point.Y - m_StartingPoint.Y);
 }
 
 /* 개체 이동 */

@@ -14,7 +14,15 @@ CFigure::CFigure()
 {
 }
 
-CFigure::CFigure(Graphics* lpGraphics)
+CFigure::CFigure(CClientDC* lpClientDC/*, PointF startingPoint*/)
+	: m_lpGraphics(new Graphics(*lpClientDC))
+	//, m_StartingPoint(startingPoint)
+{
+}
+
+CFigure::CFigure(Graphics* lpGraphics/*, PointF startingPoint*/)
+	: m_lpGraphics(lpGraphics)
+	//, m_StartingPoint(startingPoint)
 {
 }
 
@@ -60,7 +68,7 @@ void CFigure::resizing(UINT nFlags, PointF point) {
 
 }
 
-/* 점 추가 */
+/* 생성 완료 */
 void CFigure::endCreate(PointF point) {
 
 }
@@ -76,11 +84,6 @@ void CFigure::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resizeFla
 	//if (!anchorPoint) {
 	//	anchorPoint = &m_StartingPoint;
 	//}
-}
-
-/* 설정된 값으로 개체 속성 설정 */
-void CFigure::setProperties(CFigureProperties properties) {
-
 }
 
 /* 개체 그리기 */

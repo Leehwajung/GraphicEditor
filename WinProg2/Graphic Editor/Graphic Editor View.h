@@ -30,7 +30,7 @@ public:
 	CPoint m_LButtonPoint;					// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
 	CPoint m_RButtonPoint;					// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
 	UINT m_MouseButtonFlag;					// 마우스 버튼이 클릭되어있는 상태 플래그 (MK_LBUTTON , MK_RBUTTON, MK_MBUTTON)
-	CFigure* currentFigure;					// 현재 선택학 개체
+	CFigure* m_CurrentFigure;					// 현재 선택학 개체
 	
 	enum InsertFlag {
 		NONE			= NULL,					// 버튼이 눌리지 않은 상태
@@ -48,6 +48,8 @@ public:
 	InsertFlag m_InsertFlag;
 
 	int m_mode;
+
+	Graphics* m_Graphics;
 
 // 작업입니다.
 public:

@@ -141,8 +141,12 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
-	if (m_InsertFlag == LINE)
-		currentFigure->draw();
+	//if (m_InsertFlag == LINE)
+	//if (m_CurrentFigure) {
+	//	m_CurrentFigure->setGraphics(&graphics);
+	//	m_CurrentFigure->draw();
+	//}
+
 
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
 	switch(m_mode){
@@ -185,13 +189,50 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-		if (m_InsertFlag == LINE){
-			currentFigure->create(CGlobal::getPointF(m_LButtonPoint));
+
+		CClientDC* dc = new CClientDC(this);
+		Pen dd(Color(255, 0, 0));
+		SolidBrush ff(Color(0, 255, 0));
+
+
+		switch (m_InsertFlag)
+		{
+		case CGraphicEditorView::NONE:
+			break;
+		case CGraphicEditorView::LINE:
+			break;
+		case CGraphicEditorView::POLYLINE:
+			break;
+		case CGraphicEditorView::PENCIL:
+			break;
+		case CGraphicEditorView::CURVE:
+			break;
+		case CGraphicEditorView::ELLIPSE:
+			break;
+		case CGraphicEditorView::RECTANGLE:
+			m_CurrentFigure = new CRectangle(dc, &dd, &ff);
+			break;
+		case CGraphicEditorView::STRING:
+			break;
+		case CGraphicEditorView::POLYGON:
+			break;
+		case CGraphicEditorView::CLOSEDCURVE:
+			break;
+		default:
+			break;
 		}
 
+		if (m_InsertFlag != NONE)
+		{
+			m_CurrentFigure->create(CGlobal::getPointF(m_LButtonPoint));
+		}
+
+
+
+		
 		CView::OnLButtonDown(nFlags, point);
 
-		CGraphicEditorDoc* pDoc = GetDocument();
+		//CGraphicEditorDoc* pDoc = GetDocument();
 	}
 }
 
@@ -204,10 +245,11 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		/**************************************/
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-		if (m_InsertFlag == LINE){
-			currentFigure->addPoint(CGlobal::getPointF(m_LButtonPoint));
-			m_InsertFlag = NONE;
-			Invalidate();
+		if (m_InsertFlag != NONE){
+			m_CurrentFigure->endCreate(CGlobal::getPointF(m_LButtonPoint));
+			//m_InsertFlag = NONE;
+			//Invalidate();
+			m_CurrentFigure->draw();
 		}
 
 
@@ -288,7 +330,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드리그
 			if (m_InsertFlag == LINE){
-				currentFigure->creating(nFlags, CGlobal::getPointF(point));
+				m_CurrentFigure->creating(nFlags, CGlobal::getPointF(point));
 				Invalidate();
 			}
 		}
@@ -490,7 +532,6 @@ void CGraphicEditorView::OnInsertLine()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	// 테스트입니다!!
-	currentFigure = new CLine();
 }
 
 void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
