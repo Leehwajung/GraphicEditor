@@ -9,7 +9,7 @@
 // Copyright (C) Microsoft Corporation
 // All rights reserved.
 
-// Graphic Editor View.cpp : CGraphicEditorView 클래스의 구현
+// Graphic Editor View.cpp : CGraphicEditorView 클래스의 구현 (작업, 재정의, (명령 메시지 이외의) 메시지 처리기)
 //
 
 #include "stdafx.h"
@@ -51,7 +51,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_WM_KILLFOCUS()
 	ON_WM_CONTEXTMENU()
 
-	/* 명령 처리기 */
+	/* 명령 메시지 처리기 */
 	// 표준 인쇄 명령입니다.
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
@@ -105,7 +105,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 END_MESSAGE_MAP()
 
 
-// CGraphicEditorView 생성/소멸
+/*** CGraphicEditorView 생성/소멸 ***/
 
 CGraphicEditorView::CGraphicEditorView()
 {
@@ -118,6 +118,9 @@ CGraphicEditorView::~CGraphicEditorView()
 {
 }
 
+
+/*** CGraphicEditorView 가상 함수 ***/
+
 BOOL CGraphicEditorView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
@@ -126,9 +129,7 @@ BOOL CGraphicEditorView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
-
 // CGraphicEditorView 그리기
-
 void CGraphicEditorView::OnDraw(CDC* pDC)
 {
 	// GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
@@ -181,7 +182,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 }
 
 
-// CGraphicEditorView 메시지 처리기
+/*** CGraphicEditorView 메시지 처리기 ***/
 
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -432,28 +433,7 @@ void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 }
 
 
-// CGraphicEditorView 진단
-
-#ifdef _DEBUG
-void CGraphicEditorView::AssertValid() const
-{
-	CView::AssertValid();
-}
-
-void CGraphicEditorView::Dump(CDumpContext& dc) const
-{
-	CView::Dump(dc);
-}
-
-CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지정됩니다.
-{
-	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CGraphicEditorDoc)));
-	return (CGraphicEditorDoc*)m_pDocument;
-}
-#endif //_DEBUG
-
-
-// CGraphicEditorView 인쇄
+/*** CGraphicEditorView 인쇄 ***/
 
 void CGraphicEditorView::OnFilePrintPreview()
 {
@@ -479,285 +459,25 @@ void CGraphicEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 }
 
 
-// CGraphicEditorView 명령 처리기
+/*** CGraphicEditorView 진단 ***/
 
-//void CGraphicEditorView::OnEditClear()
-//{
-//	clearInsertFlag();
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
-//void CGraphicEditorView::OnEditClearAll()
-//{
-//	clearInsertFlag();
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
-void CGraphicEditorView::OnEditCopy()
+#ifdef _DEBUG
+void CGraphicEditorView::AssertValid() const
 {
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CView::AssertValid();
 }
 
-void CGraphicEditorView::OnEditCut()
+void CGraphicEditorView::Dump(CDumpContext& dc) const
 {
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CView::Dump(dc);
 }
 
-//void CGraphicEditorView::OnEditFind()
-//{
-//	clearInsertFlag();
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
-void CGraphicEditorView::OnEditPaste()
+CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버전은 인라인으로 지정됩니다.
 {
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CGraphicEditorDoc)));
+	return (CGraphicEditorDoc*)m_pDocument;
 }
-
-void CGraphicEditorView::OnEditDelete()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-//void CGraphicEditorView::OnEditRepeat()
-//{
-//	clearInsertFlag();
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
-//void CGraphicEditorView::OnEditReplace()
-//{
-//	clearInsertFlag();
-//	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-//}
-
-void CGraphicEditorView::OnEditSelectAll()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnEditUndo()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnEditRedo()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnImageCanvasSize()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertLine()
-{
-	m_InsertFlag = LINE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-
-	// 테스트입니다!!
-}
-
-void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == LINE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertPolyline()
-{
-	m_InsertFlag = POLYLINE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertPolyline(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == POLYLINE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertPencil()
-{
-	m_InsertFlag = PENCIL;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertPencil(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == PENCIL);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertCurve()
-{
-	m_InsertFlag = CURVE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == CURVE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertEllipse()
-{
-	m_InsertFlag = ELLIPSE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == ELLIPSE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertRectangle()
-{
-	m_InsertFlag = RECTANGLE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == RECTANGLE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertString()
-{
-	m_InsertFlag = STRING;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_InsertFlag == STRING);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
-{
-	m_InsertFlag = POLYGON;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
-{
-	pCmdUI->SetCheck(m_InsertFlag == POLYGON);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnInsertClosedcurve()	// 도형 버튼
-{
-	m_InsertFlag = CLOSEDCURVE;	// 수정 금지
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateInsertClosedcurve(CCmdUI *pCmdUI)	// 도형 버튼
-{
-	pCmdUI->SetCheck(m_InsertFlag == CLOSEDCURVE);	// 수정 금지
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeOrder()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeBringFront()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeSendBack()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeBringForward()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeSendBackward()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeGrouping()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeGroup()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateArrangeGroup(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnArrangeUngroup()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnZoomIn()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnZoomOut()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnZoom100()
-{
-	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-}
-
-void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
+#endif //_DEBUG
 
 
-// CGraphicEditorView 작업
-
-void CGraphicEditorView::clearInsertFlag()
-{
-	m_InsertFlag = NONE;
-}
-
-
-
-// CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의
+/*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/

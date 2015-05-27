@@ -130,6 +130,7 @@
     <ClCompile Include="FigureProperties.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="Graphic Editor Doc.cpp" />
+    <ClCompile Include="Graphic Editor View Commands.cpp" />
     <ClCompile Include="Graphic Editor View.cpp" />
     <ClCompile Include="Graphic Editor.cpp" />
     <ClCompile Include="Group.cpp" />
