@@ -113,6 +113,7 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="NewFigure.h" />
     <ClInclude Include="PolyLine.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Rectangle.h" />

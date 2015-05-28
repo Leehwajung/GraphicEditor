@@ -152,3 +152,7 @@ CFigure::operationModeFlags CFigure::getOperationMode() {
 void CFigure::setOperationMode(operationModeFlags OperationMode) {
 	this->m_OperationMode = OperationMode;
 }
+
+void CFigure::resetArea() {
+
+}
