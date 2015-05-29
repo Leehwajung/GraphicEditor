@@ -88,7 +88,7 @@ void CFigure::resize(PointF Point, PointF* anchorPoint /*= NULL*/, int resizeFla
 
 /* 개체 그리기 */
 void CFigure::draw() {
-
+	PROPORTIONAL == MK_SHIFT;
 }
 
 /* 개체 선택선 그리기 */
@@ -118,7 +118,7 @@ void CFigure::setLinePattern(const DashStyle& LinePattern) {
 
 /* 칠하기 색 설정 */
 void CFigure::setFillColor(const Color& FillColor) {
-
+	m_lpGraphics->FillEllipse(&SolidBrush(Color(0,0,0)), Rect());
 }
 
 /* 칠하기 패턴 설정 */

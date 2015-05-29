@@ -54,6 +54,14 @@ public:
 	};
 	InsertFlag m_InsertFlag;
 
+	enum OperationModeFlag {
+		SELECTABLE		= (int) 0x00000,
+		CREATE			= (int) 0x00001,
+		MOVE			= (int) 0x00002,
+		RESIZE			= (int) 0x00004
+	};
+	OperationModeFlag m_OperationModeFlag;
+
 	int m_mode;
 
 	Graphics* m_Graphics;

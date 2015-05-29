@@ -9,33 +9,71 @@
 
 class CShape : public CFigure
 {
+// 생성 및 소멸
 public:
 	CShape();
-	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/);
-	CShape(Graphics* lpGraphics/*, PointF startingPoint*/);
-	CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush);
+	CShape(IN CClientDC* lpClientDC);
+	CShape(IN Graphics* lpGraphics);
+	CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush);
+	CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush);
+	DECLARE_DYNAMIC(CShape)
 	virtual ~CShape();
 
 // 작업
 public:
+	// 펜 획득
 	Pen* getPen();
-	void setPen(const Pen* pen);		// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
-	SolidBrush* getBrush();
-	void setBrush(const SolidBrush* brush);	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
+
+	// 브러시 획득
+	Brush* getBrush();
+
+	// 브러시 타입 획득
+	BrushType getBrushType();
+
+	// 윤곽선 색 획득
+	Color getLineColor();
+
+	// 윤곽선 두께 획득
+	REAL getLineWidth();
+
+	// 윤곽선 패턴 획득
+	DashStyle getLinePattern();
+
+	// 채우기 색 획득
+	Color getFillColor();
+
+	// 채우기 패턴 획득
+	HatchStyle getFillPattern();
+	
+	// 펜 설정
+	// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
+	void setPen(IN const Pen* pen);
+
+	// 브러시 설정
+	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
+	void setBrush(IN const Brush* brush);
 
 // 재정의
-	virtual void setLineColor(const Color& lineColor);			// 윤곽선 색 설정
-	virtual void setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
-	virtual void setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
-	virtual void setFillColor(const Color& FillColor);			// 칠하기 색 설정
-	virtual void setFillPattern(const int fillPattern);			// 칠하기 패턴 설정 (아직 구현 안함)
+public:
+	// 윤곽선 색 설정
+	virtual void setOutlineColor(IN const Color& outlineColor);
+
+	// 윤곽선 두께 설정
+	virtual void setOutlineWidth(IN const REAL outlineWidth);
+
+	// 윤곽선 패턴 설정
+	virtual void setOutlinePattern(IN const DashStyle outlinePattern);
+
+	// 칠하기 색 설정
+	virtual void setFillColor(IN const Color& fillColor);
+
+	// 칠하기 패턴 설정
+	virtual void setFillPattern(IN const HatchStyle fillPattern);
 
 // 특성
 protected:
-	Pen* m_Pen;
-	SolidBrush* m_Brush;	// 빠른 구현을 위해 SolidBrush로 함, 나중에 Brush로 바꿀 것임 (다른 브러시 지원을 위해)
-
-	
+	Pen* m_Pen;		// 그리기 펜
+	Brush* m_Brush;	// 그리기 브러시
 };
 
 

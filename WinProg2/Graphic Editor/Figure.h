@@ -16,90 +16,251 @@ using namespace Gdiplus;
 
 class CFigure : public CObject
 {
+// 자료형
 public:
-	enum operationModeFlags {
-		None			= (int) 0x00000,
-		Create			= (int) 0x00001,
-		Move			= (int) 0x00002,
-		Resize			= (int) 0x00004
+	enum Position {
+		OUTSIDE			= (int) 0x00000,	// 개체 밖
+		INSIDE			= (int) 0x00001,	// 개체 위
+		ONPOINT			= (int) 0x00008,	// 핸들 위 (핸들 위의 점인지는 ONPOINT와의 &연산으로 알아낼 수 있음)
+		TOPLEFT			= (int) 0x00008,	// 좌상 핸들
+		TOP				= (int) 0x00009,	// 상측 핸들
+		TOPRIGHT		= (int) 0x0000A,	// 우상 핸들
+		RIGHT			= (int) 0x0000B,	// 우측 핸들
+		BUTTOMRIGHT		= (int) 0x0000C,	// 우하 핸들
+		BUTTOM			= (int) 0x0000D,	// 하측 핸들
+		BUTTOMLEFT		= (int) 0x0000E,	// 좌하 핸들
+		LEFT			= (int) 0x0000F		// 좌측 핸들
 	};
 
-	enum SelectedPosition {
-		OUTSIDE			= (int) 0x00000,
-		INSIDE			= (int) 0x00001,
-		TOPLEFT			= (int) 0x00008,
-		TOP				= (int) 0x00009,
-		TOPRIGHT		= (int) 0x0000A,
-		RIGHT			= (int) 0x0000B,
-		BUTTOMRIGHT		= (int) 0x0000C,
-		BUTTOM			= (int) 0x0000D,
-		BUTTOMLEFT		= (int) 0x0000E,
-		LEFT			= (int) 0x0000F
+	enum CreateFlag {
+		FREECREATE		= NULL,				// 자유 생성
+		REAULAR			= MK_SHIFT			// 정다면체 또는 정방향선 생성
 	};
 
-	enum resizeFlags {
-		Free			= (int) 0x00000,
-		Proportional	= (int) 0x00004
+	enum MoveFlag {
+		FREEMOVE		= NULL,				// 자유 이동
 	};
 
+	enum ResizeFlag {
+		FREERESIZE		= NULL,				// 자유 크기 변경
+		PROPORTIONAL	= MK_SHIFT			// 비율 크기 변경
+	};
+
+
+
+// 생성 및 소멸
 public:
 	CFigure();
-	CFigure(CClientDC* lpClientDC/*, PointF StartingPoint*/);
-	CFigure(Graphics* lpGraphics/*, PointF StartingPoint*/);
+	CFigure(IN CClientDC* lpClientDC);
+	CFigure(IN Graphics* lpGraphics);
+	DECLARE_DYNAMIC(CFigure)
 	virtual ~CFigure();
 
+
+
+// 작업
 public:
-	// LButtonDown
-	virtual void create(PointF startingPoint);					// 개체 생성
-	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-
-
-	// OnMouseMove
-	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
-	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
-	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
-
-	// LButtonUp
-	virtual void endCreate(PointF point);						// 생성 완료
-	virtual void move(PointF originPoint, PointF targetPoint);	// 개체 이동
-	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);	// 개체 크기 변경
+	/* 연산 */
+	// 생성
+	// 매개변수의 값을 기준으로 새로운 개체를 정의
+	// - IN 매개변수
+	//		CreateFlag createFlag: 생성 설정 플래그
+	//		...: 각 파생 클래스에서 필요한대로 정의
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
+	virtual BOOL create(IN CreateFlag createFlag, ...);
 	
-	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+	// 이동
+	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
+	// - IN 매개변수
+	//		PointF originPoint: 이동의 시작 좌표
+	//		PointF targetPoint: 이동의 끝 좌표
+	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
+	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	
+	// 크기 변경
+	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
+	// - IN 매개변수
+	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		PointF targetPoint: 선택된 핸들의 변경할 좌표
+	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	
+	// 삭제
+	// 개체를 삭제하고 메모리를 해제
+	virtual void destroy();
+	
+	// 좌표 위치 확인
+	// 점이 개체 안에 있는지 확인하고 그 위치를 반환함
+	// - IN 매개변수
+	//		PointF point: 확인할 좌표
+	// - 반환 값 (Position)
+	//		Position: 개체 상의 점의 위치
+	virtual Position pointInFigure(IN PointF point);
 
-	// OnDraw / OnPaint
-	virtual void draw();										// 개체 그리기
-	virtual void drawSelect();
+	// 핸들의 좌표
+	// 핸들의 중앙 좌표를 얻음
+	// - IN 매개변수
+	//		Position handle: 좌표를 얻고자하는 핸들
+	// - OUT 매개변수
+	//		PointF* handlePoint:
+	//			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 좌표
+	//			NULL: 매개변수의 Position이 핸들이 아닐 경우
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들인 경우
+	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+	BOOL getHandlePoint(IN Position handle, OUT PointF* handlePoint);
 
-	// Menu Item
-	virtual void destroy();										// 개체 삭제
 
-	virtual void setLineColor(const Color& lineColor);			// 윤곽선 색 설정
-	virtual void setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
-	virtual void setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
-	virtual void setFillColor(const Color& FillColor);			// 칠하기 색 설정
-	virtual void setFillPattern(const int fillPattern);			// 칠하기 패턴 설정
-	// 순수 가상함수로 변경하기
+	/* 그리기 */
+	// 도형 그리기
+	virtual void draw();
 
-	// Getter / Setter
+	// 생성 그리기
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		CreateFlag createFlag: 생성 설정 플래그
+	//		...: 각 파생 클래스에서 필요한대로 정의
+	virtual void creating(IN CreateFlag createFlag, ...);
+
+	// 이동 그리기
+	// 이동 중에 보여줄 그리기
+	// - IN 매개변수
+	//		PointF originPoint: 이동의 시작 좌표
+	//		PointF targetPoint: 이동 중인 좌표
+	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
+	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	
+	// 크기 변경 그리기
+	// 크기 변경 중에 보여줄 그리기
+	// - IN 매개변수
+	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
+	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+
+	
+	/* Graphics 관리 */
+	// ClientDC 획득
+	CClientDC* getClientDC();
+
+	// Graphics 획득
 	Graphics* getGraphics();
+
+	// ClientDC 설정
+	void setClientDC(CClientDC* lpClientDC);
+
+	// Graphics 설정
 	void setGraphics(Graphics* lpGraphics);
 
-	PointF& getStartingPoint();
-	void setStartingPoint(PointF& StartingPoint);
 
-	operationModeFlags getOperationMode();
-	void setOperationMode(operationModeFlags OperationMode);
+	/* 속성 설정 */
+	// 윤곽선 색 설정
+	virtual void setOutlineColor(IN const Color& outlineColor);
+
+	// 윤곽선 두께 설정
+	virtual void setOutlineWidth(IN const REAL outlineWidth);
+
+	// 윤곽선 패턴 설정
+	virtual void setOutlinePattern(IN const DashStyle outlinePattern);
+
+	// 채우기 색 설정
+	virtual void setFillColor(IN const Color& fillColor);
+
+	// 채우기 패턴 설정
+	virtual void setFillPattern(IN const HatchStyle fillPattern);
+
 
 protected:
-	virtual void resetArea();		// 개체 선택 영역 재설정 (연산 후 호출시켜줌), 외부에서 호출 불가
+	/* 개체 영역 관리 */
+	// 개체 영역 갱신
+	virtual void resetArea();
+
+	// 개체 영역 그리기
+	void drawArea();
+
+private:
+	/* 핸들 관리 */
+	// 핸들의 영역
+	// 핸들의 영역을 얻음
+	// - IN 매개변수
+	//		Position handle: 영역을 얻고자하는 핸들
+	// - OUT 매개변수
+	//		PointF* handlePoint:
+	//			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 영역
+	//			NULL: 매개변수의 Position이 핸들이 아닐 경우
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들인 경우
+	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
+
+	// 개체 핸들 그리기
+	// - IN 매개변수
+	//		Position handle: 그리고자하는 핸들
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들인 경우
+	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+	BOOL drawHandle(IN Position handle);
+	
+	
 
 // 특성
 protected:
-	Graphics* m_lpGraphics;
-	PointF m_StartingPoint;
-	operationModeFlags m_OperationMode;
-	RectF m_Area;			// 개체 선택 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
+	Graphics* m_lpGraphics;		// 출력 대상 Graphics
+	RectF m_Area;				// 개체 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
+private:
+	const REAL HANDLESIZE = 10;	// 핸들 크기
 };
 
 
+
+//	// LButtonDown
+//	virtual void create(...);					// 개체 생성
+//	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
+//
+//
+//	// OnMouseMove
+//	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+//	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
+//	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
+//	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+//
+//	// LButtonUp
+//	virtual void endCreate(PointF point);						// 생성 완료
+//	virtual void move(PointF originPoint, PointF targetPoint);	// 개체 이동
+//	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);	// 개체 크기 변경
+//	
+//	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+//
+//	// OnDraw / OnPaint
+//	virtual void draw();										// 개체 그리기
+//	virtual void drawSelect();
+//
+//	// Menu Item
+//	virtual void destroy();										// 개체 삭제
+//
+//	virtual void setLineColor(const Color& lineColor);			// 윤곽선 색 설정
+//	virtual void setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
+//	virtual void setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
+//	virtual void setFillColor(const Color& FillColor);			// 칠하기 색 설정
+//	virtual void setFillPattern(const int fillPattern);			// 칠하기 패턴 설정
+//	// 순수 가상함수로 변경하기
+//
+//	// Getter / Setter
+//	Graphics* getGraphics();
+//	void setGraphics(Graphics* lpGraphics);
+//
+//	PointF& getStartingPoint();
+//	void setStartingPoint(PointF& StartingPoint);
+//
+//	operationModeFlags getOperationMode();
+//	void setOperationMode(operationModeFlags OperationMode);
+//
+//protected:
+//	virtual void resetArea();		// 개체 선택 영역 재설정 (연산 후 호출시켜줌), 외부에서 호출 불가
+
+
+// PointF m_StartingPoint;

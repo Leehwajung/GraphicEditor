@@ -26,7 +26,6 @@ CShape::CShape(Graphics* lpGraphics/*, PointF startingPoint*/)
 	, m_Pen(new defaultPen)
 	, m_Brush(new defaultBrush)
 {
-
 }
 
 CShape::CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush)
