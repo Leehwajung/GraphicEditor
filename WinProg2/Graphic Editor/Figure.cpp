@@ -10,12 +10,12 @@ using namespace Gdiplus;
 
 // CFigure
 
-IMPLEMENT_DYNAMIC(CFigure, CObject)
+IMPLEMENT_SERIAL(CFigure, CObject, 1)
 
 CFigure::CFigure()
+	: m_lpGraphics(NULL)
+	, m_GraphicsDynamicAllocationFlag(FALSE)
 {
-	m_lpGraphics = NULL;
-	m_GraphicsDynamicAllocationFlag = FALSE;
 }
 
 CFigure::CFigure(CClientDC* lpClientDC)
@@ -40,6 +40,19 @@ CFigure::~CFigure()
 
 // CFigure 멤버 함수
 
+/* 직렬화 */
+// 직렬화 (순수가상함수로 바꿀지 검토)
+void CFigure::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
+
+
 /* 연산 */
 // 생성
 // 매개변수의 값을 기준으로 새로운 개체를 정의
@@ -52,6 +65,7 @@ CFigure::~CFigure()
 BOOL CFigure::create(...)
 {
 	resetArea();
+	return TRUE;	 // 임시 반환 값
 }
 
 // 이동
@@ -60,7 +74,7 @@ BOOL CFigure::create(...)
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동의 끝 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE)
+void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
 	resetArea();
 }
@@ -72,11 +86,10 @@ void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 //		PointF targetPoint: 선택된 핸들의 변경할 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL)
+void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	resetArea();
 }
-
 
 // 핸들의 좌표
 // 핸들의 중앙 좌표를 얻음
@@ -254,18 +267,19 @@ void CFigure::drawHandles()
 
 
 // 순수 가상함수로 바꿀 거라 지울 함수 구현들
-void destroy(){}
-CFigure::Position CFigure::pointInFigure(IN PointF point){}
+void CFigure::destroy(){}
+CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임시 반환값 */}
 void CFigure::draw(){}
 void CFigure::creating(...){}
 void CFigure::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){}
 void CFigure::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
-void CFigure::setOutlineColor(IN const Color& outlineColor){}
-void CFigure::setOutlineWidth(IN const REAL outlineWidth){}
-void CFigure::setOutlinePattern(IN const DashStyle outlinePattern){}
-void CFigure::setFillColor(IN const Color& fillColor){}
-void CFigure::setFillPattern(IN const HatchStyle fillPattern){}
-//void CFigure::resetArea(){}
+BOOL CFigure::setOutlineColor(IN const Color& outlineColor){ return TRUE; /* 임시 반환값 */ }
+BOOL CFigure::setOutlineWidth(IN const REAL outlineWidth){ return TRUE; /* 임시 반환값 */ }
+BOOL CFigure::setOutlinePattern(IN const DashStyle outlinePattern){ return TRUE; /* 임시 반환값 */ }
+BOOL CFigure::setFillColor(IN const Color& fillColor){ return TRUE; /* 임시 반환값 */ }
+BOOL CFigure::setFillSubcolor(IN const Color& fillSubcolor){ return TRUE; /* 임시 반환값 */ }
+BOOL CFigure::setFillPattern(IN const HatchStyle fillPattern){ return TRUE; /* 임시 반환값 */ }
+void CFigure::resetArea(){}
 
 
 
@@ -354,12 +368,12 @@ void CFigure::setFillPattern(IN const HatchStyle fillPattern){}
 //
 //}
 //
-///* 칠하기 색 설정 */
+///* 주 채우기 색 설정 */
 //void CFigure::setFillColor(const Color& FillColor) {
 //	m_lpGraphics->FillEllipse(&SolidBrush(Color(0,0,0)), Rect());
 //}
 //
-///* 칠하기 패턴 설정 */
+///* 채우기 패턴 설정 */
 //void CFigure::setFillPattern(const int FillPattern) {
 //
 //}
@@ -394,3 +408,4 @@ void CFigure::setFillPattern(IN const HatchStyle fillPattern){}
 //void CFigure::resetArea() {
 //
 //}
+

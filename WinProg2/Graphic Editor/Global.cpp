@@ -13,11 +13,23 @@
 
 
 // CGlobal ¸â¹ö ÇÔ¼ö
-const PointF CGlobal::CPointToPointF(const CPoint& point){
+
+const PointF CGlobal::CPointToPointF(const CPoint& point)
+{
 	PointF tmp_PointF;
 	
 	tmp_PointF.X = (REAL) point.x;
 	tmp_PointF.Y = (REAL) point.y;
 
 	return tmp_PointF;
+}
+
+const CPoint CGlobal::PointFToCPoint(const PointF& point)
+{
+	CPoint tmp_CPoint;
+
+	tmp_CPoint.x = (LONG) point.X;
+	tmp_CPoint.y = (LONG) point.Y;
+
+	return tmp_CPoint;
 }

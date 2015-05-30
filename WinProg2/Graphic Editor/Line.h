@@ -11,33 +11,144 @@ class CLine : public CStrap
 {
 public:
 	CLine();
+	CLine(IN CClientDC* lpClientDC);
+	CLine(IN Graphics* lpGraphics);
+	CLine(IN CClientDC* lpClientDC, IN Pen* pen);
+	CLine(IN Graphics* lpGraphics, IN Pen* pen);
+	DECLARE_SERIAL(CLine)
 	~CLine();
 
-	// LButtonDown
-	virtual void create(PointF startingPoint);					// 선 생성
-	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-	virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+	virtual void Serialize(CArchive& ar);
 
-	// OnMouseMove
-	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
-	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
-	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+	/** 연산 **/
+	/* LButtonUp / LButtonDlk */
+	// 생성
+	// 시작 좌표와 끝 좌표를 기준으로 직선을 생성함
+	// - IN 매개변수
+	//		PointF startingPoint: 생성 시작 좌표
+	//		PointF endingPoint: 생성 끝 좌표
+	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
+	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
 
-	// LButtonUp / LButtonDlk
-	virtual void endCreate(PointF point);						// 생성 완료
-	virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
-	virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
+private:
+	// 생성
+	// 시작 좌표와 끝 좌표를 기준으로 직선을 생성함
+	// - IN 매개변수
+	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
+	virtual BOOL create(...);
 
-	// OnDraw / OnPaint
-	virtual void draw();										// 개체 그리기
+public:
+	// 이동
+	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 직선을 이동
+	// - IN 매개변수
+	//		PointF originPoint: 이동의 시작 좌표
+	//		PointF targetPoint: 이동의 끝 좌표
+	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
+	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
-	// Menu Item
-	virtual void destroy();										// 개체 삭제
+	// 크기 변경
+	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
+	// - IN 매개변수
+	//		Position selcetedHandle: 직선의 선택된 핸들
+	//		PointF targetPoint: 선택된 핸들의 변경할 좌표
+	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
-	virtual void setLineColor(const Color& LineColor);			// 선 색 설정
-	virtual void setLineWidth(const REAL& LineWidth);			// 선 두께 설정
-	virtual void setLinePattern(const DashStyle& LinePattern);	// 선 패턴 설정
+
+	/* Menu Item */
+	// 삭제
+	// 직선을 삭제하고 메모리를 해제
+	virtual void destroy();
+
+
+	/* LButtonDown */
+	// 좌표 위치 확인
+	// 점이 직선 안에 있는지 확인하고 그 위치를 반환함
+	// - IN 매개변수
+	//		PointF point: 확인할 좌표
+	// - 반환 값 (Position)
+	//		Position: 직선 상의 점의 위치
+	virtual Position pointInFigure(IN PointF point);
+
+	
+	/** 그리기 **/
+	/* OnDraw */
+	// 도형 그리기
+	virtual void draw();
+
+	/* OnMouseMove */
+	// 생성 그리기
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		PointF startingPoint: 생성 시작 좌표
+	//		PointF targetPoint: 생성 시 선택 중인 좌표
+	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
+	void creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
+
+private:
+	// 생성 그리기
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+	virtual void creating(...);
+
+public:
+	// 이동 그리기
+	// 이동 중에 보여줄 그리기
+	// - IN 매개변수
+	//		PointF originPoint: 이동의 시작 좌표
+	//		PointF targetPoint: 이동 중인 좌표
+	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
+	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+
+	// 크기 변경 그리기
+	// 크기 변경 중에 보여줄 그리기
+	// - IN 매개변수
+	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
+	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+
+
+protected:
+	/** 개체 영역 관리 **/
+	// 개체 영역 갱신
+	virtual void resetArea();
+
+public:
+	//// LButtonDown
+	//virtual void create(PointF startingPoint);					// 선 생성
+	//virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
+	//virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+	//
+	//// OnMouseMove
+	//void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+	//virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
+	//virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
+	//virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+	//
+	//// LButtonUp / LButtonDlk
+	//virtual void endCreate(PointF point);						// 생성 완료
+	//virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
+	//virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
+	//
+	//// OnDraw / OnPaint
+	//virtual void draw();										// 개체 그리기
+	//
+	//// Menu Item
+	//virtual void destroy();										// 개체 삭제
+	//
+	//virtual BOOL setLineColor(const Color& LineColor);			// 선 색 설정
+	//virtual BOOL setLineWidth(const REAL& LineWidth);			// 선 두께 설정
+	//virtual BOOL setLinePattern(const DashStyle& LinePattern);	// 선 패턴 설정
 
 private:
 
@@ -49,8 +160,9 @@ private:
 
 	///* 선 패턴 */
 	//int m_LinePattern;
-	Pen* m_Pen;
+	//Pen* m_OutlinePen;
 
+	PointF m_StartingPoint;
 	PointF m_EndPoint;
 
 	int m_Gradient;
@@ -58,7 +170,7 @@ private:
 	// 우선 임시 방편! 다시 바꿀 수도 있음. 
 	BOOL isStartingpoint;
 	
-	Color m_LineColor;	// 선 색
-	int m_LinePattern;	// 선 패턴
-	int m_LineWidth;	// 선 두께
+	//Color m_LineColor;	// 선 색
+	//int m_LinePattern;	// 선 패턴
+	//int m_LineWidth;	// 선 두께
 };

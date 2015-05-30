@@ -11,7 +11,11 @@ class CEllipse : public CShape
 {
 public:
 	CEllipse();
+	DECLARE_SERIAL(CEllipse)
 	virtual ~CEllipse();
+
+public:
+	virtual void Serialize(CArchive& ar);
 };
 
 

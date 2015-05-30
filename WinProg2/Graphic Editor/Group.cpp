@@ -9,6 +9,9 @@
 
 // CGroup
 
+IMPLEMENT_SERIAL(CGroup, CFigure, 1)
+
+
 CGroup::CGroup()
 {
 }
@@ -19,3 +22,14 @@ CGroup::~CGroup()
 
 
 // CGroup ¸â¹ö ÇÔ¼ö
+
+
+void CGroup::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}

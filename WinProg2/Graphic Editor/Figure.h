@@ -5,6 +5,7 @@
 #pragma once
 
 #include "afx.h"
+#include <cstdarg>
 //#include <gdiplus.h>
 //#include <afxcoll.h>
 #include "FigureProperties.h"
@@ -53,13 +54,17 @@ public:
 	CFigure();
 	CFigure(IN CClientDC* lpClientDC);
 	CFigure(IN Graphics* lpGraphics);
-	DECLARE_DYNAMIC(CFigure)
+	DECLARE_SERIAL(CFigure)
 	virtual ~CFigure();
 
 
 
 // 작업
 public:
+	/* 직렬화 */
+	// 직렬화 (순수가상함수로 바꿀지 검토)
+	virtual void Serialize(CArchive& ar);
+
 	/* 연산 */
 	// 생성 (가상)
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
@@ -159,25 +164,46 @@ public:
 
 	/* 속성 설정 */
 	// 윤곽선 색 설정 (순수 가상)
-	virtual void setOutlineColor(IN const Color& outlineColor);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineColor(IN const Color& outlineColor);
 
 	// 윤곽선 두께 설정 (순수 가상)
-	virtual void setOutlineWidth(IN const REAL outlineWidth);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineWidth(IN const REAL outlineWidth);
 
 	// 윤곽선 패턴 설정 (순수 가상)
-	virtual void setOutlinePattern(IN const DashStyle outlinePattern);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlinePattern(IN const DashStyle outlinePattern);
 
-	// 채우기 색 설정 (순수 가상)
-	virtual void setFillColor(IN const Color& fillColor);
+	// 주 채우기 색 설정 (순수 가상)
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillColor(IN const Color& fillColor);
+
+	// 보조 채우기 색 설정 (순수 가상)
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillSubcolor(IN const Color& fillSubcolor);
 
 	// 채우기 패턴 설정 (순수 가상)
-	virtual void setFillPattern(IN const HatchStyle fillPattern);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
 
 
 protected:
 	/* 개체 영역 관리 */
 	// 개체 영역 갱신 (순수 가상)
-	virtual void resetArea() = 0;
+	virtual void resetArea();
 
 	// 개체 영역 그리기
 	void drawArea();
@@ -246,11 +272,11 @@ private:
 //	// Menu Item
 //	virtual void destroy();										// 개체 삭제
 //
-//	virtual void setLineColor(const Color& lineColor);			// 윤곽선 색 설정
-//	virtual void setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
-//	virtual void setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
-//	virtual void setFillColor(const Color& FillColor);			// 칠하기 색 설정
-//	virtual void setFillPattern(const int fillPattern);			// 칠하기 패턴 설정
+//	virtual BOOL setLineColor(const Color& lineColor);			// 윤곽선 색 설정
+//	virtual BOOL setLineWidth(const REAL& LineWidth);			// 윤곽선 두께 설정
+//	virtual BOOL setLinePattern(const DashStyle& LinePattern);	// 윤곽선 패턴 설정
+//	virtual BOOL setFillColor(const Color& FillColor);			// 주 채우기 색 설정
+//	virtual BOOL setFillPattern(const int fillPattern);			// 채우기 패턴 설정
 //	// 순수 가상함수로 변경하기
 //
 //	// Getter / Setter

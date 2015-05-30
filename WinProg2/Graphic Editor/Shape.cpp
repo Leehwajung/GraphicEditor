@@ -10,81 +10,92 @@
 
 // CShape
 
-IMPLEMENT_DYNAMIC(CShape, CFigure)
+IMPLEMENT_SERIAL(CShape, CFigure, 1)
 
 CShape::CShape()
 	: CFigure()
-	, m_Pen(NULL)
-	, m_Brush(NULL)
+	, m_OutlinePen(NULL)
+	, m_FillBrush(NULL)
 {
 }
 
 CShape::CShape(IN CClientDC* lpClientDC)
 	: CFigure(lpClientDC)
-	, m_Pen(NULL)
-	, m_Brush(NULL)
+	, m_OutlinePen(NULL)
+	, m_FillBrush(NULL)
 {
 }
 
 CShape::CShape(IN Graphics* lpGraphics)
 	: CFigure(lpGraphics)
-	, m_Pen(NULL)
-	, m_Brush(NULL)
+	, m_OutlinePen(NULL)
+	, m_FillBrush(NULL)
 {
 }
 
 CShape::CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush)
 	: CFigure(lpClientDC)
-	, m_Pen(pen->Clone())
-	, m_Brush(brush->Clone())
+	, m_OutlinePen(pen->Clone())
+	, m_FillBrush(brush->Clone())
 {
 }
 
 CShape::CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush)
 	: CFigure(lpGraphics)
-	, m_Pen(pen->Clone())
-	, m_Brush(brush->Clone())
+	, m_OutlinePen(pen->Clone())
+	, m_FillBrush(brush->Clone())
 {
-
 }
 
 CShape::~CShape()
 {
-	if (m_Pen) {
-		m_Pen->~Pen();
+	if (m_OutlinePen) {
+		m_OutlinePen->~Pen();
 	}
 
-	if (m_Brush) {
-		m_Brush->~Brush();
+	if (m_FillBrush) {
+		m_FillBrush->~Brush();
 	}
 }
 
 
+
 // CShape 멤버 함수
+
+void CShape::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
+
 
 // 펜 획득
 Pen* CShape::getPen()
 {
-	return m_Pen;
+	return this->m_OutlinePen;
 }
 
 // 브러시 획득
 Brush* CShape::getBrush()
 {
-	return m_Brush;
+	return m_FillBrush;
 }
 
 // 브러시 타입 획득
 BrushType CShape::getBrushType()
 {
-	return m_Brush->GetType();
+	return m_FillBrush->GetType();
 }
 
 // 윤곽선 색 획득
 Color CShape::getOutlineColor()
 {
 	Color result;
-	m_Pen->GetColor(&result);
+	m_OutlinePen->GetColor(&result);
 
 	return result;
 }
@@ -92,161 +103,342 @@ Color CShape::getOutlineColor()
 // 윤곽선 두께 획득
 REAL CShape::getOutlineWidth()
 {
-	return m_Pen->GetWidth();
+	return m_OutlinePen->GetWidth();
 }
 
 // 윤곽선 패턴 획득
 DashStyle CShape::getOutlinePattern()
 {
-	return m_Pen->GetDashStyle();
+	return m_OutlinePen->GetDashStyle();
 }
 
-// 채우기 색 획득
+// 주 채우기 색 획득
 Color CShape::getFillColor()
 {
-	Color result;
+	return getBrushColor(m_FillBrush);
+}
 
-	switch (m_Brush->GetType())
-	{
-	case Gdiplus::BrushTypeSolidColor:
-		((SolidBrush*)m_Brush)->GetColor(&result);
-		break;
-		
-	case Gdiplus::BrushTypeHatchFill:
-		((HatchBrush*)m_Brush)->GetForegroundColor(&result);
-		break;
-
-	case Gdiplus::BrushTypeTextureFill:
-		result = Color(0, 255, 255, 255);	// 텍스쳐 브러시는 색을 가지고 있지 않으므로 투명색 반환
-		break;
-
-	case Gdiplus::BrushTypePathGradient:
-		((PathGradientBrush*)m_Brush)->GetCenterColor(&result);
-		break;
-
-	case Gdiplus::BrushTypeLinearGradient:
-		Color* firstColor;
-		((LinearGradientBrush*)m_Brush)->GetLinearColors(firstColor);
-		result = firstColor[0];
-		break;
-	}
-
-	return result;
+// 보조 채우기 색 획득
+Color CShape::getFillSubcolor()
+{
+	return getBrushSubcolor(m_FillBrush);
 }
 
 // 채우기 패턴 획득
 HatchStyle CShape::getFillPattern()
 {
-	switch (m_Brush->GetType())
-	{
-	case Gdiplus::BrushTypeHatchFill:
-		return ((HatchBrush*)m_Brush)->GetHatchStyle();
-
-	//case Gdiplus::BrushTypeSolidColor:
-	//case Gdiplus::BrushTypeTextureFill:
-	//case Gdiplus::BrushTypePathGradient:
-	//case Gdiplus::BrushTypeLinearGradient:
-	default:
-		return Gdiplus::HatchStyleHorizontal;	// 나머지 브러시는 패턴을 가지고 있지 않으므로 가로 줄무늬 반환
-	}
+	return getBrushPattern(m_FillBrush);
 }
 
 // 펜 설정
 void CShape::setPen(IN const Pen* pen)
 {
 	// 기존 펜 제거
-	if (m_Pen) {
-		m_Pen->~Pen();
+	if (m_OutlinePen) {
+		m_OutlinePen->~Pen();
 	}
 
 	// 전달받은 펜 복사
-	m_Pen = pen->Clone();
+	m_OutlinePen = pen->Clone();
 }
 
 // 브러시 설정
 void CShape::setBrush(IN const Brush* brush)
 {
 	// 기존 브러시 제거
-	if (m_Brush) {
-		m_Brush->~Brush();
+	if (m_FillBrush) {
+		m_FillBrush->~Brush();
 	}
 
 	// 전달받은 브러시 복사
-	m_Brush = brush->Clone();
+	m_FillBrush = brush->Clone();
 }
 
 // 윤곽선 색 설정
-void CShape::setOutlineColor(IN const Color& outlineColor)
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setOutlineColor(IN const Color& outlineColor)
 {
-	m_Pen->SetColor(outlineColor);
+	return m_OutlinePen->SetColor(outlineColor) ? TRUE : FALSE;
 }
 
 // 윤곽선 두께 설정
-void CShape::setOutlineWidth(IN const REAL outlineWidth)
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setOutlineWidth(IN const REAL outlineWidth)
 {
-	m_Pen->SetWidth(outlineWidth);
+	return m_OutlinePen->SetWidth(outlineWidth) ? TRUE : FALSE;
 }
 
 // 윤곽선 패턴 설정
-void CShape::setOutlinePattern(IN const DashStyle outlinePattern)
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setOutlinePattern(IN const DashStyle outlinePattern)
 {
-	m_Pen->SetDashStyle(outlinePattern);
+	return m_OutlinePen->SetDashStyle(outlinePattern) ? TRUE : FALSE;
 }
 
-// 칠하기 색 설정
-void CShape::setFillColor(IN const Color& fillColor)
+// 주 채우기 색 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setFillColor(IN const Color& fillColor)
 {
-	switch (m_Brush->GetType())
+	return setBrushColor(m_FillBrush, fillColor);
+}
+
+// 보조 채우기 색 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setFillSubcolor(IN const Color& fillSubcolor)
+{
+	return setBrushSubcolor(m_FillBrush, fillSubcolor);
+}
+
+// 채우기 패턴 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setFillPattern(IN const HatchStyle fillPattern)
+{
+	return setBrushPattern(m_FillBrush, fillPattern);
+}
+
+
+/*** 보조 함수 ***/
+// 주색 획득
+Color CShape::getBrushColor(IN Brush* brush)
+{
+	Color result;
+
+	switch (brush->GetType())
 	{
-	case Gdiplus::BrushTypeSolidColor:
-		((SolidBrush*)m_Brush)->SetColor(fillColor);
-		break;
+		case Gdiplus::BrushTypeSolidColor: {
+			((SolidBrush*)brush)->GetColor(&result);
+			break;
+		}
 
-	case Gdiplus::BrushTypeHatchFill:
-		HatchBrush* oldBrush = (HatchBrush*) m_Brush;
-		Color backColor;
-		oldBrush->GetBackgroundColor(&backColor);
-		m_Brush = new HatchBrush(oldBrush->GetHatchStyle(), fillColor, backColor);
-		oldBrush->~HatchBrush();
-		break;
+		case Gdiplus::BrushTypeHatchFill: {
+			((HatchBrush*)brush)->GetForegroundColor(&result);
+			break;
+		}
 
-	case Gdiplus::BrushTypeTextureFill:
-		// 텍스쳐 브러시는 색이 없으므로 아무 동작도 하지 않음
-		break;
+		case Gdiplus::BrushTypeTextureFill: {
+			result = NULLColor;	// 텍스쳐 브러시는 색을 가지고 있지 않으므로 투명색 반환
+			break;
+		}
 
-	case Gdiplus::BrushTypePathGradient:
-		((PathGradientBrush*)m_Brush)->SetCenterColor(fillColor);
-		break;
+		case Gdiplus::BrushTypePathGradient: {
+			((PathGradientBrush*)brush)->GetCenterColor(&result);
+			break;
+		}
 
-	case Gdiplus::BrushTypeLinearGradient:
-		Color* colors;
-		((LinearGradientBrush*)m_Brush)->GetLinearColors(colors);
-		((LinearGradientBrush*)m_Brush)->SetLinearColors(fillColor, colors[1]);
-		break;
+		case Gdiplus::BrushTypeLinearGradient: {
+			Color* colors = NULL;
+			((LinearGradientBrush*)brush)->GetLinearColors(colors);
+			result = colors[0];
+			break;
+		}
+	}
+
+	return result;
+}
+
+// 보조색 획득
+Color CShape::getBrushSubcolor(IN Brush* brush)
+{
+	Color result;
+
+	switch (brush->GetType())
+	{
+		case Gdiplus::BrushTypeSolidColor: {
+			result = NULLColor;		// 솔리드 브러시는 보조색이 없으므로 투명색 반환
+			break;
+		}
+
+		case Gdiplus::BrushTypeHatchFill: {
+			((HatchBrush*)brush)->GetBackgroundColor(&result);
+			break;
+		}
+
+		case Gdiplus::BrushTypeTextureFill: {
+			result = NULLColor;		// 텍스쳐 브러시는 색이 없으므로 투명색 반환
+			break;
+		}
+
+		case Gdiplus::BrushTypePathGradient: {
+			Color* colors = NULL;
+			INT count = ((PathGradientBrush*)brush)->GetSurroundColorCount();
+			((PathGradientBrush*)brush)->GetSurroundColors(colors, &count);
+			result = colors[0];		// 색 시퀀스 중에 첫 번째 색 반환 (추후 전체 반환 가능하게 수정 필요)
+			break;
+		}
+
+		case Gdiplus::BrushTypeLinearGradient: {
+			Color* colors = NULL;
+			((LinearGradientBrush*)brush)->GetLinearColors(colors);
+			result = colors[1];
+			break;
+		}
+	}
+
+	return result;
+}
+
+// 패턴 획득
+HatchStyle CShape::getBrushPattern(IN Brush* brush)
+{
+	switch (brush->GetType())
+	{
+		case Gdiplus::BrushTypeHatchFill: {
+			return ((HatchBrush*)brush)->GetHatchStyle();
+		}
+
+		//case Gdiplus::BrushTypeSolidColor:
+		//case Gdiplus::BrushTypeTextureFill:
+		//case Gdiplus::BrushTypePathGradient:
+		//case Gdiplus::BrushTypeLinearGradient:
+		default: {
+			return Gdiplus::HatchStyleHorizontal;	// 나머지 브러시는 패턴이 없으므로 가로 줄무늬 반환
+		}
 	}
 }
 
-// 칠하기 패턴 설정
-void CShape::setFillPattern(IN const HatchStyle fillPattern)
+// 주색 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setBrushColor(IN Brush* brush, IN const Color& fillColor)
 {
-	switch (m_Brush->GetType())
-	{
-	case Gdiplus::BrushTypeHatchFill:
-		HatchBrush* oldBrush = (HatchBrush*)m_Brush;
-		Color foreColor;
-		Color backColor;
-		oldBrush->GetForegroundColor(&foreColor);
-		oldBrush->GetBackgroundColor(&backColor);
-		m_Brush = new HatchBrush(fillPattern, foreColor, backColor);
-		oldBrush->~HatchBrush();
-		break;
-
-	//case Gdiplus::BrushTypeSolidColor:
-	//case Gdiplus::BrushTypeTextureFill:
-	//case Gdiplus::BrushTypePathGradient:
-	//case Gdiplus::BrushTypeLinearGradient:
-	default:
-		// 나머지 브러시는 패턴을 가지고 있지 않으므로 아무 동작도 하지 않음
-		break;
+	if (!brush) {
+		return TRUE;
 	}
+
+	switch (brush->GetType())
+	{
+		case Gdiplus::BrushTypeSolidColor: {
+			((SolidBrush*)brush)->SetColor(fillColor);
+			break;
+		}
+
+		case Gdiplus::BrushTypeHatchFill: {
+			HatchBrush* oldBrush = (HatchBrush*)brush;
+			Color backColor;
+			oldBrush->GetBackgroundColor(&backColor);
+			brush = new HatchBrush(oldBrush->GetHatchStyle(), fillColor, backColor);
+			oldBrush->~HatchBrush();
+			break;
+		}
+
+		case Gdiplus::BrushTypeTextureFill: {
+			// 텍스쳐 브러시는 색이 없으므로 아무 동작도 하지 않음
+			break;
+		}
+
+		case Gdiplus::BrushTypePathGradient: {
+			((PathGradientBrush*)brush)->SetCenterColor(fillColor);
+			break;
+		}
+
+		case Gdiplus::BrushTypeLinearGradient: {
+			Color* colors = NULL;
+			((LinearGradientBrush*)brush)->GetLinearColors(colors);
+			((LinearGradientBrush*)brush)->SetLinearColors(fillColor, colors[1]);
+			break;
+		}
+	}
+
+	return FALSE;
+}
+
+// 보조색 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setBrushSubcolor(IN Brush* brush, IN const Color& fillSubcolor)
+{
+	if (!brush) {
+		return TRUE;
+	}
+
+	switch (brush->GetType())
+	{
+		case Gdiplus::BrushTypeSolidColor: {
+			// 솔리드 브러시는 보조색이 없으므로 아무 동작도 하지 않음
+			break;
+		}
+
+		case Gdiplus::BrushTypeHatchFill: {
+			HatchBrush* oldBrush = (HatchBrush*)brush;
+			Color foreColor;
+			oldBrush->GetForegroundColor(&foreColor);
+			brush = new HatchBrush(oldBrush->GetHatchStyle(), foreColor, fillSubcolor);
+			oldBrush->~HatchBrush();
+			break;
+		}
+
+		case Gdiplus::BrushTypeTextureFill: {
+			// 텍스쳐 브러시는 색이 없으므로 아무 동작도 하지 않음
+			break;
+		}
+
+		case Gdiplus::BrushTypePathGradient: {
+			PathGradientBrush* pgbrush = ((PathGradientBrush*)brush);
+			Color* colors = NULL;
+			INT count = pgbrush->GetSurroundColorCount();
+			pgbrush->GetSurroundColors(colors, &count);
+			colors[0] = fillSubcolor;
+			pgbrush->SetSurroundColors(colors, &count);	// 색 시퀀스 중에 첫 번째 색만 설정 (추후 전체 설정 가능하게 수정 필요)
+			break;
+		}
+
+		case Gdiplus::BrushTypeLinearGradient: {
+			Color* colors = NULL;
+			((LinearGradientBrush*)brush)->GetLinearColors(colors);
+			((LinearGradientBrush*)brush)->SetLinearColors(colors[0], fillSubcolor);
+			break;
+		}
+	}
+
+	return FALSE;
+}
+
+// 패턴 설정
+// - 반환 값 (BOOL)
+//		TRUE: 설정 실패
+//		FALSE: 설정 성공
+BOOL CShape::setBrushPattern(IN Brush* brush, IN const HatchStyle fillPattern)
+{
+	if (!brush) {
+		return TRUE;
+	}
+
+	switch (brush->GetType())
+	{
+		case Gdiplus::BrushTypeHatchFill: {
+			HatchBrush* oldBrush = (HatchBrush*)brush;
+			Color foreColor;
+			Color backColor;
+			oldBrush->GetForegroundColor(&foreColor);
+			oldBrush->GetBackgroundColor(&backColor);
+			brush = new HatchBrush(fillPattern, foreColor, backColor);
+			oldBrush->~HatchBrush();
+			break;
+		}
+
+		//case Gdiplus::BrushTypeSolidColor:
+		//case Gdiplus::BrushTypeTextureFill:
+		//case Gdiplus::BrushTypePathGradient:
+		//case Gdiplus::BrushTypeLinearGradient:
+		default: {
+			// 나머지 브러시는 패턴을 가지고 있지 않으므로 아무 동작도 하지 않음
+			break;
+		}
+	}
+
+	return FALSE;
 }

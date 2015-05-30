@@ -144,9 +144,6 @@
     <ClCompile Include="PolyLine.cpp">
       <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
-    <ClCompile Include="Strap.cpp">
-      <Filter>소스 파일\Figure\Strap</Filter>
-    </ClCompile>
     <ClCompile Include="Ellipse.cpp">
       <Filter>소스 파일\Figure\Shape</Filter>
     </ClCompile>
@@ -164,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="Graphic Editor View Commands.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Strap.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

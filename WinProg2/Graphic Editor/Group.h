@@ -11,7 +11,11 @@ class CGroup : public CFigure
 {
 public:
 	CGroup();
+	DECLARE_SERIAL(CGroup)
 	virtual ~CGroup();
+
+public:
+	virtual void Serialize(CArchive& ar);
 
 // Æ¯¼º
 private:

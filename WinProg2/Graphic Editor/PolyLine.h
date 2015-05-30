@@ -11,7 +11,11 @@ class CPolyLine : public CStrap
 {
 public:
 	CPolyLine();
+	DECLARE_SERIAL(CPolyLine)
 	virtual ~CPolyLine();
+
+public:
+	virtual void Serialize(CArchive& ar);
 
 	// Getter
 	CList <PointF, PointF&>& GetPointsList();

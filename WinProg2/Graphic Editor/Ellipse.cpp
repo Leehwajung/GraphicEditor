@@ -9,6 +9,9 @@
 
 // CEllipse
 
+IMPLEMENT_SERIAL(CEllipse, CShape, 1)
+
+
 CEllipse::CEllipse()
 {
 }
@@ -19,3 +22,14 @@ CEllipse::~CEllipse()
 
 
 // CEllipse ¸â¹ö ÇÔ¼ö
+
+
+void CEllipse::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}

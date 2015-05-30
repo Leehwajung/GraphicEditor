@@ -16,8 +16,12 @@ public:
 	CShape(IN Graphics* lpGraphics);
 	CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush);
 	CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush);
-	DECLARE_DYNAMIC(CShape)
+	DECLARE_SERIAL(CShape)
 	virtual ~CShape();
+
+public:
+	// 직렬화
+	virtual void Serialize(CArchive& ar);
 
 // 작업
 public:
@@ -39,8 +43,11 @@ public:
 	// 윤곽선 패턴 획득
 	DashStyle getOutlinePattern();
 
-	// 채우기 색 획득
+	// 주 채우기 색 획득
 	Color getFillColor();
+
+	// 보조 채우기 색 획득
+	Color getFillSubcolor();
 
 	// 채우기 패턴 획득
 	HatchStyle getFillPattern();
@@ -56,24 +63,76 @@ public:
 // 재정의
 public:
 	// 윤곽선 색 설정
-	virtual void setOutlineColor(IN const Color& outlineColor);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineColor(IN const Color& outlineColor);
 
 	// 윤곽선 두께 설정
-	virtual void setOutlineWidth(IN const REAL outlineWidth);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineWidth(IN const REAL outlineWidth);
 
 	// 윤곽선 패턴 설정
-	virtual void setOutlinePattern(IN const DashStyle outlinePattern);
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlinePattern(IN const DashStyle outlinePattern);
 
-	// 칠하기 색 설정
-	virtual void setFillColor(IN const Color& fillColor);
+	// 주 채우기 색 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillColor(IN const Color& fillColor);
 
-	// 칠하기 패턴 설정
-	virtual void setFillPattern(IN const HatchStyle fillPattern);
+	// 보조 채우기 색 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillSubcolor(IN const Color& fillSubcolor);
+
+	// 채우기 패턴 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
+
+
+
+// 보조 작업
+protected:
+	// 주색 획득
+	static Color getBrushColor(IN Brush* brush);
+
+	// 보조색 획득
+	static Color getBrushSubcolor(IN Brush* brush);
+
+	// 패턴 획득
+	static HatchStyle getBrushPattern(IN Brush* brush);
+
+	// 주색 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	static BOOL setBrushColor(IN Brush* brush, IN const Color& fillColor);
+
+	// 보조색 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	static BOOL setBrushSubcolor(IN Brush* brush, IN const Color& fillSubcolor);
+
+	// 패턴 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	static BOOL setBrushPattern(IN Brush* brush, IN const HatchStyle fillPattern);
 
 // 특성
 protected:
-	Pen* m_Pen;		// 그리기 펜
-	Brush* m_Brush;	// 그리기 브러시
+	Pen* m_OutlinePen;	// 그리기 펜
+	Brush* m_FillBrush;	// 그리기 브러시
 };
 
 

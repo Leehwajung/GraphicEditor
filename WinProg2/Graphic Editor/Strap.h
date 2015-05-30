@@ -11,42 +11,73 @@ class CStrap : public CFigure
 {
 public:
 	CStrap();
+	CStrap(IN CClientDC* lpClientDC);
+	CStrap(IN Graphics* lpGraphics);
+	CStrap(IN CClientDC* lpClientDC, IN Pen* pen);
+	CStrap(IN Graphics* lpGraphics, IN Pen* pen);
+	DECLARE_SERIAL(CStrap)
 	virtual ~CStrap();
 
-	//// LButtonDown
-	//virtual void create(PointF startingPoint);					// 끈 생성
-	//virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
-	//virtual operationModeFlags cursorPosition(RectF rect);		// 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지)
+	virtual void Serialize(CArchive& ar);
 
-	//// OnMouseMove
-	//void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-	//virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
-	//virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
-	//virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+	// 점 추가 (순수 가상)
+	//virtual void addPoint(PointF point);
 
-	//// LButtonUp / LButtonDlk
-	//virtual void endCreate(PointF point);						// 생성 완료
-	//virtual void move(PointF originPoint, PointF targetPoint);							// 개체 이동
-	//virtual void resize(PointF point, PointF* anchorPoint = NULL, int resizeFlags = Free);			// 개체 크기 변경
+	// 펜 획득
+	Pen* getPen();
 
-	//// OnDraw / OnPaint
-	//virtual void draw();										// 개체 그리기
+	// 윤곽선 색 획득
+	Color getOutlineColor();
 
-	//// Menu Item
-	//virtual void destroy();										// 개체 삭제
+	// 윤곽선 두께 획득
+	REAL getOutlineWidth();
 
-	//virtual void setLineColor(const Color& LineColor);					// 끈 색 설정
-	//virtual void setLineWidth(const REAL& LineWidth);					// 끈 두께 설정
-	//virtual void setLinePattern(const DashStyle& LinePattern);				// 끈 패턴 설정
-	//virtual void setProperties(CFigureProperties properties);	// 설정된 값으로 개체 속성 설정
+	// 윤곽선 패턴 획득
+	DashStyle getOutlinePattern();
 
-	// Getter / Setter
-	Pen& getPen();
-	void setPen(const Pen& pen);		// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
+	// 펜 설정
+	// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
+	void setPen(IN const Pen* pen);
+
+	// 재정의
+public:
+	// 윤곽선 색 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineColor(IN const Color& outlineColor);
+
+	// 윤곽선 두께 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlineWidth(IN const REAL outlineWidth);
+
+	// 윤곽선 패턴 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	virtual BOOL setOutlinePattern(IN const DashStyle outlinePattern);
+
+	// 주 채우기 색 설정
+	// - 반환 값 (BOOL)
+	//		FALSE: 채우기가 없으므로 고정값 반환 (성공으로 간주)
+	virtual BOOL setFillColor(IN const Color& fillColor) { return FALSE; }
+
+	// 보조 채우기 색 설정
+	// - 반환 값 (BOOL)
+	//		FALSE: 채우기가 없으므로 고정값 반환 (성공으로 간주)
+	virtual BOOL setFillSubcolor(IN const Color& fillSubcolor) { return FALSE; }
+
+	// 채우기 패턴 설정
+	// - 반환 값 (BOOL)
+	//		FALSE: 채우기가 없으므로 고정값 반환 (성공으로 간주)
+	virtual BOOL setFillPattern(IN const HatchStyle fillPattern) { return FALSE; }
+
 
 // 특성
 protected:
-	//Pen m_Pen;
+	Pen* m_OutlinePen;
 };
 
 

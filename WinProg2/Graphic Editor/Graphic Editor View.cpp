@@ -179,6 +179,28 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// Draw the arc.
 	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
+	// 문자열 출력 테스트
+	// Create a string.
+	WCHAR string[] = L"Sample Text";
+
+	// Initialize arguments.
+	Gdiplus::Font myFont(L"Arial", 16);
+	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
+	StringFormat format;
+	format.SetAlignment(StringAlignmentCenter);
+	SolidBrush blackBrush(Color(255, 255, 0, 0));
+
+	// Draw string.
+	graphics.DrawString(
+		string,
+		11,
+		&myFont,
+		layoutRect,
+		&format,
+		&blackBrush);
+
+	// Draw layoutRect.
+	graphics.DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
 }
 
 
@@ -250,7 +272,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 		if (m_InsertFlag != NONE){
-			m_CurrentFigure->Create(m_LButtonPoint);
+			m_CurrentFigure->create(m_LButtonPoint);
 			//m_InsertFlag = NONE;
 			//Invalidate();
 			m_CurrentFigure->draw();

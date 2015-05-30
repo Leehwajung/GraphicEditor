@@ -23,8 +23,14 @@ public:
 
 
 
-// 작업
+// 작업 및 재정의
 public:
+	/* 직렬화 */
+	// 직렬화
+	virtual void Serialize(CArchive& ar);
+
+
+	/* 연산 */
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 	// - IN 매개변수
@@ -36,23 +42,7 @@ public:
 	//		FALSE: 생성 성공
 	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
 
-	// 생성 그리기
-	// 생성 시에 보여줄 그리기
-	// - IN 매개변수
-	//		PointF startingPoint: 생성 시작 좌표
-	//		PointF targetPoint: 생성 시 선택 중인 좌표
-	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-	void creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
-
-
-
-// 재정의
 private:
-	/* 직렬화 */
-	// 직렬화
-	virtual void Serialize(CArchive& ar);
-
-	/* 연산 */
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 	// - IN 매개변수
@@ -96,6 +86,14 @@ public:
 	/* 그리기 */
 	// 도형 그리기
 	virtual void draw();
+
+	// 생성 그리기
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		PointF startingPoint: 생성 시작 좌표
+	//		PointF targetPoint: 생성 시 선택 중인 좌표
+	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
+	void creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
 
 private:
 	// 생성 그리기

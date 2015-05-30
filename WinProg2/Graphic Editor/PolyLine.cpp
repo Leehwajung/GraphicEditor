@@ -9,6 +9,8 @@
 
 // CPolyLine
 
+IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
+
 CPolyLine::CPolyLine()
 {
 }
@@ -19,3 +21,14 @@ CPolyLine::~CPolyLine()
 
 
 // CPolyLine ¸â¹ö ÇÔ¼ö
+
+
+void CPolyLine::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
