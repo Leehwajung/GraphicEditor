@@ -108,15 +108,15 @@ BOOL CFigure::getHandlePoint(IN Position handle, OUT PointF* handlePoint)
 		handlePoint->X = m_Area.GetRight();
 		handlePoint->Y = (m_Area.GetTop() + m_Area.GetBottom()) / 2;
 		break;
-	case CFigure::BUTTOMRIGHT:
+	case CFigure::BOTTOMRIGHT:
 		handlePoint->X = m_Area.GetRight();
 		handlePoint->Y = m_Area.GetBottom();
 		break;
-	case CFigure::BUTTOM:
+	case CFigure::BOTTOM:
 		handlePoint->X = (m_Area.GetLeft() + m_Area.GetRight()) / 2;
 		handlePoint->Y = m_Area.GetBottom();
 		break;
-	case CFigure::BUTTOMLEFT:
+	case CFigure::BOTTOMLEFT:
 		handlePoint->X = m_Area.GetLeft();
 		handlePoint->Y = m_Area.GetBottom();
 		break;

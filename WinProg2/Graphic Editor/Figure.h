@@ -26,9 +26,9 @@ public:
 		TOP				= (int) 0x00009,	// 상측 핸들
 		TOPRIGHT		= (int) 0x0000A,	// 우상 핸들
 		RIGHT			= (int) 0x0000B,	// 우측 핸들
-		BUTTOMRIGHT		= (int) 0x0000C,	// 우하 핸들
-		BUTTOM			= (int) 0x0000D,	// 하측 핸들
-		BUTTOMLEFT		= (int) 0x0000E,	// 좌하 핸들
+		BOTTOMRIGHT		= (int) 0x0000C,	// 우하 핸들
+		BOTTOM			= (int) 0x0000D,	// 하측 핸들
+		BOTTOMLEFT		= (int) 0x0000E,	// 좌하 핸들
 		LEFT			= (int) 0x0000F		// 좌측 핸들
 	};
 
