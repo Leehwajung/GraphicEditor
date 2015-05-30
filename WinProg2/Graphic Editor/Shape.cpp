@@ -172,7 +172,7 @@ void CShape::setBrush(IN const Brush* brush)
 	}
 
 	// 전달받은 브러시 복사
-	m_Brush->Clone();
+	m_Brush = brush->Clone();
 }
 
 // 윤곽선 색 설정
