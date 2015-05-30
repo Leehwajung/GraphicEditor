@@ -9,6 +9,19 @@
 
 // CRectangle
 
+IMPLEMENT_SERIAL(CRectangle, CShape, 1)
+
+void CRectangle::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
+
+
 CRectangle::CRectangle()
 	//: m_Rect(*new defaultRectF)
 {
@@ -144,4 +157,6 @@ void CRectangle::drawSelect() {
 void CRectangle::destroy() {
 
 }
+
+
 

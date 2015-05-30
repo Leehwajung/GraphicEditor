@@ -18,7 +18,7 @@ public:
 	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush);
 	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush, IN RectF rect);
 	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush, IN RectF rect);
-	DECLARE_DYNAMIC(CRectangle)
+	DECLARE_SERIAL(CRectangle)
 	virtual ~CRectangle();
 
 
@@ -48,6 +48,10 @@ public:
 
 // 재정의
 private:
+	/* 직렬화 */
+	// 직렬화
+	virtual void Serialize(CArchive& ar);
+
 	/* 연산 */
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함

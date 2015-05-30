@@ -10,89 +10,143 @@
 
 // CShape
 
+IMPLEMENT_DYNAMIC(CShape, CFigure)
+
 CShape::CShape()
+	: CFigure()
+	, m_Pen(NULL)
+	, m_Brush(NULL)
 {
 }
 
-CShape::CShape(CClientDC* lpClientDC/*, PointF startingPoint*/)
-	: CFigure(lpClientDC/*, startingPoint*/)
-	, m_Pen(new defaultPen)
-	, m_Brush(new defaultBrush)
+CShape::CShape(IN CClientDC* lpClientDC)
+	: CFigure(lpClientDC)
+	, m_Pen(NULL)
+	, m_Brush(NULL)
 {
 }
 
-CShape::CShape(Graphics* lpGraphics/*, PointF startingPoint*/)
-	: CFigure(lpGraphics/*, startingPoint*/)
-	, m_Pen(new defaultPen)
-	, m_Brush(new defaultBrush)
+CShape::CShape(IN Graphics* lpGraphics)
+	: CFigure(lpGraphics)
+	, m_Pen(NULL)
+	, m_Brush(NULL)
 {
 }
 
-CShape::CShape(CClientDC* lpClientDC/*, PointF startingPoint*/, Pen* pen, SolidBrush* brush)
-	: CFigure(lpClientDC/*, startingPoint*/)
+CShape::CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush)
+	: CFigure(lpClientDC)
+	, m_Pen(pen->Clone())
+	, m_Brush(brush->Clone())
 {
-	m_Pen = pen->Clone();
-	m_Brush = (SolidBrush*)brush->Clone();
+}
+
+CShape::CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush)
+	: CFigure(lpGraphics)
+	, m_Pen(pen->Clone())
+	, m_Brush(brush->Clone())
+{
+
 }
 
 CShape::~CShape()
 {
-	if (!m_Pen) {
+	if (m_Pen) {
 		m_Pen->~Pen();
 	}
-	if (!m_Brush) {
-		m_Brush->~SolidBrush();
+	if (m_Brush) {
+		m_Brush->~Brush();
 	}
 }
 
 
 // CShape ¸â¹ö ÇÔ¼ö
 
-// ÀÛ¾÷
-Pen* CShape::getPen() {
-	return m_Pen;
+// Ææ È¹µæ
+Pen* CShape::getPen()
+{
+
 }
 
-void CShape::setPen(const Pen* pen) {
-	if (m_Pen) {
-		m_Pen->~Pen();
-	}
-	m_Pen = pen->Clone();
+// ºê·¯½Ã È¹µæ
+Brush* CShape::getBrush()
+{
+
 }
 
-SolidBrush* CShape::getBrush() {
-	return m_Brush;
+// ºê·¯½Ã Å¸ÀÔ È¹µæ
+BrushType CShape::getBrushType()
+{
+
 }
 
-void CShape::setBrush(const SolidBrush* brush) {
-	if (m_Brush) {
-		m_Brush->~SolidBrush();
-	}
-	m_Brush = (SolidBrush*) brush->Clone();
+// À±°û¼± »ö È¹µæ
+Color CShape::getOutlineColor()
+{
+
 }
 
-// ÀçÁ¤ÀÇ
-/* À±°û¼± »ö ¼³Á¤ */
-void CShape::setLineColor(const Color& LineColor) {
-	m_Pen->SetColor(LineColor);
+// À±°û¼± µÎ²² È¹µæ
+REAL CShape::getOutlineWidth()
+{
+
 }
 
-/* À±°û¼± µÎ²² ¼³Á¤ */
-void CShape::setLineWidth(const REAL& LineWidth) {
-	m_Pen->SetWidth(LineWidth);
+// À±°û¼± ÆÐÅÏ È¹µæ
+DashStyle CShape::getOutlinePattern()
+{
+
 }
 
-/* À±°û¼± ÆÐÅÏ ¼³Á¤ */
-void CShape::setLinePattern(const DashStyle& LinePattern) {
-	m_Pen->SetDashStyle(LinePattern);
+// Ã¤¿ì±â »ö È¹µæ
+Color CShape::getFillColor()
+{
+
 }
 
-/* Ä¥ÇÏ±â »ö ¼³Á¤ */
-void CShape::setFillColor(const Color& FillColor) {
-	m_Brush->SetColor(FillColor);
+// Ã¤¿ì±â ÆÐÅÏ È¹µæ
+HatchStyle CShape::getFillPattern()
+{
+
 }
 
-/* Ä¥ÇÏ±â ÆÐÅÏ ¼³Á¤ */
-void CShape::setFillPattern(const int FillPattern) {
-	// ¾ÆÁ÷ ±¸Çö ¾ÈÇÔ
+// Ææ ¼³Á¤
+void CShape::setPen(IN const Pen* pen)
+{
+
+}
+
+// ºê·¯½Ã ¼³Á¤
+void CShape::setBrush(IN const Brush* brush)
+{
+
+}
+
+// À±°û¼± »ö ¼³Á¤
+void CShape::setOutlineColor(IN const Color& outlineColor)
+{
+
+}
+
+// À±°û¼± µÎ²² ¼³Á¤
+void CShape::setOutlineWidth(IN const REAL outlineWidth)
+{
+
+}
+
+// À±°û¼± ÆÐÅÏ ¼³Á¤
+void CShape::setOutlinePattern(IN const DashStyle outlinePattern)
+{
+
+}
+
+// Ä¥ÇÏ±â »ö ¼³Á¤
+void CShape::setFillColor(IN const Color& fillColor)
+{
+
+}
+
+// Ä¥ÇÏ±â ÆÐÅÏ ¼³Á¤
+void CShape::setFillPattern(IN const HatchStyle fillPattern)
+{
+
 }

@@ -31,13 +31,13 @@ public:
 	BrushType getBrushType();
 
 	// À±°û¼± »ö È¹µæ
-	Color getLineColor();
+	Color getOutlineColor();
 
 	// À±°û¼± µÎ²² È¹µæ
-	REAL getLineWidth();
+	REAL getOutlineWidth();
 
 	// À±°û¼± ÆÐÅÏ È¹µæ
-	DashStyle getLinePattern();
+	DashStyle getOutlinePattern();
 
 	// Ã¤¿ì±â »ö È¹µæ
 	Color getFillColor();

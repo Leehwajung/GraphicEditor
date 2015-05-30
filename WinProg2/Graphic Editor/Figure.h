@@ -177,7 +177,7 @@ public:
 protected:
 	/* 개체 영역 관리 */
 	// 개체 영역 갱신 (순수 가상)
-	virtual void resetArea();
+	virtual void resetArea() = 0;
 
 	// 개체 영역 그리기
 	void drawArea();
@@ -193,24 +193,27 @@ private:
 	//			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 영역
 	//			NULL: 매개변수의 Position이 핸들이 아닐 경우
 	// - 반환 값 (BOOL)
-	//		TRUE: 매개변수의 Position이 핸들인 경우
-	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
 	// 개체 핸들 그리기
 	// - IN 매개변수
 	//		Position handle: 그리고자하는 핸들
 	// - 반환 값 (BOOL)
-	//		TRUE: 매개변수의 Position이 핸들인 경우
-	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL drawHandle(IN Position handle);
+
+	// 개체 핸들 전체 그리기
+	void drawHandles();
 	
 	
 
 // 특성
 protected:
 	Graphics* m_lpGraphics;					// 출력 대상 Graphics
-	RectF m_Area;							// 개체 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
+	RectF m_Area;							// 개체 영역 (사각형)
 private:
 	BOOL m_GraphicsDynamicAllocationFlag;	// m_lpGraphics를, 객체 내부에서 동적으로 할당했는지 여부를 저장하는 플래그
 	const REAL HANDLESIZE = 10;				// 핸들 크기

@@ -10,6 +10,8 @@ using namespace Gdiplus;
 
 // CFigure
 
+IMPLEMENT_DYNAMIC(CFigure, CObject)
+
 CFigure::CFigure()
 {
 	m_lpGraphics = NULL;
@@ -49,7 +51,7 @@ CFigure::~CFigure()
 //		FALSE: 생성 성공
 BOOL CFigure::create(...)
 {
-
+	resetArea();
 }
 
 // 이동
@@ -60,7 +62,7 @@ BOOL CFigure::create(...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE)
 {
-
+	resetArea();
 }
 
 // 크기 변경
@@ -72,7 +74,7 @@ void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
 void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL)
 {
-
+	resetArea();
 }
 
 
@@ -85,11 +87,49 @@ void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN Resiz
 //			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 좌표
 //			NULL: 매개변수의 Position이 핸들이 아닐 경우
 // - 반환 값 (BOOL)
-//		TRUE: 매개변수의 Position이 핸들인 경우
-//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+//		FALSE: 매개변수의 Position이 핸들인 경우
 BOOL CFigure::getHandlePoint(IN Position handle, OUT PointF* handlePoint)
 {
+	switch (handle)
+	{
+	case CFigure::TOPLEFT:
+		m_Area.GetLocation(handlePoint);
+		break;
+	case CFigure::TOP:
+		handlePoint->X = (m_Area.GetLeft() + m_Area.GetRight()) / 2;
+		handlePoint->Y = m_Area.GetTop();
+		break;
+	case CFigure::TOPRIGHT:
+		handlePoint->X = m_Area.GetRight();
+		handlePoint->Y = m_Area.GetTop();
+		break;
+	case CFigure::RIGHT:
+		handlePoint->X = m_Area.GetRight();
+		handlePoint->Y = (m_Area.GetTop() + m_Area.GetBottom()) / 2;
+		break;
+	case CFigure::BUTTOMRIGHT:
+		handlePoint->X = m_Area.GetRight();
+		handlePoint->Y = m_Area.GetBottom();
+		break;
+	case CFigure::BUTTOM:
+		handlePoint->X = (m_Area.GetLeft() + m_Area.GetRight()) / 2;
+		handlePoint->Y = m_Area.GetBottom();
+		break;
+	case CFigure::BUTTOMLEFT:
+		handlePoint->X = m_Area.GetLeft();
+		handlePoint->Y = m_Area.GetBottom();
+		break;
+	case CFigure::LEFT:
+		handlePoint->X = m_Area.GetLeft();
+		handlePoint->Y = (m_Area.GetTop() + m_Area.GetBottom()) / 2;
+		break;
+	default:
+		handlePoint = NULL;
+		return TRUE;
+	}
 
+	return FALSE;
 }
 
 
@@ -97,25 +137,35 @@ BOOL CFigure::getHandlePoint(IN Position handle, OUT PointF* handlePoint)
 // ClientDC 획득
 CClientDC* CFigure::getClientDC()
 {
-
+	return (CClientDC*) CClientDC::FromHandle(m_lpGraphics->GetHDC());
 }
 
 // Graphics 획득
 Graphics* CFigure::getGraphics()
 {
-
+	return m_lpGraphics;
 }
 
 // ClientDC 설정
 void CFigure::setClientDC(CClientDC* lpClientDC)
 {
+	if (m_GraphicsDynamicAllocationFlag && m_lpGraphics) {
+		m_lpGraphics->~Graphics();
+	}
 
+	m_lpGraphics = new Graphics(*lpClientDC);
+	m_GraphicsDynamicAllocationFlag = TRUE;
 }
 
 // Graphics 설정
 void CFigure::setGraphics(Graphics* lpGraphics)
 {
+	if (m_GraphicsDynamicAllocationFlag && m_lpGraphics) {
+		m_lpGraphics->~Graphics();
+	}
 
+	m_lpGraphics = lpGraphics;
+	m_GraphicsDynamicAllocationFlag = FALSE;
 }
 
 
@@ -124,6 +174,8 @@ void CFigure::setGraphics(Graphics* lpGraphics)
 void CFigure::drawArea()
 {
 
+
+	drawHandles();
 }
 
 
@@ -137,28 +189,68 @@ void CFigure::drawArea()
 //			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 영역
 //			NULL: 매개변수의 Position이 핸들이 아닐 경우
 // - 반환 값 (BOOL)
-//		TRUE: 매개변수의 Position이 핸들인 경우
-//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+//		FALSE: 매개변수의 Position이 핸들인 경우
 BOOL CFigure::getHandleRect(IN Position handle, OUT RectF* handleRect)
 {
+	PointF handlePoint;
 
+	if (getHandlePoint(handle, &handlePoint)) {
+		handleRect = NULL;
+		return TRUE;
+	}
+
+	handleRect->X = handlePoint.X - HANDLESIZE / 2;
+	handleRect->Y = handlePoint.Y - HANDLESIZE / 2;
+	handleRect->Width = HANDLESIZE;
+	handleRect->Height = HANDLESIZE;
+
+	return FALSE;
 }
 
 // 개체 핸들 그리기
 // - IN 매개변수
 //		Position handle: 그리고자하는 핸들
 // - 반환 값 (BOOL)
-//		TRUE: 매개변수의 Position이 핸들인 경우
-//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
+//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+//		FALSE: 매개변수의 Position이 핸들인 경우
 BOOL CFigure::drawHandle(IN Position handle)
 {
+	RectF handleRect;
+	
+	// 핸들 영역을 얻음
+	if (getHandleRect(handle, &handleRect)) {
+		return TRUE;
+	}
 
+	// 핸들을 그림
+	SolidBrush handleBrush(Color::White);
+	m_lpGraphics->FillRectangle(&handleBrush, handleRect);
+
+	Pen handlePen(Color::Gray);
+	m_lpGraphics->DrawRectangle(&handlePen, handleRect);
+
+	return FALSE;
 }
 
+// 개체 핸들 전체 그리기
+void CFigure::drawHandles()
+{
+	RectF handleRects[8];
+	const INT handleRectsSize = 8;
 
+	// 8개 전체 핸들의 영역을 얻음
+	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+		getHandleRect((Position)handleIndex, &handleRects[handleIndex - 8]);
+	}
 
+	// 전체 핸들을 그림
+	SolidBrush handleBrush(Color::White);
+	m_lpGraphics->FillRectangles(&handleBrush, handleRects, handleRectsSize);
 
-
+	Pen handlePen(Color::Gray);
+	m_lpGraphics->DrawRectangles(&handlePen, handleRects, handleRectsSize);
+}
 
 
 // 순수 가상함수로 바꿀 거라 지울 함수 구현들
@@ -173,7 +265,7 @@ void CFigure::setOutlineWidth(IN const REAL outlineWidth){}
 void CFigure::setOutlinePattern(IN const DashStyle outlinePattern){}
 void CFigure::setFillColor(IN const Color& fillColor){}
 void CFigure::setFillPattern(IN const HatchStyle fillPattern){}
-void CFigure::resetArea(){}
+//void CFigure::resetArea(){}
 
 
 
