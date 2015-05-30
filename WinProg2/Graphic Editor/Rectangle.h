@@ -52,12 +52,11 @@ private:
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 	// - IN 매개변수
-	//		CreateFlag createFlag: 생성 설정 플래그
-	//		...: PointF(startingPoint), PointF(endingPoint) 순으로 입력
+	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	virtual BOOL create(IN CreateFlag createFlag, ...);
+	virtual BOOL create(...);
 
 public:
 	// 이동
@@ -98,9 +97,8 @@ private:
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		CreateFlag createFlag: 생성 설정 플래그
-	//		...: PointF(startingPoint), PointF(targetPoint) 순으로 입력
-	virtual void creating(IN CreateFlag createFlag, ...);
+	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+	virtual void creating(...);
 
 public:
 	// 이동 그리기

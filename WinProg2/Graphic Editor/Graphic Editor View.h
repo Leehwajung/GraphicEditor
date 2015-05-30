@@ -64,7 +64,7 @@ public:
 
 	int m_mode;
 
-	Graphics* m_Graphics;
+	Graphics* m_lpGraphics;
 
 // 작업입니다.
 public:

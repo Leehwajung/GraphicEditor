@@ -61,17 +61,17 @@ public:
 // 작업
 public:
 	/* 연산 */
-	// 생성
+	// 생성 (가상)
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
 	// - IN 매개변수
-	//		CreateFlag createFlag: 생성 설정 플래그
 	//		...: 각 파생 클래스에서 필요한대로 정의
+	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	virtual BOOL create(IN CreateFlag createFlag, ...);
+	virtual BOOL create(...);
 	
-	// 이동
+	// 이동 (가상)
 	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
 	// - IN 매개변수
 	//		PointF originPoint: 이동의 시작 좌표
@@ -79,7 +79,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
-	// 크기 변경
+	// 크기 변경 (가상)
 	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 	// - IN 매개변수
 	//		Position selcetedHandle: 개체의 선택된 핸들
@@ -88,11 +88,11 @@ public:
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
 	virtual void resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 	
-	// 삭제
+	// 삭제 (순수 가상)
 	// 개체를 삭제하고 메모리를 해제
 	virtual void destroy();
 	
-	// 좌표 위치 확인
+	// 좌표 위치 확인 (순수 가상)
 	// 점이 개체 안에 있는지 확인하고 그 위치를 반환함
 	// - IN 매개변수
 	//		PointF point: 확인할 좌표
@@ -115,17 +115,17 @@ public:
 
 
 	/* 그리기 */
-	// 도형 그리기
+	// 도형 그리기 (순수 가상)
 	virtual void draw();
 
-	// 생성 그리기
+	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		CreateFlag createFlag: 생성 설정 플래그
 	//		...: 각 파생 클래스에서 필요한대로 정의
-	virtual void creating(IN CreateFlag createFlag, ...);
+	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
+	virtual void creating(...);
 
-	// 이동 그리기
+	// 이동 그리기 (순수 가상)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
 	//		PointF originPoint: 이동의 시작 좌표
@@ -133,7 +133,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
-	// 크기 변경 그리기
+	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
 	//		Position selcetedHandle: 개체의 선택된 핸들
@@ -158,25 +158,25 @@ public:
 
 
 	/* 속성 설정 */
-	// 윤곽선 색 설정
+	// 윤곽선 색 설정 (순수 가상)
 	virtual void setOutlineColor(IN const Color& outlineColor);
 
-	// 윤곽선 두께 설정
+	// 윤곽선 두께 설정 (순수 가상)
 	virtual void setOutlineWidth(IN const REAL outlineWidth);
 
-	// 윤곽선 패턴 설정
+	// 윤곽선 패턴 설정 (순수 가상)
 	virtual void setOutlinePattern(IN const DashStyle outlinePattern);
 
-	// 채우기 색 설정
+	// 채우기 색 설정 (순수 가상)
 	virtual void setFillColor(IN const Color& fillColor);
 
-	// 채우기 패턴 설정
+	// 채우기 패턴 설정 (순수 가상)
 	virtual void setFillPattern(IN const HatchStyle fillPattern);
 
 
 protected:
 	/* 개체 영역 관리 */
-	// 개체 영역 갱신
+	// 개체 영역 갱신 (순수 가상)
 	virtual void resetArea();
 
 	// 개체 영역 그리기
@@ -209,10 +209,11 @@ private:
 
 // 특성
 protected:
-	Graphics* m_lpGraphics;		// 출력 대상 Graphics
-	RectF m_Area;				// 개체 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
+	Graphics* m_lpGraphics;					// 출력 대상 Graphics
+	RectF m_Area;							// 개체 영역 (사각형) https://msdn.microsoft.com/en-us/library/6y4t32t5(v=vs.120).aspx
 private:
-	const REAL HANDLESIZE = 10;	// 핸들 크기
+	BOOL m_GraphicsDynamicAllocationFlag;	// m_lpGraphics를, 객체 내부에서 동적으로 할당했는지 여부를 저장하는 플래그
+	const REAL HANDLESIZE = 10;				// 핸들 크기
 };
 
 
