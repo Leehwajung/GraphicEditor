@@ -14,10 +14,10 @@ public:
 	CRectangle();
 	CRectangle(IN CClientDC* lpClientDC);
 	CRectangle(IN Graphics* lpGraphics);
-	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush);
-	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush);
-	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush, IN RectF rect);
-	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush, IN RectF rect);
+	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush);
+	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush);
+	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush, IN RectF rect);
+	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush, IN RectF rect);
 	DECLARE_SERIAL(CRectangle)
 	virtual ~CRectangle();
 

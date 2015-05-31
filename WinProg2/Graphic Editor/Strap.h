@@ -77,7 +77,7 @@ public:
 
 // Æ¯¼º
 protected:
-	Pen* m_OutlinePen;
+	PenPtr m_OutlinePen;
 };
 
 

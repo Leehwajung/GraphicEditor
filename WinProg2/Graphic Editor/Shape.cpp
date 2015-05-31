@@ -211,7 +211,7 @@ BOOL CShape::setFillPattern(IN const HatchStyle fillPattern)
 
 /*** 보조 함수 ***/
 // 주색 획득
-Color CShape::getBrushColor(IN Brush* brush)
+Color CShape::getBrushColor(IN BrushPtr brush)
 {
 	Color result;
 
@@ -249,7 +249,7 @@ Color CShape::getBrushColor(IN Brush* brush)
 }
 
 // 보조색 획득
-Color CShape::getBrushSubcolor(IN Brush* brush)
+Color CShape::getBrushSubcolor(IN BrushPtr brush)
 {
 	Color result;
 
@@ -290,7 +290,7 @@ Color CShape::getBrushSubcolor(IN Brush* brush)
 }
 
 // 패턴 획득
-HatchStyle CShape::getBrushPattern(IN Brush* brush)
+HatchStyle CShape::getBrushPattern(IN BrushPtr brush)
 {
 	switch (brush->GetType())
 	{
@@ -312,7 +312,7 @@ HatchStyle CShape::getBrushPattern(IN Brush* brush)
 // - 반환 값 (BOOL)
 //		TRUE: 설정 실패
 //		FALSE: 설정 성공
-BOOL CShape::setBrushColor(IN Brush* brush, IN const Color& fillColor)
+BOOL CShape::setBrushColor(IN BrushPtr& brush, IN const Color& fillColor)
 {
 	if (!brush) {
 		return TRUE;
@@ -359,7 +359,7 @@ BOOL CShape::setBrushColor(IN Brush* brush, IN const Color& fillColor)
 // - 반환 값 (BOOL)
 //		TRUE: 설정 실패
 //		FALSE: 설정 성공
-BOOL CShape::setBrushSubcolor(IN Brush* brush, IN const Color& fillSubcolor)
+BOOL CShape::setBrushSubcolor(IN BrushPtr& brush, IN const Color& fillSubcolor)
 {
 	if (!brush) {
 		return TRUE;
@@ -411,7 +411,7 @@ BOOL CShape::setBrushSubcolor(IN Brush* brush, IN const Color& fillSubcolor)
 // - 반환 값 (BOOL)
 //		TRUE: 설정 실패
 //		FALSE: 설정 성공
-BOOL CShape::setBrushPattern(IN Brush* brush, IN const HatchStyle fillPattern)
+BOOL CShape::setBrushPattern(IN BrushPtr& brush, IN const HatchStyle fillPattern)
 {
 	if (!brush) {
 		return TRUE;

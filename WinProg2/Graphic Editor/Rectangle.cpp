@@ -27,23 +27,23 @@ CRectangle::CRectangle(IN Graphics* lpGraphics)
 {
 }
 
-CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush)
+CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush)
 	: CShape(lpClientDC, pen, brush)
 {
 }
 
-CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush)
+CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush)
 	: CShape(lpGraphics, pen, brush)
 {
 }
 
-CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush, IN RectF rect)
+CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush, IN RectF rect)
 	: CShape(lpClientDC, pen, brush)
 	, m_Rect(rect)
 {
 }
 
-CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush, IN RectF rect)
+CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush, IN RectF rect)
 	: CShape(lpGraphics, pen, brush)
 	, m_Rect(rect)
 {

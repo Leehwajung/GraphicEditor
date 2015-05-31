@@ -16,15 +16,15 @@ public:
 	CText();
 	CText(IN CClientDC* lpClientDC);
 	//CText(IN Graphics* lpGraphics);
-	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* fillbrush);
-	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* fillbrush);
-	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* fillbrush, IN RectF layoutrect);
-	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* fillbrush, IN RectF layoutrect);
+	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush);
+	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush);
+	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
+	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
 	CText(CView *lpView);
-	CText(IN CView *lpView, IN Pen* pen, IN Brush* fillbrush);
-	CText(IN CView *lpView, IN Pen* pen, IN Brush* fillbrush, IN RectF layoutrect);
-	CText(IN CView *lpView, IN Pen* pen, IN Brush* fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN Brush* fontbrush);
-	CText(IN CView *lpView, IN Pen* pen, IN Brush* fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN Brush* fontbrush, IN CString string);
+	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush);
+	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
+	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN BrushPtr fontbrush);
+	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN BrushPtr fontbrush, IN CString string);
 	CText(const CText& pCText);	//복사 생성자
 	DECLARE_SERIAL(CText)
 	virtual ~CText();	//소멸자
@@ -72,7 +72,7 @@ public:
 	CString getString();
 	Gdiplus::Font* getFont();
 	StringFormat* getStringFormat();
-	Brush* getFontBrush();
+	BrushPtr getFontBrush();
 	Color getFontColor();			// 주 글꼴 색 획득
 	Color getFontSubcolor();		// 보조 글꼴 색 획득
 	HatchStyle getFontPattern();	// 글꼴 패턴 획득
@@ -81,7 +81,7 @@ public:
 	void setString(CString& string);
 	void setFont(Gdiplus::Font* font);
 	void setStringFormat(StringFormat* stringFormat);
-	void setFontBrush(Brush* fontBrush);
+	void setFontBrush(BrushPtr fontBrush);
 	BOOL setFontColor(IN const Color& fontColor);			// 주 글꼴 색 설정 (TRUE: 설정 실패, FALSE: 설정 성공)
 	BOOL setFontSubcolor(IN const Color& fontSubcolor);		// 보조 글꼴 색 설정 (TRUE: 설정 실패, FALSE: 설정 성공)
 	BOOL setFontPattern(IN const HatchStyle fontPattern);	// 글꼴 패턴 설정 (TRUE: 설정 실패, FALSE: 설정 성공)
@@ -91,7 +91,7 @@ private:
 	CArray <TCHAR, TCHAR> m_String;	// 문자열
 	Gdiplus::Font* m_Font;			// 문자열 정보
 	StringFormat* m_StringFormat;	// 문자열 포맷
-	Brush* m_FontBrush;				// 문자열 브러시
+	BrushPtr m_FontBrush;				// 문자열 브러시
 	CView *m_View;					// 출력 대상 뷰 (캐럿 출력)
 
 	//Color m_FontColor;	// 글자색

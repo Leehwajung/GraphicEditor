@@ -7,6 +7,8 @@
 
 // CShape 명령 대상입니다.
 
+
+
 class CShape : public CFigure
 {
 // 생성 및 소멸
@@ -103,36 +105,36 @@ public:
 // 보조 작업
 protected:
 	// 주색 획득
-	static Color getBrushColor(IN Brush* brush);
+	static Color getBrushColor(IN BrushPtr brush);
 
 	// 보조색 획득
-	static Color getBrushSubcolor(IN Brush* brush);
+	static Color getBrushSubcolor(IN BrushPtr brush);
 
 	// 패턴 획득
-	static HatchStyle getBrushPattern(IN Brush* brush);
+	static HatchStyle getBrushPattern(IN BrushPtr brush);
 
 	// 주색 설정
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
-	static BOOL setBrushColor(IN Brush* brush, IN const Color& fillColor);
+	static BOOL setBrushColor(IN BrushPtr& brush, IN const Color& fillColor);
 
 	// 보조색 설정
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
-	static BOOL setBrushSubcolor(IN Brush* brush, IN const Color& fillSubcolor);
+	static BOOL setBrushSubcolor(IN BrushPtr& brush, IN const Color& fillSubcolor);
 
 	// 패턴 설정
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
-	static BOOL setBrushPattern(IN Brush* brush, IN const HatchStyle fillPattern);
+	static BOOL setBrushPattern(IN BrushPtr& brush, IN const HatchStyle fillPattern);
 
 // 특성
 protected:
-	Pen* m_OutlinePen;	// 그리기 펜
-	Brush* m_FillBrush;	// 그리기 브러시
+	PenPtr m_OutlinePen;	// 그리기 펜
+	BrushPtr m_FillBrush;	// 그리기 브러시
 };
 
 

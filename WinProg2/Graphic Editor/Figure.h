@@ -15,6 +15,9 @@ using namespace Gdiplus;
 
 // CFigure 명령 대상입니다.
 
+typedef Pen*	PenPtr;
+typedef Brush*	BrushPtr;
+
 class CFigure : public CObject
 {
 // 자료형
