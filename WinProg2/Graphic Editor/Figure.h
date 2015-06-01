@@ -108,6 +108,15 @@ public:
 	//		Position: 개체 상의 점의 위치
 	virtual Position pointInFigure(IN PointF point);
 
+	// 개체 위치 확인
+	// 개체가 사각형 안에 있는지 확인하고 그 위치를 반환함
+	// - IN 매개변수
+	//		RectF rect: 확인할 좌표
+	// - 반환 값 (BOOL)
+	//		TRUE: 개체가 사각형 내부에 존재할 때 (도형의 모든 점이 사각형 내부에 존재)
+	//		FALSE: 개체가 사각형 내부에 존재하지 않을 때
+	BOOL figureInRect(IN RectF rect);
+
 	// 핸들의 좌표
 	// 핸들의 중앙 좌표를 얻음
 	// - IN 매개변수
