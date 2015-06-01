@@ -9,8 +9,8 @@
 IMPLEMENT_SERIAL(CLine, CStrap, 1)
 
 CLine::CLine()
-:CStrap()
-, isStartingpoint(FALSE), isEndingpoint(FALSE)
+	:CStrap()
+	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 	//m_LinePen	
 }
@@ -28,13 +28,13 @@ CLine::CLine(IN Graphics* lpGraphics)
 }
 
 CLine::CLine(IN CClientDC* lpClientDC, IN Pen* pen)
-	: CStrap(lpClientDC)
+	: CStrap(lpClientDC, pen)
 	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
 
 CLine::CLine(IN Graphics* lpGraphics, IN Pen* pen)
-	: CStrap(lpGraphics)
+	: CStrap(lpGraphics, pen)
 	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
