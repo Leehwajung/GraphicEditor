@@ -70,7 +70,7 @@ BOOL CLine::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag
 }
 
 /* 생성 완료 */
-BOOL CLine::create(...) {
+BOOL CLine::create(void* param1, ...) {
 //	m_EndPoint = endingPoint;
 //	m_Gradient = (startingPoint.Y - m_EndPoint.Y) / (startingPoint.X - m_EndPoint.X);
 //
@@ -131,12 +131,12 @@ void CLine::destroy() {
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
 CFigure::Position CLine::pointInFigure(IN PointF point) {
 
-	// 1. 현재 좌표가  선의 StartingPoint나 EndPoint이면 ONPOINT("Resize모드") 이다. 
+	// 1. 현재 좌표가  선의 StartingPoint나 EndPoint이면 ONHANDLE("Resize모드") 이다. 
 	if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
 		if (point.Equals(m_StartingPoint) == TRUE)
 			isStartingpoint = TRUE;
 
-		return ONPOINT;
+		return ONHANDLE;
 	}
 
 	// 2. 현재 좌표가 선이 있는 영역에 있을 때 원래의 선의 기울기와 같을 때는 INSIDE("Move모드") 이다.
@@ -215,7 +215,7 @@ void CLine::creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFl
 }
 
 /* 생성 그리기 */
-void CLine::creating(...) {
+void CLine::creating(void* param1, ...) {
 //	m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, point);
 }
 

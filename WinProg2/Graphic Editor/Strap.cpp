@@ -58,9 +58,11 @@ void CStrap::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{	// storing code
+
 	}
 	else
 	{	// loading code
+
 	}
 }
 

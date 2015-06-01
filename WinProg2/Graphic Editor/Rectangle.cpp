@@ -88,12 +88,30 @@ BOOL CRectangle::create(IN PointF startingPoint, IN PointF endingPoint, IN Creat
 // 생성
 // 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 // - IN 매개변수
-//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+//		void* param1, ...: PointF*(startingPoint), PointF*(endingPoint), CreateFlag* 순으로 입력
 // - 반환 값 (BOOL)
 //		TRUE: 생성 실패
 //		FALSE: 생성 성공
-BOOL CRectangle::create(...)
+BOOL CRectangle::create(void* param1, ...)
 {
+	va_list vaList;
+	va_start(vaList, param1);
+
+	SizeF rectSize;
+	rectSize.Width = startingPoint.X > endingPoint.X ? startingPoint.X - endingPoint.X : endingPoint.X - startingPoint.X;
+	rectSize.Height = startingPoint.Y > endingPoint.Y ? startingPoint.Y - endingPoint.Y : endingPoint.Y - startingPoint.Y;
+	
+	if (startingPoint.X > endingPoint.X) {
+		startingPoint.X = endingPoint.X;
+	}
+	
+	if (startingPoint.Y > endingPoint.Y) {
+		startingPoint.Y = endingPoint.Y;
+	}
+	
+	m_Rect = *new RectF(startingPoint, rectSize);
+	resetArea();
+
 	return TRUE;	 // 임시 반환 값
 }
 
@@ -161,7 +179,7 @@ void CRectangle::creating(IN PointF startingPoint, IN PointF targetPoint, IN Cre
 // 생성 시에 보여줄 그리기
 // - IN 매개변수
 //		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
-void CRectangle::creating(...)
+void CRectangle::creating(void* param1, ...)
 {
 
 }

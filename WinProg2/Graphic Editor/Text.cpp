@@ -217,7 +217,7 @@ void  CText::FontDestroy(){// 제거
 //}
 
 ///// mouseMoveOperation이 호출에 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-void  CText::creating(...){//생성 그리기
+void  CText::creating(void* param1, ...){//생성 그리기
 	// 외곽선 그리기는 shape 함수를 이용 //
 
 }

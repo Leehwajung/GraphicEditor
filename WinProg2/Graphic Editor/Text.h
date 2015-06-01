@@ -46,7 +46,7 @@ public:
 	
 	// OnMouseMove
 	//void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-	virtual void creating(...);										// 생성 그리기
+	virtual void creating(void* param1, ...);										// 생성 그리기
 	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);	// 이동 그리기
 	virtual void resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);	// 크기 변경 그리기
 
