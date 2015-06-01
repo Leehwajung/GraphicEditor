@@ -10,32 +10,32 @@ IMPLEMENT_SERIAL(CLine, CStrap, 1)
 
 CLine::CLine()
 :CStrap()
-	, isStartingpoint(FALSE)
+, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 	//m_LinePen	
 }
 
 CLine::CLine(IN CClientDC* lpClientDC)
 	: CStrap(lpClientDC)
-	, isStartingpoint(FALSE)
+	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
 
 CLine::CLine(IN Graphics* lpGraphics)
 	: CStrap(lpGraphics)
-	, isStartingpoint(FALSE)
+	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
 
 CLine::CLine(IN CClientDC* lpClientDC, IN Pen* pen)
 	: CStrap(lpClientDC)
-	, isStartingpoint(FALSE)
+	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
 
 CLine::CLine(IN Graphics* lpGraphics, IN Pen* pen)
 	: CStrap(lpGraphics)
-	, isStartingpoint(FALSE)
+	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 }
 
@@ -58,27 +58,28 @@ void CLine::Serialize(CArchive& ar)
 // LButtonUp
 /* 생성 완료 */
 BOOL CLine::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
-	m_EndPoint = endingPoint;
-	m_Gradient = (startingPoint.Y - m_EndPoint.Y) / (startingPoint.X - m_EndPoint.X);
 
-	m_Area.X = startingPoint.X;
-	m_Area.Y = startingPoint.Y;
-	m_Area.Width = abs(startingPoint.X - m_EndPoint.X);
-	m_Area.Height = abs(startingPoint.Y - m_EndPoint.Y);
-
-	return FALSE;
+	return create(&startingPoint, &endingPoint, createFlag);
 }
 
 /* 생성 완료 */
 BOOL CLine::create(void* param1, ...) {
-//	m_EndPoint = endingPoint;
-//	m_Gradient = (startingPoint.Y - m_EndPoint.Y) / (startingPoint.X - m_EndPoint.X);
-//
-//	m_Area.X = startingPoint.X;
-//	m_Area.Y = startingPoint.Y;
-//	m_Area.Width = abs(startingPoint.X - m_EndPoint.X);
-//	m_Area.Height = abs(startingPoint.Y - m_EndPoint.Y);
-//
+
+	va_list vaList;
+	va_start(vaList, param1);
+	PointF* startingPoint = (PointF*)param1;
+	PointF* endingPoint = va_arg(vaList, PointF*);
+	CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	va_end(vaList);
+
+	m_EndPoint = *endingPoint;
+	m_Gradient = (startingPoint->Y - m_EndPoint.Y) / (startingPoint->X - m_EndPoint.X);
+
+	m_Area.X = startingPoint->X;
+	m_Area.Y = startingPoint->Y;
+	m_Area.Width = abs(startingPoint->X - m_EndPoint.X);
+	m_Area.Height = abs(startingPoint->Y - m_EndPoint.Y);
+
 	return FALSE;
 }
 
@@ -97,10 +98,10 @@ BOOL CLine::create(void* param1, ...) {
 void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 
 	/* 이동한 상대 값을 구하기 위함 */
-	//PointF RelativePoint = PointF(Target - m_StartingPoint);
+	PointF RelativePoint = targetPoint - originPoint;
 
-	//m_StartingPoint = m_StartingPoint + RelativePoint;
-	//m_EndPoint = m_EndPoint + RelativePoint;
+	m_StartingPoint = m_StartingPoint + RelativePoint;
+	m_EndPoint = m_EndPoint + RelativePoint;
 
 }
 
@@ -110,8 +111,9 @@ void CLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeF
 		m_StartingPoint = targetPoint;
 		isStartingpoint = FALSE;
 	}
-	else{
+	else if(isEndingpoint == TRUE){
 		m_EndPoint = targetPoint;
+		isEndingpoint = FALSE;
 	}
 
 }
@@ -133,8 +135,12 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 	// 1. 현재 좌표가  선의 StartingPoint나 EndPoint이면 ONHANDLE("Resize모드") 이다. 
 	if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
+
 		if (point.Equals(m_StartingPoint) == TRUE)
 			isStartingpoint = TRUE;
+
+		else if (point.Equals(m_EndPoint) == TRUE)
+			isEndingpoint = TRUE;
 
 		return ONHANDLE;
 	}
@@ -148,7 +154,6 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 			if (tmp_gradient == m_Gradient)
 				return INSIDE;
-
 		}
 		return OUTSIDE;
 
@@ -211,19 +216,28 @@ void CLine::draw() {
 // OnMouseMove
 /* 생성 그리기 */
 void CLine::creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
-	m_lpGraphics->DrawLine(m_OutlinePen, startingPoint, targetPoint);
+	
+	creating(&startingPoint,&targetPoint,createFlag);
+	
 }
 
 /* 생성 그리기 */
 void CLine::creating(void* param1, ...) {
-//	m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, point);
+	va_list vaList;
+	va_start(vaList,param1);
+	PointF* startingPoint = (PointF*)param1;
+	PointF* targetPoint = va_arg(vaList, PointF*);
+	CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	va_end(vaList);
+
+	m_lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
 }
 
 /* 이동 그리기 */
 void CLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
-	PointF RelativePoint = PointF(targetPoint - m_StartingPoint);
+	PointF RelativePoint = targetPoint - originPoint;
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
