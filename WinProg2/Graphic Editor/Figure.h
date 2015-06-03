@@ -25,7 +25,7 @@ public:
 	enum Position {
 		OUTSIDE			= (int) 0x00000,	// 개체 밖
 		INSIDE			= (int) 0x00001,	// 개체 위
-		ONPOINT			= (int) 0x00008,	// 핸들 위 (핸들 위의 점인지는 ONPOINT와의 &연산으로 알아낼 수 있음)
+		ONPHANDLE		= (int) 0x00008,	// 핸들 위 (핸들 위의 점인지는 ONPOINT와의 &연산으로 알아낼 수 있음)
 		TOPLEFT			= (int) 0x00008,	// 좌상 핸들
 		TOP				= (int) 0x00009,	// 상측 핸들
 		TOPRIGHT		= (int) 0x0000A,	// 우상 핸들
