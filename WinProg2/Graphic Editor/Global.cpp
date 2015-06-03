@@ -14,7 +14,7 @@
 
 // CGlobal ¸â¹ö ÇÔ¼ö
 
-const PointF CGlobal::CPointToPointF(const CPoint& point)
+PointF CGlobal::CPointToPointF(const CPoint& point)
 {
 	PointF tmp_PointF;
 	

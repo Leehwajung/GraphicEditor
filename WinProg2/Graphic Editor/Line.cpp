@@ -160,7 +160,7 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 	}
 
 	// 그 외: 아무 모드도 아님
-	else OUTSIDE;
+	else return OUTSIDE;
 }
 
 ///* 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지 */

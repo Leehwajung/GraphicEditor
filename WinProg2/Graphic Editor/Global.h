@@ -22,7 +22,7 @@ using namespace Gdiplus;
 class CGlobal : public CObject
 {
 public:
-	const static PointF CPointToPointF(const CPoint& point);
+	static PointF CPointToPointF(const CPoint& point);
 	const static CPoint PointFToCPoint(const PointF& point);
 };
 
