@@ -57,12 +57,12 @@ void CFigure::Serialize(CArchive& ar)
 // 생성
 // 매개변수의 값을 기준으로 새로운 개체를 정의
 // - IN 매개변수
-//		...: 각 파생 클래스에서 필요한대로 정의
+//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 //		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
 // - 반환 값 (BOOL)
 //		TRUE: 생성 실패
 //		FALSE: 생성 성공
-BOOL CFigure::create(...)
+BOOL CFigure::create(void* param1, ...)
 {
 	resetArea();
 	return TRUE;	 // 임시 반환 값
@@ -89,6 +89,22 @@ void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	resetArea();
+}
+
+// 개체 위치 확인
+// 개체가 사각형 안에 있는지 확인하고 그 위치를 반환함
+// - IN 매개변수
+//		RectF rect: 확인할 좌표
+// - 반환 값 (BOOL)
+//		TRUE: 개체가 사각형 내부에 존재할 때 (도형의 모든 점이 사각형 내부에 존재)
+//		FALSE: 개체가 사각형 내부에 존재하지 않을 때
+BOOL CFigure::figureInRect(IN RectF rect)
+{
+	if (rect.Contains(m_Area)) {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // 핸들의 좌표
@@ -268,9 +284,9 @@ void CFigure::drawHandles()
 
 // 순수 가상함수로 바꿀 거라 지울 함수 구현들
 void CFigure::destroy(){}
-CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임시 반환값 */}
+CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임시 반환값 */ }
 void CFigure::draw(){}
-void CFigure::creating(...){}
+void CFigure::creating(void* param1, ...){}
 void CFigure::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){}
 void CFigure::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
 BOOL CFigure::setOutlineColor(IN const Color& outlineColor){ return TRUE; /* 임시 반환값 */ }

@@ -37,11 +37,11 @@ private:
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 직선을 생성함
 	// - IN 매개변수
-	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+	//		void* param1, ...: PointF*(startingPoint), PointF*(endingPoint), CreateFlag 순으로 입력
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	virtual BOOL create(...);
+	virtual BOOL create(void* param1, ...);
 
 public:
 	// 이동
@@ -96,8 +96,8 @@ private:
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
-	virtual void creating(...);
+	//		void* param1, ...: PointF*(startingPoint), PointF*(endingPoint), CreateFlag 순으로 입력
+	virtual void creating(void* param1, ...);
 
 public:
 	// 이동 그리기
@@ -169,6 +169,7 @@ private:
 
 	// 우선 임시 방편! 다시 바꿀 수도 있음. 
 	BOOL isStartingpoint;
+	BOOL isEndingpoint;
 	
 	//Color m_LineColor;	// 선 색
 	//int m_LinePattern;	// 선 패턴

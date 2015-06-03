@@ -82,19 +82,48 @@ void CRectangle::Serialize(CArchive& ar)
 //		FALSE: 생성 성공
 BOOL CRectangle::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/)
 {
-	return TRUE;	 // 임시 반환 값
+	return create(&startingPoint, &endingPoint, createFlag);	 // 임시 반환 값
 }
 
 // 생성
 // 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 // - IN 매개변수
-//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
+//		void* param1, ...: PointF*(startingPoint), PointF*(endingPoint), CreateFlag 순으로 입력
 // - 반환 값 (BOOL)
 //		TRUE: 생성 실패
 //		FALSE: 생성 성공
-BOOL CRectangle::create(...)
+BOOL CRectangle::create(void* param1, ...)
 {
-	return TRUE;	 // 임시 반환 값
+	va_list vaList;
+	va_start(vaList, param1);
+	PointF* startingPoint = (PointF*)param1;
+	PointF* endingPoint = va_arg(vaList, PointF*);
+	CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	va_end(vaList);
+
+	SizeF rectSize;
+	rectSize.Width = startingPoint->X > endingPoint->X ? startingPoint->X - endingPoint->X : endingPoint->X - startingPoint->X;
+	rectSize.Height = startingPoint->Y > endingPoint->Y ? startingPoint->Y - endingPoint->Y : endingPoint->Y - startingPoint->Y;
+	
+	if (startingPoint->X > endingPoint->X) {
+		startingPoint->X = endingPoint->X;
+	}
+	
+	if (startingPoint->Y > endingPoint->Y) {
+		startingPoint->Y = endingPoint->Y;
+	}
+	
+	RectF* rect = new RectF(*startingPoint, rectSize);
+
+	if (!rect) {
+		return TRUE;
+	}
+
+	m_Rect = *rect;
+
+	resetArea();
+
+	return FALSE;
 }
 
 // 이동
@@ -154,16 +183,21 @@ void CRectangle::draw()
 //		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
 void CRectangle::creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
 {
-
+	creating(&startingPoint, &targetPoint, createFlag);
 }
 
 // 생성 그리기
 // 생성 시에 보여줄 그리기
 // - IN 매개변수
-//		...: PointF(startingPoint), PointF(endingPoint), CreateFlag 순으로 입력
-void CRectangle::creating(...)
+//		void* param1, ...: PointF*(startingPoint), PointF*(targetPoint), CreateFlag 순으로 입력
+void CRectangle::creating(void* param1, ...)
 {
-
+	va_list vaList;
+	va_start(vaList, param1);
+	PointF* startingPoint = (PointF*)param1;
+	PointF* targetPoint = va_arg(vaList, PointF*);
+	CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	va_end(vaList);
 }
 
 // 이동 그리기

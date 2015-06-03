@@ -25,7 +25,7 @@ public:
 	enum Position {
 		OUTSIDE			= (int) 0x00000,	// 개체 밖
 		INSIDE			= (int) 0x00001,	// 개체 위
-		ONPHANDLE		= (int) 0x00008,	// 핸들 위 (핸들 위의 점인지는 ONPOINT와의 &연산으로 알아낼 수 있음)
+		ONHANDLE		= (int) 0x00008,	// 핸들 위 (핸들 위의 점인지는 ONHANDLE와의 &연산으로 알아낼 수 있음)
 		TOPLEFT			= (int) 0x00008,	// 좌상 핸들
 		TOP				= (int) 0x00009,	// 상측 핸들
 		TOPRIGHT		= (int) 0x0000A,	// 우상 핸들
@@ -72,12 +72,12 @@ public:
 	// 생성 (가상)
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
 	// - IN 매개변수
-	//		...: 각 파생 클래스에서 필요한대로 정의
+	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	virtual BOOL create(...);
+	virtual BOOL create(void* param1, ...);
 	
 	// 이동 (가상)
 	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
@@ -108,6 +108,15 @@ public:
 	//		Position: 개체 상의 점의 위치
 	virtual Position pointInFigure(IN PointF point);
 
+	// 개체 위치 확인
+	// 개체가 사각형 안에 있는지 확인하고 그 위치를 반환함
+	// - IN 매개변수
+	//		RectF rect: 확인할 좌표
+	// - 반환 값 (BOOL)
+	//		TRUE: 개체가 사각형 내부에 존재할 때 (도형의 모든 점이 사각형 내부에 존재)
+	//		FALSE: 개체가 사각형 내부에 존재하지 않을 때
+	BOOL figureInRect(IN RectF rect);
+
 	// 핸들의 좌표
 	// 핸들의 중앙 좌표를 얻음
 	// - IN 매개변수
@@ -131,7 +140,7 @@ public:
 	// - IN 매개변수
 	//		...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-	virtual void creating(...);
+	virtual void creating(void* param1, ...);
 
 	// 이동 그리기 (순수 가상)
 	// 이동 중에 보여줄 그리기
@@ -251,7 +260,7 @@ private:
 
 
 //	// LButtonDown
-//	virtual void create(...);					// 개체 생성
+//	virtual void create(void* param1, ...);					// 개체 생성
 //	virtual operationModeFlags cursorPosition(PointF point);	// 커서 위치 찾기 (커서가 도형 위에 있는지, 도형의 점 위에 있는지)
 //
 //
