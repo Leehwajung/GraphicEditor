@@ -354,7 +354,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
 
 		}
-		else {							// 보조키 누르지 않고 드리그
+		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
 				m_CurrentFigure->creating(&CGlobal::CPointToPointF(point));
 				Invalidate();
@@ -369,7 +369,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
 
 		}
-		else {							// 보조키 누르지 않고 드리그
+		else {							// 보조키 누르지 않고 드래그
 
 		}
 	}
