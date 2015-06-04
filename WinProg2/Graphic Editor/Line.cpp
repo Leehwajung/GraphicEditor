@@ -105,11 +105,11 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 }
 
 /* 선 크기(길이) 변경 */
-void CLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (selcetedHandle == START)
+void CLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	if (selectedHandle == START)
 		m_StartingPoint = targetPoint;
 
-	else if (selcetedHandle == END)
+	else if (selectedHandle == END)
 		m_EndPoint = targetPoint;
 
 	resetArea();
@@ -237,11 +237,11 @@ void CLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 }
 
 /* 크기 변경 그리기 */
-void CLine::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (selcetedHandle == START){
+void CLine::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	if (selectedHandle == START){
 		m_lpGraphics->DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
 }
-	else if (selcetedHandle == END){
+	else if (selectedHandle == END){
 		m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
 	}
 }

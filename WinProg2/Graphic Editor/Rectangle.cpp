@@ -146,11 +146,11 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 // 크기 변경
 // 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 // - IN 매개변수
-//		Position selcetedHandle: 사각형의 선택된 핸들
+//		Position selectedHandle: 사각형의 선택된 핸들
 //		PointF targetPoint: 선택된 핸들의 변경할 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-void CRectangle::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 
 }
@@ -235,11 +235,11 @@ void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFla
 // 크기 변경 그리기
 // 크기 변경 중에 보여줄 그리기
 // - IN 매개변수
-//		Position selcetedHandle: 개체의 선택된 핸들
+//		Position selectedHandle: 개체의 선택된 핸들
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-void CRectangle::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+void CRectangle::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 
 }
