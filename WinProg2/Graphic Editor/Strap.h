@@ -23,6 +23,12 @@ public:
 	// 점 추가 (순수 가상)
 	//virtual void addPoint(PointF point);
 
+	// 개별 좌표 이동
+	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
+
+	// 개별 좌표 이동 그리기
+	virtual void pointMoving(IN PointF originPoint, IN PointF targetPoint);
+
 	// 펜 획득
 	Pen* getPen();
 

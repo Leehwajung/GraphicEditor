@@ -66,6 +66,17 @@ void CStrap::Serialize(CArchive& ar)
 	}
 }
 
+// °³º° ÁÂÇ¥ ÀÌµ¿
+void pointMove(IN PointF originPoint, IN PointF targetPoint)
+{
+
+}
+
+// °³º° ÁÂÇ¥ ÀÌµ¿ ±×¸®±â
+void pointMoving(IN PointF originPoint, IN PointF targetPoint)
+{
+
+}
 
 // Ææ È¹µæ
 Pen* CStrap::getPen()

@@ -50,8 +50,10 @@ BOOL CEllipse::create(void* param1, ...)
 	va_end(vaList);
 
 	SizeF rectSize;
-	rectSize.Width = startingPoint->X > endingPoint->X ? startingPoint->X - endingPoint->X : endingPoint->X - startingPoint->X;
-	rectSize.Height = startingPoint->Y > endingPoint->Y ? startingPoint->Y - endingPoint->Y : endingPoint->Y - startingPoint->Y;
+	rectSize.Width = startingPoint->X > endingPoint->X ? 
+		startingPoint->X - endingPoint->X : endingPoint->X - startingPoint->X;
+	rectSize.Height = startingPoint->Y > endingPoint->Y ? 
+		startingPoint->Y - endingPoint->Y : endingPoint->Y - startingPoint->Y;
 
 	if (startingPoint->X > endingPoint->X) {
 		startingPoint->X = endingPoint->X;
@@ -61,13 +63,7 @@ BOOL CEllipse::create(void* param1, ...)
 		startingPoint->Y = endingPoint->Y;
 	}
 
-	RectF* rect = new RectF(*startingPoint, rectSize);
-
-	if (!rect) {
-		return TRUE;
-	}
-
-	m_Rect = *rect;
+	m_Rect = RectF(*startingPoint, rectSize);
 
 	resetArea();
 
@@ -87,7 +83,50 @@ void CEllipse::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mo
 void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 	IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
-	pointInFigure(targetPoint);
+	/*PointF AP;
+
+	if (anchorPoint == NULL){
+		getHandlePoint(getOppositeHandle(selectedHandle), &AP);
+		anchorPoint = &AP;
+	}*/
+	switch (selectedHandle)
+	{
+	case CFigure::TOPLEFT:
+
+		break;
+
+	case CFigure::TOP:
+
+		break;
+
+	case CFigure::TOPRIGHT:
+
+		break;
+
+	case CFigure::RIGHT:
+
+		break;
+
+	case CFigure::BOTTOMRIGHT:
+
+		break;
+
+	case CFigure::BOTTOM:
+
+		break;
+
+	case CFigure::BOTTOMLEFT:
+
+		break;
+
+	case CFigure::LEFT:
+
+		break;
+
+	default:
+		return;
+	}
+
 	resetArea();//area¸¦¸®¼Â.
 	
 

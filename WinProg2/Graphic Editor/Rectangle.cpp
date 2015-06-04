@@ -113,13 +113,15 @@ BOOL CRectangle::create(void* param1, ...)
 		startingPoint->Y = endingPoint->Y;
 	}
 	
-	RectF* rect = new RectF(*startingPoint, rectSize);
+	//RectF* rect = new RectF(*startingPoint, rectSize);
 
-	if (!rect) {
-		return TRUE;
-	}
+	//if (!rect) {
+	//	return TRUE;
+	//}
 
-	m_Rect = *rect;
+	//m_Rect = *rect;
+
+	m_Rect = RectF(*startingPoint, rectSize);
 
 	resetArea();
 
