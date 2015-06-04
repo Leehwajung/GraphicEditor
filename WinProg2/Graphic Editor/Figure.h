@@ -108,7 +108,7 @@ public:
 	//		Position: 개체 상의 점의 위치
 	virtual Position pointInFigure(IN PointF point);
 
-	// 개체 위치 확인
+	// 개체 위치 확인 for drag selection
 	// 개체가 사각형 안에 있는지 확인하고 그 위치를 반환함
 	// - IN 매개변수
 	//		RectF rect: 확인할 좌표
