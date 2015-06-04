@@ -237,6 +237,37 @@ BOOL CFigure::getHandleRect(IN Position handle, OUT RectF* handleRect)
 	return FALSE;
 }
 
+CFigure::Position CFigure::getOppositeHandle(IN Position handle){
+	
+	switch (handle)
+	{
+	case CFigure::OUTSIDE:
+		return handle;
+	case CFigure::INSIDE:
+		return handle;
+	case CFigure::TOPLEFT:
+		return CFigure::BOTTOMRIGHT;
+	case CFigure::TOP:
+		return CFigure::BOTTOM;
+	case CFigure::TOPRIGHT:
+		return CFigure::BOTTOMLEFT;
+	case CFigure::RIGHT:
+		return CFigure::LEFT;
+	case CFigure::BOTTOMRIGHT:
+		return CFigure::TOPLEFT;
+	case CFigure::BOTTOM:
+		return CFigure::TOP;
+	case CFigure::BOTTOMLEFT:
+		return CFigure::TOPRIGHT;
+	case CFigure::LEFT:
+		return CFigure::RIGHT;
+	case CFigure::START:
+		return CFigure::END;
+	case CFigure::END:
+		return CFigure::START;
+	}
+
+}
 // 개체 핸들 그리기
 // - IN 매개변수
 //		Position handle: 그리고자하는 핸들
