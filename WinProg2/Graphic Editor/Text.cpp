@@ -161,25 +161,6 @@ void CText::draw(){
 
 }//CpaintDC 사용
 
-///////////////////////////  Defalt 속성  //////////////////////////////////
-void CText::FontDisplay(){
-	
-}
-////////////////////////////////////////////////////////////////////////////
-
-void CText::FontTransform( ){
-	//글자체 변경
-}
-
-void CText::SizeTransform(){//글자크기 변경
-
-}
-/////////////////
-
-void  CText::FontDestroy(){// 제거
-	//외각선 사각형도 파괴
-	DestroyCaret();//캐럿파괴
-}
 
 //////////////////////////////////////////////////////////////////////
 
@@ -217,68 +198,68 @@ void  CText::FontDestroy(){// 제거
 //}
 
 ///// mouseMoveOperation이 호출에 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-void  CText::creating(void* param1, ...){//생성 그리기
-	// 외곽선 그리기는 shape 함수를 이용 //
-
-}
-void  CText::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){// 이동 그리기
-	
-	m_View->HideCaret();//캐럿숨기기
-
-	/*포인터가 Rect영역안에 있는지 없는지를 체크한 후, Rect 안에 클릭된다면*/
-	::SetCursor(::LoadCursor(NULL, IDC_SIZEALL));// 4방향커서로 셋
-	
-	PointF startingPoint;
-	m_Rect.GetLocation(&startingPoint);
-	PointF RelativePoint = PointF(targetPoint - startingPoint);
-	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
-		
-}		
-
-void  CText::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
-	
-	m_View->HideCaret();//캐럿숨기기
-
-	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
-	CRect rect;
-	m_View->GetClientRect(rect);
-	::ClipCursor(rect); // 렉트 영역으로 커서 제한
-	CRect rectHORZ(rect), rectVERT(rect);
-	rectHORZ.DeflateRect(RESIZE_POINT, 0);
-	rectVERT.DeflateRect(0, RESIZE_POINT);
-	CPoint tp;
-	tp.x = targetPoint.X;
-	tp.y = targetPoint.Y;
-	if (rectHORZ.PtInRect(tp)==FALSE){//CPoint 변수를 받아, 영역안에 좌표가 들어와있는 지 체크
-		::SetCursor(::LoadCursor(NULL, IDC_SIZEWE));//west, east 커서
-		m_RESIZE = HORZ;
-	}
-	else if (rectVERT.PtInRect(tp) == FALSE){
-		::SetCursor(::LoadCursor(NULL, IDC_SIZENS));
-		m_RESIZE = VERT;
-	}
-	else
-	{
-		m_RESIZE = NONE;
-	}
-	
-	PointF startingPoint;
-	m_Rect.GetLocation(&startingPoint);
-	PointF RelativePoint = PointF(targetPoint - startingPoint);
-	m_View->ClientToScreen(rect);
-	switch (m_RESIZE){
-	case NONE:
-		rect.OffsetRect(RelativePoint.X, RelativePoint.Y);
-		break;
-	case HORZ:
-		rect.InflateRect(RelativePoint.X, 0);
-		break;
-	case VERT:
-		rect.InflateRect(0, RelativePoint.Y);
-		break;
-	}
-	rect.NormalizeRect();
-}			
+//void  CText::creating(void* param1, ...){//생성 그리기
+//	// 외곽선 그리기는 shape 함수를 이용 //
+//
+//}
+//void  CText::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){// 이동 그리기
+//	
+//	m_View->HideCaret();//캐럿숨기기
+//
+//	/*포인터가 Rect영역안에 있는지 없는지를 체크한 후, Rect 안에 클릭된다면*/
+//	::SetCursor(::LoadCursor(NULL, IDC_SIZEALL));// 4방향커서로 셋
+//	
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	PointF RelativePoint = PointF(targetPoint - startingPoint);
+//	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
+//		
+//}		
+//
+//void  CText::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
+//	
+//	m_View->HideCaret();//캐럿숨기기
+//
+//	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
+//	CRect rect;
+//	m_View->GetClientRect(rect);
+//	::ClipCursor(rect); // 렉트 영역으로 커서 제한
+//	CRect rectHORZ(rect), rectVERT(rect);
+//	rectHORZ.DeflateRect(RESIZE_POINT, 0);
+//	rectVERT.DeflateRect(0, RESIZE_POINT);
+//	CPoint tp;
+//	tp.x = targetPoint.X;
+//	tp.y = targetPoint.Y;
+//	if (rectHORZ.PtInRect(tp)==FALSE){//CPoint 변수를 받아, 영역안에 좌표가 들어와있는 지 체크
+//		::SetCursor(::LoadCursor(NULL, IDC_SIZEWE));//west, east 커서
+//		m_RESIZE = HORZ;
+//	}
+//	else if (rectVERT.PtInRect(tp) == FALSE){
+//		::SetCursor(::LoadCursor(NULL, IDC_SIZENS));
+//		m_RESIZE = VERT;
+//	}
+//	else
+//	{
+//		m_RESIZE = NONE;
+//	}
+//	
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	PointF RelativePoint = PointF(targetPoint - startingPoint);
+//	m_View->ClientToScreen(rect);
+//	switch (m_RESIZE){
+//	case NONE:
+//		rect.OffsetRect(RelativePoint.X, RelativePoint.Y);
+//		break;
+//	case HORZ:
+//		rect.InflateRect(RelativePoint.X, 0);
+//		break;
+//	case VERT:
+//		rect.InflateRect(0, RelativePoint.Y);
+//		break;
+//	}
+//	rect.NormalizeRect();
+//}			
 
 ///////////////////////////////////////////////////////////////////////
 // LButtonUp / LButtonDlk
