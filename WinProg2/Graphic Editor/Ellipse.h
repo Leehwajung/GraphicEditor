@@ -40,6 +40,8 @@ public:
 
 protected:
 	RectF m_Rect;	// 내접할 사각형
+private:
+	virtual BOOL create(void* param1, ...);
 };
 
 
