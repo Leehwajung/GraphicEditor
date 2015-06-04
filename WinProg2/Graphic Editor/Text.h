@@ -33,7 +33,7 @@ public:
 
 
 	// OnDraw
-	virtual void draw(/*CDC * m_lpDC*/);//CpaintDC 사용
+	virtual void draw(/*CDC * m_pDC*/);//CpaintDC 사용
 
 
 	virtual void FontDisplay();
@@ -91,7 +91,7 @@ private:
 	CArray <TCHAR, TCHAR> m_String;	// 문자열
 	Gdiplus::Font* m_Font;			// 문자열 정보
 	StringFormat* m_StringFormat;	// 문자열 포맷
-	BrushPtr m_FontBrush;				// 문자열 브러시
+	BrushPtr m_FontBrush;			// 문자열 브러시
 	CView *m_View;					// 출력 대상 뷰 (캐럿 출력)
 
 	//Color m_FontColor;	// 글자색

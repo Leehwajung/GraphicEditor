@@ -134,7 +134,13 @@ BOOL CRectangle::create(void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
+	// originPoint: ButtonDown
+	// targetPoint: ButtonUp
+	
+	PointF offset = targetPoint - originPoint;
 
+	m_Rect.Offset(offset);
+	resetArea();
 }
 
 // 크기 변경
@@ -164,7 +170,21 @@ void CRectangle::destroy()
 //		Position: 사각형 상의 점의 위치
 CFigure::Position CRectangle::pointInFigure(IN PointF point)
 {
-	return OUTSIDE;	// 임시 반환 값
+	RectF handleRect;
+
+	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+
+		getHandleRect((Position)handleIndex, &handleRect);
+		if (handleRect.Contains(point)) {
+			return (Position)handleIndex;
+		}
+	}
+
+	if (m_Rect.Contains(point)) {
+		return INSIDE;
+	}
+
+	return OUTSIDE;
 }
 
 
@@ -172,7 +192,8 @@ CFigure::Position CRectangle::pointInFigure(IN PointF point)
 // 도형 그리기
 void CRectangle::draw()
 {
-
+	m_lpGraphics->FillRectangle(m_FillBrush, m_Rect);
+	m_lpGraphics->DrawRectangle(m_OutlinePen, m_Rect);
 }
 
 // 생성 그리기
