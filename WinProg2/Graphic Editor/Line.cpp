@@ -10,33 +10,32 @@ IMPLEMENT_SERIAL(CLine, CStrap, 1)
 
 CLine::CLine()
 	:CStrap()
-	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
 	//m_LinePen	
 }
 
 CLine::CLine(IN CClientDC* lpClientDC)
 	: CStrap(lpClientDC)
-	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
+
 }
 
 CLine::CLine(IN Graphics* lpGraphics)
 	: CStrap(lpGraphics)
-	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
+
 }
 
 CLine::CLine(IN CClientDC* lpClientDC, IN Pen* pen)
 	: CStrap(lpClientDC, pen)
-	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
+
 }
 
 CLine::CLine(IN Graphics* lpGraphics, IN Pen* pen)
 	: CStrap(lpGraphics, pen)
-	, isStartingpoint(FALSE), isEndingpoint(FALSE)
 {
+
 }
 
 CLine::~CLine()
@@ -58,7 +57,6 @@ void CLine::Serialize(CArchive& ar)
 // LButtonUp
 /* 생성 완료 */
 BOOL CLine::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
-
 	return create(&startingPoint, &endingPoint, createFlag);
 }
 
@@ -79,6 +77,7 @@ BOOL CLine::create(void* param1, ...) {
 	m_Area.Y = startingPoint->Y;
 	m_Area.Width = abs(startingPoint->X - m_EndPoint.X);
 	m_Area.Height = abs(startingPoint->Y - m_EndPoint.Y);
+	resetArea();
 
 	return FALSE;
 }
@@ -102,19 +101,18 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 
 	m_StartingPoint = m_StartingPoint + RelativePoint;
 	m_EndPoint = m_EndPoint + RelativePoint;
-
+	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
 void CLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (isStartingpoint == TRUE){
+	if (selcetedHandle == START)
 		m_StartingPoint = targetPoint;
-		isStartingpoint = FALSE;
-	}
-	else if(isEndingpoint == TRUE){
+
+	else if (selcetedHandle == END)
 		m_EndPoint = targetPoint;
-		isEndingpoint = FALSE;
-	}
+
+	resetArea();
 
 }
 
@@ -134,16 +132,11 @@ void CLine::destroy() {
 CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 	// 1. 현재 좌표가  선의 StartingPoint나 EndPoint이면 ONHANDLE("Resize모드") 이다. 
-	if (point.Equals(m_StartingPoint) == TRUE || point.Equals(m_EndPoint) == TRUE){
+	if (point.Equals(m_StartingPoint) == TRUE)
+		return START;
 
-		if (point.Equals(m_StartingPoint) == TRUE)
-			isStartingpoint = TRUE;
-
-		else if (point.Equals(m_EndPoint) == TRUE)
-			isEndingpoint = TRUE;
-
-		return ONHANDLE;
-	}
+	else if (point.Equals(m_EndPoint) == TRUE)
+		return END;
 
 	// 2. 현재 좌표가 선이 있는 영역에 있을 때 원래의 선의 기울기와 같을 때는 INSIDE("Move모드") 이다.
 	else if (m_Area.GetLeft() <= point.X && point.X <= m_Area.GetRight() || m_Area.GetRight() <= point.X && point.X <= m_Area.GetLeft()){
@@ -245,10 +238,10 @@ void CLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 
 /* 크기 변경 그리기 */
 void CLine::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (isStartingpoint == TRUE){
+	if (selcetedHandle == START){
 		m_lpGraphics->DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
 }
-	else{
+	else if (selcetedHandle == END){
 		m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
 	}
 }
@@ -277,6 +270,10 @@ void CLine::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN Resiz
 /* 개체 영역 갱신 */
 void CLine::resetArea() {
 
+	Pen pen(Color::Black);
+	pen.SetDashStyle(DashStyleCustom);
+
+	m_lpGraphics->DrawRectangle(&pen, m_Area);
 }
 
 

@@ -33,7 +33,9 @@ public:
 		BOTTOMRIGHT		= (int) 0x0000C,	// 우하 핸들
 		BOTTOM			= (int) 0x0000D,	// 하측 핸들
 		BOTTOMLEFT		= (int) 0x0000E,	// 좌하 핸들
-		LEFT			= (int) 0x0000F		// 좌측 핸들
+		LEFT			= (int) 0x0000F,	// 좌측 핸들
+		START			= (int) 0x00018,	// 시작 핸들
+		END				= (int) 0x00019		// 끝 핸들
 	};
 
 	enum CreateFlag {
@@ -108,7 +110,7 @@ public:
 	//		Position: 개체 상의 점의 위치
 	virtual Position pointInFigure(IN PointF point);
 
-	// 개체 위치 확인 for drag selection
+	// 개체 위치 확인
 	// 개체가 사각형 안에 있는지 확인하고 그 위치를 반환함
 	// - IN 매개변수
 	//		RectF rect: 확인할 좌표
