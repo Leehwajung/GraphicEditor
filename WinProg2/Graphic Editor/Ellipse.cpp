@@ -84,7 +84,8 @@ void CEllipse::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mo
 	m_Rect.Offset(offset);
 	resetArea();
 }
-void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
+	IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	pointInFigure(targetPoint);
 	resetArea();//area¸¦¸®¼Â.

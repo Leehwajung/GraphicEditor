@@ -236,6 +236,8 @@ protected:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
+	//정반대편 핸들을 반환
+	Position getOppositeHandle(IN Position handle);
 private:
 	// 개체 핸들 그리기
 	// - IN 매개변수
