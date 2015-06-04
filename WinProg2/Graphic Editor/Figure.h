@@ -222,7 +222,6 @@ protected:
 	// 개체 영역 그리기
 	void drawArea();
 
-private:
 	/* 핸들 관리 */
 	// 핸들의 영역
 	// 핸들의 영역을 얻음
@@ -237,6 +236,7 @@ private:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
+private:
 	// 개체 핸들 그리기
 	// - IN 매개변수
 	//		Position handle: 그리고자하는 핸들

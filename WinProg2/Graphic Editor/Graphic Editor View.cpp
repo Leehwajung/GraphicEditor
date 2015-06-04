@@ -110,6 +110,7 @@ END_MESSAGE_MAP()
 CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
+	m_CurrentFigure = NULL;
 	m_MouseButtonFlag = NBUTTON;
 	m_InsertFlag = NONE;
 }
@@ -141,15 +142,20 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 	
-	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+	m_pDC = (CClientDC*) pDC;
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
+
+	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
+	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 	//if (m_InsertFlag == LINE)
-	//if (m_CurrentFigure) {
-	//	m_CurrentFigure->setGraphics(&graphics);
-	//	m_CurrentFigure->draw();
-	//}
+
+	if (m_CurrentFigure) {
+		m_CurrentFigure->setGraphics(&graphics);
+		m_CurrentFigure->setClientDC(m_pDC);
+		m_CurrentFigure->draw();
+	}
 
 
 	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
@@ -201,6 +207,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// Draw layoutRect.
 	graphics.DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
+	///////////////////////////////// 여기까지 예제 코드 ///////////////////////////////////////////////////////////////
 }
 
 
@@ -209,14 +216,12 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_LButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = LBUTTON;						// 좌클릭 드래그 중
-		/**********************************************************************/
+
+		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-		CClientDC* dc = new CClientDC(this);
+		
 		Pen dd(Color(255, 0, 0));
 		SolidBrush ff(Color(0, 255, 0));
 
@@ -236,7 +241,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		case CGraphicEditorView::ELLIPSE:
 			break;
 		case CGraphicEditorView::RECTANGLE:
-			m_CurrentFigure = new CRectangle(dc, &dd, &ff);
+			m_CurrentFigure = new CRectangle(m_pDC, &dd, &ff);
 			break;
 		case CGraphicEditorView::STRING:
 			break;
@@ -248,14 +253,19 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 
-		if (m_InsertFlag != NONE)
-		{
-			m_CurrentFigure->create(&m_LButtonPoint);
-		}
+		//if (m_InsertFlag != NONE)
+		//{
+		//	m_CurrentFigure->create(&m_LButtonPoint);
+		//}
 
 
 
 		
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = LBUTTON;	// 좌클릭 드래그 중
+		/**************************************************/
+
 		CView::OnLButtonDown(nFlags, point);
 
 		//CGraphicEditorDoc* pDoc = GetDocument();
@@ -265,19 +275,50 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_MouseButtonFlag == LBUTTON/* && !(nFlags & MK_RBUTTON)*/) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_LButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = NBUTTON;						// 비클릭 상태
-		/**********************************************************************/
+
+		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-		if (m_InsertFlag != NONE){
-			m_CurrentFigure->create(&m_LButtonPoint);
-			//m_InsertFlag = NONE;
-			//Invalidate();
-			m_CurrentFigure->draw();
+
+		switch (m_InsertFlag)
+		{
+		case CGraphicEditorView::NONE:
+			break;
+		case CGraphicEditorView::LINE:
+			break;
+		case CGraphicEditorView::POLYLINE:
+			break;
+		case CGraphicEditorView::PENCIL:
+			break;
+		case CGraphicEditorView::CURVE:
+			break;
+		case CGraphicEditorView::ELLIPSE:
+			break;
+		case CGraphicEditorView::RECTANGLE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
+			break;
+		case CGraphicEditorView::STRING:
+			break;
+		case CGraphicEditorView::POLYGON:
+			break;
+		case CGraphicEditorView::CLOSEDCURVE:
+			break;
+		default:
+			break;
 		}
 
+
+		//if (m_InsertFlag != NONE){
+		//	m_CurrentFigure->create(&m_LButtonPoint);
+		//	//m_InsertFlag = NONE;
+			Invalidate();
+		//	m_CurrentFigure->draw();
+		//}
+
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
+		/**************************************************/
 
 		CView::OnLButtonUp(nFlags, point);
 	}
@@ -286,12 +327,17 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_LButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = LBUTTON;						// 좌클릭
-		/**********************************************************************/
+
+		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+		
+
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = LBUTTON;	// 좌클릭
+		/**************************************************/
 
 		CView::OnLButtonDblClk(nFlags, point);
 	}
@@ -300,12 +346,17 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_RButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = RBUTTON;						// 우클릭 드래그 중
-		/**********************************************************************/
+
+		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+		//m_CurrentFigure->setClientDC(new CClientDC(this));
+		m_CurrentFigure->draw();
+
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = RBUTTON;	// 우클릭 드래그 중
+		/**************************************************/
 
 		CView::OnRButtonDown(nFlags, point);
 	}
@@ -314,25 +365,35 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_MouseButtonFlag == RBUTTON/* && !(nFlags & MK_LBUTTON)*/) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_RButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = NBUTTON;						// 비클릭 상태
-		/**********************************************************************/
+
+		const PointF currPoint = currPoint;
 
 		ClientToScreen(&point);
 		OnContextMenu(this, point);
+
+
+
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
+		/**************************************************/
 	}
 }
 
 void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
-		/********************* 이 부분은 변경하지 마시오. *********************/
-		m_RButtonPoint = CGlobal::CPointToPointF(point);	// 이벤트 발생 좌표
-		m_MouseButtonFlag = RBUTTON;						// 우클릭
-		/**********************************************************************/
+
+		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+
+
+		/*********** 이 부분은 변경하지 마시오. ***********/
+		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_MouseButtonFlag = RBUTTON;	// 우클릭
+		/**************************************************/
 
 		CView::OnRButtonDblClk(nFlags, point);
 	}

@@ -63,8 +63,9 @@ public:
 	OperationModeFlag m_OperationModeFlag;
 
 	int m_mode;
-
-	Graphics* m_lpGraphics;
+	
+	CClientDC* m_pDC;
+	//Graphics* m_pGraphics;
 
 // 작업입니다.
 public:
