@@ -167,10 +167,6 @@ private:
 
 	int m_Gradient;
 
-	// 우선 임시 방편! 다시 바꿀 수도 있음. 
-	BOOL isStartingpoint;
-	BOOL isEndingpoint;
-	
 	//Color m_LineColor;	// 선 색
 	//int m_LinePattern;	// 선 패턴
 	//int m_LineWidth;	// 선 두께
