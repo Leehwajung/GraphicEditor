@@ -19,26 +19,8 @@ CStrap::CStrap()
 {
 }
 
-CStrap::CStrap(IN CClientDC* lpClientDC)
-	: CFigure(lpClientDC)
-	, m_OutlinePen(NULL)
-{
-}
-
-CStrap::CStrap(IN Graphics* lpGraphics)
-	: CFigure(lpGraphics)
-	, m_OutlinePen(NULL)
-{
-}
-
-CStrap::CStrap(IN CClientDC* lpClientDC, IN Pen* pen)
-	: CFigure(lpClientDC)
-	, m_OutlinePen(pen->Clone())
-{
-}
-
-CStrap::CStrap(IN Graphics* lpGraphics, IN Pen* pen)
-	: CFigure(lpGraphics)
+CStrap::CStrap(IN Pen* pen)
+	: CFigure()
 	, m_OutlinePen(pen->Clone())
 {
 }
@@ -73,9 +55,9 @@ void CStrap::pointMove(IN PointF originPoint, IN PointF targetPoint)
 }
 
 // °³º° ÁÂÇ¥ ÀÌµ¿ ±×¸®±â
-void CStrap::pointMoving(IN PointF originPoint, IN PointF targetPoint)
+void CStrap::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
 {
-
+	
 }
 
 // Ææ È¹µæ

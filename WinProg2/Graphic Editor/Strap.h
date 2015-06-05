@@ -11,10 +11,7 @@ class CStrap : public CFigure
 {
 public:
 	CStrap();
-	CStrap(IN CClientDC* lpClientDC);
-	CStrap(IN Graphics* lpGraphics);
-	CStrap(IN CClientDC* lpClientDC, IN Pen* pen);
-	CStrap(IN Graphics* lpGraphics, IN Pen* pen);
+	CStrap(IN Pen* pen);
 	DECLARE_SERIAL(CStrap)
 	virtual ~CStrap();
 
@@ -27,7 +24,7 @@ public:
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
 
 	// °³º° ÁÂÇ¥ ÀÌµ¿ ±×¸®±â
-	virtual void pointMoving(IN PointF originPoint, IN PointF targetPoint);
+	virtual void pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
 
 	// Ææ È¹µæ
 	Pen* getPen();

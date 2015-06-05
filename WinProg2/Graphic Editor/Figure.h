@@ -57,8 +57,8 @@ public:
 // 생성 및 소멸
 public:
 	CFigure();
-	CFigure(IN CClientDC* lpClientDC);
-	CFigure(IN Graphics* lpGraphics);
+	//CFigure(IN CClientDC* lpClientDC);
+	//CFigure(IN Graphics* lpGraphics);
 	DECLARE_SERIAL(CFigure)
 	virtual ~CFigure();
 
@@ -66,12 +66,12 @@ public:
 
 // 작업
 public:
-	/* 직렬화 */
+/** 직렬화 **/
 	// 직렬화 (순수가상함수로 바꿀지 검토)
 	virtual void Serialize(CArchive& ar);
 
-	/* 연산 */
-	// 생성 (가상)
+/** 연산 **/
+	// 생성 (순수 가상)
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
 	// - IN 매개변수
 	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
@@ -81,7 +81,7 @@ public:
 	//		FALSE: 생성 성공
 	virtual BOOL create(void* param1, ...);
 	
-	// 이동 (가상)
+	// 이동 (순수 가상)
 	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
 	// - IN 매개변수
 	//		PointF originPoint: 이동의 시작 좌표
@@ -89,7 +89,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
-	// 크기 변경 (가상)
+	// 크기 변경 (순수 가상)
 	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 	// - IN 매개변수
 	//		Position selectedHandle: 개체의 선택된 핸들
@@ -119,6 +119,13 @@ public:
 	//		FALSE: 개체가 사각형 내부에 존재하지 않을 때
 	BOOL figureInRect(IN RectF rect);
 
+protected:
+	/* 개체 영역 관리 */
+	// 개체 영역 갱신 (순수 가상)
+	virtual void resetArea();
+
+public:
+	/* 핸들 관리 */
 	// 핸들의 좌표
 	// 핸들의 중앙 좌표를 얻음
 	// - IN 매개변수
@@ -132,51 +139,112 @@ public:
 	//		FALSE: 매개변수의 Position이 핸들이 아닐 경우
 	BOOL getHandlePoint(IN Position handle, OUT PointF* handlePoint);
 
+protected:
+	// 핸들의 영역
+	// 핸들의 영역을 얻음
+	// - IN 매개변수
+	//		PointF handlePoint: 영역을 얻고자하는 핸들의 좌표
+	// - 반환 값 (RectF)
+	//		핸들의 영역
+	RectF getHandleRect(IN PointF handlePoint);
 
-	/* 그리기 */
-	// 도형 그리기 (순수 가상)
-	virtual void draw();
+	// 핸들의 영역
+	// 핸들의 영역을 얻음
+	// - IN 매개변수
+	//		Position handle: 영역을 얻고자하는 핸들
+	// - OUT 매개변수
+	//		PointF* handlePoint:
+	//			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 영역
+	//			NULL: 매개변수의 Position이 핸들이 아닐 경우
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+	//		FALSE: 매개변수의 Position이 핸들인 경우
+	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
+
+	// 정반대편 핸들
+	// 정반대편 핸들을 얻음
+	// - IN 매개변수
+	//		Position handle: 정반대편 핸들을 얻고자하는 핸들
+	// - 반환 값 (Position)
+	//		정반대편 핸들
+	Position getOppositeHandle(IN Position handle);
+
+
+
+/** 그리기 **/
+public:
+	// 개체 그리기 (순수 가상)
+	virtual void draw(IN Graphics* lpGraphics);
 
 	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		...: 각 파생 클래스에서 필요한대로 정의
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-	virtual void creating(void* param1, ...);
+	virtual void creating(IN Graphics* lpGraphics, void* param1, ...);
 
 	// 이동 그리기 (순수 가상)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
 	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	virtual void resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
-	
-	/* Graphics 관리 */
-	// ClientDC 획득
-	CClientDC* getClientDC();
+	// 개체 영역 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	void drawArea(IN Graphics* lpGraphics);
 
-	// Graphics 획득
-	Graphics* getGraphics();
+protected:
+	// 개체 핸들 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		PointF handlePoint: 그리고자하는 핸들 좌표
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+	//		FALSE: 매개변수의 Position이 핸들인 경우
+	BOOL drawHandle(IN Graphics* lpGraphics, IN PointF handlePoint);
 
-	// ClientDC 설정
-	void setClientDC(CClientDC* lpClientDC);
+private:
+	// 개체 핸들 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Position handle: 그리고자하는 핸들
+	// - 반환 값 (BOOL)
+	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
+	//		FALSE: 매개변수의 Position이 핸들인 경우
+	BOOL drawHandle(IN Graphics* lpGraphics, IN Position handle);
 
-	// Graphics 설정
-	void setGraphics(Graphics* lpGraphics);
+protected:
+	// 개체 핸들 전체 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		PointF* handlePoints: 핸들의 좌표 배열
+	//		count: 배열의 크기
+	void drawHandles(IN Graphics* lpGraphics, IN PointF* handlePoints, IN INT count);
+
+private:
+	// 개체 핸들 전체 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	void drawHandles(IN Graphics* lpGraphics);
 
 
-	/* 속성 설정 */
+/** 속성 설정 **/
+public:
 	// 윤곽선 색 설정 (순수 가상)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
@@ -214,50 +282,11 @@ public:
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
 
 
-protected:
-	/* 개체 영역 관리 */
-	// 개체 영역 갱신 (순수 가상)
-	virtual void resetArea();
-
-	// 개체 영역 그리기
-	void drawArea();
-
-	/* 핸들 관리 */
-	// 핸들의 영역
-	// 핸들의 영역을 얻음
-	// - IN 매개변수
-	//		Position handle: 영역을 얻고자하는 핸들
-	// - OUT 매개변수
-	//		PointF* handlePoint:
-	//			주소 값: 매개변수의 Position이 핸들인 경우 핸들의 영역
-	//			NULL: 매개변수의 Position이 핸들이 아닐 경우
-	// - 반환 값 (BOOL)
-	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
-	//		FALSE: 매개변수의 Position이 핸들인 경우
-	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
-
-	//정반대편 핸들을 반환
-	Position getOppositeHandle(IN Position handle);
-private:
-	// 개체 핸들 그리기
-	// - IN 매개변수
-	//		Position handle: 그리고자하는 핸들
-	// - 반환 값 (BOOL)
-	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
-	//		FALSE: 매개변수의 Position이 핸들인 경우
-	BOOL drawHandle(IN Position handle);
-
-	// 개체 핸들 전체 그리기
-	void drawHandles();
-	
-	
 
 // 특성
 protected:
-	Graphics* m_lpGraphics;					// 출력 대상 Graphics
 	RectF m_Area;							// 개체 영역 (사각형)
 private:
-	BOOL m_GraphicsDynamicAllocationFlag;	// m_lpGraphics를, 객체 내부에서 동적으로 할당했는지 여부를 저장하는 플래그
 	const REAL HANDLESIZE = 10;				// 핸들 크기
 };
 

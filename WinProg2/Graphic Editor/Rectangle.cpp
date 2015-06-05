@@ -17,34 +17,13 @@ CRectangle::CRectangle()
 {
 }
 
-CRectangle::CRectangle(IN CClientDC* lpClientDC)
-	: CShape(lpClientDC)
+CRectangle::CRectangle(IN Pen* pen, IN BrushPtr brush)
+	: CShape(pen, brush)
 {
 }
 
-CRectangle::CRectangle(IN Graphics* lpGraphics)
-	: CShape(lpGraphics)
-{
-}
-
-CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush)
-	: CShape(lpClientDC, pen, brush)
-{
-}
-
-CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush)
-	: CShape(lpGraphics, pen, brush)
-{
-}
-
-CRectangle::CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush, IN RectF rect)
-	: CShape(lpClientDC, pen, brush)
-	, m_Rect(rect)
-{
-}
-
-CRectangle::CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush, IN RectF rect)
-	: CShape(lpGraphics, pen, brush)
+CRectangle::CRectangle(IN Pen* pen, IN BrushPtr brush, IN RectF rect)
+	: CShape(pen, brush)
 	, m_Rect(rect)
 {
 }
@@ -166,10 +145,8 @@ void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN Re
 	case CFigure::TOPRIGHT:
 	case CFigure::BOTTOMRIGHT:
 	case CFigure::BOTTOMLEFT:
-		rectSize.Width = fixedPoint.X > targetPoint.X ?
-			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
-		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
-			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+		rectSize.Width = abs(fixedPoint.X - targetPoint.X);
+		rectSize.Height = abs(fixedPoint.Y - targetPoint.Y);
 
 		if (fixedPoint.X > targetPoint.X) {
 			startingPoint.X = targetPoint.X;
@@ -190,8 +167,7 @@ void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN Re
 	case CFigure::TOP:
 	case CFigure::BOTTOM:
 		rectSize.Width = m_Rect.Width;
-		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
-			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+		rectSize.Height = abs(fixedPoint.Y - targetPoint.Y);
 
 		startingPoint.X = m_Rect.X;
 
@@ -206,8 +182,7 @@ void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN Re
 
 	case CFigure::RIGHT:
 	case CFigure::LEFT:
-		rectSize.Width = fixedPoint.X > targetPoint.X ?
-			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+		rectSize.Width = abs(fixedPoint.X - targetPoint.X);
 		rectSize.Height = m_Rect.Height;
 
 		if (fixedPoint.X > targetPoint.X) {
@@ -265,30 +240,40 @@ CFigure::Position CRectangle::pointInFigure(IN PointF point)
 }
 
 
-/* 그리기 */
-// 도형 그리기
-void CRectangle::draw()
+/* 개체 영역 관리 */
+// 개체 영역 갱신
+void CRectangle::resetArea()
 {
-	m_lpGraphics->FillRectangle(m_FillBrush, m_Rect);
-	m_lpGraphics->DrawRectangle(m_OutlinePen, m_Rect);
+	m_Area = m_Rect;
+}
+
+
+/* 그리기 */
+// 개체 그리기
+void CRectangle::draw(IN Graphics* lpGraphics)
+{
+	lpGraphics->FillRectangle(m_FillBrush, m_Rect);
+	lpGraphics->DrawRectangle(m_OutlinePen, m_Rect);
 }
 
 // 생성 그리기
 // 생성 시에 보여줄 그리기
 // - IN 매개변수
+//		Graphics* lpGraphics: 그리기 대상 Graphics
 //		PointF startingPoint: 생성 시작 좌표
 //		PointF targetPoint: 생성 시 선택 중인 좌표
 //		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-void CRectangle::creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
+void CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
 {
-	creating(&startingPoint, &targetPoint, createFlag);
+	creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
 }
 
 // 생성 그리기
 // 생성 시에 보여줄 그리기
 // - IN 매개변수
+//		Graphics* lpGraphics: 그리기 대상 Graphics
 //		void* param1, ...: PointF*(startingPoint), PointF*(targetPoint), CreateFlag 순으로 입력
-void CRectangle::creating(void* param1, ...)
+void CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
@@ -301,18 +286,19 @@ void CRectangle::creating(void* param1, ...)
 // 이동 그리기
 // 이동 중에 보여줄 그리기
 // - IN 매개변수
+//		Graphics* lpGraphics: 그리기 대상 Graphics
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동 중인 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+void CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
 	RectF rect = m_Rect;
 	if (moveFlag == FREEMOVE)//자유이동 case일 때
 	{
 		PointF offset = targetPoint - originPoint;
 		rect.Offset(offset);
-		m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
-		m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+		lpGraphics->DrawEllipse(m_OutlinePen, rect);
 	}
 	else//!=FREEMOVE인 case
 	{
@@ -325,8 +311,8 @@ void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFla
 			offset.X = targetPoint.X - originPoint.X;
 			offset.Y = originPoint.Y;
 			rect.Offset(offset);
-			m_lpGraphics->FillRectangle(m_FillBrush, rect); // ellipse 채우기
-			m_lpGraphics->DrawRectangle(m_OutlinePen, rect);
+			lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		}
 		else// 상하이동
 		{
@@ -335,8 +321,8 @@ void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFla
 			offset.X = originPoint.X;
 			offset.Y = targetPoint.Y - originPoint.Y;
 			rect.Offset(offset);
-			m_lpGraphics->FillRectangle(m_FillBrush, rect); // ellipse 채우기
-			m_lpGraphics->DrawRectangle(m_OutlinePen, rect);
+			lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		}
 	}
 }
@@ -344,11 +330,12 @@ void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFla
 // 크기 변경 그리기
 // 크기 변경 중에 보여줄 그리기
 // - IN 매개변수
+//		Graphics* lpGraphics: 그리기 대상 Graphics
 //		Position selectedHandle: 개체의 선택된 핸들
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-void CRectangle::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+void CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	RectF rect = m_Rect; //temp
 
@@ -508,19 +495,10 @@ void CRectangle::resizing(IN Position selectedHandle, IN PointF targetPoint, IN 
 		}
 	}
 	rect = RectF(startingPoint, rectSize);
-	m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
-	m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+	lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+	lpGraphics->DrawEllipse(m_OutlinePen, rect);
 
 }
-
-
-/* 개체 영역 관리 */
-// 개체 영역 갱신
-void CRectangle::resetArea()
-{
-	m_Area = m_Rect;
-}
-
 
 
 
@@ -628,7 +606,7 @@ void CRectangle::resetArea()
 //
 ///* 개체 그리기 */
 //void CRectangle::draw() {
-//	m_lpGraphics->FillRectangle(m_FillBrush, m_Rect);
-//	m_lpGraphics->DrawRectangle(m_OutlinePen, m_Rect);
+//	lpGraphics->FillRectangle(m_FillBrush, m_Rect);
+//	lpGraphics->DrawRectangle(m_OutlinePen, m_Rect);
 //}
 

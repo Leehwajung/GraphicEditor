@@ -19,30 +19,8 @@ CShape::CShape()
 {
 }
 
-CShape::CShape(IN CClientDC* lpClientDC)
-	: CFigure(lpClientDC)
-	, m_OutlinePen(NULL)
-	, m_FillBrush(NULL)
-{
-}
-
-CShape::CShape(IN Graphics* lpGraphics)
-	: CFigure(lpGraphics)
-	, m_OutlinePen(NULL)
-	, m_FillBrush(NULL)
-{
-}
-
-CShape::CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush)
-	: CFigure(lpClientDC)
-	, m_OutlinePen(pen->Clone())
-	, m_FillBrush(brush->Clone())
-{
-}
-
-CShape::CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush)
-	: CFigure(lpGraphics)
-	, m_OutlinePen(pen->Clone())
+CShape::CShape(IN Pen* pen, IN Brush* brush)
+	: m_OutlinePen(pen->Clone())
 	, m_FillBrush(brush->Clone())
 {
 }

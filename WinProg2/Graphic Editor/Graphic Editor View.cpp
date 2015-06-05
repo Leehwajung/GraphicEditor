@@ -152,9 +152,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	//if (m_InsertFlag == LINE)
 
 	if (m_CurrentFigure) {
-		m_CurrentFigure->setGraphics(&graphics);
-		m_CurrentFigure->setClientDC(m_pDC);
-		m_CurrentFigure->draw();
+		m_CurrentFigure->draw(&graphics);
 	}
 
 
@@ -190,10 +188,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	WCHAR string[] = L"Sample Text";
 
 	// Initialize arguments.
-	Gdiplus::Font myFont(L"Arial", 16);
+	FontFamily fontfamily(L"Arial");
+	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
 
 	// Draw string.
@@ -244,6 +242,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
@@ -254,7 +253,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		case CGraphicEditorView::ELLIPSE:
 			break;
 		case CGraphicEditorView::RECTANGLE:
-			m_CurrentFigure = new CRectangle(m_pDC, &dd, &ff);
+			m_CurrentFigure = new CRectangle(&dd, &ff);
 			break;
 		case CGraphicEditorView::STRING:
 			break;
@@ -319,6 +318,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		} break;
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
@@ -439,6 +439,9 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	//CView::OnMouseMove(nFlags, point);
 
+	CClientDC dc(this);
+	Graphics graphics(dc);
+
 	if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
 	
 	}
@@ -452,7 +455,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
-				m_CurrentFigure->creating(&CGlobal::CPointToPointF(point));
+				m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
 				Invalidate();
 			}
 		}
