@@ -127,7 +127,7 @@ public:
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
 
 	// 개별 좌표 이동 그리기
-	virtual void pointMoving(IN PointF originPoint, IN PointF targetPoint);
+	virtual void pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
 
 
 protected:

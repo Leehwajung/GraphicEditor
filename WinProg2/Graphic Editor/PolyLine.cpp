@@ -172,7 +172,7 @@ void CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF
 }
 	    
 // 개별 좌표 이동 그리기
-void CPolyLine::pointMoving(IN PointF originPoint, IN PointF targetPoint){
+void CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
 
 }
 
