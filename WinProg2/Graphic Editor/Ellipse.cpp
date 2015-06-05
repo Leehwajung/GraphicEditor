@@ -92,7 +92,6 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 	switch (selectedHandle)
 	{
 	case CFigure::TOPLEFT:
-
 		break;
 
 	case CFigure::TOP:
@@ -185,7 +184,32 @@ void CEllipse::draw(){
  //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
  void  CEllipse::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
  {
+	 if (moveFlag == FREEMOVE)//자유이동 case일 때
+	 {
+		 PointF offset = targetPoint - originPoint;
+		 m_Rect.Offset(offset);
+		 //draw();
+	 }
+	 else//!=FREEMOVE인 case
+	 {
+		 // 좌우 이동
+		 if (targetPoint.Y >= m_Rect.GetTop() && targetPoint.Y <= (m_Rect.GetTop() - m_Rect.Height)){
+			 PointF offset;
+			 offset.X = targetPoint.X - originPoint.X;
+			 offset.Y = originPoint.Y;
+			 m_Rect.Offset(offset);
+			 draw();
+		 }
+		 else// 상하이동
+		 {
 
+			 PointF offset;
+			 offset.X = originPoint.X;
+				 offset.Y = targetPoint.Y - originPoint.Y;
+			 m_Rect.Offset(offset);
+			//draw();
+		 }
+	 }
  }
 
  // 크기 변경 그리기
