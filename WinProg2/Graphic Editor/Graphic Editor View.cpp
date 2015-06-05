@@ -295,6 +295,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		switch (m_InsertFlag)
+
 		{
 		case CGraphicEditorView::NONE: {
 			if (m_CurrentFigure) {
@@ -312,7 +313,12 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 						resizeFlag = CFigure::PROPORTIONAL;
 					}
 
-					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+					if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CStrap))) {
+						((CStrap*)m_CurrentFigure)->pointMove(m_LButtonPoint, currPoint);
+					}
+					else {
+						m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+					}
 				}
 			}
 
@@ -455,8 +461,8 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
-				m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
-				Invalidate();
+				//m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
+				//Invalidate();
 			}
 		}
 	}
