@@ -190,10 +190,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	WCHAR string[] = L"Sample Text";
 
 	// Initialize arguments.
-	Gdiplus::Font myFont(L"Arial", 16);
+	FontFamily fontfamily(L"Arial");
+	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
 
 	// Draw string.
@@ -244,6 +244,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure = new CLine(m_pDC, &dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
@@ -319,6 +320,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		} break;
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
@@ -327,6 +329,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);

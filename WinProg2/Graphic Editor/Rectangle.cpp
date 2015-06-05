@@ -292,6 +292,51 @@ void CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
+	RectF rect = m_Rect;
+	if (moveFlag == FREEMOVE)//자유이동 case일 때
+	{
+		PointF offset = targetPoint - originPoint;
+		rect.Offset(offset);
+		lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+		lpGraphics->DrawEllipse(m_OutlinePen, rect);
+	}
+	else//!=FREEMOVE인 case
+	{
+		PointF ratio;
+		ratio.X = rect.GetLeft();
+		ratio.Y = rect.GetTop();
+		// 좌우 이동
+		if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
+			PointF offset;
+			offset.X = targetPoint.X - originPoint.X;
+			offset.Y = originPoint.Y;
+			rect.Offset(offset);
+			lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		}
+		else// 상하이동
+		{
+
+			PointF offset;
+			offset.X = originPoint.X;
+			offset.Y = targetPoint.Y - originPoint.Y;
+			rect.Offset(offset);
+			lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		}
+	}
+}
+
+// 크기 변경 그리기
+// 크기 변경 중에 보여줄 그리기
+// - IN 매개변수
+//		Graphics* lpGraphics: 그리기 대상 Graphics
+//		Position selectedHandle: 개체의 선택된 핸들
+//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
+//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+void CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+{
 
 }
 
