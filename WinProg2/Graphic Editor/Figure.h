@@ -18,6 +18,7 @@ using namespace Gdiplus;
 typedef Pen*	PenPtr;
 typedef Brush*	BrushPtr;
 
+
 class CFigure : public CObject
 {
 // 자료형
@@ -289,7 +290,7 @@ protected:
 private:
 	const REAL HANDLESIZE = 10;				// 핸들 크기
 };
-
+typedef CList<CFigure*, CFigure*>	CFigurePtrList;
 
 
 //	// LButtonDown

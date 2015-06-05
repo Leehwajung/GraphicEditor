@@ -189,7 +189,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// Initialize arguments.
 	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
+	Gdiplus::Font myFont(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
@@ -315,7 +315,6 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
 				}
 			}
-
 		} break;
 		case CGraphicEditorView::LINE:
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
