@@ -89,6 +89,7 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 		getHandlePoint(getOppositeHandle(selectedHandle), &AP);
 		anchorPoint = &AP;
 	}*/
+	PointF startingPoint;
 	PointF fixedPoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
 
@@ -106,21 +107,52 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
 
 		if (fixedPoint.X > targetPoint.X) {
-			fixedPoint.X = targetPoint.X;
+			startingPoint.X = targetPoint.X;
+		}
+		else {
+			startingPoint.X = fixedPoint.X;
 		}
 
 		if (fixedPoint.Y > targetPoint.Y) {
-			fixedPoint.Y = targetPoint.Y;
+			startingPoint.Y = targetPoint.Y;
 		}
+		else {
+			startingPoint.Y = fixedPoint.Y;
+		}
+
 		break;
 
 	case CFigure::TOP:
 	case CFigure::BOTTOM:
+		rectSize.Width = m_Rect.Width;
+		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+		startingPoint.X = m_Rect.X;
+
+		if (fixedPoint.Y > targetPoint.Y) {
+			startingPoint.Y = targetPoint.Y;
+		}
+		else {
+			startingPoint.Y = fixedPoint.Y;
+		}
 
 		break;
 
 	case CFigure::RIGHT:
 	case CFigure::LEFT:
+		rectSize.Width = fixedPoint.X > targetPoint.X ?
+			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+		rectSize.Height = m_Rect.Height;
+
+		if (fixedPoint.X > targetPoint.X) {
+			startingPoint.X = targetPoint.X;
+		}
+		else {
+			startingPoint.X = fixedPoint.X;
+		}
+
+		startingPoint.Y = m_Rect.Y;
 
 		break;
 
@@ -130,10 +162,9 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 		return;
 	}
 
-	m_Rect = RectF(fixedPoint, rectSize);
+	m_Rect = RectF(startingPoint, rectSize);
 
 	resetArea();
-	
 
 }
 
@@ -234,7 +265,166 @@ void CEllipse::draw(){
  //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
  void  CEllipse::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
  {
-	 
+	 RectF rect = m_Rect; //temp
+
+	 PointF startingPoint;
+	 PointF fixedPoint;
+	 PointF Gradeint;
+	 getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
+
+	 SizeF rectSize;
+
+	 if(resizeFlag == FREERESIZE){
+	switch (selectedHandle)
+		 {
+		 case CFigure::TOPLEFT:
+		 case CFigure::TOPRIGHT:
+		 case CFigure::BOTTOMRIGHT:
+		 case CFigure::BOTTOMLEFT:
+			 rectSize.Width = fixedPoint.X > targetPoint.X ?
+				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+			 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+				 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+			 if (fixedPoint.X > targetPoint.X) {
+				 startingPoint.X = targetPoint.X;
+			 }
+			 else {
+				 startingPoint.X = fixedPoint.X;
+			 }
+
+			 if (fixedPoint.Y > targetPoint.Y) {
+				 startingPoint.Y = targetPoint.Y;
+			 }
+			 else {
+				 startingPoint.Y = fixedPoint.Y;
+			 }
+
+			 break;
+
+		 case CFigure::TOP:
+		 case CFigure::BOTTOM:
+			 rectSize.Width = m_Rect.Width;
+			 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+				 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+			 startingPoint.X = m_Rect.X;
+
+			 if (fixedPoint.Y > targetPoint.Y) {
+				 startingPoint.Y = targetPoint.Y;
+			 }
+			 else {
+				 startingPoint.Y = fixedPoint.Y;
+			 }
+
+			 break;
+
+		 case CFigure::RIGHT:
+		 case CFigure::LEFT:
+			 rectSize.Width = fixedPoint.X > targetPoint.X ?
+				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+			 rectSize.Height = m_Rect.Height;
+
+			 if (fixedPoint.X > targetPoint.X) {
+				 startingPoint.X = targetPoint.X;
+			 }
+			 else {
+				 startingPoint.X = fixedPoint.X;
+			 }
+
+			 startingPoint.Y = m_Rect.Y;
+
+			 break;
+
+		 default:
+			 // 잘못된 selectedHandle
+			 // 아무 동작을 하지 않음
+			 return;
+		 }
+	 }
+	 else{
+		 switch (selectedHandle)
+		 {
+			 //
+		 case CFigure::TOPLEFT:
+		 case CFigure::TOPRIGHT:
+		 case CFigure::BOTTOMRIGHT:
+		 case CFigure::BOTTOMLEFT:
+			 rectSize.Width = fixedPoint.X > targetPoint.X ?
+				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+			 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+				 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+			 
+			 // 기울기가 무한대와 0인 케이스를 걸러냄
+			 if (targetPoint.X == fixedPoint.X || targetPoint.Y == fixedPoint.Y)
+				 break;
+			 float t_grad, h_grad, h_oppositegrad;
+			 h_grad = rect.Y / rect.X;
+			 if (h_grad < 0){
+				 h_grad = -h_grad;//아래 연산을 위해
+			 }
+			 h_oppositegrad = -h_grad;
+			 Gradeint = fixedPoint - targetPoint;
+			 t_grad = Gradeint.Y / Gradeint.X;
+
+
+			 if (t_grad <= h_grad && t_grad >= h_oppositegrad)// x를기준으로
+			 {
+				 startingPoint.X = targetPoint.X;
+				 startingPoint.Y = targetPoint.X*(1 / h_grad);
+			 }
+			 else
+			 {
+				 startingPoint.Y = targetPoint.Y;
+				 startingPoint.X = targetPoint.Y*(1 / h_grad);
+			 }
+			 break;
+
+			 // 적용안되고 그대로
+		 case CFigure::TOP:
+		 case CFigure::BOTTOM:
+			 rectSize.Width = m_Rect.Width;
+			 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+				 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+			 startingPoint.X = m_Rect.X;
+
+			 if (fixedPoint.Y > targetPoint.Y) {
+				 startingPoint.Y = targetPoint.Y;
+			 }
+			 else {
+				 startingPoint.Y = fixedPoint.Y;
+			 }
+
+			 break;
+
+			 // shift 적용안되고 그대로
+		 case CFigure::RIGHT:
+		 case CFigure::LEFT:
+			 rectSize.Width = fixedPoint.X > targetPoint.X ?
+				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+			 rectSize.Height = m_Rect.Height;
+
+			 if (fixedPoint.X > targetPoint.X) {
+				 startingPoint.X = targetPoint.X;
+			 }
+			 else {
+				 startingPoint.X = fixedPoint.X;
+			 }
+
+			 startingPoint.Y = m_Rect.Y;
+
+			 break;
+
+		 default:
+			 // 잘못된 selectedHandle
+			 // 아무 동작을 하지 않음
+			 return;
+		 }
+	 }
+	 rect = RectF(startingPoint, rectSize);
+	 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+	 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
  }
 
  /* 개체 영역 관리 */
