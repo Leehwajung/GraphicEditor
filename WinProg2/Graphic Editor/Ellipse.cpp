@@ -89,44 +89,50 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 		getHandlePoint(getOppositeHandle(selectedHandle), &AP);
 		anchorPoint = &AP;
 	}*/
+	PointF fixedPoint;
+	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
+
+	SizeF rectSize;
+
 	switch (selectedHandle)
 	{
 	case CFigure::TOPLEFT:
+	case CFigure::TOPRIGHT:
+	case CFigure::BOTTOMRIGHT:
+	case CFigure::BOTTOMLEFT:
+		rectSize.Width = fixedPoint.X > targetPoint.X ?
+			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+		if (fixedPoint.X > targetPoint.X) {
+			fixedPoint.X = targetPoint.X;
+		}
+
+		if (fixedPoint.Y > targetPoint.Y) {
+			fixedPoint.Y = targetPoint.Y;
+		}
 		break;
 
 	case CFigure::TOP:
-
-		break;
-
-	case CFigure::TOPRIGHT:
-
-		break;
-
-	case CFigure::RIGHT:
-
-		break;
-
-	case CFigure::BOTTOMRIGHT:
-
-		break;
-
 	case CFigure::BOTTOM:
 
 		break;
 
-	case CFigure::BOTTOMLEFT:
-
-		break;
-
+	case CFigure::RIGHT:
 	case CFigure::LEFT:
 
 		break;
 
 	default:
+		// 잘못된 selectedHandle
+		// 아무 동작을 하지 않음
 		return;
 	}
 
-	resetArea();//area를리셋.
+	m_Rect = RectF(fixedPoint, rectSize);
+
+	resetArea();
 	
 
 }
@@ -184,11 +190,13 @@ void CEllipse::draw(){
  //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
  void  CEllipse::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
  {
+	 RectF rect = m_Rect;
 	 if (moveFlag == FREEMOVE)//자유이동 case일 때
 	 {
 		 PointF offset = targetPoint - originPoint;
-		 m_Rect.Offset(offset);
-		 //draw();
+		 rect.Offset(offset);
+		 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+		 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
 	 }
 	 else//!=FREEMOVE인 case
 	 {
@@ -197,17 +205,19 @@ void CEllipse::draw(){
 			 PointF offset;
 			 offset.X = targetPoint.X - originPoint.X;
 			 offset.Y = originPoint.Y;
-			 m_Rect.Offset(offset);
-			 draw();
+			 rect.Offset(offset);
+			 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		 }
 		 else// 상하이동
 		 {
 
 			 PointF offset;
 			 offset.X = originPoint.X;
-				 offset.Y = targetPoint.Y - originPoint.Y;
-			 m_Rect.Offset(offset);
-			//draw();
+			 offset.Y = targetPoint.Y - originPoint.Y;
+			 rect.Offset(offset);
+			 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		 }
 	 }
  }
@@ -221,7 +231,7 @@ void CEllipse::draw(){
  //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
  void  CEllipse::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
  {
-
+	 
  }
 
  /* 개체 영역 관리 */

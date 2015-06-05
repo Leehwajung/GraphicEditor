@@ -327,6 +327,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
