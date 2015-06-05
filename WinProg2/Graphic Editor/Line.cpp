@@ -72,7 +72,7 @@ BOOL CLine::create(void* param1, ...) {
 
 	m_StartingPoint = *startingPoint;
 	m_EndPoint = *endingPoint;
-	m_Gradient = (startingPoint->Y - m_EndPoint.Y) / (startingPoint->X - m_EndPoint.X);
+	m_Gradient = abs(startingPoint->Y - m_EndPoint.Y) / abs(startingPoint->X - m_EndPoint.X);
 
 	resetArea();
 
@@ -100,13 +100,19 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_EndPoint = m_EndPoint + RelativePoint;
 }
 
-/* 선 크기(길이) 변경 */
-void CLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (selectedHandle == START)
+// 개별 좌표 이동
+void CLine::pointMove(IN PointF originPoint, IN PointF targetPoint)
+{
+	if (m_StartingPoint.Equals(originPoint)==TRUE)
 		m_StartingPoint = targetPoint;
 
-	else if (selectedHandle == END)
+	else if (m_EndPoint.Equals(originPoint)==TRUE)
 		m_EndPoint = targetPoint;
+
+}
+
+/* 선 크기(길이) 변경 */
+void CLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 
 }
 
@@ -137,7 +143,7 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 		if (m_Area.GetTop() <= point.Y && point.Y <= m_Area.GetBottom() || m_Area.GetBottom() <= point.Y && point.Y <= m_Area.GetTop()){
 
 			// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
-			int tmp_gradient = abs(m_StartingPoint.Y - point.Y) / abs(m_StartingPoint.X - point.X);
+			int tmp_gradient = (m_StartingPoint.Y - point.Y) / (m_StartingPoint.X - point.X);
 
 			if (tmp_gradient == m_Gradient)
 				return INSIDE;
@@ -230,14 +236,19 @@ void CLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 	m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 }
 
+
+// 개별 좌표 이동 그리기
+void CLine::pointMoving(IN PointF originPoint, IN PointF targetPoint)
+{
+	if (m_StartingPoint.Equals(originPoint) == TRUE)
+		m_lpGraphics->DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
+	else if (m_EndPoint.Equals(originPoint) == TRUE)
+		m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
+}
+
 /* 크기 변경 그리기 */
 void CLine::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	if (selectedHandle == START){
-		m_lpGraphics->DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
-}
-	else if (selectedHandle == END){
-		m_lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
-	}
+	
 }
 
 /* OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단) */
