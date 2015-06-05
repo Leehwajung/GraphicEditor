@@ -20,63 +20,8 @@ CText::CText()
 	//m_String.RemoveAll();
 }
 
-CText::CText(IN CClientDC* lpClientDC)
-	: CRectangle(lpClientDC)
-	, m_Font(NULL)
-	, m_StringFormat(NULL)
-	, m_FontBrush()
-{
-	//m_String.RemoveAll();
-}
-
-//CText::CText(IN Graphics* lpGraphics)
-//	: CRectangle(lpGraphics)
-//	, m_Font(NULL)
-//	, m_StringFormat(NULL)
-//	, m_FontBrush()
-//{
-//	//m_String.RemoveAll();
-//}
-//
-//CText::CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush)
-//	: CRectangle(lpClientDC, pen, fillbrush)
-//	, m_Font(NULL)
-//	, m_StringFormat(NULL)
-//	, m_FontBrush()
-//{
-//	//m_String.RemoveAll();
-//}
-//
-//CText::CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush)
-//	: CRectangle(lpGraphics, pen, fillbrush)
-//	, m_Font(NULL)
-//	, m_StringFormat(NULL)
-//	, m_FontBrush()
-//{
-//	//m_String.RemoveAll();
-//}
-//
-//CText::CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect)
-//	: CRectangle(lpClientDC, pen, fillbrush, layoutrect)
-//	, m_Font(NULL)
-//	, m_StringFormat(NULL)
-//	, m_FontBrush()
-//{
-//	//m_String.RemoveAll();
-//}
-//
-//CText::CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect)
-//	: CRectangle(lpGraphics, pen, fillbrush, layoutrect)
-//	, m_Font(NULL)
-//	, m_StringFormat(NULL)
-//	, m_FontBrush()
-//{
-//	//m_String.RemoveAll();
-//}
-
 CText::CText(CView *lpView)
-	: CRectangle(&CClientDC(lpView))
-	, m_Font(NULL)
+	: m_Font(NULL)
 	, m_StringFormat(NULL)
 	, m_FontBrush(NULL)
 	, m_View(lpView)
@@ -86,7 +31,7 @@ CText::CText(CView *lpView)
 }
 
 CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush)
-	: CRectangle(&CClientDC(lpView), pen, fillbrush)
+	: CRectangle(pen, fillbrush)
 	, m_Font(NULL)
 	, m_StringFormat(NULL)
 	, m_FontBrush(NULL)
@@ -96,7 +41,7 @@ CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush)
 }
 
 CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect)
-	: CRectangle(&CClientDC(lpView), pen, fillbrush, layoutrect)
+	: CRectangle(pen, fillbrush, layoutrect)
 	, m_Font(NULL)
 	, m_StringFormat(NULL)
 	, m_FontBrush(NULL)
@@ -106,7 +51,7 @@ CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layo
 }
 
 CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN BrushPtr fontbrush)
-	: CRectangle(&CClientDC(lpView), pen, fillbrush, layoutrect)
+	: CRectangle(pen, fillbrush, layoutrect)
 	, m_Font(font->Clone())
 	, m_StringFormat(stringformat->Clone())
 	, m_FontBrush(fontbrush->Clone())
@@ -116,7 +61,7 @@ CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layo
 }
 
 CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN BrushPtr fontbrush, IN CString string)
-	: CRectangle(&CClientDC(lpView), pen, fillbrush, layoutrect)
+	: CRectangle(pen, fillbrush, layoutrect)
 	, m_Font(font->Clone())
 	, m_StringFormat(stringformat->Clone())
 	, m_FontBrush(fontbrush->Clone())
@@ -154,10 +99,10 @@ void CText::Serialize(CArchive& ar)
 }
 
 // OnDraw / OnPaint
-void CText::draw(){
+void CText::draw(IN Graphics* lpGraphics){
 	RectF rect;
 	CFont character;
-	CClientDC* lpDC = getClientDC();
+	//CClientDC* lpDC = getClientDC();
 
 }//CpaintDC »ç¿ë
 

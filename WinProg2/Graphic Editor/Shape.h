@@ -14,10 +14,7 @@ class CShape : public CFigure
 // »ý¼º ¹× ¼Ò¸ê
 public:
 	CShape();
-	CShape(IN CClientDC* lpClientDC);
-	CShape(IN Graphics* lpGraphics);
-	CShape(IN CClientDC* lpClientDC, IN Pen* pen, IN Brush* brush);
-	CShape(IN Graphics* lpGraphics, IN Pen* pen, IN Brush* brush);
+	CShape(IN Pen* pen, IN Brush* brush);
 	DECLARE_SERIAL(CShape)
 	virtual ~CShape();
 

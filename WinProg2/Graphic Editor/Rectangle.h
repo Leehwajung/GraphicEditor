@@ -12,12 +12,8 @@ class CRectangle : public CShape
 // 생성 및 소멸
 public:
 	CRectangle();
-	CRectangle(IN CClientDC* lpClientDC);
-	CRectangle(IN Graphics* lpGraphics);
-	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush);
-	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush);
-	CRectangle(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush, IN RectF rect);
-	CRectangle(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush, IN RectF rect);
+	CRectangle(IN Pen* pen, IN BrushPtr brush);
+	CRectangle(IN Pen* pen, IN BrushPtr brush, IN RectF rect);
 	DECLARE_SERIAL(CRectangle)
 	virtual ~CRectangle();
 
@@ -83,48 +79,53 @@ public:
 	virtual Position pointInFigure(IN PointF point);
 
 
-	/* 그리기 */
-	// 도형 그리기
-	virtual void draw();
-
-	// 생성 그리기
-	// 생성 시에 보여줄 그리기
-	// - IN 매개변수
-	//		PointF startingPoint: 생성 시작 좌표
-	//		PointF targetPoint: 생성 시 선택 중인 좌표
-	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-	void creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
-
-private:
-	// 생성 그리기
-	// 생성 시에 보여줄 그리기
-	// - IN 매개변수
-	//		void* param1, ...: PointF*(startingPoint), PointF*(targetPoint), CreateFlag 순으로 입력
-	virtual void creating(void* param1, ...);
-
-public:
-	// 이동 그리기
-	// 이동 중에 보여줄 그리기
-	// - IN 매개변수
-	//		PointF originPoint: 이동의 시작 좌표
-	//		PointF targetPoint: 이동 중인 좌표
-	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
-
-	// 크기 변경 그리기
-	// 크기 변경 중에 보여줄 그리기
-	// - IN 매개변수
-	//		Position selectedHandle: 개체의 선택된 핸들
-	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
-	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
-
-
 protected:
 	/* 개체 영역 관리 */
 	// 개체 영역 갱신
 	virtual void resetArea();
+
+
+public:
+	// 개체 그리기 (순수 가상)
+	virtual void draw(IN Graphics* lpGraphics);
+
+	// 생성 그리기
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		PointF startingPoint: 생성 시작 좌표
+	//		PointF targetPoint: 생성 시 선택 중인 좌표
+	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
+	void CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
+
+private:
+	// 생성 그리기 (순수 가상)
+	// 생성 시에 보여줄 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
+	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
+	virtual void creating(IN Graphics* lpGraphics, void* param1, ...);
+
+public:
+	// 이동 그리기 (순수 가상)
+	// 이동 중에 보여줄 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		PointF originPoint: 이동의 시작 좌표
+	//		PointF targetPoint: 이동 중인 좌표
+	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
+	virtual void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+
+	// 크기 변경 그리기 (순수 가상)
+	// 크기 변경 중에 보여줄 그리기
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Position selectedHandle: 개체의 선택된 핸들
+	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
+	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 

@@ -14,12 +14,6 @@ class CText : public CRectangle
 {
 public:
 	CText();
-	CText(IN CClientDC* lpClientDC);
-	//CText(IN Graphics* lpGraphics);
-	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush);
-	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush);
-	//CText(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
-	//CText(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
 	CText(CView *lpView);
 	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush);
 	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
@@ -33,7 +27,7 @@ public:
 
 
 	// OnDraw
-	virtual void draw(/*CDC * m_pDC*/);//CpaintDC 사용
+	virtual void draw(IN Graphics* lpGraphics);//CpaintDC 사용
 
 	// LButtonUp / LButtonDlk
 	virtual void endCreate(PointF point);							// 생성 완료

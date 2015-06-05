@@ -11,10 +11,7 @@ class CStrap : public CFigure
 {
 public:
 	CStrap();
-	CStrap(IN CClientDC* lpClientDC);
-	CStrap(IN Graphics* lpGraphics);
-	CStrap(IN CClientDC* lpClientDC, IN Pen* pen);
-	CStrap(IN Graphics* lpGraphics, IN Pen* pen);
+	CStrap(IN Pen* pen);
 	DECLARE_SERIAL(CStrap)
 	virtual ~CStrap();
 
