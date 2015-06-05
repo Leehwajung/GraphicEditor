@@ -40,7 +40,7 @@ void CPolyLine::addPoint(PointF addingPoint){
 //LButtonDlk
 /* 생성 완료 */
 BOOL CPolyLine::create(IN CreateFlag createFlag/* = FREECREATE*/){
-	create(createFlag);
+	return create(createFlag);
 }
 
 /* 생성 완료 */
@@ -51,7 +51,7 @@ BOOL CPolyLine::create(void* param1, ...) {
 	CreateFlag* createFlag = (CreateFlag*)param1;
 	va_end(vaList);
 
-	REAL x_start,y_start,width,height;
+	REAL x_start=0,y_start=0,width=0,height=0;
 
 	POSITION pos = m_PointsList.GetHeadPosition();
 	while (pos != NULL){
@@ -180,13 +180,13 @@ void CPolyLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag
 	PointF RelativePoint = targetPoint - originPoint;
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	CList <PointF, PointF&> PolyLineList = m_PointsList;
+	/*CList <PointF, PointF&> PolyLineList = m_PointsList;
 
 	POSITION pos = PolyLineList.GetHeadPosition();
 	while (pos != NULL){
 		PointF  tmp_point = PolyLineList.GetNext(pos);
 	    
-	}
+	}*/
 
 }
 
