@@ -316,7 +316,8 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 						((CStrap*)m_CurrentFigure)->pointMove(m_LButtonPoint, currPoint);
 					}
 					else {
-					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+						m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+					}
 				}
 			}
 		} break;

@@ -47,7 +47,7 @@ void CGroup::Serialize(CArchive& ar)
 //		FALSE: 생성 성공
 BOOL CGroup::create(void* param1, ...)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 이동
@@ -56,7 +56,7 @@ BOOL CGroup::create(void* param1, ...)
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동의 끝 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE)
+void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
 
 }
@@ -68,7 +68,7 @@ void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag move
 //		PointF targetPoint: 선택된 핸들의 변경할 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-void CGroup::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL)
+void CGroup::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 
 }
@@ -88,7 +88,7 @@ void CGroup::destroy()
 //		Position: 개체 상의 점의 위치
 CFigure::Position CGroup::pointInFigure(IN PointF point)
 {
-
+	return OUTSIDE;	// 임시 반환값
 }
 
 /** 개체 영역 관리 **/
@@ -123,7 +123,7 @@ void CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동 중인 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE)
+void CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
 
 }
@@ -136,7 +136,7 @@ void CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF ta
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-void CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL)
+void CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 
 }
@@ -149,7 +149,7 @@ void CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN Po
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlineColor(IN const Color& outlineColor)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 윤곽선 두께 설정
@@ -158,7 +158,7 @@ BOOL CGroup::setOutlineColor(IN const Color& outlineColor)
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlineWidth(IN const REAL outlineWidth)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 윤곽선 패턴 설정
@@ -167,7 +167,7 @@ BOOL CGroup::setOutlineWidth(IN const REAL outlineWidth)
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlinePattern(IN const DashStyle outlinePattern)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 주 채우기 색 설정
@@ -176,7 +176,7 @@ BOOL CGroup::setOutlinePattern(IN const DashStyle outlinePattern)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillColor(IN const Color& fillColor)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 보조 채우기 색 설정
@@ -185,7 +185,7 @@ BOOL CGroup::setFillColor(IN const Color& fillColor)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillSubcolor(IN const Color& fillSubcolor)
 {
-
+	return FALSE;	// 임시 반환값
 }
 
 // 채우기 패턴 설정
@@ -194,5 +194,5 @@ BOOL CGroup::setFillSubcolor(IN const Color& fillSubcolor)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillPattern(IN const HatchStyle fillPattern)
 {
-	
+	return FALSE;	// 임시 반환값
 }
