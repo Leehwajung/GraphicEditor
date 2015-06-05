@@ -154,6 +154,7 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	PointF startingPoint;
 	PointF fixedPoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
 
@@ -171,21 +172,52 @@ void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN Re
 			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
 
 		if (fixedPoint.X > targetPoint.X) {
-			fixedPoint.X = targetPoint.X;
+			startingPoint.X = targetPoint.X;
+		}
+		else {
+			startingPoint.X = fixedPoint.X;
 		}
 
 		if (fixedPoint.Y > targetPoint.Y) {
-			fixedPoint.Y = targetPoint.Y;
+			startingPoint.Y = targetPoint.Y;
 		}
+		else {
+			startingPoint.Y = fixedPoint.Y;
+		}
+
 		break;
 
 	case CFigure::TOP:
 	case CFigure::BOTTOM:
-	
+		rectSize.Width = m_Rect.Width;
+		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+		startingPoint.X = m_Rect.X;
+
+		if (fixedPoint.Y > targetPoint.Y) {
+			startingPoint.Y = targetPoint.Y;
+		}
+		else {
+			startingPoint.Y = fixedPoint.Y;
+		}
+
 		break;
 
 	case CFigure::RIGHT:
 	case CFigure::LEFT:
+		rectSize.Width = fixedPoint.X > targetPoint.X ?
+			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+		rectSize.Height = m_Rect.Height;
+
+		if (fixedPoint.X > targetPoint.X) {
+			startingPoint.X = targetPoint.X;
+		}
+		else {
+			startingPoint.X = fixedPoint.X;
+		}
+
+		startingPoint.Y = m_Rect.Y;
 
 		break;
 
@@ -195,7 +227,7 @@ void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN Re
 		return;
 	}
 
-	m_Rect = RectF(fixedPoint, rectSize);
+	m_Rect = RectF(startingPoint, rectSize);
 
 	resetArea();
 }
