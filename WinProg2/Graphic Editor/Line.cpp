@@ -77,7 +77,6 @@ BOOL CLine::create(void* param1, ...) {
 	m_Area.Y = startingPoint->Y;
 	m_Area.Width = abs(startingPoint->X - m_EndPoint.X);
 	m_Area.Height = abs(startingPoint->Y - m_EndPoint.Y);
-	resetArea();
 
 	return FALSE;
 }
@@ -101,7 +100,6 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 
 	m_StartingPoint = m_StartingPoint + RelativePoint;
 	m_EndPoint = m_EndPoint + RelativePoint;
-	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
@@ -111,8 +109,6 @@ void CLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeF
 
 	else if (selcetedHandle == END)
 		m_EndPoint = targetPoint;
-
-	resetArea();
 
 }
 
@@ -143,7 +139,7 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 		if (m_Area.GetTop() <= point.Y && point.Y <= m_Area.GetBottom() || m_Area.GetBottom() <= point.Y && point.Y <= m_Area.GetTop()){
 
 			// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
-			int tmp_gradient = (m_StartingPoint.Y - point.Y) / (m_StartingPoint.X - point.X);
+			int tmp_gradient = abs(m_StartingPoint.Y - point.Y) / abs(m_StartingPoint.X - point.X);
 
 			if (tmp_gradient == m_Gradient)
 				return INSIDE;

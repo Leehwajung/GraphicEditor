@@ -190,10 +190,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	WCHAR string[] = L"Sample Text";
 
 	// Initialize arguments.
-	Gdiplus::Font myFont(L"Arial", 16);
+	FontFamily fontfamily(L"Arial");
+	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
 
 	// Draw string.
