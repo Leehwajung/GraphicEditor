@@ -16,18 +16,14 @@ CEllipse::CEllipse()
 : CShape()
 {
 }
-CEllipse::CEllipse(IN CClientDC* lpClientDC) : CShape(lpClientDC)
+
+CEllipse::CEllipse(IN Pen* pen, IN BrushPtr brush)
+	: CShape(pen, brush)
 {}
-CEllipse::CEllipse(IN Graphics* lpGraphics) : CShape(lpGraphics)
-{}
-CEllipse::CEllipse(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush) : CShape(lpClientDC, pen, brush)
-{}
-CEllipse::CEllipse(IN Graphics* lpGraphics, IN Pen* pen, IN BrushPtr brush)
-	: CShape(lpGraphics, pen, brush)
-{}
-CEllipse::CEllipse(IN CClientDC* lpClientDC, IN Pen* pen, IN BrushPtr brush, IN RectF rect)
-	: CShape(lpClientDC, pen, brush)
-, m_Rect(rect)
+
+CEllipse::CEllipse(IN Pen* pen, IN BrushPtr brush, IN RectF rect)
+	: CShape(pen, brush)
+	, m_Rect(rect)
 {}
 
 CEllipse::~CEllipse()
@@ -157,9 +153,9 @@ CFigure::Position CEllipse::pointInFigure(IN PointF point){
 	return OUTSIDE;
 }
 // Ellipse 외곽선 그리기 및 채우기
-void CEllipse::draw(){
-	m_lpGraphics->FillEllipse(m_FillBrush, m_Rect); // ellipse 채우기
-	m_lpGraphics->DrawEllipse(m_OutlinePen, m_Rect); // 그래픽객체의 drawellipse 함수
+void CEllipse::draw(IN Graphics* lpGraphics){
+	lpGraphics->FillEllipse(m_FillBrush, m_Rect); // ellipse 채우기
+	lpGraphics->DrawEllipse(m_OutlinePen, m_Rect); // 그래픽객체의 drawellipse 함수
 }
 
 // 생성 시에 보여줄 그리기
@@ -167,12 +163,12 @@ void CEllipse::draw(){
 //		PointF startingPoint: 생성 시작 좌표
 //		PointF targetPoint: 생성 시 선택 중인 좌표
 //		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
- void CEllipse::creating(IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
+void CEllipse::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
  {
-	 creating(&startingPoint, &targetPoint, createFlag);
+	 creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
  }
 
- void  CEllipse::creating(void* param1, ...)
+void  CEllipse::creating(IN Graphics* lpGraphics, void* param1, ...)
  {
 	 va_list vaList;
 	 va_start(vaList, param1);
@@ -188,15 +184,15 @@ void CEllipse::draw(){
  //		PointF originPoint: 이동의 시작 좌표
  //		PointF targetPoint: 이동 중인 좌표
  //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
- void  CEllipse::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+void  CEllipse::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
  {
 	 RectF rect = m_Rect;
 	 if (moveFlag == FREEMOVE)//자유이동 case일 때
 	 {
 		 PointF offset = targetPoint - originPoint;
 		 rect.Offset(offset);
-		 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
-		 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		 lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+		 lpGraphics->DrawEllipse(m_OutlinePen, rect);
 	 }
 	 else//!=FREEMOVE인 case
 	 {
@@ -209,8 +205,8 @@ void CEllipse::draw(){
 			 offset.X = targetPoint.X - originPoint.X;
 			 offset.Y = originPoint.Y;
 			 rect.Offset(offset);
-			 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+			 lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			 lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		 }
 		 else// 상하이동
 		 {
@@ -219,8 +215,8 @@ void CEllipse::draw(){
 			 offset.X = originPoint.X;
 			 offset.Y = targetPoint.Y - originPoint.Y;
 			 rect.Offset(offset);
-			 m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			 m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+			 lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			 lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		 }
 	 }
  }
@@ -232,7 +228,7 @@ void CEllipse::draw(){
  //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
  //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
  //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
- void  CEllipse::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+void  CEllipse::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
  {
 	 
  }

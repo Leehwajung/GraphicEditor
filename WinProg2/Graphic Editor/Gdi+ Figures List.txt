@@ -14,6 +14,10 @@ PathGradientBrush	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534
 HatchBrush			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534459(v=vs.85).aspx
 TextureBrush		https://msdn.microsoft.com/en-us/library/windows/desktop/ms534512(v=vs.85).aspx
 
+DashStyle			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534104(v=vs.85).aspx
+HatchStyle			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534127(v=vs.85).aspx
+FontStyle			https://msdn.microsoft.com/en-us/library/windows/desktop/ms534124(v=vs.85).aspx
+
 PointF				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534488(v=vs.85).aspx
 RectF				https://msdn.microsoft.com/en-us/library/windows/desktop/ms534497(v=vs.85).aspx
 
