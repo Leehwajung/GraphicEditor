@@ -152,29 +152,29 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 // OnDraw
 /* 선 그리기 */
-void CPolyLine::draw() {
+void CPolyLine::draw(IN Graphics* lpGraphics) {
 }
 
 // OnMouseMove
 /* 생성 그리기 */
-void CPolyLine::creating(IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
-	creating(&addingPoint, createFlag);
+void CPolyLine::creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
+	creating(lpGraphics, &addingPoint, createFlag);
 }
 
 /* 생성 그리기 */
-void CPolyLine::creating(void* param1, ...) {
+void CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	va_list vaList;
 	va_start(vaList, param1);
 	PointF* addingPoint = (PointF*)param1;
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
-	m_lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(),*addingPoint);
+	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(),*addingPoint);
 
 }
 
 /* 이동 그리기 */
-void CPolyLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+void CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
@@ -191,7 +191,7 @@ void CPolyLine::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag
 }
 
 /* 크기 변경 그리기 */
-void CPolyLine::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+void CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 
 }
 
@@ -199,10 +199,8 @@ void CPolyLine::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN R
 /* 개체 영역 갱신 */
 void CPolyLine::resetArea() {
 
-	Pen pen(Color::Black);
-	pen.SetDashStyle(DashStyleCustom);
 
-	m_lpGraphics->DrawRectangle(&pen, m_Area);
+	
 }
 
 void addPoint(PointF addingpoint){

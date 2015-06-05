@@ -12,10 +12,7 @@ class CPolyLine : public CStrap
 public:
 
 	CPolyLine();
-	CPolyLine(IN CClientDC* lpClientDC);
-	CPolyLine(IN Graphics* lpGraphics);
-	CPolyLine(IN CClientDC* lpClientDC, IN Pen* pen);
-	CPolyLine(IN Graphics* lpGraphics, IN Pen* pen);
+	CPolyLine(IN Pen* pen);
 	DECLARE_SERIAL(CPolyLine)
 	~CPolyLine();
 
@@ -83,42 +80,48 @@ public:
 	/** 그리기 **/
 	/* OnDraw */
 	// 도형 그리기
-	virtual void draw();
+	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	virtual void draw(IN Graphics* lpGraphics);
 
 	/* OnMouseMove */
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
 	//		PointF addingPoint
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
 	// ok!!
-	void creating(IN PointF addingPoint, IN CreateFlag createFlag = FREECREATE);
+	void creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag = FREECREATE);
 
 private:
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		void* param1, ...:PointF addingPoint, CreateFlag 순으로 입력
 	// ok!!
-	virtual void creating(void* param1, ...);
+	virtual void creating(IN Graphics* lpGraphics, void* param1, ...);
 
 public:
 	// 이동 그리기
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// 크기 변경 그리기
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
+	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	virtual void resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 protected:
