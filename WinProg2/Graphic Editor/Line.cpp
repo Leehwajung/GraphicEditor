@@ -70,13 +70,11 @@ BOOL CLine::create(void* param1, ...) {
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+	m_StartingPoint = *startingPoint;
 	m_EndPoint = *endingPoint;
 	m_Gradient = (startingPoint->Y - m_EndPoint.Y) / (startingPoint->X - m_EndPoint.X);
 
-	m_Area.X = startingPoint->X;
-	m_Area.Y = startingPoint->Y;
-	m_Area.Width = abs(startingPoint->X - m_EndPoint.X);
-	m_Area.Height = abs(startingPoint->Y - m_EndPoint.Y);
+	resetArea();
 
 	return FALSE;
 }
@@ -266,10 +264,10 @@ void CLine::resizing(IN Position selectedHandle, IN PointF targetPoint, IN Resiz
 /* 개체 영역 갱신 */
 void CLine::resetArea() {
 
-	Pen pen(Color::Black);
-	pen.SetDashStyle(DashStyleCustom);
-
-	m_lpGraphics->DrawRectangle(&pen, m_Area);
+	m_Area.X = m_StartingPoint.X;
+	m_Area.Y = m_StartingPoint.Y;
+	m_Area.Width = abs(m_StartingPoint.X - m_EndPoint.X);
+	m_Area.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
 }
 
 

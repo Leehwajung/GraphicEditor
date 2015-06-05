@@ -244,6 +244,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure = new CLine(m_pDC, &dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
@@ -319,6 +320,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		} break;
 		case CGraphicEditorView::LINE:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYLINE:
 			break;
