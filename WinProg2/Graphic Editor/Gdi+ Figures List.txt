@@ -34,7 +34,7 @@ Lines			Draw	Pen*, PointF*(points), INT(count)															https://msdn.micros
 기타 개체 (Draw)
 CachedBitmap	Draw	CachedBitmap*, INT(x), INT(y)																https://msdn.microsoft.com/en-us/library/windows/desktop/ms535681(v=vs.85).aspx
 DriverString	Draw	...																							https://msdn.microsoft.com/en-us/library/windows/desktop/ms535683(v=vs.85).aspx
-Image			Draw	Image*, ...																(Graphics class Link)	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+Image			Draw	Image*, ...															(Graphics class Link)	https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 String			Draw	WCHAR*, INT(length), Font*, RectF&(layoutRect), StringFormat*, Brush*						https://msdn.microsoft.com/en-us/library/windows/desktop/ms535991(v=vs.85).aspx
 
 

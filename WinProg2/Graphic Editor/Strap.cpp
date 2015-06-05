@@ -67,13 +67,13 @@ void CStrap::Serialize(CArchive& ar)
 }
 
 // 개별 좌표 이동
-void pointMove(IN PointF originPoint, IN PointF targetPoint)
+void CStrap::pointMove(IN PointF originPoint, IN PointF targetPoint)
 {
 
 }
 
 // 개별 좌표 이동 그리기
-void pointMoving(IN PointF originPoint, IN PointF targetPoint)
+void CStrap::pointMoving(IN PointF originPoint, IN PointF targetPoint)
 {
 
 }

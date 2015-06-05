@@ -154,7 +154,50 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	PointF fixedPoint;
+	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
 
+	SizeF rectSize;
+
+	switch (selectedHandle)
+	{
+	case CFigure::TOPLEFT:
+	case CFigure::TOPRIGHT:
+	case CFigure::BOTTOMRIGHT:
+	case CFigure::BOTTOMLEFT:
+		rectSize.Width = fixedPoint.X > targetPoint.X ?
+			fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+		rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+			fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+
+		if (fixedPoint.X > targetPoint.X) {
+			fixedPoint.X = targetPoint.X;
+		}
+
+		if (fixedPoint.Y > targetPoint.Y) {
+			fixedPoint.Y = targetPoint.Y;
+		}
+		break;
+
+	case CFigure::TOP:
+	case CFigure::BOTTOM:
+	
+		break;
+
+	case CFigure::RIGHT:
+	case CFigure::LEFT:
+
+		break;
+
+	default:
+		// 잘못된 selectedHandle
+		// 아무 동작을 하지 않음
+		return;
+	}
+
+	m_Rect = RectF(fixedPoint, rectSize);
+
+	resetArea();
 }
 
 // 삭제
@@ -251,7 +294,7 @@ void CRectangle::resizing(IN Position selectedHandle, IN PointF targetPoint, IN 
 // 개체 영역 갱신
 void CRectangle::resetArea()
 {
-
+	m_Area = m_Rect;
 }
 
 

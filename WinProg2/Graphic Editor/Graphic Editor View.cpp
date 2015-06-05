@@ -228,8 +228,21 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		switch (m_InsertFlag)
 		{
-		case CGraphicEditorView::NONE:
+		case CGraphicEditorView::NONE: {
+
+			if (m_CurrentFigure) {	// 개체가 선택된 경우
+				m_selectedPosition = m_CurrentFigure->pointInFigure(currPoint);
+				if (m_selectedPosition == CFigure::OUTSIDE) {
+					m_CurrentFigure = NULL;
+				}
+			}
+			else {					// 개체가 선택되지 않은 경우
+				// 전체 개체 리스트(그룹)을 순차로 순회
+				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
+				// Invalidate 호출 (선택 영역을 그리기 위해)
+			}
 			break;
+		}
 		case CGraphicEditorView::LINE:
 			break;
 		case CGraphicEditorView::POLYLINE:
@@ -252,6 +265,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		default:
 			break;
 		}
+
+		
 
 		//if (m_InsertFlag != NONE)
 		//{
@@ -282,8 +297,27 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		switch (m_InsertFlag)
 		{
-		case CGraphicEditorView::NONE:
-			break;
+		case CGraphicEditorView::NONE: {
+			if (m_CurrentFigure) {
+				if (m_selectedPosition == CFigure::INSIDE) {
+					CFigure::MoveFlag moveFlag = CFigure::FREEMOVE;
+					//if (nFlags & MK_SHIFT) {
+					//	moveFlag = CFigure::;
+					//}
+
+					m_CurrentFigure->move(m_LButtonPoint, currPoint, moveFlag);
+				}
+				else if (m_selectedPosition & CFigure::ONHANDLE) {
+					CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
+					if (nFlags & MK_SHIFT) {
+						resizeFlag = CFigure::PROPORTIONAL;
+					}
+
+					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+				}
+			}
+
+		} break;
 		case CGraphicEditorView::LINE:
 			break;
 		case CGraphicEditorView::POLYLINE:
@@ -350,8 +384,8 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 		const PointF currPoint = CGlobal::CPointToPointF(point);
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-		//m_CurrentFigure->setClientDC(new CClientDC(this));
-		m_CurrentFigure->draw();
+
+
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
