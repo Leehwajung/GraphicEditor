@@ -200,8 +200,11 @@ void CEllipse::draw(){
 	 }
 	 else//!=FREEMOVEÀÎ case
 	 {
+		 PointF ratio;
+		 ratio.X = rect.GetLeft();
+		 ratio.Y = rect.GetTop();
 		 // ÁÂ¿ì ÀÌµ¿
-		 if (targetPoint.Y >= m_Rect.GetTop() && targetPoint.Y <= (m_Rect.GetTop() - m_Rect.Height)){
+		 if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
 			 PointF offset;
 			 offset.X = targetPoint.X - originPoint.X;
 			 offset.Y = originPoint.Y;

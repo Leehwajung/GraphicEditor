@@ -306,7 +306,39 @@ void CRectangle::creating(void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CRectangle::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
+	RectF rect = m_Rect;
+	if (moveFlag == FREEMOVE)//자유이동 case일 때
+	{
+		PointF offset = targetPoint - originPoint;
+		rect.Offset(offset);
+		m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+		m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+	}
+	else//!=FREEMOVE인 case
+	{
+		PointF ratio;
+		ratio.X = rect.GetLeft();
+		ratio.Y = rect.GetTop();
+		// 좌우 이동
+		if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
+			PointF offset;
+			offset.X = targetPoint.X - originPoint.X;
+			offset.Y = originPoint.Y;
+			rect.Offset(offset);
+			m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		}
+		else// 상하이동
+		{
 
+			PointF offset;
+			offset.X = originPoint.X;
+			offset.Y = targetPoint.Y - originPoint.Y;
+			rect.Offset(offset);
+			m_lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
+			m_lpGraphics->DrawEllipse(m_OutlinePen, rect);
+		}
+	}
 }
 
 // 크기 변경 그리기
