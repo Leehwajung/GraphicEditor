@@ -92,11 +92,11 @@ public:
 	// 크기 변경 (가상)
 	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 	// - IN 매개변수
-	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들의 변경할 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 	
 	// 삭제 (순수 가상)
 	// 개체를 삭제하고 메모리를 해제
@@ -155,11 +155,11 @@ public:
 	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 	
 	/* Graphics 관리 */
@@ -236,6 +236,8 @@ protected:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
+	//정반대편 핸들을 반환
+	Position getOppositeHandle(IN Position handle);
 private:
 	// 개체 핸들 그리기
 	// - IN 매개변수

@@ -62,6 +62,8 @@ public:
 	};
 	OperationModeFlag m_OperationModeFlag;
 
+	CFigure::Position m_selectedPosition;
+
 	int m_mode;
 	
 	CClientDC* m_pDC;

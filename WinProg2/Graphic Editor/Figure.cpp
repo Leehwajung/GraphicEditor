@@ -82,11 +82,11 @@ void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mov
 // 크기 변경
 // 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 // - IN 매개변수
-//		Position selcetedHandle: 개체의 선택된 핸들
+//		Position selectedHandle: 개체의 선택된 핸들
 //		PointF targetPoint: 선택된 핸들의 변경할 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-void CFigure::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+void CFigure::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	resetArea();
 }
@@ -237,6 +237,37 @@ BOOL CFigure::getHandleRect(IN Position handle, OUT RectF* handleRect)
 	return FALSE;
 }
 
+CFigure::Position CFigure::getOppositeHandle(IN Position handle){
+	
+	switch (handle)
+	{
+	case CFigure::OUTSIDE:
+		return handle;
+	case CFigure::INSIDE:
+		return handle;
+	case CFigure::TOPLEFT:
+		return CFigure::BOTTOMRIGHT;
+	case CFigure::TOP:
+		return CFigure::BOTTOM;
+	case CFigure::TOPRIGHT:
+		return CFigure::BOTTOMLEFT;
+	case CFigure::RIGHT:
+		return CFigure::LEFT;
+	case CFigure::BOTTOMRIGHT:
+		return CFigure::TOPLEFT;
+	case CFigure::BOTTOM:
+		return CFigure::TOP;
+	case CFigure::BOTTOMLEFT:
+		return CFigure::TOPRIGHT;
+	case CFigure::LEFT:
+		return CFigure::RIGHT;
+	case CFigure::START:
+		return CFigure::END;
+	case CFigure::END:
+		return CFigure::START;
+	}
+
+}
 // 개체 핸들 그리기
 // - IN 매개변수
 //		Position handle: 그리고자하는 핸들
@@ -288,7 +319,7 @@ CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임
 void CFigure::draw(){}
 void CFigure::creating(void* param1, ...){}
 void CFigure::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){}
-void CFigure::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
+void CFigure::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
 BOOL CFigure::setOutlineColor(IN const Color& outlineColor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setOutlineWidth(IN const REAL outlineWidth){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setOutlinePattern(IN const DashStyle outlinePattern){ return TRUE; /* 임시 반환값 */ }

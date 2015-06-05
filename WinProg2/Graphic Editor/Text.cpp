@@ -216,7 +216,7 @@ void CText::draw(){
 //		
 //}		
 //
-//void  CText::resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
+//void  CText::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
 //	
 //	m_View->HideCaret();//캐럿숨기기
 //

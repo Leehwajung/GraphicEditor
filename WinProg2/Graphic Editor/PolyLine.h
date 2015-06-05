@@ -44,7 +44,6 @@ private:
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	// ok!!
 	virtual BOOL create(void* param1, ...);
 
 public:
@@ -54,24 +53,21 @@ public:
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동의 끝 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	// ok!!
 	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// 크기 변경
 	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 	// - IN 매개변수
-	//		Position selcetedHandle: 직선의 선택된 핸들
+	//		Position selectedHandle: 직선의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들의 변경할 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-	// ok!!
-	virtual void resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 	/* Menu Item */
 	// 삭제
 	// 곡선을 삭제하고 메모리를 해제
-	// ok!!
 	virtual void destroy();
 
 	/* LButtonDown */
@@ -81,7 +77,6 @@ public:
 	//		PointF point: 확인할 좌표
 	// - 반환 값 (Position)
 	//		Position: 직선 상의 점의 위치
-	// ok!!
 	virtual Position pointInFigure(IN PointF point);
 
 
@@ -114,18 +109,16 @@ public:
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	// ok!!
 	virtual void moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// 크기 변경 그리기
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Position selcetedHandle: 개체의 선택된 핸들
+	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
-	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selcetedHandle을 통해 얻은 Default 기준 좌표 )
-	// ok!!
-	virtual void resizing(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
+	virtual void resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 protected:
@@ -143,3 +136,5 @@ private:
 
 	RectF m_SubArea;
 };
+
+
