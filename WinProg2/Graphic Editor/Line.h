@@ -127,7 +127,7 @@ public:
 	// 개별 좌표 이동 그리기
 	virtual void pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
 
-
+	virtual BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
 
 protected:
@@ -177,7 +177,7 @@ private:
 	PointF m_StartingPoint;
 	PointF m_EndPoint;
 
-	int m_Gradient;
+	REAL m_Gradient;
 
 	//Color m_LineColor;	// 선 색
 	//int m_LinePattern;	// 선 패턴

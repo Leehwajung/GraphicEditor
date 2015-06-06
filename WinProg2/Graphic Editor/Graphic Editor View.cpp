@@ -25,7 +25,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "Text.h"
+//#include "Text.h"
 
 // CGraphicEditorView
 
@@ -189,7 +189,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// Initialize arguments.
 	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
+	Gdiplus::Font myFont(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
@@ -245,12 +245,14 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
+			m_CurrentFigure = new CPolyLine();
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
+			m_CurrentFigure = new CEllipse(&dd, &ff);
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure = new CRectangle(&dd, &ff);
@@ -312,10 +314,14 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 						resizeFlag = CFigure::PROPORTIONAL;
 					}
 
+					if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CStrap))) {
+						((CStrap*)m_CurrentFigure)->pointMove(m_LButtonPoint, currPoint);
+					}
+					else {
 					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
 				}
 			}
-
+			}
 		} break;
 		case CGraphicEditorView::LINE:
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
@@ -455,8 +461,8 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
-				m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
-				Invalidate();
+				//m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
+				//Invalidate();
 			}
 		}
 	}
@@ -513,7 +519,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		default:
 			((CText*)m_CurrentFigure)->addChar(nChar);
 		}
-		CView::OnChar(nChar, nRepCnt, nFlags);
+	CView::OnChar(nChar, nRepCnt, nFlags);
 	}
 
 }

@@ -15,9 +15,6 @@ using namespace Gdiplus;
 
 // CFigure 명령 대상입니다.
 
-typedef Pen*	PenPtr;
-typedef Brush*	BrushPtr;
-
 class CFigure : public CObject
 {
 // 자료형
@@ -159,7 +156,7 @@ protected:
 	// - 반환 값 (BOOL)
 	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
 	//		FALSE: 매개변수의 Position이 핸들인 경우
-	BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
+	virtual BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
 	// 정반대편 핸들
 	// 정반대편 핸들을 얻음
@@ -286,11 +283,12 @@ public:
 // 특성
 protected:
 	RectF m_Area;							// 개체 영역 (사각형)
-private:
-	const REAL HANDLESIZE = 10;				// 핸들 크기
+	const REAL HANDLESIZE = 20;				// 핸들 크기
 };
 
-
+typedef CList<CFigure*, CFigure*>	CFigurePtrList;
+typedef Pen*	PenPtr;
+typedef Brush*	BrushPtr;
 
 //	// LButtonDown
 //	virtual void create(void* param1, ...);					// 개체 생성
