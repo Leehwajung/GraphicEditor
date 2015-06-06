@@ -98,12 +98,35 @@ void CText::Serialize(CArchive& ar)
 	}
 }
 
-// OnDraw / OnPaint
+// 
 void CText::draw(IN Graphics* lpGraphics){
 	RectF rect;
 	CFont character;
 	//CClientDC* lpDC = getClientDC();
+	CSize size=m_Font->GetSize();
+	//// Create a string.
+	//WCHAR string[] = L"Sample Text";
 
+	//// Initialize arguments.
+	//Font myFont(L"Arial", 16);
+	//PointF origin(0.0f, 0.0f);
+	//SolidBrush blackBrush(Color(255, 0, 0, 0));
+
+	//// Draw string.
+	//graphics.DrawString(
+	//	string,
+	//	11,
+	//	&myFont,
+	//	origin,
+	//	&blackBrush);
+
+	/*lpGraphics->DrawString(m_String,
+		strlength,
+		&m_Font,
+		m_Rect,
+		&m_StringFormat,
+		m_FontBrush);*/
+	
 }//CpaintDC 사용
 
 
@@ -215,27 +238,27 @@ void CText::draw(IN Graphics* lpGraphics){
 //
 //}			
 // LButtonUp
-void CText::endCreate(PointF point){
-	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
-	CDC *pDC = m_View->GetDC();
-	Graphics graphics(*pDC);
-	WCHAR string;
-	//graphics.DrawString(WCHAR * string, int length, FONT * font, POINTF &origin, BRUSH *brush);
-
-}
+//void CText::endCreate(PointF point){
+//	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
+//	CDC *pDC = m_View->GetDC();
+//	Graphics graphics(*pDC);
+//	WCHAR string;
+//	//graphics.DrawString(WCHAR * string, int length, FONT * font, POINTF &origin, BRUSH *brush);
+//
+//}
 
 //Keyboard Focus
-void CText::OnKeyboardFocus(PointF point){
-	//CPoint cur(startingPoint.X, startingPoint.Y);
-	PointF startingPoint;
-	m_Rect.GetLocation(&startingPoint);
-	CPoint cur = CGlobal::PointFToCPoint(startingPoint);
-
-		m_View->CreateSolidCaret(10,20);// 캐럿 사이즈
-		m_View->SetCaretPos(cur);
-		m_View->ShowCaret();
-		character_mode = TRUE; // 캐릭터 입력모드
-}
+//void CText::OnKeyboardFocus(PointF point){
+//	//CPoint cur(startingPoint.X, startingPoint.Y);
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	CPoint cur = CGlobal::PointFToCPoint(startingPoint);
+//
+//		m_View->CreateSolidCaret(10,20);// 캐럿 사이즈
+//		m_View->SetCaretPos(cur);
+//		m_View->ShowCaret();
+//		character_mode = TRUE; // 캐릭터 입력모드
+//}
 
 // http://lab.cliel.com/28  마우스 움직임 제한.
 
