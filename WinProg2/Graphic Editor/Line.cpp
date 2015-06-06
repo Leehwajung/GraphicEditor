@@ -233,6 +233,7 @@ void CLine::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF
 
 /* 생성 그리기 */
 void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+	
 	va_list vaList;
 	va_start(vaList,param1);
 	PointF* startingPoint = (PointF*)param1;
@@ -241,6 +242,7 @@ void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	va_end(vaList);
 
 	lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
+	
 }
 
 /* 이동 그리기 */

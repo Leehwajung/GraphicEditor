@@ -47,7 +47,7 @@ void CGroup::Serialize(CArchive& ar)
 //		FALSE: 持失 失因
 BOOL CGroup::create(CFigurePtrList& figurePtrList)
 {
-	m_FiguresList = figurePtrList;
+	//m_FiguresList = figurePtrList;
 
 	return FALSE;
 }
@@ -62,7 +62,8 @@ BOOL CGroup::create(CFigurePtrList& figurePtrList)
 //		FALSE: 持失 失因
 BOOL CGroup::create(int count, CFigure* figure1, ...)
 {
-	create(&count, figure1, ...);
+	//create(&count, figure1, ...);
+	return FALSE;
 }
 
 // 持失

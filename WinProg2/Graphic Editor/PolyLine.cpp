@@ -12,7 +12,14 @@
 IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
 
 CPolyLine::CPolyLine()
+:CStrap(), m_CreatedFlag(FALSE)
 {
+}
+
+CPolyLine::CPolyLine(IN Pen* pen)
+: CStrap(pen), m_CreatedFlag(FALSE)
+{
+
 }
 
 CPolyLine::~CPolyLine()
@@ -34,26 +41,29 @@ void CPolyLine::Serialize(CArchive& ar)
 }
 
 //LButtonUp
-void CPolyLine::addPoint(PointF addingPoint){
-	m_PointsList.AddTail(addingPoint);
+void CPolyLine::addPoint(IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
+	if (m_CreatedFlag == FALSE)
+		m_PointsList.AddTail(addingPoint);
 }
 //LButtonDlk
 /* 생성 완료 */
-BOOL CPolyLine::create(IN CreateFlag createFlag/* = FREECREATE*/){
-	return create(&createFlag);
+BOOL CPolyLine::create(IN PointF addingPoint,IN CreateFlag createFlag/* = FREECREATE*/){
+	return create(&addingPoint,createFlag);
 }
 
 /* 생성 완료 */
 BOOL CPolyLine::create(void* param1, ...) {
 
-	va_list vaList;
-	va_start(vaList, param1);
-	CreateFlag* createFlag = (CreateFlag*)param1;
-	va_end(vaList);
+		va_list vaList;
+		va_start(vaList, param1);
+		PointF* addingPoint = (PointF*)param1;
+		CreateFlag createFlag = va_arg(vaList, CreateFlag);
+		va_end(vaList);
+		
+		m_CreatedFlag = TRUE;
+		resetArea();
 
-	resetArea();
-
-	return FALSE;
+		return FALSE;
 }
 
 /* 개체 이동 */
@@ -61,12 +71,14 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
-
+	
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	POSITION pos = m_PointsList.GetHeadPosition();
+	POSITION prevpos = m_PointsList.GetHeadPosition();
 	while (pos != NULL){
 		PointF  point = m_PointsList.GetNext(pos);
-		m_PointsList.GetAt(pos) = point + RelativePoint;
+		m_PointsList.SetAt(prevpos, point + RelativePoint);
+		prevpos = pos;
 	}
 
 
@@ -75,16 +87,19 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 // 개별 좌표 이동
 void CPolyLine::pointMove(IN PointF originPoint, IN PointF targetPoint){
 
-	POSITION pos = m_PointsList.GetHeadPosition();
+	PointF  point = m_PointsList.GetHead();
+	POSITION pos = m_PointsList.GetHeadPosition() , prevpos = m_PointsList.GetHeadPosition();
+
 	while (pos != NULL){
-		PointF  point = m_PointsList.GetNext(pos);
+		point = m_PointsList.GetNext(pos);
 
 		RectF handleRect;
 		handleRect = getHandleRect(point);
 
-		if (handleRect.Contains(originPoint)){
-			m_PointsList.GetAt(pos) = targetPoint;
-		}
+		if (handleRect.Contains(originPoint))
+			m_PointsList.SetAt(prevpos, targetPoint);
+			
+		prevpos = pos;	
 	}
 
 }
@@ -168,11 +183,42 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 void CPolyLine::draw(IN Graphics* lpGraphics) {
 
 	// 순회를 하면서 PolyLine을 그려준다. 
-	POSITION pos = m_PointsList.GetHeadPosition();
-	while (pos != NULL){
-		PointF  point = m_PointsList.GetNext(pos);
-		lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(), point);
+	//POSITION pos = m_PointsList.GetHeadPosition();
+	//while (pos != NULL){
+	//	PointF  point = m_PointsList.GetNext(pos);
+	//	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetAt(pos), point);
+	//}
+
+	//POSITION pos = m_PointsList.GetHeadPosition();	// 리스트의 처음
+	////pDC->MoveTo(m_PointsList.GetHead());			// 곡선의 첫 좌표로 이동
+	//
+	//CArray<PointF, PointF&> pointsArray;
+
+	//for (POSITION pos = m_PointsList.GetHeadPosition(); !pos ; m_PointsList.GetNext(pos)) {
+	//	pointsArray.Add(m_PointsList.GetAt(pos));
+	//}
+
+	//lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+	//while (pos ? lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetAt(pos), m_PointsList.GetNext(pos)) : FALSE);	// 다음 좌표로 이동하며 선 그리기
+
+	// Create an array of PointF objects that define the lines to draw.
+	PointF point1(10.0f, 10.0f);
+	PointF point2(10.0f, 100.0f);
+	PointF point3(200.0f, 50.0f);
+	PointF point4(250.0f, 300.0f);
+
+	PointF points[4] = { point1, point2, point3, point4 };
+	PointF* pPoints = points;
+	////////////////////////////
+	CArray<PointF, PointF&> pointsArray;
+
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos ; m_PointsList.GetNext(pos)) {
+		pointsArray.Add(m_PointsList.GetAt(pos));
 	}
+
+	// Draw the lines.
+	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+
 }
 
 // OnMouseMove

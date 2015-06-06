@@ -245,7 +245,9 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
-			m_CurrentFigure = new CPolyLine();
+			if (!m_CurrentFigure || !m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+				m_CurrentFigure = new CPolyLine(&dd);
+			}
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
@@ -327,6 +329,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYLINE:
+			((CPolyLine*)m_CurrentFigure)->addPoint(currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
@@ -373,11 +376,15 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-		
+		if (m_CurrentFigure && m_InsertFlag == CGraphicEditorView::POLYLINE) {
+			((CPolyLine*)m_CurrentFigure)->create(currPoint,CFigure::FREECREATE);
+			clearInsertFlag();
+			//m_CurrentFigure = NULL;
+		}
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
-		m_MouseButtonFlag = LBUTTON;	// 좌클릭
+		//m_MouseButtonFlag = NBUTTON;	// 좌클릭
 		/**************************************************/
 
 		CView::OnLButtonDblClk(nFlags, point);
@@ -433,7 +440,7 @@ void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
-		m_MouseButtonFlag = RBUTTON;	// 우클릭
+		m_MouseButtonFlag = NBUTTON;	// 우클릭
 		/**************************************************/
 
 		CView::OnRButtonDblClk(nFlags, point);
@@ -461,7 +468,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
-				//m_CurrentFigure->creating(&graphics, &CGlobal::CPointToPointF(point));
+				m_CurrentFigure->creating(&graphics,&m_LButtonPoint,&CGlobal::CPointToPointF(point));
 				//Invalidate();
 			}
 		}

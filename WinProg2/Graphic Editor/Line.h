@@ -179,6 +179,7 @@ private:
 
 	REAL m_Gradient;
 
+
 	//Color m_LineColor;	// 선 색
 	//int m_LinePattern;	// 선 패턴
 	//int m_LineWidth;	// 선 두께

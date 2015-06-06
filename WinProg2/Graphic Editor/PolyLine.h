@@ -20,7 +20,7 @@ public:
 
 	/** 楷魂 **/
 	/* LButtonUp */
-	void addPoint(PointF addingPoint);
+	void addPoint(IN PointF addingPoint, IN CreateFlag createFlag = FREECREATE);
 
 	/* LButtonDlk */
 	// 积己
@@ -31,7 +31,7 @@ public:
 	//		TRUE: 积己 角菩
 	//		FALSE: 积己 己傍
 	// ok!!
-	BOOL create(IN CreateFlag createFlag = FREECREATE);
+	BOOL create(IN PointF addingPoint,IN CreateFlag createFlag = FREECREATE);
 
 private:
 	// 积己
@@ -143,7 +143,7 @@ private:
 
 	CList <PointF, PointF&> m_PointsList;
 
-	RectF m_SubArea;
+	BOOL m_CreatedFlag;
 };
 
 
