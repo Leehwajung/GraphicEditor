@@ -30,6 +30,15 @@ CText::CText(CView *lpView)
 	//m_String.RemoveAll();
 }
 
+CText::CText(IN Pen* pen, IN BrushPtr fillbrush)
+	: CRectangle(pen, fillbrush)
+	, m_Font(NULL)
+	, m_StringFormat(NULL)
+	, m_FontBrush(NULL)
+{
+
+
+}
 CText::CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush)
 	: CRectangle(pen, fillbrush)
 	, m_Font(NULL)
@@ -97,7 +106,11 @@ void CText::Serialize(CArchive& ar)
 	{	// loading code
 	}
 }
-
+//
+//BOOL CText::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/)
+//{
+//	return create(&startingPoint, &endingPoint, createFlag);	 // 임시 반환 값
+//}
 
 BOOL CText::create(void* param1, ...)
 {
@@ -107,22 +120,50 @@ BOOL CText::create(void* param1, ...)
 	//PointF* endingPoint = va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
-
+	
 	SizeF rectSize;
 	rectSize.Width = m_Font->GetSize();
 	rectSize.Height = m_Font->GetSize();
-
+	//rectSize.Width = 50;
+	//rectSize.Height = 50;
 	m_Rect = RectF(*startingPoint, rectSize);
 
 	resetArea();
-
+	cur.x=startingPoint->X;
+	cur.y = startingPoint->Y;
+	m_View->CreateSolidCaret(2, m_String.GetSize());
+	//m_View->CreateSolidCaret(5,50);
+	m_View->SetCaretPos(cur);
+	m_View->ShowCaret();
 	return FALSE;
 }
-void  CText::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag, IN PointF* anchorPoint)
-{
+
+void  CText::increasewidth(){
+	PointF startingPoint;
+	
+	rectSize.Width += m_Font->GetSize();
+	rectSize.Height = m_Font->GetSize();
+
+	m_Rect = RectF(startingPoint, rectSize);
+	resetArea();
+	cur.x = cur.x + m_Font->GetSize();
+	m_View->SetCaretPos(cur);
+	m_View->ShowCaret(); // 커서이동
 
 }
+void  CText::decreasewidth(){
+	PointF startingPoint;
 
+	rectSize.Width = rectSize.Width-m_Font->GetSize();
+	rectSize.Height = m_Font->GetSize();
+
+	m_Rect = RectF(startingPoint, rectSize);
+	resetArea();
+	if (cur.x > 0)
+		cur.x = cur.x - m_Font->GetSize();
+	m_View->SetCaretPos(cur);
+	m_View->ShowCaret(); // 커서이동
+}
 // 
 void CText::draw(IN Graphics* lpGraphics){
 	
@@ -140,16 +181,17 @@ void CText::draw(IN Graphics* lpGraphics){
 
 // m_String에 문자 추가
 void CText::addChar(TCHAR newchar) {
-	
-		m_String.Add(newchar);
-	
+	m_String.Add(newchar);
+	increasewidth();
 }
 
 // m_String에 문자 삭제
 void CText::delChar() {
 	if (m_String.GetSize() > 0) {
 		m_String.RemoveAt(m_String.GetSize() - 1);
+		decreasewidth();
 	}
+
 }
 
 // 뷰 획득
