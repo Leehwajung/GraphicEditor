@@ -215,9 +215,9 @@ void CGroup::draw(IN Graphics* lpGraphics)
 //		Graphics* lpGraphics: 그리기 대상 Graphics
 //		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 //		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-void CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
+RectF CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
 {
-
+	return NULLRectF;
 }
 
 // 이동 그리기
@@ -227,11 +227,16 @@ void CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동 중인 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+RectF CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
+	RectF drawnArea;
+
 	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
 		m_FiguresList.GetAt(pos)->moving(lpGraphics, originPoint, targetPoint, moveFlag);
+		drawnArea.Intersect(m_FiguresList.GetAt(pos)->getArea());
 	}
+
+	return drawnArea;
 }
 
 // 크기 변경 그리기
@@ -242,14 +247,18 @@ void CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF ta
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-void CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+RectF CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	RectF drawnArea;
 	PointF handlePoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &handlePoint);
 
 	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
 		m_FiguresList.GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, &handlePoint);
+		drawnArea.Intersect(m_FiguresList.GetAt(pos)->getArea());
 	}
+
+	return drawnArea;
 }
 
 

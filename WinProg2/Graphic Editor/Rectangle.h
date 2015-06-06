@@ -96,7 +96,7 @@ public:
 	//		PointF startingPoint: 생성 시작 좌표
 	//		PointF targetPoint: 생성 시 선택 중인 좌표
 	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-	void CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
+	RectF creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
 
 protected:
 	// 생성 그리기 (순수 가상)
@@ -105,7 +105,7 @@ protected:
 	//		Graphics* lpGraphics: 그리기 대상 Graphics
 	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-	virtual void creating(IN Graphics* lpGraphics, void* param1, ...);
+	virtual RectF creating(IN Graphics* lpGraphics, void* param1, ...);
 
 public:
 	// 이동 그리기 (순수 가상)
@@ -115,7 +115,7 @@ public:
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
@@ -125,7 +125,7 @@ public:
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual void resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	virtual RectF resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 
@@ -153,9 +153,9 @@ protected:
 //
 //	// OnMouseMove
 //	void mouseMoveOperation(UINT nFlags, PointF point);			// OnMouseMove에서 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-//	virtual void creating(UINT nFlags, PointF point);			// 생성 그리기
-//	virtual void moving(UINT nFlags, PointF point);				// 이동 그리기
-//	virtual void resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
+//	virtual RectF creating(UINT nFlags, PointF point);			// 생성 그리기
+//	virtual RectF moving(UINT nFlags, PointF point);				// 이동 그리기
+//	virtual RectF resizing(UINT nFlags, PointF point);			// 크기 변경 그리기
 //
 //	// LButtonUp
 //	virtual void endCreate(PointF point);						// 생성 완료

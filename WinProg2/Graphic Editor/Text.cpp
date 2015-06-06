@@ -109,8 +109,8 @@ BOOL CText::create(void* param1, ...)
 	va_end(vaList);
 
 	SizeF rectSize;
-	rectSize.Width = m_Font->GetSize;
-	rectSize.Height = m_Font->GetSize;
+	rectSize.Width = m_Font->GetSize();
+	rectSize.Height = m_Font->GetSize();
 
 	m_Rect = RectF(*startingPoint, rectSize);
 

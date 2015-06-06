@@ -96,11 +96,14 @@ void CPolyLine::pointMove(IN PointF originPoint, IN PointF targetPoint){
 		RectF handleRect;
 		handleRect = getHandleRect(point);
 
-		if (handleRect.Contains(originPoint))
+		if (handleRect.Contains(originPoint)) {
 			m_PointsList.SetAt(prevpos, targetPoint);
+			break;
+		}
+			
 			
 		prevpos = pos;	
-		}
+	}
 
 }
 
@@ -223,25 +226,31 @@ void CPolyLine::draw(IN Graphics* lpGraphics) {
 
 // OnMouseMove
 /* 생성 그리기 */
-void CPolyLine::creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
-	creating(lpGraphics, &addingPoint, createFlag);
+RectF CPolyLine::creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
+
+	return creating(lpGraphics, &addingPoint, createFlag);
 }
 
 /* 생성 그리기 */
-void CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+RectF CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	va_list vaList;
 	va_start(vaList, param1);
 	PointF* addingPoint = (PointF*)param1;
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+	RectF drawnArea;
+
 	// 실제로 그리는 부분 
 	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(),*addingPoint);
 
+	return drawnArea;
 }
 
 /* 이동 그리기 */
-void CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+
+	RectF drawnArea;
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
@@ -257,11 +266,15 @@ void CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF
 		// 실제로 그리는 부분 
 		tmp_List.AddTail(point+RelativePoint);
 	}
+
+	return drawnArea;
 }
 	    
 // 개별 좌표 이동 그리기
-void CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
+RectF CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
 	
+	RectF drawnArea;
+
 	CList <PointF, PointF&> tmp_List;
 
 	POSITION pos = m_PointsList.GetHeadPosition();
@@ -281,11 +294,17 @@ void CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN Poin
 		// 실제로 그리는 부분 
 		lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point);
 	}		
+
+	return drawnArea;
 }
 
 /* 크기 변경 그리기 */
-void CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+RectF CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	RectF drawnArea;
 
+
+
+	return drawnArea;
 }
 
 // 도형 작업 후에 호출

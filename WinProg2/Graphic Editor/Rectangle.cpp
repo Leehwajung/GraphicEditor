@@ -265,9 +265,9 @@ void CRectangle::draw(IN Graphics* lpGraphics)
 //		PointF startingPoint: 생성 시작 좌표
 //		PointF targetPoint: 생성 시 선택 중인 좌표
 //		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-void CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
+RectF CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/)
 {
-	creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
+	return creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
 }
 
 // 생성 그리기
@@ -275,7 +275,7 @@ void CRectangle::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN P
 // - IN 매개변수
 //		Graphics* lpGraphics: 그리기 대상 Graphics
 //		void* param1, ...: PointF*(startingPoint), PointF*(targetPoint), CreateFlag 순으로 입력
-void CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
+RectF CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
@@ -283,6 +283,12 @@ void CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
 	PointF* targetPoint = va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
+
+	RectF drawnArea;
+
+
+
+	return drawnArea;
 }
 
 // 이동 그리기
@@ -292,8 +298,9 @@ void CRectangle::creating(IN Graphics* lpGraphics, void* param1, ...)
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동 중인 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-void CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+RectF CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
+	RectF drawnArea;
 	RectF rect = m_Rect;
 	if (moveFlag == FREEMOVE)//자유이동 case일 때
 	{
@@ -327,6 +334,8 @@ void CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 			lpGraphics->DrawEllipse(m_OutlinePen, rect);
 		}
 	}
+
+	return drawnArea;
 }
 
 // 크기 변경 그리기
@@ -337,8 +346,9 @@ void CRectangle::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-void CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+RectF CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	RectF drawnArea;
 	RectF rect = m_Rect; //temp
 
 	PointF startingPoint;
@@ -413,7 +423,7 @@ void CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, I
 		default:
 			// 잘못된 selectedHandle
 			// 아무 동작을 하지 않음
-			return;
+			return NULLRectF;
 		}
 	}
 	else{
@@ -493,13 +503,14 @@ void CRectangle::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, I
 		default:
 			// 잘못된 selectedHandle
 			// 아무 동작을 하지 않음
-			return;
+			return NULLRectF;
 		}
 	}
 	rect = RectF(startingPoint, rectSize);
 	lpGraphics->FillEllipse(m_FillBrush, rect); // ellipse 채우기
 	lpGraphics->DrawEllipse(m_OutlinePen, rect);
 
+	return drawnArea;
 }
 
 

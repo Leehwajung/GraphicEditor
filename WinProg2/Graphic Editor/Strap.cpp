@@ -55,9 +55,13 @@ void CStrap::pointMove(IN PointF originPoint, IN PointF targetPoint)
 }
 
 // °³º° ÁÂÇ¥ ÀÌµ¿ ±×¸®±â
-void CStrap::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
+RectF CStrap::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
 {
-	
+	RectF drawnArea;
+
+
+
+	return drawnArea;
 }
 
 // Ææ È¹µæ

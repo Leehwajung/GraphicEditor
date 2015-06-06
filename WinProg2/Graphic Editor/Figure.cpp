@@ -318,9 +318,9 @@ void CFigure::resize(IN Position selectedHandle, IN PointF targetPoint, IN Resiz
 void CFigure::destroy(){}
 CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임시 반환값 */ }
 void CFigure::draw(IN Graphics* lpGraphics){}
-void CFigure::creating(IN Graphics* lpGraphics, void* param1, ...){}
-void CFigure::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){}
-void CFigure::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
+RectF CFigure::creating(IN Graphics* lpGraphics, void* param1, ...){ return NULLRectF; /* 임시 반환값 */ }
+RectF CFigure::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){ return NULLRectF; /* 임시 반환값 */ }
+RectF CFigure::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){ return NULLRectF; /* 임시 반환값 */ }
 BOOL CFigure::setOutlineColor(IN const Color& outlineColor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setOutlineWidth(IN const REAL outlineWidth){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setOutlinePattern(IN const DashStyle outlinePattern){ return TRUE; /* 임시 반환값 */ }

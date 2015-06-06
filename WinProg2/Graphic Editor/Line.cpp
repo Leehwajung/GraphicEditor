@@ -225,15 +225,17 @@ void CLine::draw(IN Graphics* lpGraphics) {
 
 // OnMouseMove
 /* 생성 그리기 */
-void CLine::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
+RectF CLine::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
 	
-	creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
+	return creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
 	
 }
 
 /* 생성 그리기 */
-void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+RectF CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	
+	RectF drawnArea;
+
 	va_list vaList;
 	va_start(vaList,param1);
 	PointF* startingPoint = (PointF*)param1;
@@ -243,26 +245,37 @@ void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 
 	lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
 	
+	return drawnArea;
 }
 
 /* 이동 그리기 */
-void CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+RectF CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+
+	RectF drawnArea;
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
+
+	return drawnArea;
 }
 
 /* 크기 변경 그리기 */
-void CLine::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	
+RectF CLine::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	RectF drawnArea;
+
+
+
+	return drawnArea;
 }
 
 /* 개별 좌표 이동 그리기 */
-void CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
+RectF CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
 {
+	RectF drawnArea;
+
 	RectF handleRect;
 
 	getHandleRect(START, &handleRect);
@@ -272,7 +285,9 @@ void CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 	getHandleRect(END, &handleRect);
 	if (handleRect.Contains(originPoint))
 		lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
-	}
+
+	return drawnArea;
+}
 
 BOOL CLine::getHandleRect(IN Position handle, OUT RectF* handleRect)
 {

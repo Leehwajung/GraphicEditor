@@ -20,11 +20,11 @@ public:
 	// 점 추가 (순수 가상)
 	//virtual void addPoint(PointF point);
 
-	// 개별 좌표 이동
+	// 개별 좌표 이동 (순수 가상 예정)
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
 
-	// 개별 좌표 이동 그리기
-	virtual void pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
+	// 개별 좌표 이동 그리기 (순수 가상 예정)
+	virtual RectF pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
 
 	// 펜 획득
 	Pen* getPen();
