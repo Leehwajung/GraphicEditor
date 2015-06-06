@@ -43,7 +43,7 @@ void CPolyLine::Serialize(CArchive& ar)
 //LButtonUp
 void CPolyLine::addPoint(IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
 	if (m_CreatedFlag == FALSE)
-		m_PointsList.AddTail(addingPoint);
+	m_PointsList.AddTail(addingPoint);
 }
 //LButtonDlk
 /* 생성 완료 */
@@ -54,16 +54,16 @@ BOOL CPolyLine::create(IN PointF addingPoint,IN CreateFlag createFlag/* = FREECR
 /* 생성 완료 */
 BOOL CPolyLine::create(void* param1, ...) {
 
-		va_list vaList;
-		va_start(vaList, param1);
+	va_list vaList;
+	va_start(vaList, param1);
 		PointF* addingPoint = (PointF*)param1;
 		CreateFlag createFlag = va_arg(vaList, CreateFlag);
-		va_end(vaList);
-		
-		m_CreatedFlag = TRUE;
-		resetArea();
+	va_end(vaList);
 
-		return FALSE;
+		m_CreatedFlag = TRUE;
+	resetArea();
+
+	return FALSE;
 }
 
 /* 개체 이동 */
@@ -71,7 +71,7 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
-	
+
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	POSITION pos = m_PointsList.GetHeadPosition();
 	POSITION prevpos = m_PointsList.GetHeadPosition();
@@ -100,7 +100,7 @@ void CPolyLine::pointMove(IN PointF originPoint, IN PointF targetPoint){
 			m_PointsList.SetAt(prevpos, targetPoint);
 			
 		prevpos = pos;	
-	}
+		}
 
 }
 
@@ -290,7 +290,7 @@ void CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN
 
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
-void CPolyLine::resetArea() {
+RectF CPolyLine::resetArea() {
 
 	REAL x_start = 0, y_start = 0, x_end = 0, y_end = 0;
 
@@ -319,5 +319,6 @@ void CPolyLine::resetArea() {
 	m_Area.Width = abs(x_start - x_end);
 	m_Area.Height = abs(y_start - y_end);
 
+	return m_Area;
 }
 

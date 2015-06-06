@@ -70,6 +70,13 @@ BOOL CFigure::figureInRect(IN RectF rect)
 	return FALSE;
 }
 
+// 개체 영역
+// 개체 영역을 얻음
+RectF CFigure::getArea()
+{
+	return m_Area;
+}
+
 
 /** 핸들 관리 **/
 // 핸들의 좌표
@@ -320,4 +327,4 @@ BOOL CFigure::setOutlinePattern(IN const DashStyle outlinePattern){ return TRUE;
 BOOL CFigure::setFillColor(IN const Color& fillColor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setFillSubcolor(IN const Color& fillSubcolor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setFillPattern(IN const HatchStyle fillPattern){ return TRUE; /* 임시 반환값 */ }
-void CFigure::resetArea(){}
+RectF CFigure::resetArea(){ return m_Area; /* 임시 반환값 */ }

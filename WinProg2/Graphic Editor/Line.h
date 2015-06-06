@@ -133,7 +133,7 @@ public:
 protected:
 	/** 개체 영역 관리 **/
 	// 개체 영역 갱신
-	virtual void resetArea();
+	virtual RectF resetArea();
 
 public:
 	//// LButtonDown

@@ -19,7 +19,7 @@ public:
 public:
 	/** 직렬화 **/
 	// 직렬화 (순수가상함수로 바꿀지 검토)
-	virtual void Serialize(CArchive& ar);
+	virtual void Serialize(IN CArchive& ar);
 
 	/** 연산 **/
 	// 생성
@@ -29,7 +29,7 @@ public:
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	BOOL create(CFigurePtrList& figurePtrList);
+	BOOL create(IN CFigurePtrList& figurePtrList);
 
 	// 생성
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
@@ -39,7 +39,7 @@ public:
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
-	BOOL create(int count, CFigure* figure1, ...);
+	BOOL create(IN const int count, IN CFigure* figure1, ...);
 
 private:
 	// 생성
@@ -84,7 +84,7 @@ public:
 /** 개체 영역 관리 **/
 protected:
 	// 개체 영역 갱신
-	virtual void resetArea();
+	virtual RectF resetArea();
 
 /** 그리기 **/
 public:
