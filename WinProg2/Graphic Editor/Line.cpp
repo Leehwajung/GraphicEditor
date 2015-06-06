@@ -151,17 +151,18 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 	PointF points[count];
 	GraphicsPath path;
+	int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 	if (m_Gradient >= 0){
-	points[0] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
-	points[1] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
-	points[2] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
-	points[3] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
+	points[0] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
+	points[1] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
+	points[2] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
+	points[3] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
 	}
 	else if (m_Gradient < 0){
-		points[0] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
-		points[1] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[2] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[3] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
+		points[0] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
+		points[1] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
+		points[2] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
+		points[3] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
 	}
     path.AddPolygon(points, count);
 	Region rgn(&path);
@@ -278,11 +279,6 @@ RectF CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF ta
 	REAL aDash[] = { 5.0f, 5.0f };
 	m_OutlinePen->SetDashPattern(aDash,sizeof(aDash)/sizeof(aDash[0]));
 	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
-
-	//drawnArea.X = (m_StartingPoint + RelativePoint).X;
-	//drawnArea.Y = (m_StartingPoint + RelativePoint).Y;
-	//drawnArea.Width = abs(m_StartingPoint.X - m_EndPoint.X);
-	//drawnArea.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
 
 	return drawnArea;
 }

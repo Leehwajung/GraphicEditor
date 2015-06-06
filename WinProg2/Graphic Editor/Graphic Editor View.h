@@ -57,7 +57,7 @@ public:
 
 	enum OperationModeFlag {
 		SELECTABLE		= (int) 0x00000,
-		SELEDTED		= (int) 0x00001,
+		SELECTED		= (int) 0x00001,
 		CREATE			= (int) 0x00002,
 		MOVE			= (int) 0x00003,
 		RESIZE			= (int) 0x00004

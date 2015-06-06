@@ -153,17 +153,18 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 		PointF points[count];
 		GraphicsPath path;
+		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 		if (Gradient >= 0){
-			points[0] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
-			points[1] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[2] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[3] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[0] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
+			points[1] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
+			points[2] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
+			points[3] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
 		}
 		else if (Gradient < 0){
-			points[0] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
-			points[1] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[2] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[3] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[0] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
+			points[1] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
+			points[2] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
+			points[3] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
 		}
 		path.AddPolygon(points, count);
 
@@ -200,7 +201,7 @@ void CPolyLine::draw(IN Graphics* lpGraphics) {
 /* 积己 弊府扁 */
 RectF CPolyLine::creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
 
-	return creating(lpGraphics, &addingPoint, createFlag);
+	return creating(lpGraphics, &addingPoint, &createFlag);
 }
 
 /* 积己 弊府扁 */
@@ -213,20 +214,12 @@ RectF CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 
 	RectF drawnArea;
 
-	CArray<PointF, PointF&> pointsArray;
-
-	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
-		pointsArray.Add(m_PointsList.GetAt(pos));
-	}
-
-	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
-
 	// 角力肺 弊府绰 何盒 
 	m_OutlinePen->SetDashStyle(DashStyleCustom);
 	REAL aDash[] = { 5.0f, 5.0f };
 	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
-
-	//lpGraphics->DrawLine(m_OutlinePen, m_PointsList.Get,*addingPoint);
+		
+	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(), *addingPoint);
 
 	return drawnArea;
 }

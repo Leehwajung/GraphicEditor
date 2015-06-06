@@ -156,7 +156,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	}
 
 	if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
-
+		if (m_InsertFlag == POLYLINE){
+			if (m_OperationModeFlag == CREATE)
+				m_drawnArea = CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &currPoint));
+		}
 	}
 
 	else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
@@ -285,12 +288,18 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					m_CurrentFigure = NULL;
 				}
-				else if (m_selectedPosition == CFigure::START || m_selectedPosition == CFigure::END || m_selectedPosition == CFigure::ONHANDLE){
-					m_OperationModeFlag = RESIZE;
-			}
-				else if (m_selectedPosition == CFigure::INSIDE){
-					m_OperationModeFlag = MOVE;
-				}
+				//else if (m_selectedPosition == CFigure::INSIDE && m_OperationModeFlag == SELECTABLE){
+				//	m_OperationModeFlag = SELECTED;
+
+				//}
+				//else if (m_OperationModeFlag == SELECTED){
+					if (m_selectedPosition == CFigure::START || m_selectedPosition == CFigure::END || m_selectedPosition == CFigure::ONHANDLE){
+						m_OperationModeFlag = RESIZE;
+					}
+					else if (m_selectedPosition == CFigure::INSIDE){
+						m_OperationModeFlag = MOVE;
+					}
+				//}
 
 			}
 			else {					// 개체가 선택되지 않은 경우
@@ -310,6 +319,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				m_CurrentFigure = new CPolyLine(&dd);
 				m_OperationModeFlag = CREATE;
 			}
+			/*else if (m_CurrentFigure)
+				((CPolyLine*)m_CurrentFigure)->addPoint(currPoint, CFigure::FREECREATE);*/
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
@@ -527,54 +538,9 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 	currPoint = CGlobal::CPointToPointF(point);
 
-	CClientDC dc(this);
-	Graphics graphics(dc);
-	if (m_InsertFlag == POLYLINE){
-		if (m_OperationModeFlag == CREATE)
-			m_drawnArea = CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &m_LButtonPoint, &currPoint));
-	}
-	if (m_OperationModeFlag == CREATE || m_OperationModeFlag == MOVE || m_OperationModeFlag == RESIZE)
-	Invalidate/*Rect*/(/*m_drawnArea*/);
-	//Invalidate(FALSE);
-	//if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
-	//
-	//}
-	
-	//else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
-	//	if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
-
-	//	}
-	//	else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
-
-	//	}
-	//	else {							// 보조키 누르지 않고 드래그
-	//		if (m_InsertFlag == LINE){
-	//			//CRect rect = CGlobal::RectFToCRect(m_drawnArea);
-	//			//GetClientRect(&rect);
-	//			//graphics.FillRectangle(&SolidBrush(Color(5, 255, 255, 255)), CGlobal::CRectToRectF(rect));
-	//			//InvalidateRect(m_drawnArea);
-	//			//ReDrawWindow
-	//			//graphics.Clear(Color(0,255,255,255));
-	//			//graphics.FillRectangle(&SolidBrush(Color(50, 255, 255, 255)), m_drawnArea);
-	//			m_drawnArea= CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &m_LButtonPoint, &currPoint));
-	//			
-	//		}
-	//	}
-	//}
-
-	//else if (m_MouseButtonFlag == RBUTTON){	// 마우스 오른쪽 버튼 드래그
-	//	if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
-
-	//	}
-	//	else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
-
-	//	}
-	//	else {							// 보조키 누르지 않고 드래그
-
-	//	}
-	//}
-
-		}
+	if (m_OperationModeFlag == CREATE || m_OperationModeFlag == MOVE || m_OperationModeFlag == RESIZE || m_OperationModeFlag == SELECTED)
+		Invalidate();
+}
 
 BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint point)
 {
