@@ -110,9 +110,11 @@ END_MESSAGE_MAP()
 CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-	m_CurrentFigure = NULL;
+	//m_CurrentFigure = NULL;
+	m_MouseVKFlags = 0;
 	m_MouseButtonFlag = NBUTTON;
 	m_InsertFlag = NONE;
+	//// m_OperationModeFlag = SELECTABLE;
 }
 
 CGraphicEditorView::~CGraphicEditorView()
@@ -142,62 +144,59 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 	
-	m_pDC = (CClientDC*) pDC;
+	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
-
-	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
-	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
-	//if (m_InsertFlag == LINE)
-	int nFlags = 0;
-	if (m_CurrentFigure) {
-		m_CurrentFigure->draw(&graphics);
+	// 현재까지 생성된 모든 개체를 그림
+	if (!pDoc->m_FiguresList.IsEmpty()) {
+		pDoc->m_FiguresList.draw(&graphics);
 	}
+
 
 	if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
 
 	}
 
 	else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
-		if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
+		if (m_MouseVKFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
 
 		}
-		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
+		else if (m_MouseVKFlags & MK_SHIFT) {	// Shift 누르고 드래그
 
 		}
 		else {							// 보조키 누르지 않고 드래그
 			if (m_InsertFlag == LINE){
-				if (m_OperationModeFlag == CREATE)
-					m_drawnArea = CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &m_LButtonPoint, &currPoint));
+				if (getOperationModeFlag() == CREATE)
+					/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(&graphics, &m_LButtonPoint, &m_CurrPoint);
 
 			}
-			else if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CLine))){
-				if (m_OperationModeFlag == MOVE){
-					m_CurrentFigure->moving(&graphics, m_LButtonPoint, currPoint);
+			else if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CLine))){
+				if (getOperationModeFlag() == MOVE){
+					m_CurrentFigures.moving(&graphics, m_LButtonPoint, m_CurrPoint);
 				}
 
-				else if (m_OperationModeFlag == RESIZE){
-					((CLine*)m_CurrentFigure)->pointMoving(&graphics, m_LButtonPoint, currPoint);
+				else if (getOperationModeFlag() == RESIZE){
+					((CLine*)m_CurrentFigures.GetHead())->pointMoving(&graphics, m_LButtonPoint, m_CurrPoint);
 				}
 			}
-			else if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CPolyLine))){
-				if (m_OperationModeFlag == MOVE){
-					m_CurrentFigure->moving(&graphics, m_LButtonPoint, currPoint);
+			else if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
+				if (getOperationModeFlag() == MOVE){
+					m_CurrentFigure->moving(&graphics, m_LButtonPoint, m_CurrPoint);
 				}
 
-				else if (m_OperationModeFlag == RESIZE){
-					((CPolyLine*)m_CurrentFigure)->pointMoving(&graphics, m_LButtonPoint, currPoint);
+				else if (getOperationModeFlag() == RESIZE){
+					((CPolyLine*)m_CurrentFigure)->pointMoving(&graphics, m_LButtonPoint, m_CurrPoint);
 				}
 			}
 		}
 	}
 
 	else if (m_MouseButtonFlag == RBUTTON){	// 마우스 오른쪽 버튼 드래그
-		if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
+		if (m_MouseVKFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
 
 		}
-		else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
+		else if (m_MouseVKFlags & MK_SHIFT) {	// Shift 누르고 드래그
 
 		}
 		else {							// 보조키 누르지 않고 드래그
@@ -206,21 +205,21 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	}
 	
 
-
-	/*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
-	switch(m_mode){
-		case 1: // 폴리라인
-			break;
-		case 2: // 도형
-			break;
-		case 3 :// 텍스트
-		
-			break;
+	//////////////////////////////////////////////////////////////////////////
+	///*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
+	//switch(m_mode){
+	//	case 1: // 폴리라인
+	//		break;
+	//	case 2: // 도형
+	//		break;
+	//	case 3 :// 텍스트
+	//	
+	//		break;
 	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
 	// Graphics 포인터를 멤버 변수(m_lpGraphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
-
-	}
-	
+	//
+	//}
+	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
 	// GDI+ 예제 코드 (사각형 그리기)
 	SolidBrush sb(Color(255,255,0,0));
 	graphics.FillRectangle(&sb, Rect(33, 44, 55, 66));
@@ -267,34 +266,36 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 	
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
 
-		currPoint = CGlobal::CPointToPointF(point);
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		
-		Pen dd(Color(255, 0, 0));
-		SolidBrush ff(Color::DarkGreen);
+		Pen dd(Color(255, 0, 0));			// 테스트용 펜
+		SolidBrush ff(Color::DarkGreen);	// 테스트용 브러시
 
 
 		switch (m_InsertFlag)
 		{
+		// 비 생성 상태
 		case CGraphicEditorView::NONE: {
 
-			if (m_CurrentFigure) {	// 개체가 선택된 경우
-				m_selectedPosition = m_CurrentFigure->pointInFigure(currPoint);
+			if (getOperationModeFlag() == SELECTED) {	// 개체가 선택된 경우
+				m_selectedPosition = m_CurrentFigure->pointInFigure(m_CurrPoint);
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					m_CurrentFigure = NULL;
 				}
 				else if (m_selectedPosition == CFigure::START || m_selectedPosition == CFigure::END || m_selectedPosition == CFigure::ONHANDLE){
-					m_OperationModeFlag = RESIZE;
+					// m_OperationModeFlag = RESIZE;
 			}
 				else if (m_selectedPosition == CFigure::INSIDE){
-					m_OperationModeFlag = MOVE;
+					// m_OperationModeFlag = MOVE;
 				}
 
 			}
 			else {					// 개체가 선택되지 않은 경우
-				m_OperationModeFlag = SELECTABLE;
+				// m_OperationModeFlag = SELECTABLE;
 				// 전체 개체 리스트(그룹)을 순차로 순회
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
 				// Invalidate 호출 (선택 영역을 그리기 위해)
@@ -303,12 +304,12 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 		case CGraphicEditorView::LINE:
 			m_CurrentFigure = new CLine(&dd);
-			m_OperationModeFlag = CREATE;
+			//// m_OperationModeFlag = CREATE;
 			break;
 		case CGraphicEditorView::POLYLINE:
 			if (!m_CurrentFigure || ((CPolyLine*)m_CurrentFigure)->GetCreatedFlag()) {
 				m_CurrentFigure = new CPolyLine(&dd);
-				m_OperationModeFlag = CREATE;
+				//// m_OperationModeFlag = CREATE;
 			}
 			break;
 		case CGraphicEditorView::PENCIL:
@@ -317,11 +318,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		case CGraphicEditorView::ELLIPSE:
 			m_CurrentFigure = new CEllipse(&dd, &ff);
-			m_OperationModeFlag = CREATE;
+			//// m_OperationModeFlag = CREATE;
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure = new CRectangle(&dd, &ff);
-			m_OperationModeFlag = CREATE;
+			//// m_OperationModeFlag = CREATE;
 			break;
 		case CGraphicEditorView::STRING:
 			m_CurrentFigure = new CText(this, &dd, &ff);
@@ -346,7 +347,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = LBUTTON;	// 좌클릭 드래그 중
 		/**************************************************/
 
@@ -360,7 +361,8 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_MouseButtonFlag == LBUTTON/* && !(nFlags & MK_RBUTTON)*/) {
 
-		currPoint = CGlobal::CPointToPointF(point);
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
@@ -374,7 +376,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					//	moveFlag = CFigure::;
 					//}
 
-					m_CurrentFigure->move(m_LButtonPoint, currPoint, moveFlag);
+					m_CurrentFigure->move(m_LButtonPoint, m_CurrPoint, moveFlag);
 
 				}
 				else if (m_selectedPosition & CFigure::ONHANDLE) {
@@ -384,37 +386,38 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					}
 
 					if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CStrap))) {
-						((CStrap*)m_CurrentFigure)->pointMove(m_LButtonPoint, currPoint);
+						((CStrap*)m_CurrentFigure)->pointMove(m_LButtonPoint, m_CurrPoint);
 					}
 					else {
-					m_CurrentFigure->resize(m_selectedPosition, currPoint, resizeFlag);
+					m_CurrentFigure->resize(m_selectedPosition, m_CurrPoint, resizeFlag);
 				}
 			}
-				m_OperationModeFlag = SELECTABLE;
+				// m_OperationModeFlag = SELECTABLE;
 			}
 		} break;
 			
+		/* 삽입 상태 */
 		case CGraphicEditorView::LINE:
-			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
-			m_OperationModeFlag = SELECTABLE;
+			m_CurrentFigure->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+			// m_OperationModeFlag = SELECTABLE;
 			break;
 		case CGraphicEditorView::POLYLINE:
-			((CPolyLine*)m_CurrentFigure)->addPoint(currPoint, CFigure::FREECREATE);
+			((CPolyLine*)m_CurrentFigure)->addPoint(m_CurrPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
-			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
-			m_OperationModeFlag = SELECTABLE;
+			m_CurrentFigure->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+			// m_OperationModeFlag = SELECTABLE;
 			break;
 		case CGraphicEditorView::RECTANGLE:
-			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
-			m_OperationModeFlag = SELECTABLE;
+			m_CurrentFigure->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+			// m_OperationModeFlag = SELECTABLE;
 			break;
 		case CGraphicEditorView::STRING:
-			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
+			m_CurrentFigure->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYGON:
 			break;
@@ -433,7 +436,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		//}
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
 		/**************************************************/
 
@@ -445,18 +448,20 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
 
-		const PointF currPoint = CGlobal::CPointToPointF(point);
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-		if (m_CurrentFigure && m_InsertFlag == CGraphicEditorView::POLYLINE) {
-			((CPolyLine*)m_CurrentFigure)->create(CFigure::FREECREATE);
+		// 더블클릭하면 폴리라인 생성 완료
+		if (m_InsertFlag == CGraphicEditorView::POLYLINE && m_CurrentFigures.hasOneFigure()) {
+			((CPolyLine*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
 			clearInsertFlag();
-			m_OperationModeFlag = SELECTABLE;
+			// m_OperationModeFlag = SELECTABLE;
 		}
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		//m_MouseButtonFlag = NBUTTON;	// 좌클릭
 		/**************************************************/
 
@@ -468,14 +473,15 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
 
-		const PointF currPoint = CGlobal::CPointToPointF(point);
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = RBUTTON;	// 우클릭 드래그 중
 		/**************************************************/
 
@@ -487,7 +493,8 @@ void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	if (m_MouseButtonFlag == RBUTTON/* && !(nFlags & MK_LBUTTON)*/) {
 
-		const PointF currPoint = currPoint;
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		ClientToScreen(&point);
 		OnContextMenu(this, point);
@@ -495,7 +502,7 @@ void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
 		/**************************************************/
 	}
@@ -505,14 +512,15 @@ void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
 {
 	if (!m_MouseButtonFlag && !(nFlags & MK_LBUTTON)) {
 
-		const PointF currPoint = CGlobal::CPointToPointF(point);
+		m_CurrPoint = CGlobal::CPointToPointF(point);
+		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = currPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 우클릭
 		/**************************************************/
 
@@ -525,56 +533,13 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	//CView::OnMouseMove(nFlags, point);
 
-	currPoint = CGlobal::CPointToPointF(point);
+	m_CurrPoint = CGlobal::CPointToPointF(point);
+	m_MouseVKFlags = nFlags;
 
-	CClientDC dc(this);
-	Graphics graphics(dc);
-	if (m_InsertFlag == POLYLINE){
-		if (m_OperationModeFlag == CREATE)
-			m_drawnArea = CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &m_LButtonPoint, &currPoint));
+	if (getOperationModeFlag() == CREATE || getOperationModeFlag() == MOVE || getOperationModeFlag() == RESIZE) {
+		Invalidate/*Rect*/(/*m_DrawnArea*/);
 	}
-	if (m_OperationModeFlag == CREATE || m_OperationModeFlag == MOVE || m_OperationModeFlag == RESIZE)
-	Invalidate/*Rect*/(/*m_drawnArea*/);
-	//Invalidate(FALSE);
-	//if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
-	//
-	//}
-	
-	//else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
-	//	if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
-
-	//	}
-	//	else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
-
-	//	}
-	//	else {							// 보조키 누르지 않고 드래그
-	//		if (m_InsertFlag == LINE){
-	//			//CRect rect = CGlobal::RectFToCRect(m_drawnArea);
-	//			//GetClientRect(&rect);
-	//			//graphics.FillRectangle(&SolidBrush(Color(5, 255, 255, 255)), CGlobal::CRectToRectF(rect));
-	//			//InvalidateRect(m_drawnArea);
-	//			//ReDrawWindow
-	//			//graphics.Clear(Color(0,255,255,255));
-	//			//graphics.FillRectangle(&SolidBrush(Color(50, 255, 255, 255)), m_drawnArea);
-	//			m_drawnArea= CGlobal::RectFToCRect(m_CurrentFigure->creating(&graphics, &m_LButtonPoint, &currPoint));
-	//			
-	//		}
-	//	}
-	//}
-
-	//else if (m_MouseButtonFlag == RBUTTON){	// 마우스 오른쪽 버튼 드래그
-	//	if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
-
-	//	}
-	//	else if (nFlags & MK_SHIFT) {	// Shift 누르고 드래그
-
-	//	}
-	//	else {							// 보조키 누르지 않고 드래그
-
-	//	}
-	//}
-
-		}
+}
 
 BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint point)
 {
@@ -601,11 +566,11 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CText))) {
+	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf((RUNTIME_CLASS(CText)))) {
 		switch (nChar) {
 			// 백스페이스 입력시
 		case VK_BACK:
-			((CText*)m_CurrentFigure)->delChar(); // 문자삭제
+			((CText*)m_CurrentFigures.GetHead())->delChar(); // 문자삭제
 			break;
 			// 한줄 입력이므로 엔터키는 배열에 들어가지 않아도됨
 		case VK_RETURN:
@@ -613,7 +578,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 			// 위의 케이스를 제외한 문자저장
 		default:
-			((CText*)m_CurrentFigure)->addChar(nChar);
+			((CText*)m_CurrentFigures.GetHead())->addChar(nChar);
 		}
 	CView::OnChar(nChar, nRepCnt, nFlags);
 	}
@@ -674,8 +639,62 @@ void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 
 /*** CGraphicEditorView 작업 ***/
 
+CGraphicEditorView::OperationModeFlag CGraphicEditorView::getOperationModeFlag()
+{
+	/*
+		### Comments about OperationModeFlag ###
+		
+	 $	m_InsertFlag, m_CurrentFigures, m_selectedPosition에 종속적이다.
+
+	 $	SELECTABLE:	CREATE 상태가 아니면서 선택된 개체가 없는 상태이다.
+		SELECTED:	개체가 선택된 상태로 연산을 하지 않고 있는 상태이다.
+		CREATE:		삽입 버튼이 눌려있는 상태이다.
+		MOVE:		선택한 개체가 있으면서 개체 내부의 점을 선택한 상태이다. 
+		RESIZE:		선택한 개체가 있으면서 개체의 핸들을 선택한 상태이다.
+		//WRITE:		CText 객체에 문자열을 입력하는 상태이다.
+
+	 $	선택한 개체가 없을 경우 m_selectedPosition을 "핸들 위"로 갱신하지 않아,
+		임의 개체의 첫 번째 클릭에서 크기 변경을 막는다.
+
+	 $	ButtonDown에서 m_selectedPosition을 "핸들 위(선택한 개체가 있을 경우만)"
+		또는 "CFigure::INSIDE"로 갱신하고,
+		ButtonUp에서 m_selectedPosition을 "CFigure::OUTSIDE"로 갱신하여,
+		SELECTED 상태를 얻을 수 있도록 한다.
+	 */
+
+	// 삽입 버튼이 눌려있으면,
+	if (m_InsertFlag != NONE) {
+		return CREATE;	// CREATE 상태
+	}
+
+	// 선택된 개체가 있을 때,
+	if (!m_CurrentFigures.IsEmpty()) {
+		if (m_selectedPosition & CFigure::ONHANDLE) {		// 선택 위치가 핸들이면,
+			return RESIZE;									// RESIZE 상태
+		}
+
+		else if (m_selectedPosition == CFigure::INSIDE) {	// 선택 위치가 내부면,
+			return MOVE;									// MOVE 상태
+		}
+
+		//else if (m_selectedPosition == CFigure::OUTSIDE) {
+		//	return SELECTED;
+		//}
+		//
+		//else if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf((RUNTIME_CLASS(CText)))) {
+		//
+		//}
+
+		return SELECTED;									// 이외의 경우, SELECTED 상태
+	}
+
+	// 삽입 버튼이 눌려있지 않으면서, 선택된 개체가 없으면,
+	return SELECTABLE;	// 	SELECTABLE 상태
+}
+
 void CGraphicEditorView::clearInsertFlag()
 {
+	// m_OperationModeFlag = SELECTABLE;
 	m_InsertFlag = NONE;
 }
 

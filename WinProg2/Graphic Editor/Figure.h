@@ -300,8 +300,13 @@ public:
 		for (POSITION pos = figurePtrList.GetHeadPosition(); pos; figurePtrList.GetNext(pos)) {
 			this->AddTail(figurePtrList.GetAt(pos));
 		}
-
+		
 		return *this;
+	}
+
+	BOOL hasOneFigure()
+	{
+		return this->GetSize() == 1;
 	}
 
 	void move(IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE)
