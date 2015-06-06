@@ -62,11 +62,30 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
 
+	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	POSITION pos = m_PointsList.GetHeadPosition();
+	while (pos != NULL){
+		PointF  point = m_PointsList.GetNext(pos);
+		m_PointsList.GetAt(pos) = point + RelativePoint;
+	}
+
 
 }
 
 // 개별 좌표 이동
 void CPolyLine::pointMove(IN PointF originPoint, IN PointF targetPoint){
+
+	POSITION pos = m_PointsList.GetHeadPosition();
+	while (pos != NULL){
+		PointF  point = m_PointsList.GetNext(pos);
+
+		RectF handleRect;
+		handleRect = getHandleRect(point);
+
+		if (handleRect.Contains(originPoint)){
+			m_PointsList.GetAt(pos) = targetPoint;
+		}
+	}
 
 }
 
@@ -96,34 +115,47 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 	while (pos != NULL){
 		PointF  tmp_point = m_PointsList.GetNext(pos);
 
-		if (tmp_point.Equals(point) == TRUE)
+		RectF handleRect;
+		handleRect = getHandleRect(tmp_point);
+
+		if (handleRect.Contains(point))
 			return ONHANDLE;
 	}
 
 	// 2. 현재 좌표가 선이 있는 영역에 있을 때 INSIDE이다.
 	pos = m_PointsList.GetHeadPosition();
+	PointF first_point = m_PointsList.GetNext(pos);
 	while (pos != NULL){
-		PointF first_point = m_PointsList.GetNext(pos);
 		PointF second_point = m_PointsList.GetNext(pos);
 
-		int Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
+		REAL Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
 
-		m_SubArea.X = first_point.X;
-		m_SubArea.Y = first_point.Y;
-		m_SubArea.Width = abs(first_point.X - second_point.X);
-		m_SubArea.Height = abs(first_point.Y - second_point.Y);
+		const int count = 4;
 
-		if (m_SubArea.GetLeft() <= point.X && point.X <= m_SubArea.GetRight() || m_SubArea.GetRight() <= point.X && point.X <= m_SubArea.GetLeft()){
-			if (m_SubArea.GetTop() <= point.Y && point.Y <= m_SubArea.GetBottom() || m_SubArea.GetBottom() <= point.Y && point.Y <= m_SubArea.GetTop()){
+		REAL tmp_seta = atan(-1 / Gradient);
+		REAL seta = 90 - tmp_seta;
 
-				// 현재 찍은 좌표와 StartingPoint과의 기울기를 비교할 것이다.
-				int tmp_gradient = (first_point.Y - point.Y) / (first_point.X - point.X);
-
-				if (tmp_gradient == Gradient)
-					return INSIDE;
-			}
+		PointF points[count];
+		GraphicsPath path;
+		if (Gradient >= 0){
+			points[0] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[1] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
+			points[2] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
+			points[3] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
 		}
+		else if (Gradient < 0){
+			points[0] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[1] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
+			points[2] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
+			points[3] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
+		}
+		path.AddPolygon(points, count);
 
+		Region rgn(&path);
+		if (rgn.IsVisible(point)) {
+			return INSIDE;
+		}
+		first_point = second_point;
 	}
 
 	// 바깥 영역
@@ -134,6 +166,13 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 // OnDraw
 /* 선 그리기 */
 void CPolyLine::draw(IN Graphics* lpGraphics) {
+
+	// 순회를 하면서 PolyLine을 그려준다. 
+	POSITION pos = m_PointsList.GetHeadPosition();
+	while (pos != NULL){
+		PointF  point = m_PointsList.GetNext(pos);
+		lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(), point);
+	}
 }
 
 // OnMouseMove
@@ -150,6 +189,7 @@ void CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+	// 실제로 그리는 부분 
 	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(),*addingPoint);
 
 }
@@ -166,14 +206,35 @@ void CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF
 	POSITION pos = m_PointsList.GetHeadPosition();
 	while (pos!=NULL){
 		PointF  point = m_PointsList.GetNext(pos);
-		tmp_List.AddTail(point);
-	}
+		lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
 
+		// 실제로 그리는 부분 
+		tmp_List.AddTail(point+RelativePoint);
+	}
 }
 	    
 // 개별 좌표 이동 그리기
 void CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
+	
+	CList <PointF, PointF&> tmp_List;
 
+	POSITION pos = m_PointsList.GetHeadPosition();
+	while (pos != NULL){
+		PointF  point = m_PointsList.GetNext(pos);
+
+		RectF handleRect;
+		handleRect = getHandleRect(point);
+
+		if (handleRect.Contains(originPoint)){
+			point = targetPoint;
+			tmp_List.AddTail(point);
+
+		}
+		else tmp_List.AddTail(point);
+
+		// 실제로 그리는 부분 
+		lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point);
+	}		
 }
 
 /* 크기 변경 그리기 */

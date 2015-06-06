@@ -245,6 +245,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
+			m_CurrentFigure = new CPolyLine();
 			break;
 		case CGraphicEditorView::PENCIL:
 			break;
