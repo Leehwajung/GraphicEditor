@@ -153,7 +153,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	if (m_CurrentFigure) {
 		m_CurrentFigure->draw(&graphics);
-	}	
+	}
 	// GDI+ 예제 코드 (사각형 그리기)
 	SolidBrush sb(Color(255,255,0,0));
 	graphics.FillRectangle(&sb, Rect(33, 44, 55, 66));
@@ -230,7 +230,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
-			if (!m_CurrentFigure || !m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+			if (!m_CurrentFigure || ((CPolyLine*)m_CurrentFigure)->GetCreatedFlag()) {
 				m_CurrentFigure = new CPolyLine(&dd);
 			}
 			break;
@@ -365,7 +365,7 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		if (m_CurrentFigure && m_InsertFlag == CGraphicEditorView::POLYLINE) {
-			((CPolyLine*)m_CurrentFigure)->create(currPoint,CFigure::FREECREATE);
+			((CPolyLine*)m_CurrentFigure)->create(CFigure::FREECREATE);
 			clearInsertFlag();
 			//m_CurrentFigure = NULL;
 		}

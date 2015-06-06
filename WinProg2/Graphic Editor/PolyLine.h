@@ -31,7 +31,7 @@ public:
 	//		TRUE: 积己 角菩
 	//		FALSE: 积己 己傍
 	// ok!!
-	BOOL create(IN PointF addingPoint,IN CreateFlag createFlag = FREECREATE);
+	BOOL create(IN CreateFlag createFlag = FREECREATE);
 
 private:
 	// 积己
@@ -138,6 +138,7 @@ protected:
 public:
 	// Getter
 	CList <PointF, PointF&>& GetPointsList();
+	BOOL GetCreatedFlag();
 
 private:
 

@@ -47,23 +47,21 @@ void CPolyLine::addPoint(IN PointF addingPoint, IN CreateFlag createFlag/* = FRE
 }
 //LButtonDlk
 /* 생성 완료 */
-BOOL CPolyLine::create(IN PointF addingPoint,IN CreateFlag createFlag/* = FREECREATE*/){
-	return create(&addingPoint,createFlag);
+BOOL CPolyLine::create(IN CreateFlag createFlag/* = FREECREATE*/){
+	return create(&createFlag);
 }
 
 /* 생성 완료 */
 BOOL CPolyLine::create(void* param1, ...) {
-
-	va_list vaList;
-	va_start(vaList, param1);
-		PointF* addingPoint = (PointF*)param1;
-		CreateFlag createFlag = va_arg(vaList, CreateFlag);
-	va_end(vaList);
+		va_list vaList;
+		va_start(vaList, param1);
+		CreateFlag* createFlag = (CreateFlag*)param1;
+		va_end(vaList);
 
 		m_CreatedFlag = TRUE;
-	resetArea();
+		resetArea();
 
-	return FALSE;
+		return FALSE;
 }
 
 /* 개체 이동 */
@@ -340,4 +338,9 @@ RectF CPolyLine::resetArea() {
 
 	return m_Area;
 }
+
+BOOL CPolyLine::GetCreatedFlag(){
+	return m_CreatedFlag;
+}
+
 
