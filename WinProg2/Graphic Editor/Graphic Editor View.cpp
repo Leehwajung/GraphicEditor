@@ -25,7 +25,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "Text.h"
+//#include "Text.h"
 
 // CGraphicEditorView
 
@@ -189,7 +189,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// Initialize arguments.
 	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font myFont(&fontfamily, 16,FontStyleRegular, UnitPixel);
+	Gdiplus::Font myFont(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
 	StringFormat format;
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
@@ -252,6 +252,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
+			m_CurrentFigure = new CEllipse(&dd, &ff);
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure = new CRectangle(&dd, &ff);
@@ -296,7 +297,6 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		switch (m_InsertFlag)
-
 		{
 		case CGraphicEditorView::NONE: {
 			if (m_CurrentFigure) {
@@ -322,7 +322,6 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					}
 				}
 			}
-
 		} break;
 		case CGraphicEditorView::LINE:
 			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
