@@ -425,8 +425,10 @@ void  CEllipse::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN
 
  /* 개체 영역 관리 */
  // 개체 영역 갱신
- void  CEllipse::resetArea(){
+RectF  CEllipse::resetArea(){
 	 m_Area = m_Rect;
+
+	 return m_Area;
  }
 
 void CEllipse::Serialize(CArchive& ar)

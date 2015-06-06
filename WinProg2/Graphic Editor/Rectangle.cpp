@@ -242,9 +242,11 @@ CFigure::Position CRectangle::pointInFigure(IN PointF point)
 
 /* 개체 영역 관리 */
 // 개체 영역 갱신
-void CRectangle::resetArea()
+RectF CRectangle::resetArea()
 {
 	m_Area = m_Rect;
+
+	return m_Area;
 }
 
 

@@ -183,7 +183,7 @@ void CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN
 
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
-void CPolyLine::resetArea() {
+RectF CPolyLine::resetArea() {
 
 	REAL x_start = 0, y_start = 0, x_end = 0, y_end = 0;
 
@@ -212,5 +212,6 @@ void CPolyLine::resetArea() {
 	m_Area.Width = abs(x_start - x_end);
 	m_Area.Height = abs(y_start - y_end);
 
+	return m_Area;
 }
 

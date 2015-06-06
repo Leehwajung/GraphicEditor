@@ -302,12 +302,14 @@ BOOL CLine::getHandleRect(IN Position handle, OUT RectF* handleRect)
 
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
-void CLine::resetArea() {
+RectF CLine::resetArea() {
 
 	m_Area.X = m_StartingPoint.X;
 	m_Area.Y = m_StartingPoint.Y;
 	m_Area.Width = abs(m_StartingPoint.X - m_EndPoint.X);
 	m_Area.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
+
+	return m_Area;
 }
 
 
