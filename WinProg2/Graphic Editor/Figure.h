@@ -116,12 +116,16 @@ public:
 	//		FALSE: 개체가 사각형 내부에 존재하지 않을 때
 	BOOL figureInRect(IN RectF rect);
 
-protected:
+
 	/* 개체 영역 관리 */
 	// 개체 영역 갱신 (순수 가상)
-	virtual void resetArea();
+	virtual RectF resetArea();
 
-public:
+	// 개체 영역
+	// 개체 영역을 얻음
+	RectF getArea();
+
+
 	/* 핸들 관리 */
 	// 핸들의 좌표
 	// 핸들의 중앙 좌표를 얻음
@@ -286,7 +290,41 @@ protected:
 	const REAL HANDLESIZE = 20;				// 핸들 크기
 };
 
-typedef CList<CFigure*, CFigure*>	CFigurePtrList;
+class CFigurePtrList : public CList < CFigure*, CFigure* >
+{
+public:
+	CFigurePtrList& operator= (const CFigurePtrList& figurePtrList)
+	{
+		this->RemoveAll();
+
+		for (POSITION pos = figurePtrList.GetHeadPosition(); pos; figurePtrList.GetNext(pos)) {
+			this->AddTail(figurePtrList.GetAt(pos));
+		}
+		
+		return *this;
+	}
+
+	void draw(IN Graphics* lpGraphics) {
+		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
+			this->GetAt(pos)->draw(lpGraphics);
+		}
+	}
+
+	void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag/* = FREEMOVE*/)
+	{
+		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
+			this->GetAt(pos)->moving(lpGraphics, originPoint, targetPoint, moveFlag);
+		}
+	}
+
+	void resizing(IN Graphics* lpGraphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = FREERESIZE*/)
+	{
+		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
+			this->GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag);
+		}
+	}
+};
+
 typedef Pen*	PenPtr;
 typedef Brush*	BrushPtr;
 
@@ -333,7 +371,7 @@ typedef Brush*	BrushPtr;
 //	void setOperationMode(operationModeFlags OperationMode);
 //
 //protected:
-//	virtual void resetArea();		// 개체 선택 영역 재설정 (연산 후 호출시켜줌), 외부에서 호출 불가
+//	virtual RectF resetArea();		// 개체 선택 영역 재설정 (연산 후 호출시켜줌), 외부에서 호출 불가
 
 
 // PointF m_StartingPoint;

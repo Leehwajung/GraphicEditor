@@ -133,7 +133,7 @@ public:
 protected:
 	/** 개체 영역 관리 **/
 	// 개체 영역 갱신
-	virtual void resetArea();
+	virtual RectF resetArea();
 
 public:
 	//// LButtonDown
@@ -178,6 +178,7 @@ private:
 	PointF m_EndPoint;
 
 	REAL m_Gradient;
+
 
 	//Color m_LineColor;	// 선 색
 	//int m_LinePattern;	// 선 패턴

@@ -153,10 +153,10 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 	PointF points[count];
 	GraphicsPath path;
 	if (m_Gradient >= 0){
-		points[0] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
-		points[1] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[2] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[3] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
+	points[0] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
+	points[1] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
+	points[2] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
+	points[3] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
 	}
 	else if (m_Gradient < 0){
 		points[0] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
@@ -233,6 +233,7 @@ void CLine::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF
 
 /* 생성 그리기 */
 void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+	
 	va_list vaList;
 	va_start(vaList,param1);
 	PointF* startingPoint = (PointF*)param1;
@@ -241,6 +242,7 @@ void CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	va_end(vaList);
 
 	lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
+	
 }
 
 /* 이동 그리기 */
@@ -270,7 +272,7 @@ void CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 	getHandleRect(END, &handleRect);
 	if (handleRect.Contains(originPoint))
 		lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
-}
+	}
 
 BOOL CLine::getHandleRect(IN Position handle, OUT RectF* handleRect)
 {
@@ -315,12 +317,14 @@ BOOL CLine::getHandleRect(IN Position handle, OUT RectF* handleRect)
 
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
-void CLine::resetArea() {
+RectF CLine::resetArea() {
 
 	m_Area.X = m_StartingPoint.X;
 	m_Area.Y = m_StartingPoint.Y;
 	m_Area.Width = abs(m_StartingPoint.X - m_EndPoint.X);
 	m_Area.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
+
+	return m_Area;
 }
 
 

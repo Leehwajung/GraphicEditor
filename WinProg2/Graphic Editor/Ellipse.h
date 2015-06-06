@@ -33,7 +33,7 @@ public:
 	virtual void moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	virtual void resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 	
-	virtual void resetArea();// 개체영역 재정의
+	virtual RectF resetArea();// 개체영역 재정의
 
 protected:
 	RectF m_Rect;	// 타원이 내접할 사각형
