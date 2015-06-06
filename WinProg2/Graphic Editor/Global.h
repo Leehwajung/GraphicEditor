@@ -23,7 +23,9 @@ class CGlobal : public CObject
 {
 public:
 	static PointF CPointToPointF(const CPoint& point);
-	const static CPoint PointFToCPoint(const PointF& point);
+	static CPoint PointFToCPoint(const PointF& point);
+	static CRect RectFToCRect(const RectF& rect);
+	static RectF CRectToRectF(const CRect& rect);
 };
 
 

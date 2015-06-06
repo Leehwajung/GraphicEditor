@@ -24,7 +24,7 @@ PointF CGlobal::CPointToPointF(const CPoint& point)
 	return tmp_PointF;
 }
 
-const CPoint CGlobal::PointFToCPoint(const PointF& point)
+CPoint CGlobal::PointFToCPoint(const PointF& point)
 {
 	CPoint tmp_CPoint;
 
@@ -32,4 +32,26 @@ const CPoint CGlobal::PointFToCPoint(const PointF& point)
 	tmp_CPoint.y = (LONG) point.Y;
 
 	return tmp_CPoint;
+}
+
+CRect CGlobal::RectFToCRect(const RectF& rect)
+{
+	CRect result;
+
+	result.top = (LONG) rect.GetTop();
+	result.right = (LONG) rect.GetRight();
+	result.bottom = (LONG) rect.GetBottom();
+	result.left = (LONG) rect.GetLeft();
+
+	return result;
+}
+RectF CGlobal::CRectToRectF(const CRect& rect){
+	RectF result;
+
+	result.Height = (REAL) rect.Height();
+	result.Width = (REAL) rect.Width();
+	result.X = (REAL) rect.left;
+	result.Y = (REAL) rect.top;
+
+	return result;
 }
