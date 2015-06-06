@@ -245,7 +245,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_CurrentFigure = new CLine(&dd);
 			break;
 		case CGraphicEditorView::POLYLINE:
-			if (!m_CurrentFigure || !m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+			if (!m_CurrentFigure || ((CPolyLine*)m_CurrentFigure)->GetCreatedFlag()) {
 				m_CurrentFigure = new CPolyLine(&dd);
 			}
 			break;
@@ -377,7 +377,7 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		if (m_CurrentFigure && m_InsertFlag == CGraphicEditorView::POLYLINE) {
-			((CPolyLine*)m_CurrentFigure)->create(currPoint,CFigure::FREECREATE);
+			((CPolyLine*)m_CurrentFigure)->create(CFigure::FREECREATE);
 			clearInsertFlag();
 			//m_CurrentFigure = NULL;
 		}
