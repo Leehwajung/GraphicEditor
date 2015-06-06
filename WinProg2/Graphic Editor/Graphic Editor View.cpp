@@ -498,8 +498,24 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	CView::OnChar(nChar, nRepCnt, nFlags);
-	//캐럿이 생성되어있고, 글자입력모드라면?
+	
+	if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CText))) {
+		switch (nChar) {
+			// 백스페이스 입력시
+		case VK_BACK:
+			((CText*)m_CurrentFigure)->delChar(); // 문자삭제
+			break;
+			// 한줄 입력이므로 엔터키는 배열에 들어가지 않아도됨
+		case VK_RETURN:
+		case VK_CONTROL:
+			break;
+			// 위의 케이스를 제외한 문자저장
+		default:
+			((CText*)m_CurrentFigure)->addChar(nChar);
+		}
+		CView::OnChar(nChar, nRepCnt, nFlags);
+	}
+
 }
 
 void CGraphicEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)

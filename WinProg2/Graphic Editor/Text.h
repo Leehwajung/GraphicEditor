@@ -22,18 +22,24 @@ public:
 	CText(const CText& pCText);	//복사 생성자
 	DECLARE_SERIAL(CText)
 	virtual ~CText();	//소멸자
+	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 	virtual void Serialize(CArchive& ar);	// 직렬화
-
-
+	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
+	
+	//cf. move는 rect꺼 그대로 씀. 
+	// 재정의 해야할 부분//
+	virtual BOOL create(void* param1, ...);
+	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	//
 	// OnDraw
 	virtual void draw(IN Graphics* lpGraphics);//CpaintDC 사용
 
 	// LButtonUp / LButtonDlk
-	virtual void endCreate(PointF point);							// 생성 완료
+//	virtual void endCreate(PointF point);							// 생성 완료
 
 	//Keyboard Focus
-	virtual void OnKeyboardFocus(PointF point);	//
+//	virtual void OnKeyboardFocus(PointF point);	//
 	
 	//void getview(CView* view);
 	//static void getview(cview* view) {		// 캐럿 테스트 (테스트를 위해 static으로 선언)
@@ -42,13 +48,15 @@ public:
 	//	view->showcaret();
 	//}
 
+	// string
 	void addChar(TCHAR newchar);	// m_String에 문자 추가
-
+	void delChar();
+	//
 	CView* getView();
 	CString getString();
 	Gdiplus::Font* getFont();
 	StringFormat* getStringFormat();
-	BrushPtr getFontBrush();
+	BrushPtr getFontBrush();	//
 	Color getFontColor();			// 주 글꼴 색 획득
 	Color getFontSubcolor();		// 보조 글꼴 색 획득
 	HatchStyle getFontPattern();	// 글꼴 패턴 획득
@@ -65,23 +73,19 @@ public:
 // 특성
 private:
 	CArray <TCHAR, TCHAR> m_String;	// 문자열
-	Gdiplus::Font* m_Font;			// 문자열 정보
-	StringFormat* m_StringFormat;	// 문자열 포맷
-	BrushPtr m_FontBrush;			// 문자열 브러시
+	Gdiplus::Font* m_Font;			// 문자열 정보 글자체
+	StringFormat* m_StringFormat;	// 문자열 포맷 문자정렬 etc.
+	BrushPtr m_FontBrush;			// 문자열 브러시 문자색상
 	CView *m_View;					// 출력 대상 뷰 (캐럿 출력)
-
-	//Color m_FontColor;	// 글자색
-	//LOGFONT m_FontLog;	// 폰트에 대한 정보들 (글꼴, 크기, 굵게, 이탤릭, 밑줄, 취소선 등)
-
-	//	PointF points;
-	// 글꼴
-	//CArray <TCHAR, TCHAR> m_str;
-	//CFont m_Font;			//폰트 ()
-	//int m_FontName;	// 사용자가 선택한 폰트번호저장
-	//int m_FontSize;	// 사용자가 입력한 폰트 사이즈
-	//Color m_bkColor;	//배경색 http://shaeod.tistory.com/382
-	BOOL character_mode = FALSE;
-protected :
-	enum { NONE, HORZ, VERT, DIAG  }m_RESIZE;// 크기변경인자
+	BOOL character_mode = FALSE;	// caret
+	INT strlength;//스트링 길이
 };
+
+//Status DrawString(
+//	[in]       const WCHAR *string,
+//	[in]       INT length,
+//	[in]       const Font *font,
+//	[in, ref]  const PointF &origin,
+//	[in]       const Brush *brush
+//	);
 
