@@ -15,6 +15,7 @@ class CText : public CRectangle
 public:
 	CText();
 	CText(CView *lpView);
+	CText(IN Pen* pen, IN BrushPtr fillbrush);
 	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush);
 	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect);
 	CText(IN CView *lpView, IN Pen* pen, IN BrushPtr fillbrush, IN RectF layoutrect, IN Gdiplus::Font* font, IN StringFormat* stringformat, IN BrushPtr fontbrush);
@@ -23,11 +24,13 @@ public:
 	DECLARE_SERIAL(CText)
 	virtual ~CText();	//소멸자
 	virtual void Serialize(CArchive& ar);	// 직렬화
-	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
-
+	virtual void increasewidth();
+	virtual void decreasewidth();
 	//cf. move는 rect꺼 그대로 씀. 
 	// 재정의 해야할 부분//
-	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	
+	//BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/);
+
 	virtual BOOL create(void* param1, ...);
 
 	// OnDraw
@@ -35,7 +38,7 @@ public:
 
 
 	// m_String에 문자 추가
-	void addChar(TCHAR newchar);	
+	void addChar(TCHAR newchar);
 	// [backspace] 키 입력 시 맨 마지막 글자를 삭제한다.
 	void delChar();
 	//
@@ -65,7 +68,8 @@ private:
 	BrushPtr m_FontBrush;			// 문자열 브러시 문자색상
 	CView *m_View;					// 출력 대상 뷰 (캐럿 출력)
 	BOOL character_mode = FALSE;	// caret
-
+	SizeF rectSize;
+	POINT cur;
 };
 
 //Status DrawString(

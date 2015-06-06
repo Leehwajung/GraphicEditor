@@ -264,6 +264,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
 
 		currPoint = CGlobal::CPointToPointF(point);
@@ -286,7 +287,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				}
 				else if (m_selectedPosition == CFigure::START || m_selectedPosition == CFigure::END || m_selectedPosition == CFigure::ONHANDLE){
 					m_OperationModeFlag = RESIZE;
-				}
+			}
 				else if (m_selectedPosition == CFigure::INSIDE){
 					m_OperationModeFlag = MOVE;
 				}
@@ -323,6 +324,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			m_OperationModeFlag = CREATE;
 			break;
 		case CGraphicEditorView::STRING:
+			m_CurrentFigure = new CText(this, &dd, &ff);
+			
 			break;
 		case CGraphicEditorView::POLYGON:
 			break;
@@ -411,6 +414,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			m_OperationModeFlag = SELECTABLE;
 			break;
 		case CGraphicEditorView::STRING:
+			m_CurrentFigure->create(&m_LButtonPoint, &currPoint, CFigure::FREECREATE);
 			break;
 		case CGraphicEditorView::POLYGON:
 			break;
@@ -535,7 +539,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	//if (!m_MouseButtonFlag) {		// 비클릭 상태 마우스 움직임
 	//
 	//}
-
+	
 	//else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
 	//	if (nFlags & MK_CONTROL) {		// Ctrl 누르고 드래그
 
@@ -569,8 +573,8 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 	//	}
 	//}
-	
-}
+
+		}
 
 BOOL CGraphicEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint point)
 {
