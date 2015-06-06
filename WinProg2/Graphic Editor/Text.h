@@ -22,34 +22,21 @@ public:
 	CText(const CText& pCText);	//복사 생성자
 	DECLARE_SERIAL(CText)
 	virtual ~CText();	//소멸자
-	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
-
 	virtual void Serialize(CArchive& ar);	// 직렬화
 	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
-	
+
 	//cf. move는 rect꺼 그대로 씀. 
 	// 재정의 해야할 부분//
-	virtual BOOL create(void* param1, ...);
 	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
-	//
+	virtual BOOL create(void* param1, ...);
+
 	// OnDraw
 	virtual void draw(IN Graphics* lpGraphics);//CpaintDC 사용
 
-	// LButtonUp / LButtonDlk
-//	virtual void endCreate(PointF point);							// 생성 완료
 
-	//Keyboard Focus
-//	virtual void OnKeyboardFocus(PointF point);	//
-	
-	//void getview(CView* view);
-	//static void getview(cview* view) {		// 캐럿 테스트 (테스트를 위해 static으로 선언)
-	//	view->createsolidcaret(10, 20);
-	//	view->setcaretpos(cpoint(50, 50));
-	//	view->showcaret();
-	//}
-
-	// string
-	void addChar(TCHAR newchar);	// m_String에 문자 추가
+	// m_String에 문자 추가
+	void addChar(TCHAR newchar);	
+	// [backspace] 키 입력 시 맨 마지막 글자를 삭제한다.
 	void delChar();
 	//
 	CView* getView();
@@ -78,7 +65,7 @@ private:
 	BrushPtr m_FontBrush;			// 문자열 브러시 문자색상
 	CView *m_View;					// 출력 대상 뷰 (캐럿 출력)
 	BOOL character_mode = FALSE;	// caret
-	INT strlength;//스트링 길이
+
 };
 
 //Status DrawString(

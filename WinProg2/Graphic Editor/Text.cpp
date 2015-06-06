@@ -98,185 +98,58 @@ void CText::Serialize(CArchive& ar)
 	}
 }
 
+
+BOOL CText::create(void* param1, ...)
+{
+	va_list vaList;
+	va_start(vaList, param1);
+	PointF* startingPoint = (PointF*)param1;
+	//PointF* endingPoint = va_arg(vaList, PointF*);
+	CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	va_end(vaList);
+
+	SizeF rectSize;
+	rectSize.Width = m_Font->GetSize;
+	rectSize.Height = m_Font->GetSize;
+
+	m_Rect = RectF(*startingPoint, rectSize);
+
+	resetArea();
+
+	return FALSE;
+}
+void  CText::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag, IN PointF* anchorPoint)
+{
+
+}
+
 // 
 void CText::draw(IN Graphics* lpGraphics){
-	RectF rect;
-	CFont character;
-	//CClientDC* lpDC = getClientDC();
-	CSize size=m_Font->GetSize();
-	//// Create a string.
-	//WCHAR string[] = L"Sample Text";
-
-	//// Initialize arguments.
-	//Font myFont(L"Arial", 16);
-	//PointF origin(0.0f, 0.0f);
-	//SolidBrush blackBrush(Color(255, 0, 0, 0));
-
-	//// Draw string.
-	//graphics.DrawString(
-	//	string,
-	//	11,
-	//	&myFont,
-	//	origin,
-	//	&blackBrush);
-
-	/*lpGraphics->DrawString(m_String,
-		strlength,
-		&m_Font,
+	
+	lpGraphics->DrawString(
+		m_String.GetData(),//배열의 첫번째를 통해 wchar로 변환
+		m_String.GetSize(),
+		m_Font,
 		m_Rect,
-		&m_StringFormat,
-		m_FontBrush);*/
+		m_StringFormat,
+		m_FontBrush);
 	
 }//CpaintDC 사용
 
 
-//////////////////////////////////////////////////////////////////////
-
-// LButtonDown
-//void  CText::create(PointF startingPoint){//Shape의 외곽선생성과 동일함
-//	this->startingPoint = startingPoint;
-//
-//}				
-
-// OnMouseMove
-//void  CText::mouseMoveOperation(UINT nFlags, PointF point){// 드래그 중이어야//
-//	/* 동작분류 1. creating 모드 2. moving 모드 3. 사이즈변경모드*/
-//	
-//	operationModeFlags mode = m_OperationMode; // 오페레이션모드에 따라 동작
-//
-//	switch (mode){
-//		//1. Creating 모드//
-//	case operationModeFlags::Create:
-//		creating(nFlags, point);
-//		break;
-//		//2. moving 모드//
-//	case operationModeFlags::Move:
-//		m_View->HideCaret();
-//		moving(nFlags, point);
-//		break;
-//		//3. 사이즈변경모드 /
-//	case operationModeFlags::Resize:
-//		m_View->HideCaret();
-//		resizing(nFlags, point);
-//		break;
-//	case operationModeFlags::None:// 선택되지 않은 상태
-//		m_View->HideCaret();//캐럿숨기기
-//		break;
-//	}
-//}
-
-///// mouseMoveOperation이 호출에 사용할 함수 (생성 / 이동 / 크기 변경 판단)
-//void  CText::creating(void* param1, ...){//생성 그리기
-//	// 외곽선 그리기는 shape 함수를 이용 //
-//
-//}
-//void  CText::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){// 이동 그리기
-//	
-//	m_View->HideCaret();//캐럿숨기기
-//
-//	/*포인터가 Rect영역안에 있는지 없는지를 체크한 후, Rect 안에 클릭된다면*/
-//	::SetCursor(::LoadCursor(NULL, IDC_SIZEALL));// 4방향커서로 셋
-//	
-//	PointF startingPoint;
-//	m_Rect.GetLocation(&startingPoint);
-//	PointF RelativePoint = PointF(targetPoint - startingPoint);
-//	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
-//		
-//}		
-//
-//void  CText::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
-//	
-//	m_View->HideCaret();//캐럿숨기기
-//
-//	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
-//	CRect rect;
-//	m_View->GetClientRect(rect);
-//	::ClipCursor(rect); // 렉트 영역으로 커서 제한
-//	CRect rectHORZ(rect), rectVERT(rect);
-//	rectHORZ.DeflateRect(RESIZE_POINT, 0);
-//	rectVERT.DeflateRect(0, RESIZE_POINT);
-//	CPoint tp;
-//	tp.x = targetPoint.X;
-//	tp.y = targetPoint.Y;
-//	if (rectHORZ.PtInRect(tp)==FALSE){//CPoint 변수를 받아, 영역안에 좌표가 들어와있는 지 체크
-//		::SetCursor(::LoadCursor(NULL, IDC_SIZEWE));//west, east 커서
-//		m_RESIZE = HORZ;
-//	}
-//	else if (rectVERT.PtInRect(tp) == FALSE){
-//		::SetCursor(::LoadCursor(NULL, IDC_SIZENS));
-//		m_RESIZE = VERT;
-//	}
-//	else
-//	{
-//		m_RESIZE = NONE;
-//	}
-//	
-//	PointF startingPoint;
-//	m_Rect.GetLocation(&startingPoint);
-//	PointF RelativePoint = PointF(targetPoint - startingPoint);
-//	m_View->ClientToScreen(rect);
-//	switch (m_RESIZE){
-//	case NONE:
-//		rect.OffsetRect(RelativePoint.X, RelativePoint.Y);
-//		break;
-//	case HORZ:
-//		rect.InflateRect(RelativePoint.X, 0);
-//		break;
-//	case VERT:
-//		rect.InflateRect(0, RelativePoint.Y);
-//		break;
-//	}
-//	rect.NormalizeRect();
-//}			
-
-///////////////////////////////////////////////////////////////////////
-// LButtonUp / LButtonDlk
-// void endCreate(PointF point){}						// 생성 완료
-//void   CText::move(PointF originPoint, PointF targetPoint){// 개체 이동
-//}							
-//void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
-//
-//}			
-// LButtonUp
-//void CText::endCreate(PointF point){
-//	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
-//	CDC *pDC = m_View->GetDC();
-//	Graphics graphics(*pDC);
-//	WCHAR string;
-//	//graphics.DrawString(WCHAR * string, int length, FONT * font, POINTF &origin, BRUSH *brush);
-//
-//}
-
-//Keyboard Focus
-//void CText::OnKeyboardFocus(PointF point){
-//	//CPoint cur(startingPoint.X, startingPoint.Y);
-//	PointF startingPoint;
-//	m_Rect.GetLocation(&startingPoint);
-//	CPoint cur = CGlobal::PointFToCPoint(startingPoint);
-//
-//		m_View->CreateSolidCaret(10,20);// 캐럿 사이즈
-//		m_View->SetCaretPos(cur);
-//		m_View->ShowCaret();
-//		character_mode = TRUE; // 캐릭터 입력모드
-//}
-
-// http://lab.cliel.com/28  마우스 움직임 제한.
-
 
 // m_String에 문자 추가
 void CText::addChar(TCHAR newchar) {
-	// [backspace] 키 입력 시 맨 마지막 글자를 삭제한다.
-	if (newchar == _T('\b')) {
-		if (m_String.GetSize() > 0) {
-			m_String.RemoveAt(m_String.GetSize() - 1);
-		}
-	}
-
-	// 그 밖의 경우에는 동적 배열에 글자를 추가한다.
-	else {
-		m_String.Add(newchar);
-	}
 	
+		m_String.Add(newchar);
+	
+}
+
+// m_String에 문자 삭제
+void CText::delChar() {
+	if (m_String.GetSize() > 0) {
+		m_String.RemoveAt(m_String.GetSize() - 1);
+	}
 }
 
 // 뷰 획득
@@ -412,3 +285,135 @@ BOOL CText::setFontPattern(IN const HatchStyle fontPattern) {
 	return setBrushPattern(m_FontBrush, fontPattern);
 }
 
+
+//////////////////////////////////////////////////////////////////////
+
+// LButtonDown
+//void  CText::create(PointF startingPoint){//Shape의 외곽선생성과 동일함
+//	this->startingPoint = startingPoint;
+//
+//}				
+
+// OnMouseMove
+//void  CText::mouseMoveOperation(UINT nFlags, PointF point){// 드래그 중이어야//
+//	/* 동작분류 1. creating 모드 2. moving 모드 3. 사이즈변경모드*/
+//	
+//	operationModeFlags mode = m_OperationMode; // 오페레이션모드에 따라 동작
+//
+//	switch (mode){
+//		//1. Creating 모드//
+//	case operationModeFlags::Create:
+//		creating(nFlags, point);
+//		break;
+//		//2. moving 모드//
+//	case operationModeFlags::Move:
+//		m_View->HideCaret();
+//		moving(nFlags, point);
+//		break;
+//		//3. 사이즈변경모드 /e
+//	case operationModeFlags::Resize:
+//		m_View->HideCaret();
+//		resizing(nFlags, point);
+//		break;
+//	case operationModeFlags::None:// 선택되지 않은 상태
+//		m_View->HideCaret();//캐럿숨기기
+//		break;
+//	}
+//}
+
+///// mouseMoveOperation이 호출에 사용할 함수 (생성 / 이동 / 크기 변경 판단)
+//void  CText::creating(void* param1, ...){//생성 그리기
+//	// 외곽선 그리기는 shape 함수를 이용 //
+//
+//}
+//void  CText::moving(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){// 이동 그리기
+//	
+//	m_View->HideCaret();//캐럿숨기기
+//
+//	/*포인터가 Rect영역안에 있는지 없는지를 체크한 후, Rect 안에 클릭된다면*/
+//	::SetCursor(::LoadCursor(NULL, IDC_SIZEALL));// 4방향커서로 셋
+//	
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	PointF RelativePoint = PointF(targetPoint - startingPoint);
+//	/* 원래 좌표에서 상대 좌표만큼 연산해 이동 결과 좌표를 구한다. */
+//		
+//}		
+//
+//void  CText::resizing(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){// 크기 변경 그리기
+//	
+//	m_View->HideCaret();//캐럿숨기기
+//
+//	//일단 도형이 선택된 후, resizing 영역에 들어가면 마우스커서 교체 및 변경작업
+//	CRect rect;
+//	m_View->GetClientRect(rect);
+//	::ClipCursor(rect); // 렉트 영역으로 커서 제한
+//	CRect rectHORZ(rect), rectVERT(rect);
+//	rectHORZ.DeflateRect(RESIZE_POINT, 0);
+//	rectVERT.DeflateRect(0, RESIZE_POINT);
+//	CPoint tp;
+//	tp.x = targetPoint.X;
+//	tp.y = targetPoint.Y;
+//	if (rectHORZ.PtInRect(tp)==FALSE){//CPoint 변수를 받아, 영역안에 좌표가 들어와있는 지 체크
+//		::SetCursor(::LoadCursor(NULL, IDC_SIZEWE));//west, east 커서
+//		m_RESIZE = HORZ;
+//	}
+//	else if (rectVERT.PtInRect(tp) == FALSE){
+//		::SetCursor(::LoadCursor(NULL, IDC_SIZENS));
+//		m_RESIZE = VERT;
+//	}
+//	else
+//	{
+//		m_RESIZE = NONE;
+//	}
+//	
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	PointF RelativePoint = PointF(targetPoint - startingPoint);
+//	m_View->ClientToScreen(rect);
+//	switch (m_RESIZE){
+//	case NONE:
+//		rect.OffsetRect(RelativePoint.X, RelativePoint.Y);
+//		break;
+//	case HORZ:
+//		rect.InflateRect(RelativePoint.X, 0);
+//		break;
+//	case VERT:
+//		rect.InflateRect(0, RelativePoint.Y);
+//		break;
+//	}
+//	rect.NormalizeRect();
+//}			
+
+///////////////////////////////////////////////////////////////////////
+// LButtonUp / LButtonDlk
+// void endCreate(PointF point){}						// 생성 완료
+//void   CText::move(PointF originPoint, PointF targetPoint){// 개체 이동
+//}							
+//void   CText::resize(PointF point, int resizeFlags){// 개체 크기 변경
+//
+//}			
+// LButtonUp
+//void CText::endCreate(PointF point){
+//	OnKeyboardFocus(point); // <- 이거를 EndCReate로 옮기기.
+//	CDC *pDC = m_View->GetDC();
+//	Graphics graphics(*pDC);
+//	WCHAR string;
+//	//graphics.DrawString(WCHAR * string, int length, FONT * font, POINTF &origin, BRUSH *brush);
+//
+//}
+
+//Keyboard Focus
+//void CText::OnKeyboardFocus(PointF point){
+//	//CPoint cur(startingPoint.X, startingPoint.Y);
+//	PointF startingPoint;
+//	m_Rect.GetLocation(&startingPoint);
+//	CPoint cur = CGlobal::PointFToCPoint(startingPoint);
+//
+//		m_View->CreateSolidCaret(10,20);// 캐럿 사이즈
+//		m_View->SetCaretPos(cur);
+//		m_View->ShowCaret();
+//	
+//}
+
+// http://lab.cliel.com/28  마우스 움직임 제한.
