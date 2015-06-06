@@ -300,8 +300,22 @@ public:
 		for (POSITION pos = figurePtrList.GetHeadPosition(); pos; figurePtrList.GetNext(pos)) {
 			this->AddTail(figurePtrList.GetAt(pos));
 		}
-		
+
 		return *this;
+	}
+
+	void move(IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			this->GetAt(pos)->move(originPoint, targetPoint, moveFlag);
+		}
+	}
+
+	void resize(IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			this->GetAt(pos)->resize(selectedHandle, targetPoint, resizeFlag, anchorPoint);
+		}
 	}
 
 	void draw(IN Graphics* lpGraphics) {
@@ -310,18 +324,90 @@ public:
 		}
 	}
 
-	RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag/* = FREEMOVE*/)
+	RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE)
 	{
+		RectF drawnArea;
 		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
 			this->GetAt(pos)->moving(lpGraphics, originPoint, targetPoint, moveFlag);
+			drawnArea.Intersect(this->GetAt(pos)->getArea());
 		}
+		return drawnArea;
 	}
 
-	RectF resizing(IN Graphics* lpGraphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = FREERESIZE*/)
+	RectF resizing(IN Graphics* lpGraphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL)
 	{
+		RectF drawnArea;
 		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
-			this->GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag);
+			this->GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, anchorPoint);
+			drawnArea.Intersect(this->GetAt(pos)->getArea());
 		}
+		return drawnArea;
+	}
+
+	BOOL setOutlineColor(IN const Color& outlineColor)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setOutlineColor(outlineColor)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL setOutlineWidth(IN const REAL outlineWidth)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setOutlineWidth(outlineWidth)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL setOutlinePattern(IN const DashStyle outlinePattern)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setOutlinePattern(outlinePattern)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL setFillColor(IN const Color& fillColor)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setFillColor(fillColor)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL setFillSubcolor(IN const Color& fillSubcolor)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setFillSubcolor(fillSubcolor)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	BOOL setFillPattern(IN const HatchStyle fillPattern)
+	{
+		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+			if (this->GetAt(pos)->setFillPattern(fillPattern)) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
 	}
 };
 

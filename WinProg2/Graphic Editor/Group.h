@@ -70,8 +70,14 @@ public:
 	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 	// 삭제
-	// 개체를 삭제하고 메모리를 해제
+	// 그룹 개체와 그룹의 원소 개체들을 삭제하고 메모리를 해제
 	virtual void destroy();
+
+	// 해제
+	// 그룹을 해제하고 그룹 개체를 삭제
+	// - OUT 매개변수
+	//		CFigurePtrList& figurePtrList: 원래 그룹의 개체 리스트
+	void unGroup(OUT CFigurePtrList& figurePtrList);
 
 	// 좌표 위치 확인
 	// 점이 개체 안에 있는지 확인하고 그 위치를 반환함

@@ -183,34 +183,7 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 /* 선 그리기 */
 void CPolyLine::draw(IN Graphics* lpGraphics) {
 
-	// 순회를 하면서 PolyLine을 그려준다. 
-	//POSITION pos = m_PointsList.GetHeadPosition();
-	//while (pos != NULL){
-	//	PointF  point = m_PointsList.GetNext(pos);
-	//	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetAt(pos), point);
-	//}
-
-	//POSITION pos = m_PointsList.GetHeadPosition();	// 리스트의 처음
-	////pDC->MoveTo(m_PointsList.GetHead());			// 곡선의 첫 좌표로 이동
-	//
-	//CArray<PointF, PointF&> pointsArray;
-
-	//for (POSITION pos = m_PointsList.GetHeadPosition(); !pos ; m_PointsList.GetNext(pos)) {
-	//	pointsArray.Add(m_PointsList.GetAt(pos));
-	//}
-
-	//lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
-	//while (pos ? lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetAt(pos), m_PointsList.GetNext(pos)) : FALSE);	// 다음 좌표로 이동하며 선 그리기
-
-	// Create an array of PointF objects that define the lines to draw.
-	PointF point1(10.0f, 10.0f);
-	PointF point2(10.0f, 100.0f);
-	PointF point3(200.0f, 50.0f);
-	PointF point4(250.0f, 300.0f);
-
-	PointF points[4] = { point1, point2, point3, point4 };
-	PointF* pPoints = points;
-	////////////////////////////
+	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
 
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos ; m_PointsList.GetNext(pos)) {
@@ -218,6 +191,7 @@ void CPolyLine::draw(IN Graphics* lpGraphics) {
 	}
 
 	// Draw the lines.
+	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 }
@@ -239,45 +213,91 @@ RectF CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 
 	RectF drawnArea;
 
+	CArray<PointF, PointF&> pointsArray;
+
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
+		pointsArray.Add(m_PointsList.GetAt(pos));
+	}
+
+	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+
 	// 실제로 그리는 부분 
-	lpGraphics->DrawLine(m_OutlinePen, m_PointsList.GetTail(),*addingPoint);
+	m_OutlinePen->SetDashStyle(DashStyleCustom);
+	REAL aDash[] = { 5.0f, 5.0f };
+	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+
+	//lpGraphics->DrawLine(m_OutlinePen, m_PointsList.Get,*addingPoint);
 
 	return drawnArea;
 }
 
 /* 이동 그리기 */
 RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
-
 	RectF drawnArea;
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
 
-	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	CList <PointF, PointF&> tmp_List;
+	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
+	CArray<PointF, PointF&> pointsArray;
 
-	POSITION pos = m_PointsList.GetHeadPosition();
-	while (pos!=NULL){
-		PointF  point = m_PointsList.GetNext(pos);
-		lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
-
-		// 실제로 그리는 부분 
-		tmp_List.AddTail(point+RelativePoint);
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
+		pointsArray.Add(m_PointsList.GetAt(pos) + RelativePoint);
 	}
+
+	// Draw the lines.
+	m_OutlinePen->SetDashStyle(DashStyleCustom);
+	REAL aDash[] = { 5.0f, 5.0f };
+	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+
+	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+
+
+	///* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	//CList <PointF, PointF&> tmp_List;
+
+	//POSITION pos = m_PointsList.GetHeadPosition();
+	//while (pos!=NULL){
+	//	PointF  point = m_PointsList.GetNext(pos);
+	//	lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
+
+	//	// 실제로 그리는 부분 
+	//	tmp_List.AddTail(point+RelativePoint);
+	//}
 
 	return drawnArea;
 }
 	    
 // 개별 좌표 이동 그리기
 RectF CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
-	
+
 	RectF drawnArea;
 
-	CList <PointF, PointF&> tmp_List;
+	PointF  point;
 
+	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
+	CArray<PointF, PointF&> pointsArray;
+
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
+		point = m_PointsList.GetAt(pos);
+		
+		RectF handleRect;
+		handleRect = getHandleRect(point);
+
+		if (handleRect.Contains(originPoint)){
+			point = targetPoint;
+			pointsArray.Add(point);
+
+		}
+		else pointsArray.Add(point);
+	}
+
+	/*CList <PointF, PointF&> tmp_List;
+
+	PointF  point = m_PointsList.GetHead();
 	POSITION pos = m_PointsList.GetHeadPosition();
 	while (pos != NULL){
-		PointF  point = m_PointsList.GetNext(pos);
+		point = m_PointsList.GetNext(pos);
 
 		RectF handleRect;
 		handleRect = getHandleRect(point);
@@ -288,12 +308,16 @@ RectF CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN Poi
 
 		}
 		else tmp_List.AddTail(point);
+		*/
 
 		// 실제로 그리는 부분 
-		lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point);
-	}		
+		m_OutlinePen->SetDashStyle(DashStyleCustom);
+		REAL aDash[] = { 5.0f, 5.0f };
+		m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 
-	return drawnArea;
+		lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+
+		return drawnArea;
 }
 
 /* 크기 변경 그리기 */
@@ -330,12 +354,22 @@ RectF CPolyLine::resetArea() {
 			y_end = tmp_point.Y;
 }
 
-
-	m_Area.X = x_start;
-	m_Area.Y = y_start;
 	m_Area.Width = abs(x_start - x_end);
 	m_Area.Height = abs(y_start - y_end);
 
+	if (x_start > x_end) {
+		m_Area.X = x_end;
+	}
+	else {
+		m_Area.X = x_start;
+	}
+
+	if (y_start > y_end) {
+		m_Area.Y = y_end;
+	}
+	else {
+		m_Area.Y = y_start;
+	}
 	return m_Area;
 }
 

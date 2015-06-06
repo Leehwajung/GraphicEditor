@@ -157,11 +157,27 @@ void CGroup::resize(IN Position selectedHandle, IN PointF targetPoint, IN Resize
 }
 
 // 삭제
-// 개체를 삭제하고 메모리를 해제
+// 그룹 개체와 그룹의 원소 개체들을 삭제하고 메모리를 해제
 void CGroup::destroy()
 {
+	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
+		m_FiguresList.GetAt(pos)->~CFigure();
+	}
 
+	this->~CGroup();
 }
+
+// 해제
+// 그룹을 해제하고 그룹 개체를 삭제
+// - OUT 매개변수
+//		CFigurePtrList& figurePtrList: 원래 그룹의 개체 리스트
+void CGroup::unGroup(OUT CFigurePtrList& figurePtrList)
+{
+	figurePtrList = m_FiguresList;
+
+	this->~CGroup();
+}
+
 
 // 좌표 위치 확인
 // 점이 개체 안에 있는지 확인하고 그 위치를 반환함
@@ -172,6 +188,7 @@ void CGroup::destroy()
 CFigure::Position CGroup::pointInFigure(IN PointF point)
 {
 	RectF handleRect;
+	Position selectedPosition;
 
 	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
 
@@ -229,14 +246,7 @@ RectF CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 RectF CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	RectF drawnArea;
-
-	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
-		m_FiguresList.GetAt(pos)->moving(lpGraphics, originPoint, targetPoint, moveFlag);
-		drawnArea.Intersect(m_FiguresList.GetAt(pos)->getArea());
-	}
-
-	return drawnArea;
+	return m_FiguresList.moving(lpGraphics, originPoint, targetPoint, moveFlag);
 }
 
 // 크기 변경 그리기
@@ -249,16 +259,10 @@ RectF CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF t
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 RectF CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
-	RectF drawnArea;
 	PointF handlePoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &handlePoint);
 
-	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
-		m_FiguresList.GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, &handlePoint);
-		drawnArea.Intersect(m_FiguresList.GetAt(pos)->getArea());
-	}
-
-	return drawnArea;
+	return m_FiguresList.resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, &handlePoint);
 }
 
 
@@ -269,13 +273,7 @@ RectF CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN P
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlineColor(IN const Color& outlineColor)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setOutlineColor(outlineColor)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setOutlineColor(outlineColor);
 }
 
 // 윤곽선 두께 설정
@@ -284,13 +282,7 @@ BOOL CGroup::setOutlineColor(IN const Color& outlineColor)
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlineWidth(IN const REAL outlineWidth)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setOutlineWidth(outlineWidth)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setOutlineWidth(outlineWidth);
 }
 
 // 윤곽선 패턴 설정
@@ -299,13 +291,7 @@ BOOL CGroup::setOutlineWidth(IN const REAL outlineWidth)
 //		FALSE: 설정 성공
 BOOL CGroup::setOutlinePattern(IN const DashStyle outlinePattern)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setOutlinePattern(outlinePattern)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setOutlinePattern(outlinePattern);
 }
 
 // 주 채우기 색 설정
@@ -314,13 +300,7 @@ BOOL CGroup::setOutlinePattern(IN const DashStyle outlinePattern)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillColor(IN const Color& fillColor)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setFillColor(fillColor)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setFillColor(fillColor);
 }
 
 // 보조 채우기 색 설정
@@ -329,13 +309,7 @@ BOOL CGroup::setFillColor(IN const Color& fillColor)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillSubcolor(IN const Color& fillSubcolor)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setFillSubcolor(fillSubcolor)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setFillSubcolor(fillSubcolor);
 }
 
 // 채우기 패턴 설정
@@ -344,11 +318,5 @@ BOOL CGroup::setFillSubcolor(IN const Color& fillSubcolor)
 //		FALSE: 설정 성공
 BOOL CGroup::setFillPattern(IN const HatchStyle fillPattern)
 {
-	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		if (m_FiguresList.GetAt(pos)->setFillPattern(fillPattern)) {
-			return TRUE;
-		}
-	}
-
-	return FALSE;
+	return m_FiguresList.setFillPattern(fillPattern);
 }

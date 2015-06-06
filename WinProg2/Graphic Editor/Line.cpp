@@ -85,7 +85,6 @@ BOOL CLine::create(void* param1, ...) {
 
 /* 개체 이동 */
 void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
-
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
 
@@ -220,6 +219,7 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 // OnDraw
 /* 선 그리기 */
 void CLine::draw(IN Graphics* lpGraphics) {
+	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, m_EndPoint);
 }
 
@@ -243,8 +243,25 @@ RectF CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+
+	drawnArea.Width = abs(startingPoint->X - targetPoint->X);
+	drawnArea.Height = abs(startingPoint->Y - targetPoint->Y);
+
+	if (startingPoint->X > targetPoint->X) {
+		drawnArea.X = targetPoint->X;
+	}
+	else {
+		drawnArea.X = startingPoint->X;
+	}
+
+	if (startingPoint->Y > targetPoint->Y) {
+		drawnArea.Y = targetPoint->Y;
+	}
+	else {
+		drawnArea.Y = startingPoint->Y;
+	}
+
 	lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
-	
 	return drawnArea;
 }
 
@@ -257,7 +274,15 @@ RectF CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF ta
 	PointF RelativePoint = targetPoint - originPoint;
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
+	m_OutlinePen->SetDashStyle(DashStyleCustom);
+	REAL aDash[] = { 5.0f, 5.0f };
+	m_OutlinePen->SetDashPattern(aDash,sizeof(aDash)/sizeof(aDash[0]));
 	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
+
+	//drawnArea.X = (m_StartingPoint + RelativePoint).X;
+	//drawnArea.Y = (m_StartingPoint + RelativePoint).Y;
+	//drawnArea.Width = abs(m_StartingPoint.X - m_EndPoint.X);
+	//drawnArea.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
 
 	return drawnArea;
 }
@@ -277,6 +302,10 @@ RectF CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN Poin
 	RectF drawnArea;
 
 	RectF handleRect;
+
+	m_OutlinePen->SetDashStyle(DashStyleCustom);
+	REAL aDash[] = { 5.0f, 5.0f };
+	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 
 	getHandleRect(START, &handleRect);
 	if (handleRect.Contains(originPoint))
@@ -334,10 +363,22 @@ BOOL CLine::getHandleRect(IN Position handle, OUT RectF* handleRect)
 /* 개체 영역 갱신 */
 RectF CLine::resetArea() {
 
-	m_Area.X = m_StartingPoint.X;
-	m_Area.Y = m_StartingPoint.Y;
 	m_Area.Width = abs(m_StartingPoint.X - m_EndPoint.X);
 	m_Area.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
+
+	if (m_StartingPoint.X > m_EndPoint.X) {
+		m_Area.X = m_EndPoint.X;
+	}
+	else {
+		m_Area.X = m_StartingPoint.X;
+	}
+
+	if (m_StartingPoint.Y > m_EndPoint.Y) {
+		m_Area.Y = m_EndPoint.Y;
+	}
+	else {
+		m_Area.Y = m_StartingPoint.Y;
+	}
 
 	return m_Area;
 }
