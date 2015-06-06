@@ -29,8 +29,29 @@ public:
 	// - 반환 값 (BOOL)
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
+	BOOL create(CFigurePtrList& figurePtrList);
+
+	// 생성
+	// 매개변수의 값을 기준으로 새로운 개체를 정의
+	// - IN 매개변수
+	//		int count: 가변길이로 넣을 개체 포인터의 개수
+	//		CFigure* figure1, ...: 개체 포인터의 가변 길이 리스트
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
+	BOOL create(int count, CFigure* figure1, ...);
+
+private:
+	// 생성
+	// 매개변수의 값을 기준으로 새로운 개체를 정의
+	// - IN 매개변수
+	//		void* param1, ...: int*(count), CFigure*(figure1), CFigure*(...) 순으로 입력
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
 	virtual BOOL create(void* param1, ...);
 
+public:
 	// 이동
 	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
 	// - IN 매개변수

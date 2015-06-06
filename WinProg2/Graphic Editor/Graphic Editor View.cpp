@@ -25,7 +25,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-#include "Text.h"
+//#include "Text.h"
 
 // CGraphicEditorView
 
@@ -251,6 +251,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		case CGraphicEditorView::CURVE:
 			break;
 		case CGraphicEditorView::ELLIPSE:
+			m_CurrentFigure = new CEllipse(&dd, &ff);
 			break;
 		case CGraphicEditorView::RECTANGLE:
 			m_CurrentFigure = new CRectangle(&dd, &ff);

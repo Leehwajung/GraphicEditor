@@ -45,7 +45,14 @@
 
 
 
-
+//#include "Figure.h"
+//#include "Strap.h"
+#include "Line.h"
+#include "PolyLine.h"
+//#include "Shape.h"
+#include "Ellipse.h"
+//#include "Rectangle.h"
+#include "Text.h"
 
 
 

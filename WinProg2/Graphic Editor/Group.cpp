@@ -45,8 +45,51 @@ void CGroup::Serialize(CArchive& ar)
 // - 반환 값 (BOOL)
 //		TRUE: 생성 실패
 //		FALSE: 생성 성공
+BOOL CGroup::create(CFigurePtrList& figurePtrList)
+{
+	m_FiguresList = figurePtrList;
+
+	return FALSE;
+}
+
+// 생성
+// 매개변수의 값을 기준으로 새로운 개체를 정의
+// - IN 매개변수
+//		int count: 가변길이로 넣을 개체 포인터의 개수
+//		CFigure* figure1, ...: 개체 포인터의 가변 길이 리스트
+// - 반환 값 (BOOL)
+//		TRUE: 생성 실패
+//		FALSE: 생성 성공
+BOOL CGroup::create(int count, CFigure* figure1, ...)
+{
+	create(&count, figure1, ...);
+}
+
+// 생성
+// 매개변수의 값을 기준으로 새로운 개체를 정의
+// - IN 매개변수
+//		void* param1, ...: int*(count), CFigure*(figure1), CFigure*(...) 순으로 입력
+// - 반환 값 (BOOL)
+//		TRUE: 생성 실패
+//		FALSE: 생성 성공
 BOOL CGroup::create(void* param1, ...)
 {
+	va_list vaList;
+	va_start(vaList, param1);
+	int count = *(int*)param1;
+	CFigure* figure;
+
+	m_FiguresList.RemoveAll();
+	for (int i = 0; i < count; i++) {
+		figure = va_arg(vaList, CFigure*);
+		if (!figure) {
+			return TRUE;
+		}
+		m_FiguresList.AddTail(figure);
+	}
+
+	va_end(vaList);
+
 	return FALSE;	// 임시 반환값
 }
 

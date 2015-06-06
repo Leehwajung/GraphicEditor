@@ -15,10 +15,6 @@ using namespace Gdiplus;
 
 // CFigure 명령 대상입니다.
 
-typedef Pen*	PenPtr;
-typedef Brush*	BrushPtr;
-
-
 class CFigure : public CObject
 {
 // 자료형
@@ -289,8 +285,10 @@ protected:
 	RectF m_Area;							// 개체 영역 (사각형)
 	const REAL HANDLESIZE = 20;				// 핸들 크기
 };
-typedef CList<CFigure*, CFigure*>	CFigurePtrList;
 
+typedef CList<CFigure*, CFigure*>	CFigurePtrList;
+typedef Pen*	PenPtr;
+typedef Brush*	BrushPtr;
 
 //	// LButtonDown
 //	virtual void create(void* param1, ...);					// 개체 생성
