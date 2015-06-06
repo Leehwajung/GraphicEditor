@@ -216,7 +216,10 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			if (m_CurrentFigure) {	// 개체가 선택된 경우
 				m_selectedPosition = m_CurrentFigure->pointInFigure(currPoint);
 				if (m_selectedPosition == CFigure::OUTSIDE) {
+					if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CText))) // carret 숨기는함수
+						HideCaret();
 					m_CurrentFigure = NULL;
+					
 				}
 			}
 			else {					// 개체가 선택되지 않은 경우
