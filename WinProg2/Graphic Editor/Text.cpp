@@ -327,6 +327,24 @@ BOOL CText::setFontPattern(IN const HatchStyle fontPattern) {
 	return setBrushPattern(m_FontBrush, fontPattern);
 }
 
+CFigure::Position CRectangle::pointInFigure(IN PointF point)
+{
+	RectF handleRect;
+
+	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+
+		getHandleRect((Position)handleIndex, &handleRect);
+		if (handleRect.Contains(point)) {
+			return (Position)handleIndex;
+		}
+	}
+
+	if (m_Rect.Contains(point)) {
+		return INSIDE;
+	}
+
+	return OUTSIDE;
+}
 
 //////////////////////////////////////////////////////////////////////
 
