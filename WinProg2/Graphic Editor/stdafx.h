@@ -49,6 +49,7 @@
 //#include "Strap.h"
 #include "Line.h"
 #include "PolyLine.h"
+#include "Pencil.h"
 //#include "Shape.h"
 #include "Ellipse.h"
 //#include "Rectangle.h"

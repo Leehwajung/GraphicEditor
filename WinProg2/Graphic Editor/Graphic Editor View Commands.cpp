@@ -144,6 +144,7 @@ void CGraphicEditorView::OnInsertPencil()
 {
 	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = PENCIL;			// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 

@@ -200,6 +200,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 			((CPolyLine*)m_CurrentFigures.GetHead())->draw(graphics);
 			/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CurrentFigures.GetHead())->creating(graphics, m_CurrPoint);
 		}
+
 	}
 
 	else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
@@ -225,8 +226,16 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 					//	break;
 
 					case CGraphicEditorView::LINE:
+						m_CurrentFigures.GetHead()->creating(graphics, &m_LButtonPoint, &m_CurrPoint);
+						break;
 					//case CGraphicEditorView::POLYLINE:
 					case CGraphicEditorView::PENCIL:
+						if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
+							&& m_InsertFlag == PENCIL && m_PolyCreatableFlag == FALSE) {
+							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
+							((CPencil*)m_CurrentFigures.GetHead())->draw(graphics);
+						}
+						break;
 					case CGraphicEditorView::CURVE:
 						/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(graphics, &m_LButtonPoint, &m_CurrPoint);
 						break;
@@ -378,7 +387,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		switch (m_InsertFlag)
 		{
-		/* 비 CREATE 상태 */
+			/* 비 CREATE 상태 */
 		case CGraphicEditorView::NONE: {
 			if (getOperationModeFlag() == SELECTED) {	// 개체가 선택된 경우
 				m_selectedPosition = m_CurrentFigures.pointInFigure(m_CurrPoint);
@@ -387,7 +396,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 						HideCaret();
 					m_CurrentFigures.RemoveAll();		// SELECTABLE 상태로 전환
 				}
-					}
+			}
 			else {										// 개체가 선택되지 않은 경우
 				m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);		// 전체 개체 리스트(그룹)을 순차로 순회
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
@@ -396,7 +405,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 
-		/* CREATE 상태 */
+			/* CREATE 상태 */
 		case CGraphicEditorView::LINE:
 			preInsert();								// 이전 선택 개체 제거
 			m_CurrentFigures.AddTail(new CLine(&dd));	// 새로운 생성 개체 선택
@@ -421,6 +430,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 
 		case CGraphicEditorView::PENCIL:
+			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+				preInsert();									// 이전 선택 개체 제거
+				m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
+				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+		}
 			break;
 
 		case CGraphicEditorView::CURVE:
@@ -518,6 +532,9 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			break;
 
 		case CGraphicEditorView::PENCIL:
+			((CPencil*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+			m_PolyCreatableFlag = TRUE;
+			postInsert();
 			break;
 
 		case CGraphicEditorView::CURVE:

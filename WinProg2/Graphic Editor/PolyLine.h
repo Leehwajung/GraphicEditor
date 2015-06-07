@@ -140,7 +140,7 @@ public:
 	CList <PointF, PointF&>& GetPointsList();
 	//BOOL GetCreatedFlag();
 
-private:
+protected:
 
 	CList <PointF, PointF&> m_PointsList;
 
