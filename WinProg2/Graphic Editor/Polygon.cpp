@@ -11,7 +11,10 @@ IMPLEMENT_SERIAL(CPolygon, CFigure, 1)
 CPolygon::CPolygon()
 {
 }
-
+CPolygon::CPolygon(IN Pen* pen, IN BrushPtr brush)
+	: CShape(pen, brush)
+{
+}
 CPolygon::~CPolygon()
 {
 }

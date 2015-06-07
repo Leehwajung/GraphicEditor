@@ -12,7 +12,9 @@ class CPolygon : public CShape
 public:
 	CPolygon();
 	virtual ~CPolygon();
+	CPolygon(IN Pen* pen, IN BrushPtr brush);
 	DECLARE_SERIAL(CPolygon)
+	
 
 	virtual void Serialize(CArchive& ar);
 

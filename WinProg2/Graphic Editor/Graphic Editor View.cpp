@@ -442,6 +442,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 
 		case CGraphicEditorView::POLYGON:
+			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+				preInsert();									// 이전 선택 개체 제거
+				m_CurrentFigures.AddTail(new CPolygon(&dd, &ff));	// 객체 생성
+				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+			}
 			break;
 
 		case CGraphicEditorView::CLOSEDCURVE:
@@ -573,6 +578,14 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			postInsert();
 			//clearInsertFlag();
 		}
+
+		if (m_InsertFlag == CGraphicEditorView::POLYGON/* && m_CurrentFigures.hasOneFigure()*/) {
+			((CPolygon*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+			m_PolyCreatableFlag = TRUE;
+			postInsert();
+			//clearInsertFlag();
+		}
+
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
