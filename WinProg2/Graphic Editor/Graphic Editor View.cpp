@@ -286,6 +286,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			if (m_CurrentFigure) {	// 개체가 선택된 경우
 				m_selectedPosition = m_CurrentFigure->pointInFigure(currPoint);
 				if (m_selectedPosition == CFigure::OUTSIDE) {
+					if (m_CurrentFigure->IsKindOf(RUNTIME_CLASS(CText)))
+						HideCaret();
 					m_CurrentFigure = NULL;
 				}
 				//else if (m_selectedPosition == CFigure::INSIDE && m_OperationModeFlag == SELECTABLE){
