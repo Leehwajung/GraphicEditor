@@ -34,6 +34,17 @@ CPoint CGlobal::PointFToCPoint(const PointF& point)
 	return tmp_CPoint;
 }
 
+RectF CGlobal::CRectToRectF(const CRect& rect){
+	RectF result;
+
+	result.Height = (REAL)rect.Height();
+	result.Width = (REAL)rect.Width();
+	result.X = (REAL)rect.left;
+	result.Y = (REAL)rect.top;
+
+	return result;
+}
+
 CRect CGlobal::RectFToCRect(const RectF& rect)
 {
 	CRect result;
@@ -45,13 +56,47 @@ CRect CGlobal::RectFToCRect(const RectF& rect)
 
 	return result;
 }
-RectF CGlobal::CRectToRectF(const CRect& rect){
-	RectF result;
 
-	result.Height = (REAL) rect.Height();
-	result.Width = (REAL) rect.Width();
-	result.X = (REAL) rect.left;
-	result.Y = (REAL) rect.top;
 
-	return result;
+Pen* CGlobal::crateIngPen(IN const Pen* originalPen)
+{
+	clearIngPen();
+
+	m_BufPen = originalPen->Clone();
+	m_BufPen->SetDashStyle(DashStyleCustom);
+	REAL aDash[] = { 5.0f, 5.0f };
+	m_BufPen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+
+	return m_BufPen;
+}
+
+Pen* CGlobal::getIngPen()
+{
+	return m_BufPen;
+}
+
+void CGlobal::clearIngPen()
+{
+	if (m_BufPen) {
+		m_BufPen->~Pen();
+	}
+}
+
+Brush* CGlobal::crateIngBrush(IN const Brush* originalBrush)
+{
+	clearIngBrush();
+
+	return NULL;
+}
+
+Brush* CGlobal::getIngBrush()
+{
+	return m_BufBrush;
+}
+
+void CGlobal::clearIngBrush()
+{
+	if (m_BufBrush) {
+		m_BufBrush->~Brush();
+	}
 }

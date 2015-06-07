@@ -212,6 +212,15 @@ CFigure::Position CFigure::getOppositeHandle(IN Position handle){
 }
 
 
+/** 그리기 **/
+// 선택 개체 그리기
+void CFigure::drawSelect(IN Graphics& graphics)
+{
+	draw(graphics);
+	drawHandles(graphics);
+}
+
+
 /** 개체 영역 관리 **/
 // 개체 영역 그리기
 // - IN 매개변수

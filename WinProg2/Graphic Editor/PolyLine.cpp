@@ -14,12 +14,13 @@ IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
 CPolyLine::CPolyLine()
 :CStrap()//, m_CreatedFlag(FALSE)
 {
+
 }
 
 CPolyLine::CPolyLine(IN Pen* pen)
 : CStrap(pen)//, m_CreatedFlag(FALSE)
 {
-
+	
 }
 
 CPolyLine::~CPolyLine()
@@ -192,7 +193,6 @@ void CPolyLine::draw(IN Graphics& graphics) {
 	}
 
 	// Draw the lines.
-	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 }
@@ -215,11 +215,8 @@ RectF CPolyLine::creating(IN Graphics& graphics, void* param1, ...) {
 	RectF drawnArea;
 
 	// 실제로 그리는 부분 
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 		
-	graphics.DrawLine(m_OutlinePen, m_PointsList.GetTail(), *addingPoint);
+	graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), m_PointsList.GetTail(), *addingPoint);
 
 	return drawnArea;
 }
@@ -239,11 +236,7 @@ RectF CPolyLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 	}
 
 	// Draw the lines.
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
-
-	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
 
 	///* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
@@ -303,22 +296,17 @@ RectF CPolyLine::pointMoving(Graphics& graphics, IN PointF originPoint, IN Point
 		else tmp_List.AddTail(point);
 		*/
 
-		// 실제로 그리는 부분 
-		m_OutlinePen->SetDashStyle(DashStyleCustom);
-		REAL aDash[] = { 5.0f, 5.0f };
-		m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
-		graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
-
-		return drawnArea;
+	return drawnArea;
 }
 
 /* 크기 변경 그리기 */
 RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 	RectF drawnArea;
 
-
-
+	// 그리기 용 펜은 이 펜을 하용하도록: CGlobal::crateIngPen(m_OutlinePen)
+	
 	return drawnArea;
 }
 

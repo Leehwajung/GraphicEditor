@@ -22,10 +22,19 @@ using namespace Gdiplus;
 class CGlobal : public CObject
 {
 public:
-	static PointF CPointToPointF(const CPoint& point);
-	static CPoint PointFToCPoint(const PointF& point);
-	static CRect RectFToCRect(const RectF& rect);
-	static RectF CRectToRectF(const CRect& rect);
+	static PointF CPointToPointF(IN const CPoint& point);
+	static CPoint PointFToCPoint(IN const PointF& point);
+	static RectF CRectToRectF(IN const CRect& rect);
+	static CRect RectFToCRect(IN const RectF& rect);
+
+	static Pen* crateIngPen(IN const Pen* originalPen);
+	static Pen* getIngPen();
+	static void clearIngPen();
+	
+	static Brush* crateIngBrush(IN const Brush* originalBrush);
+	static Brush* getIngBrush();
+	static void clearIngBrush();
 };
 
-
+static Pen* m_BufPen;
+static Brush* m_BufBrush;
