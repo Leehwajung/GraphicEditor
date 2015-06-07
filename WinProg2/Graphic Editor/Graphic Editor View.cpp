@@ -204,6 +204,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 			((CPolyLine*)m_CurrentFigures.GetHead())->draw(graphics);
 			/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CurrentFigures.GetHead())->creating(graphics, m_CurrPoint);
 		}
+
 	}
 
 	else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
@@ -229,8 +230,16 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 					//	break;
 
 					case CGraphicEditorView::LINE:
+						m_CurrentFigures.GetHead()->creating(graphics, &m_LButtonPoint, &m_CurrPoint);
+						break;
 					//case CGraphicEditorView::POLYLINE:
 					case CGraphicEditorView::PENCIL:
+						if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
+							&& m_InsertFlag == PENCIL && m_PolyCreatableFlag == FALSE) {
+							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
+							((CPencil*)m_CurrentFigures.GetHead())->draw(graphics);
+						}
+						break;
 					case CGraphicEditorView::CURVE:
 						/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(graphics, &m_LButtonPoint, &m_CurrPoint);
 						break;
@@ -425,6 +434,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::PENCIL:
+			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+				preInsert();									// 이전 선택 개체 제거
+				m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
+				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+		}
 					break;
 
 				case CGraphicEditorView::CURVE:
@@ -505,6 +519,9 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::PENCIL:
+			((CPencil*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+			m_PolyCreatableFlag = TRUE;
+			postInsert();
 					break;
 
 				case CGraphicEditorView::CURVE:

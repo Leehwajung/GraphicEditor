@@ -171,14 +171,10 @@ protected:
 	Position getOppositeHandle(IN Position handle);
 
 
-
 /** 그리기 **/
 public:
 	// 개체 그리기 (순수 가상)
 	virtual void draw(IN Graphics& graphics);
-
-	// 선택 개체 그리기
-	void drawSelect(IN Graphics& graphics);
 
 	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
@@ -210,7 +206,7 @@ public:
 	// 개체 영역 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
-	void drawArea(IN Graphics& graphics);
+	virtual void drawArea(IN Graphics& graphics);
 
 protected:
 	// 개체 핸들 그리기
@@ -222,7 +218,6 @@ protected:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL drawHandle(IN Graphics& graphics, IN PointF handlePoint);
 
-private:
 	// 개체 핸들 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -232,7 +227,6 @@ private:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL drawHandle(IN Graphics& graphics, IN Position handle);
 
-protected:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -240,7 +234,6 @@ protected:
 	//		count: 배열의 크기
 	void drawHandles(IN Graphics& graphics, IN PointF* handlePoints, IN INT count);
 
-public:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics

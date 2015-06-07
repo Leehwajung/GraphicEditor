@@ -92,6 +92,7 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_EndPoint = m_EndPoint + RelativePoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 // 개별 좌표 이동
@@ -108,6 +109,7 @@ void CLine::pointMove(IN PointF originPoint, IN PointF targetPoint)
 		m_EndPoint = targetPoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
@@ -398,7 +400,10 @@ RectF CLine::resetArea() {
 	return m_Area;
 }
 
-
+void CLine::drawArea(IN Graphics& graphics) {
+	drawHandle(graphics, START);
+	drawHandle(graphics, END);
+}
 
 
 // 속성에 관한 부분은 Property class를 이용하기로 했음

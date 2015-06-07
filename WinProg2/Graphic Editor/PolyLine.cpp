@@ -310,6 +310,18 @@ RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN 
 	return drawnArea;
 }
 
+/* 영역 (핸들) 그리기 */
+void CPolyLine::drawArea(IN Graphics& graphics) {
+	
+	CArray <PointF, PointF&> pointsArray;
+
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
+		pointsArray.Add(m_PointsList.GetAt(pos));
+	}
+
+	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
+}
+
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
 RectF CPolyLine::resetArea() {
