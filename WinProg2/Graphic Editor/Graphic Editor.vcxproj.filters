@@ -109,6 +109,18 @@
     <ClInclude Include="FigurePtrList.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>헤더 파일\Figure\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Pencil.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
+    <ClInclude Include="Curve.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
+    <ClInclude Include="Sine.h">
+      <Filter>헤더 파일\Figure\Strap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -170,6 +182,18 @@
     </ClCompile>
     <ClCompile Include="FigurePtrList.cpp">
       <Filter>소스 파일\Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="Pencil.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
+    <ClCompile Include="Polygon.cpp">
+      <Filter>소스 파일\Figure\Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Curve.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
+    <ClCompile Include="Sine.cpp">
+      <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
