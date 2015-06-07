@@ -38,7 +38,7 @@ public:
 	//		FALSE: 생성 성공
 	BOOL create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag = FREECREATE);
 
-private:
+protected:
 	// 생성
 	// 시작 좌표와 끝 좌표를 기준으로 사각형을 생성함
 	// - IN 매개변수

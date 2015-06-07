@@ -7,6 +7,8 @@
 #include "Curve.h"
 
 
+IMPLEMENT_SERIAL(CCurve, CPolyLine, 1)
+
 // CCurve
 
 CCurve::CCurve()
@@ -19,3 +21,14 @@ CCurve::~CCurve()
 
 
 // CCurve ¸â¹ö ÇÔ¼ö
+
+
+void CCurve::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}

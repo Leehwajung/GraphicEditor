@@ -92,6 +92,7 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_EndPoint = m_EndPoint + RelativePoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 // 개별 좌표 이동
@@ -108,11 +109,31 @@ void CLine::pointMove(IN PointF originPoint, IN PointF targetPoint)
 		m_EndPoint = targetPoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
 void CLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	
+	PointF startingPoint;
+	PointF fixedPoint;
 
+	switch (selectedHandle)
+	{
+	case CFigure::START:
+		m_StartingPoint = targetPoint;
+	case CFigure::END:
+		m_EndPoint = targetPoint;
+		break;
+	default:
+		// 잘못된 selectedHandle
+		// 아무 동작을 하지 않음
+		return;
+	}
+
+	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+
+	resetArea();
 }
 
 // Menu Item
@@ -286,10 +307,10 @@ RectF CLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targ
 /* 크기 변경 그리기 */
 RectF CLine::resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 	RectF drawnArea;
+	PointF fixedPoint;
+	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
 
-
-
-	return drawnArea;
+	return pointMoving(graphics, fixedPoint, targetPoint);
 }
 
 /* 개별 좌표 이동 그리기 */
@@ -379,7 +400,10 @@ RectF CLine::resetArea() {
 	return m_Area;
 }
 
-
+void CLine::drawArea(IN Graphics& graphics) {
+	drawHandle(graphics, START);
+	drawHandle(graphics, END);
+}
 
 
 // 속성에 관한 부분은 Property class를 이용하기로 했음

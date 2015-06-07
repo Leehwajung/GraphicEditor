@@ -121,6 +121,9 @@ public:
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 	virtual RectF resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
+	// 핸들 그리기
+	virtual void drawArea(IN Graphics& graphics);
+
 	// 개별 좌표 이동
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
 

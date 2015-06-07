@@ -129,6 +129,7 @@ public:
 	// 개별 좌표 이동 그리기
 	virtual RectF pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint);
 
+	virtual void drawArea(IN Graphics& graphics);
 
 protected:
 	/** 개체 영역 관리 **/

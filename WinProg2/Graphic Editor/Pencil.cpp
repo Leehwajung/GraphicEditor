@@ -7,8 +7,9 @@
 #include "Pencil.h"
 
 
+IMPLEMENT_SERIAL(CPencil, CPolyLine, 1)
+
 // CPencil
-IMPLEMENT_SERIAL(CPencil, CStrap, 1)
 
 CPencil::CPencil()
 :CPolyLine()//, m_CreatedFlag(FALSE)
