@@ -83,9 +83,9 @@ CFigure::Position CFigurePtrList::pointInFigure(IN PointF point)
 		else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
 			return ((CPolyLine*)this->GetHead())->pointInFigure(point);
 		}
-		//else {
-		//	return this->GetHead()->pointInFigure(point);
-		//}
+		else {
+			return this->GetHead()->pointInFigure(point);
+		}
 	}
 
 	CFigure::Position figPosition;
@@ -136,6 +136,28 @@ void CFigurePtrList::draw(IN Graphics& graphics)
 {
 	for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
 		this->GetAt(pos)->draw(graphics);
+	}
+}
+
+void CFigurePtrList::drawArea(IN Graphics& graphics)
+{
+	if (this->hasOneFigure()) {
+		if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CShape))) {
+			return ((CShape*)this->GetHead())->drawArea(graphics);
+		}
+		//else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CLine))) {
+		//	return ((CLine*)this->GetHead())->drawHandles(graphics);
+		//}
+		//else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		//	return ((CPolyLine*)this->GetHead())->drawHandles(graphics);
+		//}
+		else {
+			return this->GetHead()->drawArea(graphics);
+		}
+	}
+
+	for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
+		this->GetAt(pos)->drawArea(graphics);
 	}
 }
 

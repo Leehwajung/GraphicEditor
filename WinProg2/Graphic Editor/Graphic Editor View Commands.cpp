@@ -144,6 +144,7 @@ void CGraphicEditorView::OnInsertPencil()
 {
 	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = PENCIL;			// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -271,6 +272,15 @@ void CGraphicEditorView::OnArrangeGroup()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	//GetDocument()->m_FiguresList.AddHead(new CGroup(m_CurrentFigures));
+
+	//for (POSITION pos = figurelist->GetTailPosition(); pos; figurelist->GetPrev(pos)) {
+	//	m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
+	//}
+
+	//m_CurrentFigures.RemoveAll();
+	//m_CurrentFigures.AddTail(GetDocument()->m_FiguresList.GetHead());
 }
 
 void CGraphicEditorView::OnUpdateArrangeGroup(CCmdUI *pCmdUI)
@@ -282,6 +292,17 @@ void CGraphicEditorView::OnArrangeUngroup()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	for (POSITION pos = m_CurrentFigures.GetHeadPosition(); pos; m_CurrentFigures.GetNext(pos)) {
+		if (m_CurrentFigures.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CGroup))) {
+			CFigurePtrList* figurelist = &((CGroup*)m_CurrentFigures.GetAt(pos))->getFiguresList();
+
+			for (POSITION subpos = figurelist->GetTailPosition(); subpos; figurelist->GetPrev(subpos)) {
+				m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
+			}
+			
+		}
+	}
 }
 
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)

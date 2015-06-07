@@ -92,6 +92,7 @@ void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_EndPoint = m_EndPoint + RelativePoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 // 개별 좌표 이동
@@ -108,6 +109,7 @@ void CLine::pointMove(IN PointF originPoint, IN PointF targetPoint)
 		m_EndPoint = targetPoint;
 
 	m_Gradient = (m_StartingPoint.X == m_EndPoint.X) ? INFINITE : (m_StartingPoint.Y - m_EndPoint.Y) / (m_StartingPoint.X - m_EndPoint.X);
+	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
@@ -165,23 +167,23 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 	const int count = 4;
 
 
-	REAL tmp_seta = atan(-1 / m_Gradient);
-	REAL seta = 90 - tmp_seta;
+	REAL tmp_theta = atan(-1 / m_Gradient);
+	REAL theta = 90 - tmp_theta;
 
 	PointF points[count];
 	GraphicsPath path;
 	int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 	if (m_Gradient >= 0){
-	points[0] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
-	points[1] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
-	points[2] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
-	points[3] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
+		points[0] = PointF(m_StartingPoint.X + width / 2 * cos(theta), m_StartingPoint.Y + width / 2 * sin(theta));
+		points[1] = PointF(m_StartingPoint.X - width / 2 * cos(theta), m_StartingPoint.Y - width / 2 * sin(theta));
+		points[2] = PointF(m_EndPoint.X - width / 2 * cos(theta), m_EndPoint.Y - width / 2 * sin(theta));
+		points[3] = PointF(m_EndPoint.X + width / 2 * cos(theta), m_EndPoint.Y + width / 2 * sin(theta));
 	}
 	else if (m_Gradient < 0){
-		points[0] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
-		points[1] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
-		points[2] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
-		points[3] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
+		points[0] = PointF(m_StartingPoint.X - width / 2 * cos(theta), m_StartingPoint.Y + width / 2 * sin(theta));
+		points[1] = PointF(m_StartingPoint.X + width / 2 * cos(theta), m_StartingPoint.Y - width / 2 * sin(theta));
+		points[2] = PointF(m_EndPoint.X + width / 2 * cos(theta), m_EndPoint.Y - width / 2 * sin(theta));
+		points[3] = PointF(m_EndPoint.X - width / 2 * cos(theta), m_EndPoint.Y + width / 2 * sin(theta));
 	}
     path.AddPolygon(points, count);
 	Region rgn(&path);
@@ -398,7 +400,14 @@ RectF CLine::resetArea() {
 	return m_Area;
 }
 
+void CLine::drawArea(IN Graphics& graphics) {
+	Pen pen(Color::Gray);
+	pen.SetDashStyle(DashStyleDot);
+	graphics.DrawLine(&pen, m_StartingPoint, m_EndPoint);
 
+	drawHandle(graphics, m_StartingPoint);
+	drawHandle(graphics, m_EndPoint);
+}
 
 
 // 속성에 관한 부분은 Property class를 이용하기로 했음

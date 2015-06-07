@@ -226,12 +226,10 @@ RectF  CEllipse::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 	 RectF drawnArea;
 
 	 RectF rect = m_Rect;
+	 PointF offset;
 	 if (moveFlag == FREEMOVE)//자유이동 case일 때
 	 {
-		 PointF offset = targetPoint - originPoint;
-		 rect.Offset(offset);
-		 graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-		 graphics.DrawEllipse(m_OutlinePen, rect);
+		 offset = targetPoint - originPoint;
 	 }
 	 else//!=FREEMOVE인 case
 	 {
@@ -240,24 +238,19 @@ RectF  CEllipse::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 		 ratio.Y = rect.GetTop();
 		 // 좌우 이동
 		 if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
-			 PointF offset;
 			 offset.X = targetPoint.X - originPoint.X;
 			 offset.Y = originPoint.Y;
-			 rect.Offset(offset);
-			 graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			 graphics.DrawEllipse(m_OutlinePen, rect);
 		 }
 		 else// 상하이동
 		 {
-
-			 PointF offset;
 			 offset.X = originPoint.X;
 			 offset.Y = targetPoint.Y - originPoint.Y;
-			 rect.Offset(offset);
-			 graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			 graphics.DrawEllipse(m_OutlinePen, rect);
 		 }
 	 }
+
+	 rect.Offset(offset);
+	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), rect); // ellipse 채우기
+	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), rect);
 
 	 return drawnArea;
  }
@@ -431,8 +424,8 @@ RectF  CEllipse::resizing(IN Graphics& graphics, IN Position selectedHandle, IN 
 		 }
 	 }
 	 rect = RectF(startingPoint, rectSize);
-	 graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-	 graphics.DrawEllipse(m_OutlinePen, rect);
+	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), rect); // ellipse 채우기
+	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), rect);
 
 	 return drawnArea;
  }

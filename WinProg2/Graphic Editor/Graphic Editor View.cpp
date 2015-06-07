@@ -35,6 +35,7 @@ IMPLEMENT_DYNCREATE(CGraphicEditorView, CView)
 
 BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	/* 메시지 처리기 */
+	ON_WM_ERASEBKGND()
 	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -142,64 +143,50 @@ void CGraphicEditorView::OnInitialUpdate()
 	CView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	////dc를 만듬
-	//m_psMemDC = new CDC();
-	//m_psMemDC->CreateCompatibleDC(GetDC());
-
-	////비트맵을 만듬
-	//m_psBitmap = new CBitmap();
-	//int width = GetSystemMetrics(SM_CXSCREEN); //화면 폭을 구함
-	//int height = GetSystemMetrics(SM_CYSCREEN); //화면 높이를 구함
-	//m_psBitmap->CreateCompatibleBitmap(GetDC(), width, height);
 }
 
 // CGraphicEditorView 그리기
 void CGraphicEditorView::OnDraw(CDC* pDC)
 {
-	// GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
-	// GDI+ Ref.	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
-	// GDI+ Classes	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
-
+	/* CGraphicEditorDoc */
 	CGraphicEditorDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 	
-	//더블 버퍼링	
-	//CRect rect;
-	//GetClientRect(rect); //현재 클라이언트의 크기를 구함
+	/* 출력 대상 */
+	Graphics graphicsDC(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
 
-	//Bitmap bmp(rect.right, rect.bottom);
-	//Graphics* graphics = Graphics::FromImage(&bmp);
-
-
-
-	//m_psBitmap->SetBitmapDimension(rect.Width(), rect.Height());
-	//m_psOldBitmap = m_psMemDC->SelectObject(m_psBitmap); //생성한 비트맵을 선택
-	////생성한 비트맵은 검은색이므로 흰색 배경을 그림
-	//CGdiObject* psOldBrush = m_psMemDC->SelectStockObject(WHITE_BRUSH);
-	//CGdiObject* psOldPen = m_psMemDC->SelectStockObject(WHITE_PEN);
-	//m_psMemDC->Rectangle(rect);
-	////이전 펜과 브러쉬로 되돌림
-	//m_psMemDC->SelectObject(psOldBrush);
-	//m_psMemDC->SelectObject(psOldPen);
-
-	Graphics graphics(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
+	/*********************************** 더블 버퍼링 ***********************************/
+	CRect rect;
+	GetClientRect(rect);
+	Bitmap bmpCanvas(rect.right, rect.bottom);					// 캔버스 비트맵 생성
+	Graphics* graphicsCanvas = Graphics::FromImage(&bmpCanvas);	// 캔버스 그래픽스 생성
+	graphicsCanvas->Clear(Color::White);							// 캔버스 배경색 지정
+	/***********************************************************************************/
 
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
+	// GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
+	// GDI+ Ref.	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
+	// GDI+ Classes	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
+
 	// 현재까지 생성된 모든 개체를 그림
 	if (!pDoc->m_FiguresList.IsEmpty()) {
-		pDoc->m_FiguresList.draw(graphics);
+		pDoc->m_FiguresList.draw(*graphicsCanvas);
+	}
+
+	if (!m_CurrentFigures.IsEmpty()) {
+		m_CurrentFigures.drawArea(*graphicsCanvas);
 	}
 
 	if (m_MouseButtonFlag == NBUTTON) {		// 비클릭 상태 마우스 움직임
 		if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE 
 			&& m_InsertFlag == POLYLINE && m_PolyCreatableFlag == FALSE) {
-			((CPolyLine*)m_CurrentFigures.GetHead())->draw(graphics);
-			/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CurrentFigures.GetHead())->creating(graphics, m_CurrPoint);
+			((CPolyLine*)m_CurrentFigures.GetHead())->draw(*graphicsCanvas);
+			/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CurrentFigures.GetHead())->creating(*graphicsCanvas, m_CurrPoint);
 		}
+
 	}
 
 	else if (m_MouseButtonFlag == LBUTTON) {		// 마우스 왼쪽 버튼 드래그
@@ -225,10 +212,18 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 					//	break;
 
 					case CGraphicEditorView::LINE:
+						m_CurrentFigures.GetHead()->creating(*graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+						break;
 					//case CGraphicEditorView::POLYLINE:
 					case CGraphicEditorView::PENCIL:
+						if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
+							&& m_InsertFlag == PENCIL && m_PolyCreatableFlag == FALSE) {
+							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
+							((CPencil*)m_CurrentFigures.GetHead())->draw(*graphicsCanvas);
+						}
+						break;
 					case CGraphicEditorView::CURVE:
-						/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(graphics, &m_LButtonPoint, &m_CurrPoint);
+						/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(*graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
 						break;
 
 					case CGraphicEditorView::ELLIPSE:
@@ -248,23 +243,23 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 				} break;
 
 				case CGraphicEditorView::MOVE: {
-					m_CurrentFigures.moving(graphics, m_LButtonPoint, m_CurrPoint);
+					m_CurrentFigures.moving(*graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 				} break;
 
 				case CGraphicEditorView::RESIZE: {
 					if (m_CurrentFigures.hasOneFigure()) {
 						if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CLine))){
-							((CLine*)m_CurrentFigures.GetHead())->pointMoving(graphics, m_LButtonPoint, m_CurrPoint);
+							((CLine*)m_CurrentFigures.GetHead())->pointMoving(*graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 				}
 						else if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
-							((CPolyLine*)m_CurrentFigures.GetHead())->pointMoving(graphics, m_LButtonPoint, m_CurrPoint);
+							((CPolyLine*)m_CurrentFigures.GetHead())->pointMoving(*graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 			}
 						else {
-							m_CurrentFigures.GetHead()->resizing(graphics, m_selectedPosition, m_CurrPoint);
+							m_CurrentFigures.GetHead()->resizing(*graphicsCanvas, m_selectedPosition, m_CurrPoint);
 				}
 				}
 					else {
-						m_CurrentFigures.resizing(graphics, m_selectedPosition, m_CurrPoint);
+						m_CurrentFigures.resizing(*graphicsCanvas, m_selectedPosition, m_CurrPoint);
 			}
 				} break;
 
@@ -299,13 +294,13 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	//	
 	//		break;
 	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
-	// Graphics 포인터를 멤버 변수(m_graphics)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
+	// *graphicsCanvas 포인터를 멤버 변수(m_*graphicsCanvas)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
 	//
 	//}
 	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
 	// GDI+ 예제 코드 (사각형 그리기)
 	SolidBrush sb(Color(255,255,0,0));
-	graphics.FillRectangle(&sb, Rect(33, 44, 55, 66));
+	graphicsCanvas->FillRectangle(&sb, Rect(33, 44, 55, 66));
 
 	// Set up the arc.
 	Pen redPen(Color(255, 255, 0, 0), 3);
@@ -314,7 +309,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	REAL sweepAngle = 90.0f;
 
 	// Draw the arc.
-	graphics.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
+	graphicsCanvas->DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
 
 	// 문자열 출력 테스트
 	// Create a string.
@@ -328,7 +323,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
 
 	// Draw string.
-	graphics.DrawString(
+	graphicsCanvas->DrawString(
 		string,
 		11,
 		&myFont,
@@ -337,27 +332,35 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 		&blackBrush);
 
 	// Draw layoutRect.
-	graphics.DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
+	graphicsCanvas->DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
 	///////////////////////////////// 여기까지 예제 코드 ///////////////////////////////////////////////////////////////
 	
 	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), m_psMemDC, 0, 0, SRCCOPY);
-	//graph.DrawImage(&bmp, rect.left, rect.top, rect.right, rect.bottom);
+
+
+	/**************************************** 더블 버퍼링 ****************************************/
+	graphicsDC.DrawImage(&bmpCanvas, rect.left, rect.top, rect.right, rect.bottom);	// 캔버스 그리기
+	graphicsCanvas->~Graphics();														// 캔버스 소멸
+	/*********************************************************************************************/
 }
 
 
 /*** CGraphicEditorView 메시지 처리기 ***/
 
+BOOL CGraphicEditorView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	//return CView::OnEraseBkgnd(pDC);
+	return FALSE;	// 더블 버퍼링을 위하여 배경을 출력하지 않음
+}
+
+
 void CGraphicEditorView::OnDestroy()
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 
-	////더블 버퍼링을 위한 변수 해제
-	//m_psBitmap->DeleteObject();
-	//m_psMemDC->DeleteDC();
-
-	//CMainFrame* pMainFrame = (CMainFrame *)GetParentFrame();
-
-	//CView::OnDestroy();
+	CView::OnDestroy();
 }
 
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
@@ -375,27 +378,27 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		SolidBrush ff(Color::DarkGreen);	// 테스트용 브러시
 
 
-
-		switch (m_InsertFlag)
+		switch (getOperationModeFlag())
 		{
-		/* 비 CREATE 상태 */
-		case CGraphicEditorView::NONE: {
-			if (getOperationModeFlag() == SELECTED) {	// 개체가 선택된 경우
+			case CGraphicEditorView::SELECTABLE: {
+				m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);		// 전체 개체 리스트(그룹)을 순차로 순회
+				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
+				// Invalidate 호출 (선택 영역을 그리기 위해)
+			} break;
+
+			case CGraphicEditorView::SELECTED: {
 				m_selectedPosition = m_CurrentFigures.pointInFigure(m_CurrPoint);
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CText)))
 						HideCaret();
 					m_CurrentFigures.RemoveAll();		// SELECTABLE 상태로 전환
-				}
-					}
-			else {										// 개체가 선택되지 않은 경우
-				m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);		// 전체 개체 리스트(그룹)을 순차로 순회
-				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
-				// Invalidate 호출 (선택 영역을 그리기 위해)
-			}
-			break;
+					m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);
 		}
+			} break;
 
+			case CGraphicEditorView::CREATE: {
+				switch (m_InsertFlag)
+				{
 		/* CREATE 상태 */
 		case CGraphicEditorView::LINE:
 			preInsert();								// 이전 선택 개체 제거
@@ -421,6 +424,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 
 		case CGraphicEditorView::PENCIL:
+			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+				preInsert();									// 이전 선택 개체 제거
+				m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
+				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+		}
 			break;
 
 		case CGraphicEditorView::CURVE:
@@ -453,6 +461,17 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			break;
 		}
 
+			} break;
+
+			case CGraphicEditorView::MOVE: {
+
+			} break;
+
+			case CGraphicEditorView::RESIZE: {
+
+			} break;
+		}
+
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = LBUTTON;	// 좌클릭 드래그 중
@@ -473,10 +492,6 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-		switch (m_InsertFlag)
-		{
-		/* 비 CREATE 상태 */
-		case CGraphicEditorView::NONE: {
 			switch (getOperationModeFlag())
 			{
 				//case CGraphicEditorView::SELECTABLE: {
@@ -485,34 +500,10 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 				//case CGraphicEditorView::SELECTED: {
 				//} break;
 
-				case CGraphicEditorView::MOVE: {
-					CFigure::MoveFlag moveFlag = CFigure::FREEMOVE;
-					//if (nFlags & MK_SHIFT) {
-					//	moveFlag = CFigure::;
-					//}
-
-					m_CurrentFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
-					m_selectedPosition = CFigure::OUTSIDE;
-				} break;
-
-				case CGraphicEditorView::RESIZE: {
-					CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
-					if (nFlags & MK_SHIFT) {
-						resizeFlag = CFigure::PROPORTIONAL;
-					}
-
-					if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CStrap))) {
-						((CStrap*)m_CurrentFigures.GetHead())->pointMove(m_LButtonPoint, m_CurrPoint);
-					}
-					else {
-						m_CurrentFigures.resize(m_selectedPosition, m_CurrPoint, resizeFlag);
-			}
-					m_selectedPosition = CFigure::OUTSIDE;
-				} break;
-			}
-		} break;
-			
 		/* CREATE 상태 */
+			case CGraphicEditorView::CREATE: {
+				switch (m_InsertFlag)
+				{
 		case CGraphicEditorView::LINE:
 			m_CurrentFigures.GetHead()->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 			postInsert();
@@ -523,6 +514,9 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			break;
 
 		case CGraphicEditorView::PENCIL:
+			((CPencil*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+			m_PolyCreatableFlag = TRUE;
+			postInsert();
 			break;
 
 		case CGraphicEditorView::CURVE:
@@ -548,6 +542,33 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		case CGraphicEditorView::CLOSEDCURVE:
 			break;
+		}
+			} break;
+
+			case CGraphicEditorView::MOVE: {
+				CFigure::MoveFlag moveFlag = CFigure::FREEMOVE;
+				//if (nFlags & MK_SHIFT) {
+				//	moveFlag = CFigure::;
+				//}
+
+				m_CurrentFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
+				m_selectedPosition = CFigure::OUTSIDE;
+			} break;
+
+			case CGraphicEditorView::RESIZE: {
+				CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
+				if (nFlags & MK_SHIFT) {
+					resizeFlag = CFigure::PROPORTIONAL;
+				}
+
+				if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CStrap))) {
+					((CStrap*)m_CurrentFigures.GetHead())->pointMove(m_LButtonPoint, m_CurrPoint);
+				}
+				else {
+					m_CurrentFigures.resize(m_selectedPosition, m_CurrPoint, resizeFlag);
+				}
+				m_selectedPosition = CFigure::OUTSIDE;
+			} break;
 		}
 
 			Invalidate();
@@ -698,10 +719,10 @@ BOOL CGraphicEditorView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		::GetCursorPos(&point);		// 스크린좌표
 		ScreenToClient(&point);		// 클라이언트좌표로변환
 
-		if (m_CurrentFigures.GetSize() == 1){
-			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HELP));
-			return true;
-		}
+		//if (m_CurrentFigures.GetSize() == 1){
+		//	::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HELP));
+		//	return true;
+		//}
 
 		switch (getOperationModeFlag())
 		{
@@ -900,7 +921,7 @@ CGraphicEditorView::OperationModeFlag CGraphicEditorView::getOperationModeFlag()
 	return SELECTABLE;	// SELECTABLE 상태
 }
 
-void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFlag)
+void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFlag/* = SELECTABLE*/)
 {
 	switch (operationModeFlag)
 	{
@@ -973,13 +994,6 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
-
-
-
-
-
-
-
 
 
 

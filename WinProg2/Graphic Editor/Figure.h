@@ -160,7 +160,7 @@ protected:
 	// - 반환 값 (BOOL)
 	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
 	//		FALSE: 매개변수의 Position이 핸들인 경우
-	virtual BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
+	/*virtual */BOOL getHandleRect(IN Position handle, OUT RectF* handleRect);
 
 	// 정반대편 핸들
 	// 정반대편 핸들을 얻음
@@ -169,7 +169,6 @@ protected:
 	// - 반환 값 (Position)
 	//		정반대편 핸들
 	Position getOppositeHandle(IN Position handle);
-
 
 
 /** 그리기 **/
@@ -207,7 +206,7 @@ public:
 	// 개체 영역 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
-	void drawArea(IN Graphics& graphics);
+	virtual void drawArea(IN Graphics& graphics);
 
 protected:
 	// 개체 핸들 그리기
@@ -219,7 +218,6 @@ protected:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL drawHandle(IN Graphics& graphics, IN PointF handlePoint);
 
-private:
 	// 개체 핸들 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -229,7 +227,6 @@ private:
 	//		FALSE: 매개변수의 Position이 핸들인 경우
 	BOOL drawHandle(IN Graphics& graphics, IN Position handle);
 
-protected:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -237,7 +234,6 @@ protected:
 	//		count: 배열의 크기
 	void drawHandles(IN Graphics& graphics, IN PointF* handlePoints, IN INT count);
 
-private:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -287,7 +283,7 @@ public:
 // 특성
 protected:
 	RectF m_Area;							// 개체 영역 (사각형)
-	const REAL HANDLESIZE = 20;				// 핸들 크기
+	const REAL HANDLESIZE = 10;				// 핸들 크기
 };
 
 typedef Pen*		PenPtr;

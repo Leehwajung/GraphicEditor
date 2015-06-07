@@ -14,12 +14,13 @@ IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
 CPolyLine::CPolyLine()
 :CStrap()//, m_CreatedFlag(FALSE)
 {
+
 }
 
 CPolyLine::CPolyLine(IN Pen* pen)
 : CStrap(pen)//, m_CreatedFlag(FALSE)
 {
-
+	
 }
 
 CPolyLine::~CPolyLine()
@@ -148,23 +149,23 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 		const int count = 4;
 
-		REAL tmp_seta = atan(-1 / Gradient);
-		REAL seta = 90 - tmp_seta;
+		REAL tmp_theta = atan(-1 / Gradient);
+		REAL theta = 90 - tmp_theta;
 
 		PointF points[count];
 		GraphicsPath path;
 		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 		if (Gradient >= 0){
-			points[0] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
-			points[1] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
-			points[2] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
-			points[3] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
+			points[0] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
 		}
 		else if (Gradient < 0){
-			points[0] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
-			points[1] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
-			points[2] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
-			points[3] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
+			points[0] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
 		}
 		path.AddPolygon(points, count);
 
@@ -192,7 +193,6 @@ void CPolyLine::draw(IN Graphics& graphics) {
 	}
 
 	// Draw the lines.
-	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 }
@@ -215,11 +215,8 @@ RectF CPolyLine::creating(IN Graphics& graphics, void* param1, ...) {
 	RectF drawnArea;
 
 	// 실제로 그리는 부분 
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 		
-	graphics.DrawLine(m_OutlinePen, m_PointsList.GetTail(), *addingPoint);
+	graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), m_PointsList.GetTail(), *addingPoint);
 
 	return drawnArea;
 }
@@ -239,11 +236,7 @@ RectF CPolyLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 	}
 
 	// Draw the lines.
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
-
-	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
 
 	///* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
@@ -303,23 +296,35 @@ RectF CPolyLine::pointMoving(Graphics& graphics, IN PointF originPoint, IN Point
 		else tmp_List.AddTail(point);
 		*/
 
-		// 실제로 그리는 부분 
-		m_OutlinePen->SetDashStyle(DashStyleCustom);
-		REAL aDash[] = { 5.0f, 5.0f };
-		m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
-		graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
-
-		return drawnArea;
+	return drawnArea;
 }
 
 /* 크기 변경 그리기 */
 RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 	RectF drawnArea;
 
-
-
+	// 그리기 용 펜은 이 펜을 하용하도록: CGlobal::crateIngPen(m_OutlinePen)
+	
 	return drawnArea;
+}
+
+/* 영역 (핸들) 그리기 */
+void CPolyLine::drawArea(IN Graphics& graphics) {
+	
+	CArray <PointF, PointF&> pointsArray;
+
+	Pen pen(Color::Gray);
+	pen.SetDashStyle(DashStyleDot);
+
+	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
+		pointsArray.Add(m_PointsList.GetAt(pos));
+	}
+
+	graphics.DrawLines(&pen, pointsArray.GetData(), pointsArray.GetSize());
+
+	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
 }
 
 // 도형 작업 후에 호출
