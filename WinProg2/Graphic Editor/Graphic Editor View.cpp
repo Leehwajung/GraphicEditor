@@ -143,11 +143,11 @@ void CGraphicEditorView::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
-	////dc를 만듬
+	////dc를 만듦
 	//m_psMemDC = new CDC();
 	//m_psMemDC->CreateCompatibleDC(GetDC());
 
-	////비트맵을 만듬
+	////비트맵을 만듦
 	//m_psBitmap = new CBitmap();
 	//int width = GetSystemMetrics(SM_CXSCREEN); //화면 폭을 구함
 	//int height = GetSystemMetrics(SM_CYSCREEN); //화면 높이를 구함
@@ -194,9 +194,9 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 		pDoc->m_FiguresList.draw(graphics);
 	}
 
-	//if (!m_CurrentFigures.IsEmpty()) {
-	//	m_CurrentFigures.drawHandles(graphics);
-	//}
+	if (!m_CurrentFigures.IsEmpty()) {
+		m_CurrentFigures.drawHandles(graphics);
+	}
 
 	if (m_MouseButtonFlag == NBUTTON) {		// 비클릭 상태 마우스 움직임
 		if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE 

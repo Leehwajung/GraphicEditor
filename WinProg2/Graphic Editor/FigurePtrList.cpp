@@ -142,12 +142,15 @@ void CFigurePtrList::draw(IN Graphics& graphics)
 void CFigurePtrList::drawHandles(IN Graphics& graphics)
 {
 	if (this->hasOneFigure()) {
-		if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CLine))) {
-			return ((CLine*)this->GetHead())->drawHandles(graphics);
+		if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CShape))) {
+			return ((CShape*)this->GetHead())->drawHandles(graphics);
 		}
-		else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-			return ((CPolyLine*)this->GetHead())->drawHandles(graphics);
-		}
+		//else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CLine))) {
+		//	return ((CLine*)this->GetHead())->drawHandles(graphics);
+		//}
+		//else if (this->GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		//	return ((CPolyLine*)this->GetHead())->drawHandles(graphics);
+		//}
 		else {
 			return this->GetHead()->drawHandles(graphics);
 		}
