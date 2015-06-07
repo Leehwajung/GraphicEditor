@@ -12,6 +12,7 @@ class CGroup : public CFigure
 // 생성 및 소멸
 public:
 	CGroup();
+	CGroup(IN CFigurePtrList& figurePtrList);
 	DECLARE_SERIAL(CGroup)
 	virtual ~CGroup();
 
@@ -163,6 +164,11 @@ public:
 	//		FALSE: 설정 성공
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
 
+	// FiguresList를 얻음
+	CFigurePtrList& getFiguresList();
+
+	// FiguresList를 갱신함
+	void setFiguresList(IN CFigurePtrList& figurePtrList);
 
 // 특성
 private:

@@ -149,23 +149,23 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 		const int count = 4;
 
-		REAL tmp_seta = atan(-1 / Gradient);
-		REAL seta = 90 - tmp_seta;
+		REAL tmp_theta = atan(-1 / Gradient);
+		REAL theta = 90 - tmp_theta;
 
 		PointF points[count];
 		GraphicsPath path;
 		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 		if (Gradient >= 0){
-			points[0] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
-			points[1] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
-			points[2] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
-			points[3] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
+			points[0] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
 		}
 		else if (Gradient < 0){
-			points[0] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
-			points[1] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
-			points[2] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
-			points[3] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
+			points[0] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
 		}
 		path.AddPolygon(points, count);
 
@@ -315,9 +315,14 @@ void CPolyLine::drawArea(IN Graphics& graphics) {
 	
 	CArray <PointF, PointF&> pointsArray;
 
+	Pen pen(Color::Gray);
+	pen.SetDashStyle(DashStyleDot);
+
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
 		pointsArray.Add(m_PointsList.GetAt(pos));
 	}
+
+	graphics.DrawLines(&pen, pointsArray.GetData(), pointsArray.GetSize());
 
 	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
 }

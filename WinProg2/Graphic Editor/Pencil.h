@@ -29,4 +29,5 @@ public:
 	// 곡선을 삭제하고 메모리를 해제
 	virtual void destroy();
 
+	virtual void drawArea(IN Graphics& graphics);
 };

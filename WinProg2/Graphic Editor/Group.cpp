@@ -13,7 +13,14 @@ IMPLEMENT_SERIAL(CGroup, CFigure, 1)
 
 
 CGroup::CGroup()
+	: CFigure()
 {
+}
+
+CGroup::CGroup(IN CFigurePtrList& figurePtrList)
+	: CFigure()
+{
+	create(figurePtrList);
 }
 
 CGroup::~CGroup()
@@ -319,4 +326,20 @@ BOOL CGroup::setFillSubcolor(IN const Color& fillSubcolor)
 BOOL CGroup::setFillPattern(IN const HatchStyle fillPattern)
 {
 	return m_FiguresList.setFillPattern(fillPattern);
+}
+
+// FiguresList를 얻음
+CFigurePtrList& CGroup::getFiguresList()
+{
+	return m_FiguresList;
+}
+
+// FiguresList를 갱신함
+void CGroup::setFiguresList(IN CFigurePtrList& figurePtrList)
+{
+	m_FiguresList = figurePtrList;
+
+	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
+		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
+	}
 }

@@ -28,7 +28,7 @@ public:
 	CFigure::Position getFigures(IN RectF rect, OUT CFigurePtrList& figureList);
 
 	void draw(IN Graphics& graphics);
-	void drawHandles(IN Graphics& graphics);
+	void drawArea(IN Graphics& graphics);
 	RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE);
 	RectF resizing(IN Graphics& graphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL);
 

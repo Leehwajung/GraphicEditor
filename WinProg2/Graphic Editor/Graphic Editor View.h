@@ -26,7 +26,7 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
-	CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
+	//CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
 	CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
 	//CRect m_DrawnArea;
@@ -115,6 +115,7 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	// 메시지 처리기
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnDestroy();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
