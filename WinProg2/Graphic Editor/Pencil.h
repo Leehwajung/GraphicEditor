@@ -11,7 +11,10 @@ class CPencil : public CPolyLine
 {
 public:
 	CPencil();
+	DECLARE_SERIAL(CPencil)
+
 	virtual ~CPencil();
+	virtual void Serialize(CArchive& ar);
 };
 
 

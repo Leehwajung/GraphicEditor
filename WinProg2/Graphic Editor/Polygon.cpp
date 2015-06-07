@@ -7,7 +7,9 @@
 #include "Polygon.h"
 
 
-// CCurve
+IMPLEMENT_SERIAL(CPolygon, CShape, 1)
+
+// CPolygon
 
 CPolygon::CPolygon()
 {
@@ -19,3 +21,14 @@ CPolygon::~CPolygon()
 
 
 // CPolygon ¸â¹ö ÇÔ¼ö
+
+
+void CPolygon::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}

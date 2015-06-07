@@ -11,7 +11,10 @@ class CSine : public CPolyLine
 {
 public:
 	CSine();
+	DECLARE_SERIAL(CSine)
+
 	virtual ~CSine();
+	virtual void Serialize(CArchive& ar);
 };
 
 
