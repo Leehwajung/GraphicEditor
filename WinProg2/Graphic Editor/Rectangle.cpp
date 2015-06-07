@@ -306,8 +306,8 @@ RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF
 	{
 		PointF offset = targetPoint - originPoint;
 		rect.Offset(offset);
-		graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-		graphics.DrawEllipse(m_OutlinePen, rect);
+		graphics.FillRectangle(m_FillBrush, rect); // ellipse 채우기
+		graphics.DrawRectangle(m_OutlinePen, rect);
 	}
 	else//!=FREEMOVE인 case
 	{
@@ -320,8 +320,8 @@ RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF
 			offset.X = targetPoint.X - originPoint.X;
 			offset.Y = originPoint.Y;
 			rect.Offset(offset);
-			graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			graphics.DrawEllipse(m_OutlinePen, rect);
+			graphics.FillRectangle(m_FillBrush, rect); // ellipse 채우기
+			graphics.DrawRectangle(m_OutlinePen, rect);
 		}
 		else// 상하이동
 		{
@@ -330,8 +330,8 @@ RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF
 			offset.X = originPoint.X;
 			offset.Y = targetPoint.Y - originPoint.Y;
 			rect.Offset(offset);
-			graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-			graphics.DrawEllipse(m_OutlinePen, rect);
+			graphics.FillRectangle(m_FillBrush, rect); // ellipse 채우기
+			graphics.DrawRectangle(m_OutlinePen, rect);
 		}
 	}
 
@@ -507,8 +507,8 @@ RectF CRectangle::resizing(IN Graphics& graphics, IN Position selectedHandle, IN
 		}
 	}
 	rect = RectF(startingPoint, rectSize);
-	graphics.FillEllipse(m_FillBrush, rect); // ellipse 채우기
-	graphics.DrawEllipse(m_OutlinePen, rect);
+	graphics.FillRectangle(m_FillBrush, rect); // ellipse 채우기
+	graphics.DrawRectangle(m_OutlinePen, rect);
 
 	return drawnArea;
 }
