@@ -244,7 +244,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 					default:
 						break;
-					}
+			}
 				} break;
 
 				case CGraphicEditorView::MOVE: {
@@ -255,24 +255,24 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 					if (m_CurrentFigures.hasOneFigure()) {
 						if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CLine))){
 							((CLine*)m_CurrentFigures.GetHead())->pointMoving(graphics, m_LButtonPoint, m_CurrPoint);
-						}
+				}
 						else if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
 							((CPolyLine*)m_CurrentFigures.GetHead())->pointMoving(graphics, m_LButtonPoint, m_CurrPoint);
-						}
+			}
 						else {
 							m_CurrentFigures.GetHead()->resizing(graphics, m_selectedPosition, m_CurrPoint);
-						}
-					}
+				}
+				}
 					else {
 						m_CurrentFigures.resizing(graphics, m_selectedPosition, m_CurrPoint);
-					}
+			}
 				} break;
 
 				default: {
 
 				} break;
-			}
 		}
+	}
 	}
 
 	else if (m_MouseButtonFlag == RBUTTON){	// 마우스 오른쪽 버튼 드래그
@@ -383,9 +383,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			if (getOperationModeFlag() == SELECTED) {	// 개체가 선택된 경우
 				m_selectedPosition = m_CurrentFigures.pointInFigure(m_CurrPoint);
 				if (m_selectedPosition == CFigure::OUTSIDE) {
+					if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CText)))
+						HideCaret();
 					m_CurrentFigures.RemoveAll();		// SELECTABLE 상태로 전환
 				}
-			}
+					}
 			else {										// 개체가 선택되지 않은 경우
 				m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);		// 전체 개체 리스트(그룹)을 순차로 순회
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
@@ -433,7 +435,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 			preInsert();								// 이전 선택 개체 제거
 			m_CurrentFigures.AddTail(new CRectangle(&dd, &ff));
 			break;
-
+			
 		case CGraphicEditorView::STRING:
 			preInsert();								// 이전 선택 개체 제거
 			m_CurrentFigures.AddTail(new CText(this, &dd, &ff));		
@@ -445,7 +447,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		case CGraphicEditorView::CLOSEDCURVE:
 			break;
 		}
-		
+
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
 		m_MouseButtonFlag = LBUTTON;	// 좌클릭 드래그 중
@@ -499,7 +501,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					}
 					else {
 						m_CurrentFigures.resize(m_selectedPosition, m_CurrPoint, resizeFlag);
-					}
+			}
 					m_selectedPosition = CFigure::OUTSIDE;
 				} break;
 			}
@@ -543,7 +545,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			break;
 		}
 
-		Invalidate();
+			Invalidate();
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
@@ -890,7 +892,7 @@ void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFla
 	switch (operationModeFlag)
 	{
 	case CGraphicEditorView::SELECTABLE:
-		m_InsertFlag = NONE;
+	m_InsertFlag = NONE;
 		m_selectedPosition = CFigure::OUTSIDE;
 		m_CurrentFigures.RemoveAll();
 		break;
