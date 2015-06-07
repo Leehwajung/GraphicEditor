@@ -7,6 +7,8 @@
 #include "Sine.h"
 
 
+IMPLEMENT_SERIAL(CSine, CPolyLine, 1)
+
 // CSine
 
 CSine::CSine()
@@ -19,3 +21,14 @@ CSine::~CSine()
 
 
 // CSine ¸â¹ö ÇÔ¼ö
+
+
+void CSine::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}

@@ -11,7 +11,10 @@ class CCurve : public CPolyLine
 {
 public:
 	CCurve();
+	DECLARE_SERIAL(CCurve)
+
 	virtual ~CCurve();
+	virtual void Serialize(CArchive& ar);
 };
 
 

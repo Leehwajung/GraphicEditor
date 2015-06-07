@@ -7,6 +7,8 @@
 #include "Pencil.h"
 
 
+IMPLEMENT_SERIAL(CPencil, CPolyLine, 1)
+
 // CPencil
 
 CPencil::CPencil()
@@ -19,3 +21,14 @@ CPencil::~CPencil()
 
 
 // CPencil ¸â¹ö ÇÔ¼ö
+
+
+void CPencil::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{	// storing code
+	}
+	else
+	{	// loading code
+	}
+}
