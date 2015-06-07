@@ -55,7 +55,7 @@ public:
 public:
 	CFigure();
 	//CFigure(IN CClientDC* lpClientDC);
-	//CFigure(IN Graphics* lpGraphics);
+	//CFigure(IN Graphics& graphics);
 	DECLARE_SERIAL(CFigure)
 	virtual ~CFigure();
 
@@ -175,73 +175,73 @@ protected:
 /** 그리기 **/
 public:
 	// 개체 그리기 (순수 가상)
-	virtual void draw(IN Graphics* lpGraphics);
+	virtual void draw(IN Graphics& graphics);
 
 	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-	virtual RectF creating(IN Graphics* lpGraphics, void* param1, ...);
+	virtual RectF creating(IN Graphics& graphics, void* param1, ...);
 
 	// 이동 그리기 (순수 가상)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
 	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual RectF resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	virtual RectF resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 	// 개체 영역 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
-	void drawArea(IN Graphics* lpGraphics);
+	//		Graphics& graphics: 그리기 대상 Graphics
+	void drawArea(IN Graphics& graphics);
 
 protected:
 	// 개체 핸들 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		PointF handlePoint: 그리고자하는 핸들 좌표
 	// - 반환 값 (BOOL)
 	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
 	//		FALSE: 매개변수의 Position이 핸들인 경우
-	BOOL drawHandle(IN Graphics* lpGraphics, IN PointF handlePoint);
+	BOOL drawHandle(IN Graphics& graphics, IN PointF handlePoint);
 
 private:
 	// 개체 핸들 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		Position handle: 그리고자하는 핸들
 	// - 반환 값 (BOOL)
 	//		TRUE: 매개변수의 Position이 핸들이 아닐 경우
 	//		FALSE: 매개변수의 Position이 핸들인 경우
-	BOOL drawHandle(IN Graphics* lpGraphics, IN Position handle);
+	BOOL drawHandle(IN Graphics& graphics, IN Position handle);
 
 protected:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		PointF* handlePoints: 핸들의 좌표 배열
 	//		count: 배열의 크기
-	void drawHandles(IN Graphics* lpGraphics, IN PointF* handlePoints, IN INT count);
+	void drawHandles(IN Graphics& graphics, IN PointF* handlePoints, IN INT count);
 
 private:
 	// 개체 핸들 전체 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
-	void drawHandles(IN Graphics* lpGraphics);
+	//		Graphics& graphics: 그리기 대상 Graphics
+	void drawHandles(IN Graphics& graphics);
 
 
 /** 속성 설정 **/
@@ -290,134 +290,9 @@ protected:
 	const REAL HANDLESIZE = 20;				// 핸들 크기
 };
 
-class CFigurePtrList : public CList < CFigure*, CFigure* >
-{
-public:
-	CFigurePtrList& operator= (const CFigurePtrList& figurePtrList)
-	{
-		this->RemoveAll();
-
-		for (POSITION pos = figurePtrList.GetHeadPosition(); pos; figurePtrList.GetNext(pos)) {
-			this->AddTail(figurePtrList.GetAt(pos));
-		}
-		
-		return *this;
-	}
-
-	BOOL hasOneFigure()
-	{
-		return this->GetSize() == 1;
-	}
-
-	void move(IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			this->GetAt(pos)->move(originPoint, targetPoint, moveFlag);
-		}
-	}
-
-	void resize(IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			this->GetAt(pos)->resize(selectedHandle, targetPoint, resizeFlag, anchorPoint);
-		}
-	}
-
-	void draw(IN Graphics* lpGraphics) {
-		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
-			this->GetAt(pos)->draw(lpGraphics);
-		}
-	}
-
-	RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE)
-	{
-		RectF drawnArea;
-		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
-			this->GetAt(pos)->moving(lpGraphics, originPoint, targetPoint, moveFlag);
-			drawnArea.Intersect(this->GetAt(pos)->getArea());
-		}
-		return drawnArea;
-	}
-
-	RectF resizing(IN Graphics* lpGraphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL)
-	{
-		RectF drawnArea;
-		for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
-			this->GetAt(pos)->resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, anchorPoint);
-			drawnArea.Intersect(this->GetAt(pos)->getArea());
-		}
-		return drawnArea;
-	}
-
-	BOOL setOutlineColor(IN const Color& outlineColor)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setOutlineColor(outlineColor)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	BOOL setOutlineWidth(IN const REAL outlineWidth)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setOutlineWidth(outlineWidth)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	BOOL setOutlinePattern(IN const DashStyle outlinePattern)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setOutlinePattern(outlinePattern)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	BOOL setFillColor(IN const Color& fillColor)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setFillColor(fillColor)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	BOOL setFillSubcolor(IN const Color& fillSubcolor)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setFillSubcolor(fillSubcolor)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	BOOL setFillPattern(IN const HatchStyle fillPattern)
-	{
-		for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
-			if (this->GetAt(pos)->setFillPattern(fillPattern)) {
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-};
-
-typedef Pen*	PenPtr;
-typedef Brush*	BrushPtr;
+typedef Pen*		PenPtr;
+typedef Brush*		BrushPtr;
+typedef CFigure*	CFigurePtr;
 
 //	// LButtonDown
 //	virtual void create(void* param1, ...);					// 개체 생성
@@ -452,8 +327,8 @@ typedef Brush*	BrushPtr;
 //	// 순수 가상함수로 변경하기
 //
 //	// Getter / Setter
-//	Graphics* getGraphics();
-//	void setGraphics(Graphics* lpGraphics);
+//	Graphics& getGraphics();
+//	void setGraphics(Graphics& graphics);
 //
 //	PointF& getStartingPoint();
 //	void setStartingPoint(PointF& StartingPoint);

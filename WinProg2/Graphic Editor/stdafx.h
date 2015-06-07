@@ -53,7 +53,7 @@
 #include "Ellipse.h"
 //#include "Rectangle.h"
 #include "Text.h"
-
+#include "FigurePtrList.h"
 
 
 

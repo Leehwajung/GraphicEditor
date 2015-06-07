@@ -34,7 +34,7 @@ public:
 	virtual BOOL create(void* param1, ...);
 
 	// OnDraw
-	virtual void draw(IN Graphics* lpGraphics);//CpaintDC 사용
+	virtual void draw(IN Graphics& graphics);//CpaintDC 사용
 
 
 	// m_String에 문자 추가

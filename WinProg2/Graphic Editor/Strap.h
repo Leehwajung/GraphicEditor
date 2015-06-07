@@ -24,7 +24,7 @@ public:
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
 
 	// °³º° ÁÂÇ¥ ÀÌµ¿ ±×¸®±â (¼ø¼ö °¡»ó ¿¹Á¤)
-	virtual RectF pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint);
+	virtual RectF pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint);
 
 	// Ææ È¹µæ
 	Pen* getPen();

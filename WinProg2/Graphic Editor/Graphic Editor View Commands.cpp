@@ -113,7 +113,7 @@ void CGraphicEditorView::OnImageCanvasSize()
 
 void CGraphicEditorView::OnInsertLine()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = LINE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -128,8 +128,9 @@ void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPolyline()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYLINE;		// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -141,7 +142,7 @@ void CGraphicEditorView::OnUpdateInsertPolyline(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPencil()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = PENCIL;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -154,7 +155,7 @@ void CGraphicEditorView::OnUpdateInsertPencil(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertCurve()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CURVE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -167,7 +168,7 @@ void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertEllipse()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = ELLIPSE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -180,7 +181,7 @@ void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertRectangle()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = RECTANGLE;		// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -193,7 +194,7 @@ void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertString()
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = STRING;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -206,7 +207,7 @@ void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYGON;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -219,7 +220,7 @@ void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
 
 void CGraphicEditorView::OnInsertClosedcurve()	// 도형 버튼
 {
-	m_OperationModeFlag = CREATE;	// 수정 금지
+	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CLOSEDCURVE;		// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

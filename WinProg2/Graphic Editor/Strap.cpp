@@ -55,7 +55,7 @@ void CStrap::pointMove(IN PointF originPoint, IN PointF targetPoint)
 }
 
 // 개별 좌표 이동 그리기
-RectF CStrap::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
+RectF CStrap::pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint)
 {
 	RectF drawnArea;
 

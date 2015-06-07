@@ -151,17 +151,18 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 	PointF points[count];
 	GraphicsPath path;
+	int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 	if (m_Gradient >= 0){
-	points[0] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
-	points[1] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
-	points[2] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
-	points[3] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
+	points[0] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
+	points[1] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
+	points[2] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
+	points[3] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
 	}
 	else if (m_Gradient < 0){
-		points[0] = PointF(m_StartingPoint.X - HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y + HANDLESIZE / 2 * sin(seta));
-		points[1] = PointF(m_StartingPoint.X + HANDLESIZE / 2 * cos(seta), m_StartingPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[2] = PointF(m_EndPoint.X + HANDLESIZE / 2 * cos(seta), m_EndPoint.Y - HANDLESIZE / 2 * sin(seta));
-		points[3] = PointF(m_EndPoint.X - HANDLESIZE / 2 * cos(seta), m_EndPoint.Y + HANDLESIZE / 2 * sin(seta));
+		points[0] = PointF(m_StartingPoint.X - width / 2 * cos(seta), m_StartingPoint.Y + width / 2 * sin(seta));
+		points[1] = PointF(m_StartingPoint.X + width / 2 * cos(seta), m_StartingPoint.Y - width / 2 * sin(seta));
+		points[2] = PointF(m_EndPoint.X + width / 2 * cos(seta), m_EndPoint.Y - width / 2 * sin(seta));
+		points[3] = PointF(m_EndPoint.X - width / 2 * cos(seta), m_EndPoint.Y + width / 2 * sin(seta));
 	}
     path.AddPolygon(points, count);
 	Region rgn(&path);
@@ -218,21 +219,21 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 
 // OnDraw
 /* 선 그리기 */
-void CLine::draw(IN Graphics* lpGraphics) {
+void CLine::draw(IN Graphics& graphics) {
 	m_OutlinePen->SetDashStyle(DashStyleSolid);
-	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, m_EndPoint);
+	graphics.DrawLine(m_OutlinePen, m_StartingPoint, m_EndPoint);
 }
 
 // OnMouseMove
 /* 생성 그리기 */
-RectF CLine::creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
+RectF CLine::creating(IN Graphics& graphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag/* = FREECREATE*/) {
 	
-	return creating(lpGraphics, &startingPoint, &targetPoint, createFlag);
+	return creating(graphics, &startingPoint, &targetPoint, createFlag);
 	
 }
 
 /* 생성 그리기 */
-RectF CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+RectF CLine::creating(IN Graphics& graphics, void* param1, ...) {
 	
 	RectF drawnArea;
 
@@ -261,12 +262,12 @@ RectF CLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 		drawnArea.Y = startingPoint->Y;
 	}
 
-	lpGraphics->DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
+	graphics.DrawLine(m_OutlinePen, *startingPoint, *targetPoint);
 	return drawnArea;
 }
 
 /* 이동 그리기 */
-RectF CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+RectF CLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 
 	RectF drawnArea;
 
@@ -277,18 +278,13 @@ RectF CLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF ta
 	m_OutlinePen->SetDashStyle(DashStyleCustom);
 	REAL aDash[] = { 5.0f, 5.0f };
 	m_OutlinePen->SetDashPattern(aDash,sizeof(aDash)/sizeof(aDash[0]));
-	lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
-
-	//drawnArea.X = (m_StartingPoint + RelativePoint).X;
-	//drawnArea.Y = (m_StartingPoint + RelativePoint).Y;
-	//drawnArea.Width = abs(m_StartingPoint.X - m_EndPoint.X);
-	//drawnArea.Height = abs(m_StartingPoint.Y - m_EndPoint.Y);
+	graphics.DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 
 	return drawnArea;
 }
 
 /* 크기 변경 그리기 */
-RectF CLine::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+RectF CLine::resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 	RectF drawnArea;
 
 
@@ -297,7 +293,7 @@ RectF CLine::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN Po
 }
 
 /* 개별 좌표 이동 그리기 */
-RectF CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint)
+RectF CLine::pointMoving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint)
 {
 	RectF drawnArea;
 
@@ -309,11 +305,11 @@ RectF CLine::pointMoving(IN Graphics* lpGraphics, IN PointF originPoint, IN Poin
 
 	getHandleRect(START, &handleRect);
 	if (handleRect.Contains(originPoint))
-		lpGraphics->DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
+		graphics.DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
 
 	getHandleRect(END, &handleRect);
 	if (handleRect.Contains(originPoint))
-		lpGraphics->DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
+		graphics.DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
 
 	return drawnArea;
 }

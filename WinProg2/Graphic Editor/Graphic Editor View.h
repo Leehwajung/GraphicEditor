@@ -71,20 +71,32 @@ public:
 
 	CFigure::Position m_selectedPosition;
 
+	BOOL m_PolyCreatableFlag;	// CPolyLine 및 CPolygon 객체 생성 가능 상태 플래그
+
 	//int m_mode;
 	
 	//CClientDC* m_pDC;
-	//Graphics* m_pGraphics;
+	//Graphics& m_pGraphics;
+
+	// 더블 버퍼링을 위한 변수들
+	//CDC* m_psMemDC;
+	//CBitmap* m_psBitmap;
+	//CBitmap* m_psOldBitmap;
 
 // 작업입니다.
 public:
-	OperationModeFlag getOperationModeFlag();
+	void preInsert();		// 삽입(생성) 작업 전에 해야 할 작업
+	void postInsert();		// 삽입(생성) 작업 후에 해야 할 작업
+	void cancelInsert();	// 삽입(생성) 작업 취소 시에 해야 할 작업
 	void clearInsertFlag();
+	OperationModeFlag getOperationModeFlag();
+	void setOperationModeFlag(OperationModeFlag operationModeFlag = SELECTABLE);
 	
 // 재정의입니다.
 public:
-	virtual void OnDraw(CDC* pDC);		// 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void OnInitialUpdate();
+	virtual void OnDraw(CDC* pDC);		// 이 뷰를 그리기 위해 재정의되었습니다.
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -103,6 +115,7 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	// 메시지 처리기
+	afx_msg void OnDestroy();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
@@ -111,6 +124,7 @@ protected:
 	afx_msg void OnRButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);

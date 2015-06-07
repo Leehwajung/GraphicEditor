@@ -42,7 +42,7 @@ void CPolyLine::Serialize(CArchive& ar)
 
 //LButtonUp
 void CPolyLine::addPoint(IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
-	if (m_CreatedFlag == FALSE)
+	//if (m_CreatedFlag == FALSE)
 	m_PointsList.AddTail(addingPoint);
 }
 //LButtonDlk
@@ -153,17 +153,18 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 		PointF points[count];
 		GraphicsPath path;
+		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
 		if (Gradient >= 0){
-			points[0] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
-			points[1] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[2] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[3] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[0] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
+			points[1] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
+			points[2] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
+			points[3] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
 		}
 		else if (Gradient < 0){
-			points[0] = PointF(first_point.X - HANDLESIZE / 2 * cos(seta), first_point.Y + HANDLESIZE / 2 * sin(seta));
-			points[1] = PointF(first_point.X + HANDLESIZE / 2 * cos(seta), first_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[2] = PointF(second_point.X + HANDLESIZE / 2 * cos(seta), second_point.Y - HANDLESIZE / 2 * sin(seta));
-			points[3] = PointF(second_point.X - HANDLESIZE / 2 * cos(seta), second_point.Y + HANDLESIZE / 2 * sin(seta));
+			points[0] = PointF(first_point.X - width / 2 * cos(seta), first_point.Y + width / 2 * sin(seta));
+			points[1] = PointF(first_point.X + width / 2 * cos(seta), first_point.Y - width / 2 * sin(seta));
+			points[2] = PointF(second_point.X + width / 2 * cos(seta), second_point.Y - width / 2 * sin(seta));
+			points[3] = PointF(second_point.X - width / 2 * cos(seta), second_point.Y + width / 2 * sin(seta));
 		}
 		path.AddPolygon(points, count);
 
@@ -181,7 +182,7 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
 // OnDraw
 /* 선 그리기 */
-void CPolyLine::draw(IN Graphics* lpGraphics) {
+void CPolyLine::draw(IN Graphics& graphics) {
 
 	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
@@ -192,19 +193,19 @@ void CPolyLine::draw(IN Graphics* lpGraphics) {
 
 	// Draw the lines.
 	m_OutlinePen->SetDashStyle(DashStyleSolid);
-	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 }
 
 // OnMouseMove
 /* 생성 그리기 */
-RectF CPolyLine::creating(IN Graphics* lpGraphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
+RectF CPolyLine::creating(IN Graphics& graphics, IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
 
-	return creating(lpGraphics, &addingPoint, createFlag);
+	return creating(graphics, &addingPoint, &createFlag);
 }
 
 /* 생성 그리기 */
-RectF CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
+RectF CPolyLine::creating(IN Graphics& graphics, void* param1, ...) {
 	va_list vaList;
 	va_start(vaList, param1);
 	PointF* addingPoint = (PointF*)param1;
@@ -213,26 +214,18 @@ RectF CPolyLine::creating(IN Graphics* lpGraphics, void* param1, ...) {
 
 	RectF drawnArea;
 
-	CArray<PointF, PointF&> pointsArray;
-
-	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
-		pointsArray.Add(m_PointsList.GetAt(pos));
-	}
-
-	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
-
 	// 실제로 그리는 부분 
 	m_OutlinePen->SetDashStyle(DashStyleCustom);
 	REAL aDash[] = { 5.0f, 5.0f };
 	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
-
-	//lpGraphics->DrawLine(m_OutlinePen, m_PointsList.Get,*addingPoint);
+		
+	graphics.DrawLine(m_OutlinePen, m_PointsList.GetTail(), *addingPoint);
 
 	return drawnArea;
 }
 
 /* 이동 그리기 */
-RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
+RectF CPolyLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 	RectF drawnArea;
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
@@ -250,7 +243,7 @@ RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 	REAL aDash[] = { 5.0f, 5.0f };
 	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 
-	lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+	graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 
 	///* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
@@ -259,7 +252,7 @@ RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 	//POSITION pos = m_PointsList.GetHeadPosition();
 	//while (pos!=NULL){
 	//	PointF  point = m_PointsList.GetNext(pos);
-	//	lpGraphics->DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
+	//	graphics.DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
 
 	//	// 실제로 그리는 부분 
 	//	tmp_List.AddTail(point+RelativePoint);
@@ -269,7 +262,7 @@ RectF CPolyLine::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN Point
 }
 	    
 // 개별 좌표 이동 그리기
-RectF CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint){
+RectF CPolyLine::pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint){
 
 	RectF drawnArea;
 
@@ -315,13 +308,13 @@ RectF CPolyLine::pointMoving(Graphics* lpGraphics, IN PointF originPoint, IN Poi
 		REAL aDash[] = { 5.0f, 5.0f };
 		m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
 
-		lpGraphics->DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
+		graphics.DrawLines(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 
 		return drawnArea;
 }
 
 /* 크기 변경 그리기 */
-RectF CPolyLine::resizing(IN Graphics* lpGraphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 	RectF drawnArea;
 
 

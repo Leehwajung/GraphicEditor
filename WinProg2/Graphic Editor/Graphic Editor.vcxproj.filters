@@ -106,6 +106,9 @@
     <ClInclude Include="Global.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="FigurePtrList.h">
+      <Filter>헤더 파일\Assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -164,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="Strap.cpp">
       <Filter>소스 파일\Figure\Strap</Filter>
+    </ClCompile>
+    <ClCompile Include="FigurePtrList.cpp">
+      <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

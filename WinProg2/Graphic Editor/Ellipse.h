@@ -26,12 +26,12 @@ public:
 	virtual void destroy();
 	// Position: 타원 상의 점의 위치
 	virtual Position pointInFigure(IN PointF point);
-	virtual void draw(IN Graphics* lpGraphics);
+	virtual void draw(IN Graphics& graphics);
 
-	RectF creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
-	virtual RectF creating(IN Graphics* lpGraphics, void* param1, ...);
-	virtual RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
-	virtual RectF resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	RectF creating(IN Graphics& graphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
+	virtual RectF creating(IN Graphics& graphics, void* param1, ...);
+	virtual RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual RectF resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 	
 	virtual RectF resetArea();// 개체영역 재정의
 

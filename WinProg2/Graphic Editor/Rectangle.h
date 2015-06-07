@@ -87,45 +87,45 @@ protected:
 
 public:
 	// 개체 그리기 (순수 가상)
-	virtual void draw(IN Graphics* lpGraphics);
+	virtual void draw(IN Graphics& graphics);
 
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		PointF startingPoint: 생성 시작 좌표
 	//		PointF targetPoint: 생성 시 선택 중인 좌표
 	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
-	RectF creating(IN Graphics* lpGraphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
+	RectF creating(IN Graphics& graphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
 
 protected:
 	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-	virtual RectF creating(IN Graphics* lpGraphics, void* param1, ...);
+	virtual RectF creating(IN Graphics& graphics, void* param1, ...);
 
 public:
 	// 이동 그리기 (순수 가상)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		PointF originPoint: 이동의 시작 좌표
 	//		PointF targetPoint: 이동 중인 좌표
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-	virtual RectF moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
+	virtual RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// 크기 변경 그리기 (순수 가상)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
-	//		Graphics* lpGraphics: 그리기 대상 Graphics
+	//		Graphics& graphics: 그리기 대상 Graphics
 	//		Position selectedHandle: 개체의 선택된 핸들
 	//		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 	//		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-	virtual RectF resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
+	virtual RectF resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 
 
@@ -140,7 +140,7 @@ protected:
 //public:
 //	CRectangle();
 //	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/);
-//	CRectangle(Graphics* lpGraphics/*, PointF startingPoint*/);
+//	CRectangle(Graphics& graphics/*, PointF startingPoint*/);
 //	//CRectangle(CClientDC* lpClientDC, RectF& rect);
 //	CRectangle(CClientDC* lpClientDC/*, PointF startingPoint*/, /*RectF& rect,*/ Pen* pen, SolidBrush* brush);
 //	virtual ~CRectangle();

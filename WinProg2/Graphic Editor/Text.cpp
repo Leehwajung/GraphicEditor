@@ -165,9 +165,9 @@ void  CText::decreasewidth(){
 	m_View->ShowCaret(); // 커서이동
 }
 // 
-void CText::draw(IN Graphics* lpGraphics){
+void CText::draw(IN Graphics& graphics){
 	
-	lpGraphics->DrawString(
+	graphics.DrawString(
 		m_String.GetData(),//배열의 첫번째를 통해 wchar로 변환
 		m_String.GetSize(),
 		m_Font,
@@ -327,6 +327,24 @@ BOOL CText::setFontPattern(IN const HatchStyle fontPattern) {
 	return setBrushPattern(m_FontBrush, fontPattern);
 }
 
+//CFigure::Position CText::pointInFigure(IN PointF point)
+//{
+//	RectF handleRect;
+//
+//	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+//
+//		getHandleRect((Position)handleIndex, &handleRect);
+//		if (handleRect.Contains(point)) {
+//			return (Position)handleIndex;
+//		}
+//	}
+//
+//	if (m_Rect.Contains(point)) {
+//		return INSIDE;
+//	}
+//
+//	return OUTSIDE;
+//}
 
 //////////////////////////////////////////////////////////////////////
 

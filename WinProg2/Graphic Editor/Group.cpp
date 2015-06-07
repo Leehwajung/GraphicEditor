@@ -203,7 +203,7 @@ CFigure::Position CGroup::pointInFigure(IN PointF point)
 			return INSIDE;
 	}
 
-	return OUTSIDE;	// 임시 반환값
+	return OUTSIDE;
 }
 
 /** 개체 영역 관리 **/
@@ -221,18 +221,18 @@ RectF CGroup::resetArea()
 
 /** 그리기 **/
 // 개체 그리기
-void CGroup::draw(IN Graphics* lpGraphics)
+void CGroup::draw(IN Graphics& graphics)
 {
-	m_FiguresList.draw(lpGraphics);
+	m_FiguresList.draw(graphics);
 }
 
 // 생성 그리기
 // 생성 시에 보여줄 그리기
 // - IN 매개변수
-//		Graphics* lpGraphics: 그리기 대상 Graphics
+//		Graphics& graphics: 그리기 대상 Graphics
 //		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
 //		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
-RectF CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
+RectF CGroup::creating(IN Graphics& graphics, void* param1, ...)
 {
 	return NULLRectF;
 }
@@ -240,29 +240,29 @@ RectF CGroup::creating(IN Graphics* lpGraphics, void* param1, ...)
 // 이동 그리기
 // 이동 중에 보여줄 그리기
 // - IN 매개변수
-//		Graphics* lpGraphics: 그리기 대상 Graphics
+//		Graphics& graphics: 그리기 대상 Graphics
 //		PointF originPoint: 이동의 시작 좌표
 //		PointF targetPoint: 이동 중인 좌표
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
-RectF CGroup::moving(IN Graphics* lpGraphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+RectF CGroup::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	return m_FiguresList.moving(lpGraphics, originPoint, targetPoint, moveFlag);
+	return m_FiguresList.moving(graphics, originPoint, targetPoint, moveFlag);
 }
 
 // 크기 변경 그리기
 // 크기 변경 중에 보여줄 그리기
 // - IN 매개변수
-//		Graphics* lpGraphics: 그리기 대상 Graphics
+//		Graphics& graphics: 그리기 대상 Graphics
 //		Position selectedHandle: 개체의 선택된 핸들
 //		PointF targetPoint: 선택된 핸들을 이동하고 있는 좌표
 //		ResizeFlag resizeFlag = FREERESIZE: 크기 변경 설정 플래그
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
-RectF CGroup::resizing(IN Graphics* lpGraphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+RectF CGroup::resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
 	PointF handlePoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &handlePoint);
 
-	return m_FiguresList.resizing(lpGraphics, selectedHandle, targetPoint, resizeFlag, &handlePoint);
+	return m_FiguresList.resizing(graphics, selectedHandle, targetPoint, resizeFlag, &handlePoint);
 }
 
 
