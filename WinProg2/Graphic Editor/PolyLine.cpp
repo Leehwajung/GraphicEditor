@@ -12,12 +12,12 @@
 IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
 
 CPolyLine::CPolyLine()
-:CStrap(), m_CreatedFlag(FALSE)
+:CStrap()//, m_CreatedFlag(FALSE)
 {
 }
 
 CPolyLine::CPolyLine(IN Pen* pen)
-: CStrap(pen), m_CreatedFlag(FALSE)
+: CStrap(pen)//, m_CreatedFlag(FALSE)
 {
 
 }
@@ -58,7 +58,7 @@ BOOL CPolyLine::create(void* param1, ...) {
 		CreateFlag* createFlag = (CreateFlag*)param1;
 		va_end(vaList);
 
-		m_CreatedFlag = TRUE;
+		//m_CreatedFlag = TRUE;
 		resetArea();
 
 		return FALSE;
@@ -366,8 +366,8 @@ RectF CPolyLine::resetArea() {
 	return m_Area;
 }
 
-BOOL CPolyLine::GetCreatedFlag(){
-	return m_CreatedFlag;
-}
+//BOOL CPolyLine::GetCreatedFlag(){
+//	return m_CreatedFlag;
+//}
 
 

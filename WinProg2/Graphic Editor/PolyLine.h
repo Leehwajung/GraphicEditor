@@ -138,13 +138,13 @@ protected:
 public:
 	// Getter
 	CList <PointF, PointF&>& GetPointsList();
-	BOOL GetCreatedFlag();
+	//BOOL GetCreatedFlag();
 
 private:
 
 	CList <PointF, PointF&> m_PointsList;
 
-	BOOL m_CreatedFlag;
+	//BOOL m_CreatedFlag;
 };
 
 
