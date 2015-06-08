@@ -6,12 +6,14 @@
 
 // CSelectedFigureArray 명령 대상입니다.
 
-typedef CArray<POSITION, POSITION&> CPositionArray;
+typedef CArray<POSITION, POSITION> CPositionArray;
 
 class CSelectedFigureArray : public CObject
 {
 public:
-	//CSelectedFigureArray();
+	// 기본 생성자
+	CSelectedFigureArray();
+
 	// 생성자
 	CSelectedFigureArray(CFigurePtrList* lpFigurePtrList);
 
@@ -52,7 +54,7 @@ public:
 	void deselect(RectF rect);
 
 	// 전체 개체 선택 해제
-	void deselectAll(RectF rect);
+	void deselectAll();
 
 	// 선택한 개체 삭제
 	void Delete();

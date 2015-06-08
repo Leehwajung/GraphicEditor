@@ -113,7 +113,7 @@ void CGraphicEditorView::OnImageCanvasSize()
 
 void CGraphicEditorView::OnInsertLine()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = LINE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
@@ -128,7 +128,7 @@ void CGraphicEditorView::OnUpdateInsertLine(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPolyline()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYLINE;		// 수정 금지
 	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -142,7 +142,7 @@ void CGraphicEditorView::OnUpdateInsertPolyline(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPencil()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = PENCIL;			// 수정 금지
 	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -156,7 +156,7 @@ void CGraphicEditorView::OnUpdateInsertPencil(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertCurve()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CURVE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -169,7 +169,7 @@ void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertEllipse()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = ELLIPSE;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -182,7 +182,7 @@ void CGraphicEditorView::OnUpdateInsertEllipse(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertRectangle()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = RECTANGLE;		// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -195,7 +195,7 @@ void CGraphicEditorView::OnUpdateInsertRectangle(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertString()
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = STRING;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -208,7 +208,7 @@ void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
 
 void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYGON;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -221,7 +221,7 @@ void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
 
 void CGraphicEditorView::OnInsertClosedcurve()	// 도형 버튼
 {
-	//m_CurrentFigures.RemoveAll();	// 수정 금지 (선택 개체 제거)
+	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CLOSEDCURVE;		// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
@@ -279,7 +279,7 @@ void CGraphicEditorView::OnArrangeGroup()
 	//	m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
 	//}
 
-	//m_CurrentFigures.RemoveAll();
+	//m_SelectedFigures.deselectAll();
 	//m_CurrentFigures.AddTail(GetDocument()->m_FiguresList.GetHead());
 }
 
@@ -293,16 +293,16 @@ void CGraphicEditorView::OnArrangeUngroup()
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	for (POSITION pos = m_CurrentFigures.GetHeadPosition(); pos; m_CurrentFigures.GetNext(pos)) {
-		if (m_CurrentFigures.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CGroup))) {
-			CFigurePtrList* figurelist = &((CGroup*)m_CurrentFigures.GetAt(pos))->getFiguresList();
+	//for (POSITION pos = m_CurrentFigures.GetHeadPosition(); pos; m_CurrentFigures.GetNext(pos)) {
+	//	if (m_CurrentFigures.GetAt(pos)->IsKindOf(RUNTIME_CLASS(CGroup))) {
+	//		CFigurePtrList* figurelist = &((CGroup*)m_CurrentFigures.GetAt(pos))->getFiguresList();
 
-			for (POSITION subpos = figurelist->GetTailPosition(); subpos; figurelist->GetPrev(subpos)) {
-				m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
-			}
-			
-		}
-	}
+	//		for (POSITION subpos = figurelist->GetTailPosition(); subpos; figurelist->GetPrev(subpos)) {
+	//			m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
+	//		}
+	//		
+	//	}
+	//}
 }
 
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)
@@ -336,11 +336,14 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnPolylineIndividualDelete()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		if (((CPolyLine*)m_CurrentFigures.GetHead())->GetPointsList().GetSize() == 1){
-			((CPolyLine*)m_CurrentFigures.GetHead())->destroy();
+	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
+
+		if (polyLine->GetPointsList().GetSize() == 1){
+			polyLine->destroy();
 		}
-		else ((CPolyLine*)m_CurrentFigures.GetHead())->RemovePoint(m_RButtonPoint);
+		else 
+			(polyLine)->RemovePoint(m_RButtonPoint);
 		Invalidate();
 	}
 
@@ -349,8 +352,8 @@ void CGraphicEditorView::OnPolylineIndividualDelete()
 void CGraphicEditorView::OnPolylineIndividualInsert()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		((CPolyLine*)m_CurrentFigures.GetHead())->InsertPoint(m_RButtonPoint);
+	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
 		Invalidate();
 	}
 }
