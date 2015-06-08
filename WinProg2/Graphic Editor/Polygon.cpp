@@ -15,7 +15,10 @@ CPolygon::CPolygon()
 	: CShape()
 {
 }
-
+CPolygon::CPolygon(IN Pen* pen, IN BrushPtr brush)
+	: CShape(pen, brush)
+{
+}
 CPolygon::~CPolygon()
 {
 }

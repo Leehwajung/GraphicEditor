@@ -55,7 +55,7 @@
 //#include "Rectangle.h"
 #include "Text.h"
 #include "FigurePtrList.h"
-
+#include "Polygon.h"
 
 
 
