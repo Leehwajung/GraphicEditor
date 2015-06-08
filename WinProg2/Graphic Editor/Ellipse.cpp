@@ -164,7 +164,11 @@ void CEllipse::resize(IN Position selectedHandle, IN PointF targetPoint,
 	
 }
 
-void CEllipse::destroy(){}
+void CEllipse::destroy(){
+	if (this) {
+		this->~CEllipse();
+	}
+}
 // Position: 타원 상의 점의 위치
 CFigure::Position CEllipse::pointInFigure(IN PointF point){
 	RectF handleRect;
