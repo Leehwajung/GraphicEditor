@@ -7,11 +7,12 @@
 #include "Curve.h"
 
 
-IMPLEMENT_SERIAL(CCurve, CPolyLine, 1)
-
 // CCurve
 
+IMPLEMENT_SERIAL(CCurve, CPolyLine, 1)
+
 CCurve::CCurve()
+	: CPolyLine()
 {
 }
 

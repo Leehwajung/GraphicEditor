@@ -12,7 +12,6 @@
 
 IMPLEMENT_SERIAL(CStrap, CFigure, 1)
 
-
 CStrap::CStrap()
 	: CFigure()
 	, m_OutlinePen(NULL)

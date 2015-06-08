@@ -67,8 +67,16 @@ void CFigurePtrList::move(IN PointF originPoint, IN PointF targetPoint, IN CFigu
 	}
 }
 
-void CFigurePtrList::resize(IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = CFigure::FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
+void CFigurePtrList::resize(IN CFigure::Position selectedHandle, IN PointF originPoint, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = CFigure::FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	//CFigure::Position figPosition;
+	//for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+	//	figPosition = this->GetAt(pos)->pointInFigure(point);
+	//	if (figPosition != CFigure::OUTSIDE) {
+	//		return figPosition;
+	//	}
+	//}
+
 	for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
 		this->GetAt(pos)->resize(selectedHandle, targetPoint, resizeFlag, anchorPoint);
 	}

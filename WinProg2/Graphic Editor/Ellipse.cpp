@@ -181,7 +181,10 @@ CFigure::Position CEllipse::pointInFigure(IN PointF point){
 		}
 	}
 
-	if (m_Rect.Contains(point)) {
+	GraphicsPath Ellipse;
+	Ellipse.AddEllipse(m_Rect);
+
+	if (Ellipse.IsVisible(point)) {
 		return INSIDE;
 	}
 

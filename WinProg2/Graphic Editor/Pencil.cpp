@@ -7,12 +7,12 @@
 #include "Pencil.h"
 
 
-IMPLEMENT_SERIAL(CPencil, CPolyLine, 1)
-
 // CPencil
 
+IMPLEMENT_SERIAL(CPencil, CPolyLine, 1)
+
 CPencil::CPencil()
-:CPolyLine()//, m_CreatedFlag(FALSE)
+	:CPolyLine()//, m_CreatedFlag(FALSE)
 {
 }
 

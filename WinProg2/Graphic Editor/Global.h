@@ -34,7 +34,8 @@ public:
 	static Brush* crateIngBrush(IN const Brush* originalBrush);
 	static Brush* getIngBrush();
 	static void clearIngBrush();
-};
 
-static Pen* m_BufPen;
-static Brush* m_BufBrush;
+private:
+	static Pen* m_BufPen;
+	static Brush* m_BufBrush;
+};

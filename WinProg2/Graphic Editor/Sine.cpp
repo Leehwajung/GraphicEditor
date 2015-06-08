@@ -7,11 +7,12 @@
 #include "Sine.h"
 
 
-IMPLEMENT_SERIAL(CSine, CPolyLine, 1)
-
 // CSine
 
+IMPLEMENT_SERIAL(CSine, CPolyLine, 1)
+
 CSine::CSine()
+	: CPolyLine()
 {
 }
 
