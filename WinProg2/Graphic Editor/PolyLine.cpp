@@ -126,6 +126,51 @@ void CPolyLine::RemovePoint(IN PointF originPoint){
 	resetArea();
 }
 
+void CPolyLine::InsertPoint(IN PointF originPoint){
+
+	POSITION pos = m_PointsList.GetHeadPosition();
+	POSITION prevpos = m_PointsList.GetHeadPosition();
+	PointF first_point = m_PointsList.GetNext(pos);
+
+	while (pos != NULL){
+
+		PointF second_point = m_PointsList.GetNext(pos);
+		REAL Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
+
+		const int count = 4;
+
+		REAL tmp_theta = atan(-1 / Gradient);
+		REAL theta = 90 - tmp_theta;
+
+		PointF points[count];
+		GraphicsPath path;
+		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
+		if (Gradient >= 0){
+			points[0] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+		}
+		else if (Gradient < 0){
+			points[0] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+		}
+		path.AddPolygon(points, count);
+
+		Region rgn(&path);
+		if (rgn.IsVisible(originPoint)){
+			m_PointsList.InsertBefore(prevpos, originPoint);
+			resetArea();
+			return;
+		}
+		first_point = second_point;
+		prevpos = pos;
+	}
+
+}
+
 /* 선 크기(길이) 변경 */
 void CPolyLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 

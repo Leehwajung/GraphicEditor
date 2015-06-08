@@ -132,6 +132,9 @@ public:
 	// 개별 좌표 삭제 
 	void RemovePoint(IN PointF originPoint);
 
+	// 개별 좌표 삽입
+	void InsertPoint(IN PointF originPoint);
+
 	virtual void drawArea(IN Graphics& graphics);
 
 protected:

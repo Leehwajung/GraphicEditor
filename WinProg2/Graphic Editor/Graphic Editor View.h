@@ -186,6 +186,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPolylineIndividualDelete();
+	afx_msg void OnPolylineIndividualInsert();
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

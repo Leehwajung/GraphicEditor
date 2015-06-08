@@ -108,6 +108,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
 	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
+	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
 END_MESSAGE_MAP()
 
 

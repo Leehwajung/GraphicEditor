@@ -345,3 +345,12 @@ void CGraphicEditorView::OnPolylineIndividualDelete()
 	}
 
 }
+
+void CGraphicEditorView::OnPolylineIndividualInsert()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		((CPolyLine*)m_CurrentFigures.GetHead())->InsertPoint(m_RButtonPoint);
+		Invalidate();
+	}
+}
