@@ -57,7 +57,7 @@ void CGraphicEditorView::OnEditCopy()
 	if (m_CurrentFigures.hasOneFigure()){//하나가 선택된 경우
 		// 선택된 도형을 m_BufferList에 복사한다.
 		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
-		}
+}
 
 	else // 다중 선택 case
 	{
@@ -364,4 +364,26 @@ void CGraphicEditorView::OnZoom100()
 void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+void CGraphicEditorView::OnPolylineIndividualDelete()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		if (((CPolyLine*)m_CurrentFigures.GetHead())->GetPointsList().GetSize() == 1){
+			((CPolyLine*)m_CurrentFigures.GetHead())->destroy();
+		}
+		else ((CPolyLine*)m_CurrentFigures.GetHead())->RemovePoint(m_RButtonPoint);
+		Invalidate();
+	}
+
+}
+
+void CGraphicEditorView::OnPolylineIndividualInsert()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		((CPolyLine*)m_CurrentFigures.GetHead())->InsertPoint(m_RButtonPoint);
+		Invalidate();
+	}
 }
