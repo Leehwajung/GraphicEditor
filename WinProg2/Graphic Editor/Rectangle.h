@@ -98,7 +98,6 @@ public:
 	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
 	RectF creating(IN Graphics& graphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
 
-protected:
 	// 생성 그리기 (순수 가상)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
