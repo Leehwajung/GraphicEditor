@@ -45,10 +45,45 @@
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
+
 void CGraphicEditorView::OnEditCopy()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	//https://msdn.microsoft.com/ko-kr/library/cc451491(v=vs.71).aspx
+	//https://msdn.microsoft.com/ko-kr/library/cc451492(v=vs.71).aspx
+
+	
+	CSharedFile file;
+	//CShareFile 객체에 저장하는 아카이브 선언
+	CArchive ar(&file, CArchive::store);
+	
+
+	CGraphicEditorDoc* pDoc = GetDocument();
+	pDoc->m_FiguresList.Serialize(ar);
+	ar.Close();
+
+	if (!OpenClipboard())//클립보드 오픈실패시
+	{
+		AfxMessageBox(_T("Cannot open the Clipboard"));
+		return;
+	}
+	//Create an OLE data source on the heap
+	COleDataSource* pDataSource = new COleDataSource;
+	
+	//등록된 포멧형식
+	TRY
+	{
+		pDataSource->CacheGlobalData(m_cfsDraw, file.Detach());
+		OleInitialize(NULL);
+		pDataSource->SetClipboard(); 
+	}
+		CATCH_ALL(e)
+	{
+		delete pDataSource;
+		THROW_LAST();
+	}
+	END_CATCH_ALL
 }
 
 void CGraphicEditorView::OnEditCut()
@@ -67,6 +102,38 @@ void CGraphicEditorView::OnEditPaste()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	COleDataObject dataObject;
+
+	//클립보드 내용을 가져옴
+	dataObject.AttachClipboard();
+	if (m_CurrentFigures.hasOneFigure()){//하나의 개체
+	//클립보드 내용이 이 프로그램에 맞는 형식일 경우만 가능
+		if (dataObject.IsDataAvailable(m_cfsDraw))
+		{
+			CFile* pFile = dataObject.GetFileData(m_cfsDraw);
+			if (pFile == NULL)
+				return;
+
+			CArchive ar(pFile, CArchive::load); //pFile의 내용을 로드하는 아카이브 선언
+			TRY
+			{
+				//선택 리스트로 직렬화를 수행하여 클립보드의 내용을 선택리스트로 저장
+				//ar.m_pDocument = GetDocument();
+				//	pDoc->m_sSelectedList.Serialize(ar);
+			}
+			CATCH_ALL(e)
+			{
+				ar.Close();
+				delete pFile;
+				THROW_LAST();
+			}
+			END_CATCH_ALL
+
+				ar.Close();
+			delete pFile;
+		}
+		Invalidate();
+	}
 }
 
 void CGraphicEditorView::OnEditDelete()
