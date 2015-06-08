@@ -224,8 +224,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 					/* LBUTTON CREATE PENCIL */
 					case CGraphicEditorView::PENCIL:
-						if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
-							&& m_InsertFlag == PENCIL && m_PolyCreatableFlag == FALSE) {
+						if (m_CurrentFigures.hasOneFigure() && m_PolyCreatableFlag == FALSE) {
 							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// Á¡ Ãß°¡
 							((CPencil*)m_CurrentFigures.GetHead())->draw(graphicsCanvas);
 						}
@@ -238,7 +237,16 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 					/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
 					case CGraphicEditorView::ELLIPSE:
+						if (m_CurrentFigures.hasOneFigure()) {
+							((CRectangle*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+						}
+						break;
 					case CGraphicEditorView::RECTANGLE:
+						if (m_CurrentFigures.hasOneFigure()) {
+							((CEllipse*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+						
+						}
+						break;
 					case CGraphicEditorView::STRING:
 
 						break;

@@ -279,14 +279,28 @@ RectF CRectangle::creating(IN Graphics& graphics, void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
-	PointF* startingPoint = (PointF*)param1;
-	PointF* targetPoint = va_arg(vaList, PointF*);
+	PointF startingPoint = *(PointF*)param1;
+	PointF targetPoint = *va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
 	RectF drawnArea;
 
+	SizeF rectSize;
+	rectSize.Width = startingPoint.X > targetPoint.X ? startingPoint.X - targetPoint.X : targetPoint.X - startingPoint.X;
+	rectSize.Height = startingPoint.Y > targetPoint.Y ? startingPoint.Y - targetPoint.Y : targetPoint.Y - startingPoint.Y;
 
+	if (startingPoint.X > targetPoint.X) {
+		startingPoint.X = targetPoint.X;
+	}
+
+	if (startingPoint.Y > targetPoint.Y) {
+		startingPoint.Y = targetPoint.Y;
+	}
+
+	RectF rect = RectF(startingPoint, rectSize);
+	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), rect);
+	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), rect);
 
 	return drawnArea;
 }
