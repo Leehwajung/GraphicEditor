@@ -6,9 +6,13 @@
 #include "Graphic Editor.h"
 #include "Polygon.h"
 
-IMPLEMENT_SERIAL(CPolygon, CFigure, 1)
+
+// CPolygon
+
+IMPLEMENT_SERIAL(CPolygon, CShape, 1)
 
 CPolygon::CPolygon()
+	: CShape()
 {
 }
 

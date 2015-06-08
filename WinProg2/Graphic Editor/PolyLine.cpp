@@ -12,7 +12,7 @@
 IMPLEMENT_SERIAL(CPolyLine, CStrap, 1)
 
 CPolyLine::CPolyLine()
-:CStrap()//, m_CreatedFlag(FALSE)
+	:CStrap()//, m_CreatedFlag(FALSE)
 {
 
 }

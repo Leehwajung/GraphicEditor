@@ -16,6 +16,7 @@ CFigure::CFigure()
 	//: graphics(NULL)
 	//, m_GraphicsDynamicAllocationFlag(FALSE)
 {
+	ID = IDcount++;
 }
 
 //CFigure::CFigure(CClientDC* lpClientDC)
@@ -36,6 +37,10 @@ CFigure::~CFigure()
 	//	graphics.~Graphics();
 	//}
 }
+
+
+// CFigure ¸â¹ö º¯¼ö
+UINT CFigure::IDcount = 0;
 
 
 // CFigure ¸â¹ö ÇÔ¼ö

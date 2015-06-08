@@ -7,9 +7,10 @@
 #include "Global.h"
 
 
-// CGlobal
+// CGlobal ¸â¹ö º¯¼ö
 
-
+Pen* CGlobal::m_BufPen = NULL;
+Brush* CGlobal::m_BufBrush = NULL;
 
 
 // CGlobal ¸â¹ö ÇÔ¼ö

@@ -278,12 +278,16 @@ public:
 	//		FALSE: 설정 성공
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
 
-
+	UINT getID() { return ID; }
 
 // 특성
 protected:
 	RectF m_Area;							// 개체 영역 (사각형)
 	const REAL HANDLESIZE = 10;				// 핸들 크기
+private:
+	UINT ID;				// 개체 고유 ID
+	static UINT IDcount;	// ID 할당을 위한 정적 변수
+
 };
 
 typedef Pen*		PenPtr;
