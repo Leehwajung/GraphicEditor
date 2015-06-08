@@ -182,10 +182,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 		m_CurrentFigures.drawArea(graphicsCanvas);
 	}
 
-
-	switch (m_MouseButtonFlag)
+	// 환경에 따른 그리기
+	switch (m_MouseButtonFlag)	// 마우스 클릭/드래그 상태에 따른 그리기
 	{
-		/*** NBUTTON ***/
+		/*** NO BUTTON ***/
 		case CGraphicEditorView::NBUTTON: {
 			if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
 				&& m_InsertFlag == POLYLINE && m_PolyCreatableFlag == FALSE) {
@@ -442,11 +442,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::PENCIL:
-			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
-				preInsert();									// 이전 선택 개체 제거
-				m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
-				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
-		}
+					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+						preInsert();									// 이전 선택 개체 제거
+						m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
+						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+					}
 					break;
 
 				case CGraphicEditorView::CURVE:
@@ -468,30 +468,32 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::POLYGON:
-			if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
-				preInsert();									// 이전 선택 개체 제거
-				m_CurrentFigures.AddTail(new CPolygon(&dd, &ff));	// 객체 생성
-				m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
-			}
+					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+						preInsert();									// 이전 선택 개체 제거
+						m_CurrentFigures.AddTail(new CPolygon(&dd, &ff));	// 객체 생성
+						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+					}
 					break;
 
 				case CGraphicEditorView::CLOSEDCURVE:
 					break;
 				}
-
 			} break;
 
-			case CGraphicEditorView::MOVE: {
+			//case CGraphicEditorView::MOVE: {
 
-			} break;
+			//} break;
 
-			case CGraphicEditorView::RESIZE: {
+			//case CGraphicEditorView::RESIZE: {
 
-			} break;
+			//} break;
 		}
 
+		// 비 클라이언트 영역 마우스 캡쳐
+		SetCapture();
+
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		m_MouseButtonFlag = LBUTTON;	// 좌클릭 드래그 중
 		/**************************************************/
 
@@ -589,10 +591,16 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			} break;
 		}
 
+		// 데이터가 수정되었음을 도큐먼트 객체에 알림
+		GetDocument()->SetModifiedFlag();
+
 		Invalidate();
 
+		// 마우스 캡쳐를 종료함
+		::ReleaseCapture();
+
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
 		/**************************************************/
 
@@ -627,7 +635,7 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_LButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_LButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		//m_MouseButtonFlag = NBUTTON;	// 좌클릭
 		/**************************************************/
 
@@ -647,7 +655,7 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		m_MouseButtonFlag = RBUTTON;	// 우클릭 드래그 중
 		/**************************************************/
 
@@ -669,7 +677,7 @@ void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 비클릭 상태
 		/**************************************************/
 	}
@@ -687,7 +695,7 @@ void CGraphicEditorView::OnRButtonDblClk(UINT nFlags, CPoint point)
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
-		m_RButtonPoint = m_CurrPoint;		// 이벤트 발생 좌표
+		m_RButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
 		m_MouseButtonFlag = NBUTTON;	// 우클릭
 		/**************************************************/
 
