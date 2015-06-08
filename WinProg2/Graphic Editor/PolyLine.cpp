@@ -79,7 +79,7 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 		m_PointsList.SetAt(prevpos, point + RelativePoint);
 		prevpos = pos;
 	}
-
+	resetArea();
 
 }
 
@@ -99,11 +99,31 @@ void CPolyLine::pointMove(IN PointF originPoint, IN PointF targetPoint){
 			m_PointsList.SetAt(prevpos, targetPoint);
 			break;
 		}
-			
-			
+						
 		prevpos = pos;	
 	}
+	resetArea();
+}
 
+// 개별 좌표 삭제
+void CPolyLine::RemovePoint(IN PointF originPoint){
+	PointF  point = m_PointsList.GetHead();
+	POSITION pos = m_PointsList.GetHeadPosition(), prevpos = m_PointsList.GetHeadPosition();
+
+	while (pos != NULL){
+		point = m_PointsList.GetNext(pos);
+
+		RectF handleRect;
+		handleRect = getHandleRect(point);
+
+		if (handleRect.Contains(originPoint)) {
+			m_PointsList.RemoveAt(prevpos);
+			break;
+		}
+
+		prevpos = pos;
+	}
+	resetArea();
 }
 
 /* 선 크기(길이) 변경 */
@@ -238,19 +258,6 @@ RectF CPolyLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 	// Draw the lines.
 	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
-
-	///* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	//CList <PointF, PointF&> tmp_List;
-
-	//POSITION pos = m_PointsList.GetHeadPosition();
-	//while (pos!=NULL){
-	//	PointF  point = m_PointsList.GetNext(pos);
-	//	graphics.DrawLine(m_OutlinePen, tmp_List.GetTail(), point + RelativePoint);
-
-	//	// 실제로 그리는 부분 
-	//	tmp_List.AddTail(point+RelativePoint);
-	//}
-
 	return drawnArea;
 }
 	    
@@ -261,40 +268,32 @@ RectF CPolyLine::pointMoving(Graphics& graphics, IN PointF originPoint, IN Point
 
 	PointF  point;
 
+	BOOL SameHandle = FALSE;
+
 	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
+	CArray<RectF, RectF&> HandleRectArray;
 
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
 		point = m_PointsList.GetAt(pos);
 		
 		RectF handleRect;
 		handleRect = getHandleRect(point);
+		HandleRectArray.Add(handleRect);
 
-		if (handleRect.Contains(originPoint)){
-			point = targetPoint;
-			pointsArray.Add(point);
-
+		for (int i = 0; i < HandleRectArray.GetSize()-1; i++){
+			for (int j = i+1; j < HandleRectArray.GetSize();j++)
+			if (HandleRectArray[i].Contains(originPoint) && HandleRectArray[j].Contains(originPoint))
+				 SameHandle = TRUE;
 		}
-		else pointsArray.Add(point);
+		if (SameHandle == FALSE){
+			if (handleRect.Contains(originPoint)){
+				point = targetPoint;
+				pointsArray.Add(point);
+			}
+			else pointsArray.Add(point);
+		}
 	}
-
-	/*CList <PointF, PointF&> tmp_List;
-
-	PointF  point = m_PointsList.GetHead();
-	POSITION pos = m_PointsList.GetHeadPosition();
-	while (pos != NULL){
-		point = m_PointsList.GetNext(pos);
-
-		RectF handleRect;
-		handleRect = getHandleRect(point);
-
-		if (handleRect.Contains(originPoint)){
-			point = targetPoint;
-			tmp_List.AddTail(point);
-
-		}
-		else tmp_List.AddTail(point);
-		*/
 
 	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
 
@@ -331,9 +330,11 @@ void CPolyLine::drawArea(IN Graphics& graphics) {
 /* 개체 영역 갱신 */
 RectF CPolyLine::resetArea() {
 
-	REAL x_start = 0, y_start = 0, x_end = 0, y_end = 0;
-
+	REAL x_start, y_start, x_end = 0, y_end = 0;
+	
 	POSITION pos = m_PointsList.GetHeadPosition();
+	x_start= m_PointsList.GetHead().X;
+	y_start = m_PointsList.GetHead().Y;
 	while (pos != NULL){
 		PointF  tmp_point = m_PointsList.GetNext(pos);
 
@@ -371,8 +372,7 @@ RectF CPolyLine::resetArea() {
 	return m_Area;
 }
 
-//BOOL CPolyLine::GetCreatedFlag(){
-//	return m_CreatedFlag;
-//}
-
+CList <PointF, PointF&>& CPolyLine::GetPointsList(){
+	return m_PointsList;
+}
 

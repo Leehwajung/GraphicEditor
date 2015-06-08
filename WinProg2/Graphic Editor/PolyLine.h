@@ -129,6 +129,9 @@ public:
 	// 개별 좌표 이동 그리기
 	virtual RectF pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint);
 
+	// 개별 좌표 삭제 
+	void RemovePoint(IN PointF originPoint);
+
 	virtual void drawArea(IN Graphics& graphics);
 
 protected:

@@ -107,6 +107,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ZOOM_OUT, &CGraphicEditorView::OnZoomOut)
 	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
+	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
 END_MESSAGE_MAP()
 
 
@@ -661,6 +662,7 @@ void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 		m_CurrPoint = CGlobal::CPointToPointF(point);
 		m_MouseVKFlags = nFlags;
 
+
 		ClientToScreen(&point);
 		OnContextMenu(this, point);
 
@@ -1011,6 +1013,3 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
-
-
-

@@ -184,6 +184,8 @@ protected:
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnPolylineIndividualDelete();
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

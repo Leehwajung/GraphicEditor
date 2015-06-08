@@ -247,6 +247,7 @@ BEGIN
         MENUITEM "잘라내기(&T)\tCtrl+X",            ID_EDIT_CUT
         MENUITEM "복사(&C)\tCtrl+C",              ID_EDIT_COPY
         MENUITEM "붙여넣기(&P)\tCtrl+V",            ID_EDIT_PASTE
+        MENUITEM "PolyLine 개별 좌표 삭제",           ID_POLYLINE_INDIVIDUAL_DELETE
     END
 END
 

@@ -332,3 +332,16 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
+
+void CGraphicEditorView::OnPolylineIndividualDelete()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		if (((CPolyLine*)m_CurrentFigures.GetHead())->GetPointsList().GetSize() == 1){
+			((CPolyLine*)m_CurrentFigures.GetHead())->destroy();
+		}
+		else ((CPolyLine*)m_CurrentFigures.GetHead())->RemovePoint(m_RButtonPoint);
+		Invalidate();
+	}
+
+}
