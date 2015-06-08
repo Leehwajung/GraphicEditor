@@ -50,46 +50,38 @@ void CGraphicEditorView::OnEditCopy()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	//https://msdn.microsoft.com/ko-kr/library/cc451491(v=vs.71).aspx
-	//https://msdn.microsoft.com/ko-kr/library/cc451492(v=vs.71).aspx
-
 	
-	CSharedFile file;
-	//CShareFile 객체에 저장하는 아카이브 선언
-	CArchive ar(&file, CArchive::store);
-	
-
 	CGraphicEditorDoc* pDoc = GetDocument();
-	pDoc->m_FiguresList.Serialize(ar);
-	ar.Close();
-
-	if (!OpenClipboard())//클립보드 오픈실패시
-	{
-		AfxMessageBox(_T("Cannot open the Clipboard"));
-		return;
-	}
-	//Create an OLE data source on the heap
-	COleDataSource* pDataSource = new COleDataSource;
 	
-	//등록된 포멧형식
-	TRY
+	pDoc->m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
+	if (m_CurrentFigures.hasOneFigure()){//하나가 선택된 경우
+		// 선택된 도형을 m_BufferList에 복사한다.
+		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
+		}
+
+	else // 다중 선택 case
 	{
-		pDataSource->CacheGlobalData(m_cfsDraw, file.Detach());
-		OleInitialize(NULL);
-		pDataSource->SetClipboard(); 
 	}
-		CATCH_ALL(e)
-	{
-		delete pDataSource;
-		THROW_LAST();
-	}
-	END_CATCH_ALL
+	
+	//
 }
 
 void CGraphicEditorView::OnEditCut()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CGraphicEditorDoc* pDoc = GetDocument();
+	POSITION deletePos = pDoc->m_FiguresList.GetHeadPosition(); //삭제할위치를 얻기위해
+	
+	while (deletePos != NULL)
+	{
+		pDoc->m_FiguresList.GetNext(deletePos); // 삭제할 위치를 찾을 때까지
+		//if ()// deletepos와 선택된 도형이 맞으면 break;
+	}
+	//pDoc->m_BufferList.AddTail();//원본리스트에서 버퍼리스트로 복사
+	pDoc->m_FiguresList.deleteAt(deletePos);//원본 리스트에서 삭제
+
+	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
 //void CGraphicEditorView::OnEditFind()
@@ -98,42 +90,16 @@ void CGraphicEditorView::OnEditCut()
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
-void CGraphicEditorView::OnEditPaste()
+void CGraphicEditorView::OnEditPaste()//붙여넣기
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	COleDataObject dataObject;
+	CGraphicEditorDoc* pDoc = GetDocument();
+	POSITION headpos = pDoc->m_BufferList.GetHeadPosition();
+	
+	//m_BufferList에 있는 것들을 m_FigureList에 추가해서 그릴 것.\
 
-	//클립보드 내용을 가져옴
-	dataObject.AttachClipboard();
-	if (m_CurrentFigures.hasOneFigure()){//하나의 개체
-	//클립보드 내용이 이 프로그램에 맞는 형식일 경우만 가능
-		if (dataObject.IsDataAvailable(m_cfsDraw))
-		{
-			CFile* pFile = dataObject.GetFileData(m_cfsDraw);
-			if (pFile == NULL)
-				return;
-
-			CArchive ar(pFile, CArchive::load); //pFile의 내용을 로드하는 아카이브 선언
-			TRY
-			{
-				//선택 리스트로 직렬화를 수행하여 클립보드의 내용을 선택리스트로 저장
-				//ar.m_pDocument = GetDocument();
-				//	pDoc->m_sSelectedList.Serialize(ar);
-			}
-			CATCH_ALL(e)
-			{
-				ar.Close();
-				delete pFile;
-				THROW_LAST();
-			}
-			END_CATCH_ALL
-
-				ar.Close();
-			delete pFile;
-		}
-		Invalidate();
-	}
+	Invalidate();
 }
 
 void CGraphicEditorView::OnEditDelete()
