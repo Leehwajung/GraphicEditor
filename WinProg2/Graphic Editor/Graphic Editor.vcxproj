@@ -121,6 +121,7 @@
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SelectedFigureArray.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Sine.h" />
     <ClInclude Include="stdafx.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="PolyLine.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="SelectedFigureArray.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Sine.cpp" />
     <ClCompile Include="stdafx.cpp">
