@@ -17,8 +17,7 @@ public:
 
 	virtual void Serialize(CArchive& ar);
 
-	// 점 추가 (순수 가상)
-	//virtual void addPoint(PointF point);
+	virtual void drawLineHandle(IN Graphics& graphics);
 
 	// 개별 좌표 이동 (순수 가상 예정)
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);
@@ -76,7 +75,6 @@ public:
 	// - 반환 값 (BOOL)
 	//		FALSE: 채우기가 없으므로 고정값 반환 (성공으로 간주)
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern) { return FALSE; }
-
 
 // 특성
 protected:

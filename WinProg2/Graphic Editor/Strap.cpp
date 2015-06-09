@@ -47,6 +47,11 @@ void CStrap::Serialize(CArchive& ar)
 	}
 }
 
+void CStrap::drawLineHandle(IN Graphics& graphics){
+
+
+}
+
 // 개별 좌표 이동
 void CStrap::pointMove(IN PointF originPoint, IN PointF targetPoint)
 {
@@ -128,7 +133,5 @@ BOOL CStrap::setOutlinePattern(IN const DashStyle outlinePattern)
 {
 	return m_OutlinePen->SetDashStyle(outlinePattern) ? TRUE : FALSE;
 }
-
-
 // 점 추가 (순수 가상): 순수 가상으로 바꾸기 전 임시 구현
 //void CStrap::addPoint(PointF point){}

@@ -244,13 +244,13 @@ void CSelectedFigureArray::draw(IN Graphics& graphics)
 }
 
 // 선택 개체들의 선택 영역 그리기
-void CSelectedFigureArray::drawArea(IN Graphics& graphics)
+void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag)
 {
 	if (hasOne()) {
 		CFigure* figure = getOneFigure();
 
-		if (figure->IsKindOf(RUNTIME_CLASS(CShape))) {
-			((CShape*)figure)->drawArea(graphics);
+		if (editPointFlag && figure->IsKindOf(RUNTIME_CLASS(CStrap))) {
+			((CStrap*)figure)->drawLineHandle(graphics);
 		}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CLine))) {
 		//	((CLine*)figure)->drawArea(graphics);

@@ -122,7 +122,7 @@ public:
 	virtual RectF resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 
 	// 핸들 그리기
-	virtual void drawArea(IN Graphics& graphics);
+	virtual void drawLineHandle(IN Graphics& graphics);
 
 	// 개별 좌표 이동
 	virtual void pointMove(IN PointF originPoint, IN PointF targetPoint);

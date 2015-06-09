@@ -76,6 +76,7 @@ public:
 	CFigure::Position m_selectedPosition;
 
 	BOOL m_PolyCreatableFlag;	// CPolyLine 및 CPolygon 객체 생성 가능 상태 플래그
+	BOOL m_EditPointFlag;
 
 	//int m_mode;
 	
@@ -187,10 +188,11 @@ protected:
 	afx_msg void OnZoomOut();
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
-	DECLARE_MESSAGE_MAP()
-public:
+
 	afx_msg void OnPolylineIndividualDelete();
 	afx_msg void OnPolylineIndividualInsert();
+	afx_msg void OnPointmove();
+	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전
