@@ -1156,7 +1156,7 @@ BOOL CGraphicEditorView::getLineSelectedFlag()
 BOOL CGraphicEditorView::getPolySelectedFlag()
 {
 	if (m_SelectedFigures.hasOne()) {
-		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)) && !m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPencil))
 			|| m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))) {
 			return TRUE;
 		}
