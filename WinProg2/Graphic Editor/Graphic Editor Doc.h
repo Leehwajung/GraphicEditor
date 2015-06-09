@@ -24,7 +24,7 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CFigurePtrList m_FiguresList;			// 모든 개체 리스트
-	CFigurePtrList m_BufferList; // 버퍼리스트
+	
 	CFigureProperties m_FigureProperties;	// 사용자가 메뉴를 통해 선택한 속성 설정을 저장 (마지막에 선택한 내용을 다음 번 실행에서 그대로 반영하기 위하여 Doc에 선언)
 
 // 작업입니다.

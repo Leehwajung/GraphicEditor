@@ -45,6 +45,7 @@
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
+
 void CGraphicEditorView::OnEditCopy()
 {
 	clearInsertFlag();
@@ -53,10 +54,10 @@ void CGraphicEditorView::OnEditCopy()
 	CGraphicEditorDoc* pDoc = GetDocument();
 	
 	pDoc->m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
-	if (m_SelectedFigures.hasOne()){//하나가 선택된 경우
+	if (m_CurrentFigures.hasOneFigure()){//하나가 선택된 경우
 		// 선택된 도형을 m_BufferList에 복사한다.
 		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
-	}
+}
 
 	else // 다중 선택 case
 	{
@@ -95,9 +96,7 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CGraphicEditorDoc* pDoc = GetDocument();
 	POSITION headpos = pDoc->m_BufferList.GetHeadPosition();
-	
 	//m_BufferList에 있는 것들을 m_FigureList에 추가해서 그릴 것.\
-
 	Invalidate();
 }
 
@@ -305,9 +304,8 @@ void CGraphicEditorView::OnArrangeGroup()
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	GetDocument()->m_FiguresList.AddHead(new CGroup(m_SelectedFigures));
+	//GetDocument()->m_FiguresList.AddHead(new CGroup(m_CurrentFigures));
 
-	Invalidate();
 	//for (POSITION pos = figurelist->GetTailPosition(); pos; figurelist->GetPrev(pos)) {
 	//	m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
 	//}
@@ -336,9 +334,6 @@ void CGraphicEditorView::OnArrangeUngroup()
 	//		
 	//	}
 	//}
-
-	m_SelectedFigures.unGroup();
-	Invalidate();
 }
 
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)

@@ -30,6 +30,7 @@ public:
 	//CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
 	//CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
 	CSelectedFigureArray m_SelectedFigures;		// 현재 선택한 개체 배열
+	CFigurePtrList m_BufferList; //선택한 개체를 저장할 버퍼리스트
 	CFigure* m_CreateBuffer;
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
 
