@@ -14,7 +14,7 @@ public:
 	CPencil(IN Pen* pen);
 	DECLARE_SERIAL(CPencil)
 	~CPencil();
-
+	CFigure* clone();
 	/* LButtonDown */
 	// 좌표 위치 확인
 	// 점이 직선 안에 있는지 확인하고 그 위치를 반환함

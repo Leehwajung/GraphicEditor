@@ -119,10 +119,10 @@ public:
 
 	// 포지션의 정적 배열의 원소 개수를 얻음
 	int getSize();
-
-private:
 	// 맨 앞의 포지션 획득
 	POSITION getForwardPos();
+private:
+	
 
 private:
 	CPositionArray m_FigurePosArray;

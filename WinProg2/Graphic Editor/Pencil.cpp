@@ -24,8 +24,13 @@ CPencil::CPencil(IN Pen* pen)
 
 CPencil::~CPencil()
 {
+
 }
 
+
+CFigure* CPencil::clone(){
+	return new CPencil(m_OutlinePen);
+}
 
 // CPencil ¸â¹ö ÇÔ¼ö
 CFigure::Position CPencil::pointInFigure(IN PointF point){

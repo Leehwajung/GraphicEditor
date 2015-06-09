@@ -38,6 +38,10 @@ CFigure::~CFigure()
 	//}
 }
 
+CFigure* CFigure::clone(){
+	return new CFigure();
+}
+
 
 // CFigure 멤버 변수
 UINT CFigure::IDcount = 0;
@@ -320,6 +324,7 @@ void CFigure::drawHandles(IN Graphics& graphics)
 BOOL CFigure::create(void* param1, ...){return TRUE;/* 임시 반환 값*/}
 void CFigure::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/){}
 void CFigure::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/){}
+
 void CFigure::destroy(){}
 CFigure::Position CFigure::pointInFigure(IN PointF point){ return OUTSIDE; /* 임시 반환값 */ }
 void CFigure::draw(IN Graphics& graphics){}

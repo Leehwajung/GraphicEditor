@@ -15,7 +15,7 @@ public:
 	CPolyLine(IN Pen* pen);
 	DECLARE_SERIAL(CPolyLine)
 	~CPolyLine();
-
+	CFigure* clone();
 	virtual void Serialize(CArchive& ar);
 
 	/** ¿¬»ê **/

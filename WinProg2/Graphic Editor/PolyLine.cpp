@@ -29,7 +29,9 @@ CPolyLine::~CPolyLine()
 
 
 // CPolyLine ¸â¹ö ÇÔ¼ö
-
+CFigure* CPolyLine::clone(){
+	return new CPolyLine(m_OutlinePen);
+}
 
 void CPolyLine::Serialize(CArchive& ar)
 {
