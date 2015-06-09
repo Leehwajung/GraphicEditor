@@ -324,14 +324,14 @@ void CGraphicEditorView::OnUpdateInsertString(CCmdUI *pCmdUI)
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
-void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
+void CGraphicEditorView::OnInsertPolygon()	// 다각형 버튼
 {
 	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYGON;			// 수정 금지
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
-void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 삼각형 버튼
+void CGraphicEditorView::OnUpdateInsertPolygon(CCmdUI *pCmdUI)	// 다각형 버튼
 {
 	pCmdUI->SetCheck(m_InsertFlag == POLYGON);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.

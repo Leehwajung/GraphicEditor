@@ -124,6 +124,9 @@
     <ClInclude Include="SelectedFigureArray.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="FigureSettings.h">
+      <Filter>헤더 파일\Assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphic Editor.cpp">
@@ -199,6 +202,9 @@
       <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
     <ClCompile Include="SelectedFigureArray.cpp">
+      <Filter>소스 파일\Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="FigureSettings.cpp">
       <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
   </ItemGroup>

@@ -59,7 +59,7 @@ public:
 		ELLIPSE			= ID_INSERT_ELLIPSE,	// 타원 버튼
 		RECTANGLE		= ID_INSERT_RECTANGLE,	// 사각형 버튼
 		STRING			= ID_INSERT_STRING,		// 문자열 버튼
-		POLYGON			= ID_INSERT_POLYGON,	// 삼각형 버튼
+		POLYGON			= ID_INSERT_POLYGON,	// 다각형 버튼
 		CLOSEDCURVE		= ID_INSERT_CLOSEDCURVE	// 도형 버튼
 	};
 	InsertFlag m_InsertFlag;
@@ -78,16 +78,6 @@ public:
 
 	BOOL m_PolyCreatableFlag;	// CPolyLine 및 CPolygon 객체 생성 가능 상태 플래그
 	BOOL m_EditPointFlag;
-
-	//int m_mode;
-	
-	//CClientDC* m_pDC;
-	//Graphics& m_pGraphics;
-
-	// 더블 버퍼링을 위한 변수들
-	//CDC* m_psMemDC;
-	//CBitmap* m_psBitmap;
-	//CBitmap* m_psOldBitmap;
 
 // 작업입니다.
 public:

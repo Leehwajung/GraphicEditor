@@ -540,7 +540,7 @@ BEGIN
     ID_INSERT_ELLIPSE       "타원을 그립니다.\n타원"
     ID_INSERT_RECTANGLE     "직사각형을 그립니다.\n사각형"
     ID_INSERT_STRING        "문자열을 삽입합니다.\n문자열"
-    ID_INSERT_POLYGON       "삼각형을 그립니다.\n삼각형"
+    ID_INSERT_POLYGON       "다각형을 그립니다.\n다각형"
     ID_INSERT_CLOSEDCURVE   "특별한 형태의 도형을 그립니다.\n특별한 도형"
     ID_ARRANGE_ORDER        "개체의 순서를 변경합니다.\n개체 순서"
     ID_ARRANGE_BRING_FRONT  "선택한 개체를 다른 모든 개체 앞으로 가져옵니다.\n맨 앞으로 가져오기"

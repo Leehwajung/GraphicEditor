@@ -58,6 +58,9 @@ protected:
 
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+public:
+	afx_msg void OnContextDrawing();
+	afx_msg void OnUpdateContextDrawing(CCmdUI *pCmdUI);
 };
 
 

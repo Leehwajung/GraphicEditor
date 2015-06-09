@@ -108,6 +108,7 @@
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FigureProperties.h" />
     <ClInclude Include="FigurePtrList.h" />
+    <ClInclude Include="FigureSettings.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graphic Editor Doc.h" />
     <ClInclude Include="Graphic Editor View.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="FigureProperties.cpp" />
     <ClCompile Include="FigurePtrList.cpp" />
+    <ClCompile Include="FigureSettings.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="Graphic Editor Doc.cpp" />
     <ClCompile Include="Graphic Editor View Commands.cpp" />
