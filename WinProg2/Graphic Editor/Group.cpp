@@ -34,7 +34,8 @@ CGroup::CGroup(IN CSelectedFigureArray& selectedFigureArray)
 	for (int i = 0; i < size; i++) {
 		figure = figurePtrList->GetAt(positionArray[i]);		// 전체 리스트에서 개체를 가져옴
 		m_FiguresList.AddTail(figure);						// 그룹의 리스트에 개체를 저장
-		m_Area.Intersect(figure->getArea());					// 그룹의 영역에 개체의 영역을 합침
+
+		RectF::Union(m_Area, m_Area, figure->getArea());		// 그룹의 영역에 개체의 영역을 합침
 		figurePtrList->RemoveAt(positionArray[i]);			// 전체 리스트에서 원소를 삭제
 	}
 
@@ -183,10 +184,10 @@ BOOL CGroup::create(void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	m_Area = NULLRectF;
+	m_Area = m_FiguresList.GetAt(m_FiguresList.GetHeadPosition())->getArea();
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
 		m_FiguresList.GetAt(pos)->move(originPoint, targetPoint, moveFlag);
-		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
+		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 }
 
@@ -232,8 +233,9 @@ void CGroup::unGroup(OUT CFigurePtrList& figurePtrList)
 }
 
 // 해제
-// 그룹을 해제하고 그룹 개체를 삭제
+// 그룹을 해제
 // - OUT 매개변수
+//		POSITION position: 해제될 그룹이 존재하는 포지션
 //		CSelectedFigureArray& selectedFigureArray: 그룹에 해당하는 선택 개체 배열
 void CGroup::unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFigureArray)
 {
@@ -244,6 +246,10 @@ void CGroup::unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFig
 		figurePtrList->InsertAfter(position, m_FiguresList.GetAt(pos));		// 그룹의 개체를 전체 리스트에 등록
 	}
 
+	selectedFigureArray.deselect(position);
+
+
+
 	POSITION pos = position;
 	m_FiguresList.GetNext(pos);
 	for (int i = 0; i < m_FiguresList.GetSize(); i++) {
@@ -251,6 +257,7 @@ void CGroup::unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFig
 		m_FiguresList.GetNext(pos);
 	}
 
+	figurePtrList->deleteAt(position);
 	m_FiguresList.RemoveAll();
 }
 

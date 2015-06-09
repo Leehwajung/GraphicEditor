@@ -94,7 +94,7 @@ public:
 	// 해제
 	// 그룹을 해제하고 그룹 개체를 삭제
 	// - OUT 매개변수
-	//		POSITION position: 해제된 그룹이 들어갈 포지션
+	//		POSITION position: 해제될 그룹이 존재하는 포지션
 	//		CSelectedFigureArray& selectedFigureArray: 그룹에 해당하는 선택 개체 배열
 	void unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFigureArray);
 

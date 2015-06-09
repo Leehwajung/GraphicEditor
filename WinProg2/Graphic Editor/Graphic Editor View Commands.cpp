@@ -56,7 +56,7 @@ void CGraphicEditorView::OnEditCopy()
 	if (m_SelectedFigures.hasOne()){//하나가 선택된 경우
 		// 선택된 도형을 m_BufferList에 복사한다.
 		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
-}
+	}
 
 	else // 다중 선택 case
 	{

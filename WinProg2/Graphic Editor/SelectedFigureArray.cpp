@@ -209,7 +209,7 @@ void CSelectedFigureArray::unGroup()
 		figure = m_FigurePtrList->GetAt(m_FigurePosArray[i]);
 
 		if (figure->IsKindOf(RUNTIME_CLASS(CGroup))) {
-			((CGroup*)figure)->unGroup(m_FigurePosArray[i] , * this);
+			((CGroup*)figure)->unGroup(m_FigurePosArray[i] , *this);
 		}
 	}
 }
