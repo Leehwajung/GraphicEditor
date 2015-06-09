@@ -65,6 +65,13 @@ void CGraphicEditorView::OnEditCopy()
 	//
 }
 
+void CGraphicEditorView::OnUpdateEditCopy(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getCopyableFlag());
+}
+
 void CGraphicEditorView::OnEditCut()
 {
 	clearInsertFlag();
@@ -81,6 +88,13 @@ void CGraphicEditorView::OnEditCut()
 	pDoc->m_FiguresList.deleteAt(deletePos);//원본 리스트에서 삭제
 
 	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
+}
+
+void CGraphicEditorView::OnUpdateEditCut(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getCopyableFlag());
 }
 
 //void CGraphicEditorView::OnEditFind()
@@ -101,10 +115,24 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	Invalidate();
 }
 
+void CGraphicEditorView::OnUpdateEditPaste(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getPastableFlag());
+}
+
 void CGraphicEditorView::OnEditDelete()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+void CGraphicEditorView::OnUpdateEditDelete(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getDeletableFlag());
 }
 
 //void CGraphicEditorView::OnEditRepeat()
@@ -307,6 +335,13 @@ void CGraphicEditorView::OnArrangeGrouping()
 	Invalidate();
 }
 
+void CGraphicEditorView::OnUpdateArrangeGrouping(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getGroupableFlag() || getUngroupableFlag());
+}
+
 void CGraphicEditorView::OnArrangeGroup()
 {
 	clearInsertFlag();
@@ -326,6 +361,8 @@ void CGraphicEditorView::OnArrangeGroup()
 void CGraphicEditorView::OnUpdateArrangeGroup(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getGroupableFlag());
 }
 
 void CGraphicEditorView::OnArrangeUngroup()
@@ -351,6 +388,8 @@ void CGraphicEditorView::OnArrangeUngroup()
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getUngroupableFlag());
 }
 
 void CGraphicEditorView::OnZoomIn()

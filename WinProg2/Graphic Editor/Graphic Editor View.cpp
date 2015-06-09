@@ -65,10 +65,14 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClear)
 	//ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditClearAll)
 	ON_COMMAND(ID_EDIT_COPY, &CGraphicEditorView::OnEditCopy)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, &CGraphicEditorView::OnUpdateEditCopy)
 	ON_COMMAND(ID_EDIT_CUT, &CGraphicEditorView::OnEditCut)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, &CGraphicEditorView::OnUpdateEditCut)
 	//ON_COMMAND(ID_EDIT_PASTE, &CGraphicEditorView::OnEditFind)
 	ON_COMMAND(ID_EDIT_PASTE, &CGraphicEditorView::OnEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_PASTE, &CGraphicEditorView::OnUpdateEditPaste)
 	ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditDelete)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CGraphicEditorView::OnUpdateEditDelete)
 	//ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditRepeat)
 	//ON_COMMAND(ID_EDIT_DELETE, &CGraphicEditorView::OnEditReplace)
 	ON_COMMAND(ID_EDIT_SELECT_ALL, &CGraphicEditorView::OnEditSelectAll)
@@ -99,6 +103,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnArrangeBringForward)
 	ON_COMMAND(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnArrangeSendBackward)
 	ON_COMMAND(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnArrangeGrouping)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnUpdateArrangeGrouping)
 	ON_COMMAND(ID_ARRANGE_GROUP, &CGraphicEditorView::OnArrangeGroup)
 	ON_UPDATE_COMMAND_UI(ID_ARRANGE_GROUP, &CGraphicEditorView::OnUpdateArrangeGroup)
 	ON_COMMAND(ID_ARRANGE_UNGROUP, &CGraphicEditorView::OnArrangeUngroup)
@@ -1022,6 +1027,42 @@ void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFla
 	}
 }
 
+BOOL CGraphicEditorView::getCopyableFlag()
+{
+	return !m_SelectedFigures.isEmpty();
+}
+
+BOOL CGraphicEditorView::getPastableFlag()
+{
+	return !m_BufferList.IsEmpty();
+}
+
+BOOL CGraphicEditorView::getDeletableFlag()
+{
+	return !m_SelectedFigures.isEmpty();
+}
+
+BOOL CGraphicEditorView::getGroupableFlag()
+{
+	return m_SelectedFigures.getSize() > 1;
+}
+
+BOOL CGraphicEditorView::getUngroupableFlag()
+{
+	CFigurePtrList* figurePtrList = m_SelectedFigures.getFigurePtrList();
+	CFigure* figure;
+	const POSITION* positions = m_SelectedFigures.getData();
+
+	for (int i = 0; i < m_SelectedFigures.getSize(); i++) {
+		figure = figurePtrList->GetAt(positions[i]);
+
+		if (figure->IsKindOf(RUNTIME_CLASS(CGroup))) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
 
 /*** CGraphicEditorView ¿Œº‚ ***/
 
