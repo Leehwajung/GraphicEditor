@@ -124,6 +124,7 @@ CGraphicEditorView::CGraphicEditorView()
 	m_InsertFlag = NONE;
 	m_PolyCreatableFlag = FALSE;
 	m_CreateBuffer = NULL;
+	m_EditPointFlag = FALSE;
 	//// m_OperationModeFlag = SELECTABLE;
 }
 
@@ -186,7 +187,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// 선택된 개체의 선택 영역 및 핸들을 그림
 	if (!m_SelectedFigures.isEmpty()) {
-		 m_SelectedFigures.drawArea(graphicsCanvas);
+		m_SelectedFigures.drawArea(graphicsCanvas, m_EditPointFlag);
 	}
 
 	// 환경에 따른 그리기
@@ -275,11 +276,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 						CFigure* figure = m_SelectedFigures.getOneFigure();
 
 						if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (((CStrap*)figure)->GetEditFlag() == TRUE)
+							if (m_EditPointFlag == TRUE)
 							((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (((CStrap*)figure)->GetEditFlag() == TRUE)
+							if (m_EditPointFlag== TRUE)
 							((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else {								// 개체 한 개 크기 변경
@@ -396,7 +397,6 @@ void CGraphicEditorView::OnDestroy()
 
 void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	
 	if (!m_MouseButtonFlag && !(nFlags & MK_RBUTTON)) {
 
 		m_CurrPoint = CGlobal::CPointToPointF(point);
@@ -416,15 +416,14 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
 				// Invalidate 호출 (선택 영역을 그리기 위해)
 				CFigure* figure;
-				if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
-					figure = m_SelectedFigures.getOneFigure();
-					((CStrap*)figure)->SetEditFlag(FALSE);
-				}
+				m_EditPointFlag = FALSE;
 			} break;
-
+            
 			case CGraphicEditorView::SELECTED: {
 				m_selectedPosition = m_SelectedFigures.contains(m_CurrPoint);	// 개체 내 선택 위치를 가져옴
+
 				if (m_selectedPosition == CFigure::OUTSIDE) {
+					m_EditPointFlag = FALSE;
 					if ((nFlags & MK_SHIFT) || (nFlags & MK_CONTROL)) {				// shift나 control을 누르고 드래그하면
 						// 현재 리스트를 삭제하지 않고 추가
 					}
@@ -594,7 +593,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
-				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap)) && ((CStrap*)m_SelectedFigures.getOneFigure())->GetEditFlag() == TRUE) {
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap)) && m_EditPointFlag== TRUE) {
 					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else {

@@ -91,8 +91,3 @@ void CPencil::destroy() {
 	}
 	//invalidate 다른 것들은 일단 보류
 }
-
-void CPencil::drawArea(IN Graphics& graphics) {
-
-	CFigure::drawArea(graphics);
-}
