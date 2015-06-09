@@ -112,9 +112,12 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ZOOM_OUT, &CGraphicEditorView::OnZoomOut)
 	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
-	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
-	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
 	ON_COMMAND(ID_POINTMOVE, &CGraphicEditorView::OnPointmove)
+	ON_UPDATE_COMMAND_UI(ID_POINTMOVE, &CGraphicEditorView::OnUpdatePointmove)
+	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
+	ON_UPDATE_COMMAND_UI(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolylineIndividualDelete)
+	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
+	ON_UPDATE_COMMAND_UI(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolylineIndividualInsert)
 END_MESSAGE_MAP()
 
 
@@ -446,7 +449,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 							HideCaret();
 						m_SelectedFigures.deselectAll();		// SELECTABLE 상태로 전환
 					}
-					m_selectedPosition = m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);
+					m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);
 				}
 			} break;
 
@@ -548,6 +551,12 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 			} break;
 
 			//case CGraphicEditorView::SELECTED: {
+			//	if (m_SelectedFigures.hasOne()) {
+			//		m_selectedPosition = m_SelectedFigures.getOneFigure()->pointInFigure(m_CurrPoint);
+			//	}
+			//	else if (!m_SelectedFigures.isEmpty()) {
+			//		m_selectedPosition = m_SelectedFigures.contains(m_CurrPoint);
+			//	}
 			//} break;
 
 			/* CREATE 상태 */
@@ -700,11 +709,8 @@ void CGraphicEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 		m_CurrPoint = CGlobal::CPointToPointF(point);
 		m_MouseVKFlags = nFlags;
 
-
 		ClientToScreen(&point);
 		OnContextMenu(this, point);
-
-
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
 		m_RButtonPoint = m_CurrPoint;	// 이벤트 발생 좌표
@@ -1067,6 +1073,30 @@ BOOL CGraphicEditorView::getUngroupableFlag()
 	return FALSE;
 }
 
+BOOL CGraphicEditorView::getLineSelectedFlag()
+{
+	if (m_SelectedFigures.hasOne()) {
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CLine))) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL CGraphicEditorView::getPolySelectedFlag()
+{
+	if (m_SelectedFigures.hasOne()) {
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))
+			|| m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+
 /*** CGraphicEditorView 인쇄 ***/
 
 void CGraphicEditorView::OnFilePrintPreview()
@@ -1115,3 +1145,4 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
+

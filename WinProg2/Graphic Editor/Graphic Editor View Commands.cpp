@@ -470,6 +470,40 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
+
+void CGraphicEditorView::OnPointmove()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	m_EditPointFlag = m_EditPointFlag ? FALSE : TRUE;
+	
+	Invalidate();
+}
+
+void CGraphicEditorView::OnUpdatePointmove(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(getLineSelectedFlag() || getPolySelectedFlag());
+	pCmdUI->SetText(m_EditPointFlag ? _T("점 편집 해제") : _T("점 편집"));
+}
+
+void CGraphicEditorView::OnPolylineIndividualInsert()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
+		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
+		Invalidate();
+	}
+}
+
+void CGraphicEditorView::OnUpdatePolylineIndividualInsert(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(m_EditPointFlag /*&& (m_selectedPosition == CFigure::INSIDE) */&& getPolySelectedFlag());
+}
+
 void CGraphicEditorView::OnPolylineIndividualDelete()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
@@ -483,22 +517,12 @@ void CGraphicEditorView::OnPolylineIndividualDelete()
 			(polyLine)->RemovePoint(m_RButtonPoint);
 		Invalidate();
 	}
-
 }
 
-void CGraphicEditorView::OnPolylineIndividualInsert()
+void CGraphicEditorView::OnUpdatePolylineIndividualDelete(CCmdUI *pCmdUI)
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
-		Invalidate();
-	}
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
+	pCmdUI->Enable(m_EditPointFlag /*&& (m_selectedPosition & CFigure::ONHANDLE) */&& getPolySelectedFlag());
 }
 
-
-void CGraphicEditorView::OnPointmove()
-{
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	m_EditPointFlag = TRUE;
-	Invalidate();
-}

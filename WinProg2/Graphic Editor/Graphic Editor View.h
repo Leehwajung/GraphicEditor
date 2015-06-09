@@ -102,6 +102,8 @@ public:
 	BOOL getDeletableFlag();
 	BOOL getGroupableFlag();
 	BOOL getUngroupableFlag();
+	BOOL getLineSelectedFlag();
+	BOOL getPolySelectedFlag();
 	
 // 재정의입니다.
 public:
@@ -199,10 +201,12 @@ protected:
 	afx_msg void OnZoomOut();
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
-
-	afx_msg void OnPolylineIndividualDelete();
-	afx_msg void OnPolylineIndividualInsert();
 	afx_msg void OnPointmove();
+	afx_msg void OnUpdatePointmove(CCmdUI *pCmdUI);
+	afx_msg void OnPolylineIndividualInsert();
+	afx_msg void OnUpdatePolylineIndividualInsert(CCmdUI *pCmdUI);
+	afx_msg void OnPolylineIndividualDelete();
+	afx_msg void OnUpdatePolylineIndividualDelete(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
 };
 
