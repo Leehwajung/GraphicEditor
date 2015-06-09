@@ -31,6 +31,7 @@ CGroup::CGroup(IN CSelectedFigureArray& selectedFigureArray)
 	int size = selectedFigureArray.getSize();
 	CFigure* figure;
 
+	m_Area = figurePtrList->GetAt(positionArray[0])->getArea();
 	for (int i = 0; i < size; i++) {
 		figure = figurePtrList->GetAt(positionArray[i]);		// 전체 리스트에서 개체를 가져옴
 		m_FiguresList.AddTail(figure);						// 그룹의 리스트에 개체를 저장
@@ -75,8 +76,9 @@ BOOL CGroup::create(IN CFigurePtrList& figurePtrList)
 {
 	m_FiguresList = figurePtrList;
 
+	m_Area = m_FiguresList.GetHead()->getArea();
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
+		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 
 	return FALSE;
@@ -96,6 +98,7 @@ BOOL CGroup::create(IN CSelectedFigureArray& selectedFigureArray)
 	int size = selectedFigureArray.getSize();
 	CFigure* figure;
 
+	m_Area = figurePtrList->GetAt(positionArray[0])->getArea();
 	for (int i = 0; i < size; i++) {
 		figure = figurePtrList->GetAt(positionArray[i]);		// 전체 리스트에서 개체를 가져옴
 		m_FiguresList.AddTail(figure);						// 그룹의 리스트에 개체를 저장
@@ -132,13 +135,14 @@ BOOL CGroup::create(IN const int count, IN CFigure* figure1, ...)
 
 	CFigure* figure;
 	
+	m_Area = figure1->getArea();
 	for (int i = 1; i < count; i++) {
 		figure = va_arg(vaList, CFigure*);
 		if (!figure) {
 			return TRUE;
 		}
 		m_FiguresList.AddTail(figure);
-		m_Area.Intersect(figure->getArea());
+		RectF::Union(m_Area, m_Area, figure->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 
 	va_end(vaList);
@@ -162,13 +166,22 @@ BOOL CGroup::create(void* param1, ...)
 	CFigure* figure;
 
 	m_FiguresList.RemoveAll();
-	for (int i = 0; i < count; i++) {
+
+	figure = va_arg(vaList, CFigure*);
+	m_Area = figure->getArea();
+	if (!figure) {
+		return TRUE;
+	}
+	m_FiguresList.AddTail(figure);
+	RectF::Union(m_Area, m_Area, figure->getArea());		// 그룹의 영역에 개체의 영역을 합침
+
+	for (int i = 1; i < count; i++) {
 		figure = va_arg(vaList, CFigure*);
 		if (!figure) {
 			return TRUE;
 		}
 		m_FiguresList.AddTail(figure);
-		m_Area.Intersect(figure->getArea());
+		RectF::Union(m_Area, m_Area, figure->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 
 	va_end(vaList);
@@ -184,7 +197,7 @@ BOOL CGroup::create(void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	m_Area = m_FiguresList.GetAt(m_FiguresList.GetHeadPosition())->getArea();
+	m_Area = m_FiguresList.GetHead()->getArea();
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
 		m_FiguresList.GetAt(pos)->move(originPoint, targetPoint, moveFlag);
 		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
@@ -200,13 +213,13 @@ void CGroup::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag move
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 void CGroup::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
-	m_Area = NULLRectF;
 	PointF handlePoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &handlePoint);
 
+	m_Area = m_FiguresList.GetHead()->getArea();
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
 		m_FiguresList.GetAt(pos)->resize(selectedHandle, targetPoint, resizeFlag, &handlePoint);
-		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
+		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 }
 
@@ -293,10 +306,10 @@ CFigure::Position CGroup::pointInFigure(IN PointF point)
 // 개체 영역 갱신
 RectF CGroup::resetArea()
 {
-	m_Area = NULLRectF;
+	m_Area = m_FiguresList.GetHead()->getArea();
 
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		m_Area.Intersect(m_FiguresList.GetAt(pos)->resetArea());
+		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 
 	return m_Area;
@@ -415,7 +428,8 @@ void CGroup::setFiguresList(IN CFigurePtrList& figurePtrList)
 {
 	m_FiguresList = figurePtrList;
 
+	m_Area = m_FiguresList.GetHead()->getArea();
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
-		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
+		RectF::Union(m_Area, m_Area, m_FiguresList.GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 }

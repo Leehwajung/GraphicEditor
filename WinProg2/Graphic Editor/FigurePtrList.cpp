@@ -171,20 +171,20 @@ void CFigurePtrList::drawArea(IN Graphics& graphics)
 
 RectF CFigurePtrList::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag/* = CFigure::FREEMOVE*/)
 {
-	RectF drawnArea;
+	RectF drawnArea = this->GetHead()->getArea();
 	for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
 		this->GetAt(pos)->moving(graphics, originPoint, targetPoint, moveFlag);
-		drawnArea.Intersect(this->GetAt(pos)->getArea());
+		RectF::Union(drawnArea, drawnArea, this->GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 	return drawnArea;
 }
 
 RectF CFigurePtrList::resizing(IN Graphics& graphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = CFigure::FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
-	RectF drawnArea;
+	RectF drawnArea = this->GetHead()->getArea();
 	for (POSITION pos = this->GetTailPosition(); pos; this->GetPrev(pos)) {
 		this->GetAt(pos)->resizing(graphics, selectedHandle, targetPoint, resizeFlag, anchorPoint);
-		drawnArea.Intersect(this->GetAt(pos)->getArea());
+		RectF::Union(drawnArea, drawnArea, this->GetAt(pos)->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 	return drawnArea;
 }

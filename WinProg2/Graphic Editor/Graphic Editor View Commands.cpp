@@ -52,7 +52,7 @@ void CGraphicEditorView::OnEditCopy()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CGraphicEditorDoc* pDoc = GetDocument();
 	CFigure* figure;
-
+	
 	m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
 
 	/* 단, m_FiguresList에는 계속 존재해야하므로 삭제하지 않음.*/
@@ -69,8 +69,8 @@ void CGraphicEditorView::OnEditCopy()
 		{
 			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
 			m_BufferList.AddTail(figure->clone());
-		}
 	}
+}
 }
 
 void CGraphicEditorView::OnEditCut()//잘라내기
@@ -93,7 +93,7 @@ void CGraphicEditorView::OnEditCut()//잘라내기
 		//정적 배열을 얻어옴
 		const POSITION* positionArray = m_SelectedFigures.getData();
 		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
-		{
+	{
 			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
 			m_BufferList.AddTail(figure->clone());
 			pDoc->m_FiguresList.RemoveAt(positionArray[i]);//원본 리스트에서 삭제
@@ -172,6 +172,9 @@ void CGraphicEditorView::OnEditSelectAll()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	m_SelectedFigures.selectAll();
+	Invalidate();
 }
 
 void CGraphicEditorView::OnEditUndo()
@@ -347,6 +350,10 @@ void CGraphicEditorView::OnArrangeGrouping()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
+	GetDocument()->m_FiguresList.AddHead(new CGroup(m_SelectedFigures));
+
+	Invalidate();
 }
 
 void CGraphicEditorView::OnArrangeGroup()

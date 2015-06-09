@@ -85,6 +85,12 @@ void CSelectedFigureArray::select()
 // 포지션의 개체 선택
 void CSelectedFigureArray::select(POSITION position)
 {
+	for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
+		if (m_FigurePosArray[i] == position) {
+			return;		// 동일한 포지션이 존재하면 종료
+		}
+	}
+
 	m_FigurePosArray.Add(position);
 }
 
@@ -93,6 +99,12 @@ CFigure::Position CSelectedFigureArray::select(PointF point)	// getFigure
 {
 	for (POSITION pos = m_FigurePtrList->GetHeadPosition(); pos; m_FigurePtrList->GetNext(pos)) {
 		if (m_FigurePtrList->GetAt(pos)->pointInFigure(point) == CFigure::INSIDE) {
+			for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
+				if (m_FigurePosArray[i] == pos) {
+					return CFigure::INSIDE;;		// 동일한 포지션이 존재하면 종료
+				}
+			}
+
 			m_FigurePosArray.Add(pos);
 
 			return CFigure::INSIDE;
@@ -107,6 +119,12 @@ void CSelectedFigureArray::select(RectF rect)					// getFigures
 {
 	for (POSITION pos = m_FigurePtrList->GetHeadPosition(); pos; m_FigurePtrList->GetNext(pos)) {
 		if (m_FigurePtrList->GetAt(pos)->figureInRect(rect)) {
+			for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
+				if (m_FigurePosArray[i] == pos) {
+					break;		// 동일한 포지션이 존재하면 종료
+				}
+			}
+
 			m_FigurePosArray.Add(pos);
 		}
 	}
@@ -115,7 +133,10 @@ void CSelectedFigureArray::select(RectF rect)					// getFigures
 // 전체 개체 선택
 void CSelectedFigureArray::selectAll()
 {
+	m_FigurePosArray.RemoveAll();
+
 	for (POSITION pos = m_FigurePtrList->GetHeadPosition(); pos; m_FigurePtrList->GetNext(pos)) {
+
 		m_FigurePosArray.Add(pos);
 	}
 }
@@ -232,10 +253,10 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag
 			((CStrap*)figure)->drawLineHandle(graphics);
 		}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CLine))) {
-		//	return ((CLine*)figure)->drawArea(graphics);
+		//	((CLine*)figure)->drawArea(graphics);
 		//}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		//	return ((CPolyLine*)figure)->drawArea(graphics);
+		//	((CPolyLine*)figure)->drawArea(graphics);
 		//}
 		else {
 			figure->drawArea(graphics);
@@ -251,10 +272,10 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag
 // 선택 개체 이동 그리기
 RectF CSelectedFigureArray::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag/* = CFigure::FREEMOVE*/)
 {
-	RectF drawnArea;
+	RectF drawnArea = m_FigurePtrList->GetAt(m_FigurePosArray[0])->getArea();
 	for (int i = m_FigurePosArray.GetSize() - 1; i >= 0; i--) {
 		m_FigurePtrList->GetAt(m_FigurePosArray[i])->moving(graphics, originPoint, targetPoint, moveFlag);
-		drawnArea.Intersect(m_FigurePtrList->GetAt(m_FigurePosArray[i])->getArea());
+		RectF::Union(drawnArea, drawnArea, m_FigurePtrList->GetAt(m_FigurePosArray[i])->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 	return drawnArea;
 }
@@ -262,10 +283,10 @@ RectF CSelectedFigureArray::moving(IN Graphics& graphics, IN PointF originPoint,
 // 선택 개체 크기 변경 그리기
 RectF CSelectedFigureArray::resizing(IN Graphics& graphics, IN CFigure::Position selectedHandle, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag/* = CFigure::FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
-	RectF drawnArea;
+	RectF drawnArea = m_FigurePtrList->GetAt(m_FigurePosArray[0])->getArea();
 	for (int i = m_FigurePosArray.GetSize() - 1; i >= 0; i--) {
 		m_FigurePtrList->GetAt(m_FigurePosArray[i])->resizing(graphics, selectedHandle, targetPoint, resizeFlag, anchorPoint);
-		drawnArea.Intersect(m_FigurePtrList->GetAt(m_FigurePosArray[i])->getArea());
+		RectF::Union(drawnArea, drawnArea, m_FigurePtrList->GetAt(m_FigurePosArray[i])->getArea());		// 그룹의 영역에 개체의 영역을 합침
 	}
 	return drawnArea;
 }

@@ -180,14 +180,23 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	// GDI+ Ref.	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533799(v=vs.85).aspx
 	// GDI+ Classes	https://msdn.microsoft.com/en-us/library/windows/desktop/ms533958(v=vs.85).aspx
 
-	// 현재까지 생성된 모든 개체를 그림
+	// 현재까지 생성된 모든 개체 그리기
 	if (!pDoc->m_FiguresList.IsEmpty()) {
 		pDoc->m_FiguresList.draw(graphicsCanvas);
 	}
 
-	// 선택된 개체의 선택 영역 및 핸들을 그림
+	// 선택된 개체의 선택 영역 및 핸들 그리기
 	if (!m_SelectedFigures.isEmpty()) {
 		m_SelectedFigures.drawArea(graphicsCanvas, m_EditPointFlag);
+	}
+
+	// 드래그 영역 그리기
+	if (m_selectedPosition == CFigure::OUTSIDE) {
+		SolidBrush brush(Color(30, 30, 30, 30));
+		Pen pen(Color(50, 50, 50, 50));
+		
+		graphicsCanvas.FillRectangle(&brush, m_SelectArea);
+		graphicsCanvas.DrawRectangle(&pen, m_SelectArea);
 	}
 
 	// 환경에 따른 그리기
@@ -277,11 +286,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 						if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
 							if (m_EditPointFlag == TRUE)
-							((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+								((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
 							if (m_EditPointFlag== TRUE)
-							((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+								((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else {								// 개체 한 개 크기 변경
 							figure->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
@@ -418,7 +427,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				CFigure* figure;
 				m_EditPointFlag = FALSE;
 			} break;
-            
+
 			case CGraphicEditorView::SELECTED: {
 				m_selectedPosition = m_SelectedFigures.contains(m_CurrPoint);	// 개체 내 선택 위치를 가져옴
 
@@ -527,8 +536,11 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 		switch (getOperationModeFlag())
 		{
-			//case CGraphicEditorView::SELECTABLE: {
-			//} break;
+			case CGraphicEditorView::SELECTABLE: {
+				m_SelectedFigures.select(m_SelectArea);		// 전체 개체 리스트(그룹)을 순차로 순회
+				m_selectedPosition = CFigure::OUTSIDE;
+				m_SelectArea = NULLRectF;
+			} break;
 
 			//case CGraphicEditorView::SELECTED: {
 			//} break;
@@ -593,7 +605,8 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
-				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap)) && m_EditPointFlag== TRUE) {
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
+					if (m_EditPointFlag == TRUE)
 					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else {
@@ -725,8 +738,25 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 	switch (getOperationModeFlag())
 	{
-	//case CGraphicEditorView::SELECTABLE:
-	//	break;
+	case CGraphicEditorView::SELECTABLE:
+		if (m_MouseButtonFlag == LBUTTON) {
+
+			PointF startingPoint = m_LButtonPoint;
+			SizeF rectSize;
+			rectSize.Width = abs(m_LButtonPoint.X - m_CurrPoint.X);
+			rectSize.Height = abs(m_LButtonPoint.Y - m_CurrPoint.Y);
+
+			if (m_LButtonPoint.X > m_CurrPoint.X) {
+				startingPoint.X = m_CurrPoint.X;
+			}
+
+			if (m_LButtonPoint.Y > m_CurrPoint.Y) {
+				startingPoint.Y = m_CurrPoint.Y;
+			}
+
+			m_SelectArea = RectF(startingPoint, rectSize);
+		}
+		//break;
 
 	//case CGraphicEditorView::SELECTED:
 	//	break;
@@ -802,6 +832,14 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_CANCEL:
 	case VK_BACK:
 		cancelInsert();
+		break;
+
+	case 'A':
+	case 'a':
+		if (nFlags & 13) {
+			m_SelectedFigures.selectAll();
+			Invalidate();
+		}
 		break;
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);

@@ -174,26 +174,8 @@ void CPolyLine::InsertPoint(IN PointF originPoint){
 }
 
 /* 선 크기(길이) 변경 */
-void CPolyLine::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	/*m_Area.;
+void CPolyLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 
-	PointF  point = m_PointsList.GetHead();
-	POSITION pos = m_PointsList.GetHeadPosition(), prevpos = m_PointsList.GetHeadPosition();
-
-	while (pos != NULL){
-		point = m_PointsList.GetNext(pos);
-
-		RectF handleRect;
-		handleRect = getHandleRect(point);
-
-		if (handleRect.Contains(originPoint)) {
-			m_PointsList.SetAt(prevpos, targetPoint);
-			break;
-		}
-
-		prevpos = pos;
-	}
-	resetArea();*/
 }
 
 // Menu Item
@@ -365,12 +347,13 @@ RectF CPolyLine::pointMoving(Graphics& graphics, IN PointF originPoint, IN Point
 }
 
 /* 크기 변경 그리기 */
-RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
-	RectF drawnArea;
+RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 
 	// 그리기 용 펜은 이 펜을 하용하도록: CGlobal::crateIngPen(m_OutlinePen)
+	RectF drawnArea;
 	
 	return drawnArea;
+
 }
 
 /* 영역 (핸들) 그리기 */
