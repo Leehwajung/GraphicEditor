@@ -193,10 +193,10 @@ protected:
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
 	afx_msg void OnPointmove();
 	afx_msg void OnUpdatePointmove(CCmdUI *pCmdUI);
-	afx_msg void OnPolylineIndividualInsert();
-	afx_msg void OnUpdatePolylineIndividualInsert(CCmdUI *pCmdUI);
-	afx_msg void OnPolylineIndividualDelete();
-	afx_msg void OnUpdatePolylineIndividualDelete(CCmdUI *pCmdUI);
+	afx_msg void OnPolyIndividualInsert();
+	afx_msg void OnUpdatePolyIndividualInsert(CCmdUI *pCmdUI);
+	afx_msg void OnPolyIndividualDelete();
+	afx_msg void OnUpdatePolyIndividualDelete(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
 };
 

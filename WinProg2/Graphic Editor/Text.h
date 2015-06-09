@@ -36,6 +36,7 @@ public:
 	// OnDraw
 	virtual void draw(IN Graphics& graphics);//CpaintDC 사용
 
+	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
 	// m_String에 문자 추가
 	void addChar(TCHAR newchar);
@@ -70,6 +71,8 @@ private:
 	BOOL character_mode = FALSE;	// caret
 	SizeF rectSize;
 	POINT cur;
+	PointF st_p;
+	int count=0;
 };
 
 //Status DrawString(

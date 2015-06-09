@@ -55,9 +55,9 @@
 #define ID_CONTEXT_STRING               32863
 #define ID_32864                        32864
 #define ID_POLYLINE_DELETE              32865
-#define ID_POLYLINE_INDIVIDUAL_DELETE   32866
+#define ID_POLY_INDIVIDUAL_DELETE   32866
 #define ID_32867                        32867
-#define ID_POLYLINE_INDIVIDUAL_INSERT   32868
+#define ID_POLY_INDIVIDUAL_INSERT   32868
 #define ID_32869                        32869
 #define ID_POINTMOVE                    32870
 #define ID_EDIT_DELETE                  57638
