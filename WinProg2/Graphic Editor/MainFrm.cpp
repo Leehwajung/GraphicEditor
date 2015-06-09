@@ -32,6 +32,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
 	ON_COMMAND(ID_VIEW_PROPERTIESWND, &CMainFrame::OnViewPropertiesWindow)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_PROPERTIESWND, &CMainFrame::OnUpdateViewPropertiesWindow)
+	ON_COMMAND(ID_CONTEXT_DRAWING, &CMainFrame::OnContextDrawing)
+	ON_UPDATE_COMMAND_UI(ID_CONTEXT_DRAWING, &CMainFrame::OnUpdateContextDrawing)
 END_MESSAGE_MAP()
 
 // CMainFrame 생성/소멸
@@ -247,3 +249,16 @@ void CMainFrame::OnUpdateViewPropertiesWindow(CCmdUI* pCmdUI)
 	pCmdUI->Enable(TRUE);
 }
 
+
+
+void CMainFrame::OnContextDrawing()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CMainFrame::OnUpdateContextDrawing(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable();
+}

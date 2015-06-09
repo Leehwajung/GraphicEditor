@@ -114,10 +114,10 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
 	ON_COMMAND(ID_POINTMOVE, &CGraphicEditorView::OnPointmove)
 	ON_UPDATE_COMMAND_UI(ID_POINTMOVE, &CGraphicEditorView::OnUpdatePointmove)
-	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
-	ON_UPDATE_COMMAND_UI(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolylineIndividualDelete)
-	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
-	ON_UPDATE_COMMAND_UI(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolylineIndividualInsert)
+	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
+	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
+	ON_COMMAND(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolyIndividualInsert)
+	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 END_MESSAGE_MAP()
 
 
@@ -1156,7 +1156,7 @@ BOOL CGraphicEditorView::getLineSelectedFlag()
 BOOL CGraphicEditorView::getPolySelectedFlag()
 {
 	if (m_SelectedFigures.hasOne()) {
-		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)) && !m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPencil))
 			|| m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))) {
 			return TRUE;
 		}
