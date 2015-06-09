@@ -393,3 +393,15 @@ void CGraphicEditorView::OnPolylineIndividualInsert()
 		Invalidate();
 	}
 }
+
+
+void CGraphicEditorView::OnPointmove()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CFigure* figure;
+	if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
+		figure = m_SelectedFigures.getOneFigure();
+		((CStrap*)figure)->SetEditFlag(TRUE);
+	}
+	Invalidate();
+}

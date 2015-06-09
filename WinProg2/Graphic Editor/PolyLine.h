@@ -137,6 +137,8 @@ public:
 
 	virtual void drawArea(IN Graphics& graphics);
 
+	virtual void drawLineHandle(IN Graphics& graphics);
+
 protected:
 	/** 개체 영역 관리 **/
 	// 개체 영역 갱신

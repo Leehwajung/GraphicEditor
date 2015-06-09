@@ -249,6 +249,7 @@ BEGIN
         MENUITEM "붙여넣기(&P)\tCtrl+V",            ID_EDIT_PASTE
         MENUITEM "PolyLine 개별 좌표 삭제",           ID_POLYLINE_INDIVIDUAL_DELETE
         MENUITEM "PolyLine 개별 좌표 삽입 ",          ID_POLYLINE_INDIVIDUAL_INSERT
+        MENUITEM "점 편집",                        ID_POINTMOVE
     END
 END
 

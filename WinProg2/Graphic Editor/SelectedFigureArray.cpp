@@ -228,7 +228,12 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics)
 	if (hasOne()) {
 		CFigure* figure = getOneFigure();
 
-		if (figure->IsKindOf(RUNTIME_CLASS(CShape))) {
+
+		if (figure->IsKindOf(RUNTIME_CLASS(CStrap))){
+			if (((CStrap*)figure)->IsKindOf(RUNTIME_CLASS(CPencil)) == FALSE && ((CStrap*)figure)->GetEditFlag() == TRUE)
+				return((CStrap*)figure)->drawLineHandle(graphics);
+		}
+		else if (figure->IsKindOf(RUNTIME_CLASS(CShape))) {
 			return ((CShape*)figure)->drawArea(graphics);
 		}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CLine))) {

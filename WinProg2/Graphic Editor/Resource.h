@@ -58,6 +58,8 @@
 #define ID_POLYLINE_INDIVIDUAL_DELETE   32866
 #define ID_32867                        32867
 #define ID_POLYLINE_INDIVIDUAL_INSERT   32868
+#define ID_32869                        32869
+#define ID_POINTMOVE                    32870
 #define ID_EDIT_DELETE                  57638
 #define ID_IMAGE_CANVAS_SIZE            57690
 #define ID_INSERT_LINE                  57700
@@ -103,7 +105,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32869
+#define _APS_NEXT_COMMAND_VALUE         32871
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
