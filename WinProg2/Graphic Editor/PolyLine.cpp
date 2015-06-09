@@ -242,6 +242,21 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 		first_point = second_point;
 	}
 
+	// 3. m_Area의 Handle을 눌렀을 때 
+	RectF handleRect;
+
+	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+
+		getHandleRect((Position)handleIndex, &handleRect);
+		if (handleRect.Contains(point)) {
+			return (Position)handleIndex;
+		}
+	}
+
+	if (m_Area.Contains(point)) {
+		return INSIDE;
+	}
+
 	// 바깥 영역
 	return OUTSIDE;
 }
@@ -370,6 +385,7 @@ void CPolyLine::drawLineHandle(IN Graphics& graphics){
 	graphics.DrawLines(&pen, pointsArray.GetData(), pointsArray.GetSize());
 
 	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
+	CFigure::drawArea(graphics);
 }
 
 // 도형 작업 후에 호출
