@@ -328,6 +328,7 @@ void CGraphicEditorView::OnInsertPolygon()	// 삼각형 버튼
 {
 	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = POLYGON;			// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -491,8 +492,11 @@ void CGraphicEditorView::OnUpdatePointmove(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnPolylineIndividualInsert()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
+	if (m_SelectedFigures.hasOne()) {
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)))
+			((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
+		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon)))
+			((CPolygon*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
 		Invalidate();
 	}
 }
@@ -507,16 +511,27 @@ void CGraphicEditorView::OnUpdatePolylineIndividualInsert(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnPolylineIndividualDelete()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
-		CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
+	if (m_SelectedFigures.hasOne()) {
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
+			CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
 
-		if (polyLine->GetPointsList().GetSize() == 1){
-			polyLine->destroy();
+			if (polyLine->GetPointsList().GetSize() == 1){
+				polyLine->destroy();
+			}
+			else
+				(polyLine)->RemovePoint(m_RButtonPoint);
 		}
-		else 
-			(polyLine)->RemovePoint(m_RButtonPoint);
-	Invalidate();
-}
+		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
+			CPolygon* polygon = (CPolygon*)m_SelectedFigures.getOneFigure();
+
+			if (polygon->GetPointsList().GetSize() == 1){
+				polygon->destroy();
+			}
+			else
+				(polygon)->RemovePoint(m_RButtonPoint);
+		}
+		Invalidate();
+	}
 }
 
 void CGraphicEditorView::OnUpdatePolylineIndividualDelete(CCmdUI *pCmdUI)

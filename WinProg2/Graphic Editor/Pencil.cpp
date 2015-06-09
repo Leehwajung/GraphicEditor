@@ -32,7 +32,6 @@ CPencil::~CPencil()
 
 }
 
-
 CFigure* CPencil::clone(){
 	return new CPencil(m_OutlinePen,m_PointsList);
 }
