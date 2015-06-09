@@ -374,10 +374,6 @@ RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selcetedHandle, IN 
 }
 
 /* 영역 (핸들) 그리기 */
-void CPolyLine::drawArea(IN Graphics& graphics) {
-	CFigure::drawArea(graphics);
-}
-
 void CPolyLine::drawLineHandle(IN Graphics& graphics){
 	CArray <PointF, PointF&> pointsArray;
 

@@ -82,7 +82,7 @@ public:
 	void draw(IN Graphics& graphics);
 
 	// 선택 개체들의 선택 영역 그리기
-	void drawArea(IN Graphics& graphics);
+	void drawArea(IN Graphics& graphics, IN BOOL editPointFlag);
 
 	// 선택 개체 이동 그리기
 	RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN CFigure::MoveFlag moveFlag = CFigure::FREEMOVE);

@@ -76,12 +76,9 @@ public:
 	//		FALSE: 채우기가 없으므로 고정값 반환 (성공으로 간주)
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern) { return FALSE; }
 
-	BOOL GetEditFlag();
-	void SetEditFlag(BOOL EditFlag);
 // 특성
 protected:
 	PenPtr m_OutlinePen;
-	BOOL m_EditFlag;
 };
 
 

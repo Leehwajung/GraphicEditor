@@ -208,7 +208,7 @@ public:
 	// 개체 영역 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
-	virtual void drawArea(IN Graphics& graphics);
+	void drawArea(IN Graphics& graphics);
 
 protected:
 	// 개체 핸들 그리기

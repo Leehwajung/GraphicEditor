@@ -223,18 +223,13 @@ void CSelectedFigureArray::draw(IN Graphics& graphics)
 }
 
 // 선택 개체들의 선택 영역 그리기
-void CSelectedFigureArray::drawArea(IN Graphics& graphics)
+void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag)
 {
 	if (hasOne()) {
 		CFigure* figure = getOneFigure();
 
-
-		if (figure->IsKindOf(RUNTIME_CLASS(CStrap))){
-			if (((CStrap*)figure)->IsKindOf(RUNTIME_CLASS(CPencil)) == FALSE && ((CStrap*)figure)->GetEditFlag() == TRUE)
-				return((CStrap*)figure)->drawLineHandle(graphics);
-		}
-		else if (figure->IsKindOf(RUNTIME_CLASS(CShape))) {
-			return ((CShape*)figure)->drawArea(graphics);
+		if (editPointFlag && figure->IsKindOf(RUNTIME_CLASS(CStrap))) {
+			((CStrap*)figure)->drawLineHandle(graphics);
 		}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CLine))) {
 		//	return ((CLine*)figure)->drawArea(graphics);
@@ -243,8 +238,9 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics)
 		//	return ((CPolyLine*)figure)->drawArea(graphics);
 		//}
 		else {
-			return figure->drawArea(graphics);
+			figure->drawArea(graphics);
 		}
+		return;
 	}
 
 	for (int i = m_FigurePosArray.GetSize() - 1; i >= 0; i--) {

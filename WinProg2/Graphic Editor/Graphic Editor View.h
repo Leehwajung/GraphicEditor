@@ -75,6 +75,7 @@ public:
 	CFigure::Position m_selectedPosition;
 
 	BOOL m_PolyCreatableFlag;	// CPolyLine 및 CPolygon 객체 생성 가능 상태 플래그
+	BOOL m_EditPointFlag;
 
 	//int m_mode;
 	
