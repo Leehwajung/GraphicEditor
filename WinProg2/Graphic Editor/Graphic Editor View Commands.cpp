@@ -53,7 +53,7 @@ void CGraphicEditorView::OnEditCopy()
 	CGraphicEditorDoc* pDoc = GetDocument();
 	
 	pDoc->m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
-	if (m_CurrentFigures.hasOneFigure()){//하나가 선택된 경우
+	if (m_SelectedFigures.hasOne()){//하나가 선택된 경우
 		// 선택된 도형을 m_BufferList에 복사한다.
 		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
 }
