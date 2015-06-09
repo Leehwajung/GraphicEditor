@@ -133,7 +133,7 @@ void CPolyLine::InsertPoint(IN PointF originPoint){
 	PointF first_point = m_PointsList.GetNext(pos);
 
 	while (pos != NULL){
-
+		prevpos = pos;
 		PointF second_point = m_PointsList.GetNext(pos);
 		REAL Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
 
@@ -166,7 +166,7 @@ void CPolyLine::InsertPoint(IN PointF originPoint){
 			return;
 		}
 		first_point = second_point;
-		prevpos = pos;
+		
 	}
 
 }
