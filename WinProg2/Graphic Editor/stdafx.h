@@ -50,6 +50,7 @@
 #include "Line.h"
 #include "PolyLine.h"
 #include "Pencil.h"
+#include "Curve.h"
 //#include "Shape.h"
 #include "Ellipse.h"
 //#include "Rectangle.h"

@@ -124,15 +124,14 @@ BOOL CText::create(void* param1, ...)
 	SizeF rectSize;
 	//rectSize.Width = m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width = 50;
-	rectSize.Height = 50;
+	rectSize.Width = 60;
+	rectSize.Height = 30;
 	m_Rect = RectF(*startingPoint, rectSize);
-	st_p = *startingPoint;
 	resetArea();
 	cur.x= startingPoint->X;
 	cur.y =startingPoint->Y;
 	//m_View->CreateSolidCaret(2, m_String.GetSize());
-	m_View->CreateSolidCaret(5,45);
+	m_View->CreateSolidCaret(5,25);
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret();
 	return FALSE;
@@ -142,17 +141,19 @@ void  CText::increasewidth(){
 
 	//rectSize.Width += m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width += 16;
-	rectSize.Height = 50;
 
-	m_Rect = RectF(st_p, rectSize);
+	rectSize.Width = m_Rect.Width + 20;
+	rectSize.Height = 30;
+
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
 	resetArea();
 	//cur.x = cur.x + m_Font->GetSize();
-	cur.x = cur.x + 16;
+	cur.x = cur.x + 20;
 
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	count++;
 }
 void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
@@ -162,46 +163,52 @@ void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_Rect.Offset(offset);
 	resetArea();
 	
-	cur.x = m_Rect.X + count * 16;
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
+	cur.x = m_Rect.X + m_String.GetSize() * 20;
 	cur.y = m_Rect.Y;
+	
+
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	
+
 }
 void  CText::decreasewidth(){
 	//rectSize.Width = rectSize.Width-m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width = rectSize.Width - 50;
-	rectSize.Height = 50;
+	rectSize.Width = rectSize.Width - 20;
+	rectSize.Height = 30;
 
-	m_Rect = RectF(st_p, rectSize);
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
 	resetArea();
 	if (cur.x > 0){
 		//	cur.x = cur.x - m_Font->GetSize();
-		cur.x = cur.x - 16;
+		cur.x = cur.x - 20;
 	}
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	count--;
 }
 // 
 void CText::draw(IN Graphics& graphics){
 	FontFamily fontfamily(L"Arial");
 	Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	StringFormat m_StringFormat;
-	SolidBrush blackBrush(Color(255, 255, 0, 0));
+	SolidBrush blackBrush(Color(255, 0,0, 0));
 
 	// Draw string.
-	graphics.DrawString(
-		m_String.GetData(),
-		11,
-		&m_Font,
-		m_Rect,
-		&m_StringFormat,
-		&blackBrush);
-
+	if (m_String.GetSize() > 0){
+		graphics.DrawString(
+			m_String.GetData(),
+			m_String.GetSize(),
+			&m_Font,
+			m_Rect,
+			&m_StringFormat,
+			&blackBrush);
+	}
 }//CpaintDC 사용
-
 
 
 // m_String에 문자 추가

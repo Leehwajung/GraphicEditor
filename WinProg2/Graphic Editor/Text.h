@@ -72,7 +72,6 @@ private:
 	SizeF rectSize;
 	POINT cur;
 	PointF st_p;
-	int count=0;
 };
 
 //Status DrawString(

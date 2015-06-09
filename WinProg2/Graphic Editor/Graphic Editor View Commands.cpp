@@ -180,6 +180,7 @@ void CGraphicEditorView::OnEditDelete()
 		}
 		m_SelectedFigures.deselectAll();
 	}
+	HideCaret();//
 	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
@@ -276,6 +277,7 @@ void CGraphicEditorView::OnInsertCurve()
 {
 	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CURVE;			// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -680,7 +682,7 @@ void CGraphicEditorView::OnPointmove()
 	m_EditPointFlag = m_EditPointFlag ? FALSE : TRUE;
 	
 		Invalidate();
-}
+	}
 
 void CGraphicEditorView::OnUpdatePointmove(CCmdUI *pCmdUI)
 {
@@ -696,6 +698,7 @@ void CGraphicEditorView::OnPolyIndividualInsert()
 	if (m_SelectedFigures.hasOne()) {
 		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)))
 		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
+
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon)))
 			((CPolygon*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
 		Invalidate();
@@ -714,13 +717,13 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	if (m_SelectedFigures.hasOne()) {
 		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
-			CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
+		CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
 
-			if (polyLine->GetPointsList().GetSize() == 1){
-				polyLine->destroy();
-			}
-			else
-				(polyLine)->RemovePoint(m_RButtonPoint);
+		if (polyLine->GetPointsList().GetSize() == 1){
+			polyLine->destroy();
+		}
+		else 
+			(polyLine)->RemovePoint(m_RButtonPoint);
 		}
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
 			CPolygon* polygon = (CPolygon*)m_SelectedFigures.getOneFigure();
@@ -731,8 +734,8 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 			else
 				(polygon)->RemovePoint(m_RButtonPoint);
 		}
-		Invalidate();
-	}
+	Invalidate();
+}
 }
 
 void CGraphicEditorView::OnUpdatePolyIndividualDelete(CCmdUI *pCmdUI)

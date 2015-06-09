@@ -250,7 +250,7 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag
 		CFigure* figure = getOneFigure();
 
 		if (editPointFlag){
-			if(figure->IsKindOf(RUNTIME_CLASS(CStrap))){
+			if (figure->IsKindOf(RUNTIME_CLASS(CStrap)) && !figure->IsKindOf(RUNTIME_CLASS(CPencil))){
 				((CStrap*)figure)->drawLineHandle(graphics);
 			}
 			else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){

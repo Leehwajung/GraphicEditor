@@ -150,7 +150,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
-	END_MESSAGE_MAP()
+END_MESSAGE_MAP()
 
 
 /*** CGraphicEditorView 생성/소멸 ***/
@@ -257,6 +257,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 				((CPolygon*)m_CreateBuffer)->draw(graphicsCanvas);
 				((CPolygon*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
 			}
+			else if (m_CreateBuffer && getOperationModeFlag() == CREATE
+				&& m_InsertFlag == CURVE && m_PolyCreatableFlag == FALSE) {
+				((CCurve*)m_CreateBuffer)->draw(graphicsCanvas);
+				((CCurve*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
+			}
 		} break;
 
 
@@ -297,7 +302,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 						/* LBUTTON CREATE CURVE */
 						case CGraphicEditorView::CURVE:
-							/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CreateBuffer->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							
 							break;
 
 						/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
@@ -342,9 +347,13 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 							if (m_EditPointFlag== TRUE)
 								((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
-						else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+						else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){	// CPolygon 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
 							if (m_EditPointFlag == TRUE)
 								((CPolygon*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+						}
+						else if (figure->IsKindOf(RUNTIME_CLASS(CCurve))){	// CCurve 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							if (m_EditPointFlag == TRUE)
+								((CCurve*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 
 						else {								// 개체 한 개 크기 변경
@@ -527,6 +536,12 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::CURVE:
+					if (m_PolyCreatableFlag) {							// CCurve객체 생성 가능 상태
+						preInsert();									// 이전 선택 개체 제거
+						m_CreateBuffer = new CCurve(&dd);	            // 객체 생성
+						m_PolyCreatableFlag = FALSE;					// CCurve 객체 생성 불가능 상태로 변경
+					}
+					((CCurve*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
 					break;
 
 				case CGraphicEditorView::ELLIPSE:
@@ -629,6 +644,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::CURVE:
+					// 아무 동작도 하지 않음
 					break;
 
 				case CGraphicEditorView::ELLIPSE:
@@ -720,7 +736,12 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 			postInsert();
 			//clearInsertFlag();
 		}
-
+		else if (m_InsertFlag == CGraphicEditorView::CURVE/* && m_SelectedFigures.hasOne()*/) {
+			((CCurve*)m_CreateBuffer)->create(CFigure::FREECREATE);
+			m_PolyCreatableFlag = TRUE;
+			postInsert();
+			//clearInsertFlag();
+		}
 		else if (m_InsertFlag == CGraphicEditorView::POLYGON/* && m_SelectedFigures.hasOne()*/) {
 			((CPolygon*)m_CreateBuffer)->create(CFigure::FREECREATE);
 			m_PolyCreatableFlag = TRUE;
@@ -952,6 +973,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 
 	case CGraphicEditorView::SELECTED:
+	case CGraphicEditorView::RESIZE:
 	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
 			text = (CText*)m_SelectedFigures.getOneFigure();
 		}
@@ -966,15 +988,16 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case CGraphicEditorView::MOVE:
 		break;
 
-	case CGraphicEditorView::RESIZE:
-		break;
+	
 	}
 	
 	if (text) {
 		switch (nChar) {
 			// 백스페이스 입력시
 		case VK_BACK:
-			((CText*)m_SelectedFigures.getOneFigure())->delChar(); // 문자삭제
+			//((CText*)m_SelectedFigures.getOneFigure())->delChar(); // 문자삭제
+			text->delChar();
+			Invalidate();
 			break;
 			// 한줄 입력이므로 엔터키는 배열에 들어가지 않아도됨
 		case VK_RETURN:
@@ -983,6 +1006,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			// 위의 케이스를 제외한 문자저장
 		default:
 			text->addChar(nChar);
+			Invalidate();
 			break;
 		}
 	CView::OnChar(nChar, nRepCnt, nFlags);
@@ -1200,7 +1224,7 @@ BOOL CGraphicEditorView::getLineSelectedFlag()
 BOOL CGraphicEditorView::getPolySelectedFlag()
 {
 	if (m_SelectedFigures.hasOne()) {
-		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))
+		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)) && !m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPencil))
 			|| m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))) {
 			return TRUE;
 		}
@@ -1258,5 +1282,3 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
-
-
