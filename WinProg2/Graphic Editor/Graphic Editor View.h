@@ -190,6 +190,7 @@ protected:
 public:
 	afx_msg void OnPolylineIndividualDelete();
 	afx_msg void OnPolylineIndividualInsert();
+	afx_msg void OnPointmove();
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

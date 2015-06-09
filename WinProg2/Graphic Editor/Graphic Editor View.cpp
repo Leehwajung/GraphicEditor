@@ -109,6 +109,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
 	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolylineIndividualDelete)
 	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
+	ON_COMMAND(ID_POINTMOVE, &CGraphicEditorView::OnPointmove)
 END_MESSAGE_MAP()
 
 
@@ -185,7 +186,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 	// 선택된 개체의 선택 영역 및 핸들을 그림
 	if (!m_SelectedFigures.isEmpty()) {
-		m_SelectedFigures.drawArea(graphicsCanvas);
+		 m_SelectedFigures.drawArea(graphicsCanvas);
 	}
 
 	// 환경에 따른 그리기
@@ -274,9 +275,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 						CFigure* figure = m_SelectedFigures.getOneFigure();
 
 						if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							if (((CStrap*)figure)->GetEditFlag() == TRUE)
 							((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							if (((CStrap*)figure)->GetEditFlag() == TRUE)
 							((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else {								// 개체 한 개 크기 변경
@@ -412,6 +415,11 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);		// 전체 개체 리스트(그룹)을 순차로 순회
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
 				// Invalidate 호출 (선택 영역을 그리기 위해)
+				CFigure* figure;
+				if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
+					figure = m_SelectedFigures.getOneFigure();
+					((CStrap*)figure)->SetEditFlag(FALSE);
+				}
 			} break;
 
 			case CGraphicEditorView::SELECTED: {
@@ -576,7 +584,6 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 				//if (nFlags & MK_SHIFT) {
 				//	moveFlag = CFigure::;
 				//}
-
 				m_SelectedFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
@@ -587,7 +594,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
-				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap)) && ((CStrap*)m_SelectedFigures.getOneFigure())->GetEditFlag() == TRUE) {
 					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else {

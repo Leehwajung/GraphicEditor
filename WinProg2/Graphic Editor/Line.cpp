@@ -326,6 +326,10 @@ RectF CLine::resetArea() {
 }
 
 void CLine::drawArea(IN Graphics& graphics) {
+	CFigure::drawArea(graphics);
+}
+
+void CLine::drawLineHandle(IN Graphics& graphics){
 	Pen pen(Color::Gray);
 	pen.SetDashStyle(DashStyleDot);
 	graphics.DrawLine(&pen, m_StartingPoint, m_EndPoint);

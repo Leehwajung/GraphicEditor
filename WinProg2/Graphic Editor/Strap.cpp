@@ -15,12 +15,14 @@ IMPLEMENT_SERIAL(CStrap, CFigure, 1)
 CStrap::CStrap()
 	: CFigure()
 	, m_OutlinePen(NULL)
+	, m_EditFlag(FALSE)
 {
 }
 
 CStrap::CStrap(IN Pen* pen)
 	: CFigure()
 	, m_OutlinePen(pen->Clone())
+	, m_EditFlag(FALSE)
 {
 }
 
@@ -45,6 +47,11 @@ void CStrap::Serialize(CArchive& ar)
 	{	// loading code
 
 	}
+}
+
+void CStrap::drawLineHandle(IN Graphics& graphics){
+
+
 }
 
 // 개별 좌표 이동
@@ -129,6 +136,12 @@ BOOL CStrap::setOutlinePattern(IN const DashStyle outlinePattern)
 	return m_OutlinePen->SetDashStyle(outlinePattern) ? TRUE : FALSE;
 }
 
+BOOL CStrap::GetEditFlag(){
+	return m_EditFlag;
+}
 
+void CStrap::SetEditFlag(BOOL EditFlag){
+	m_EditFlag = EditFlag;
+}
 // 점 추가 (순수 가상): 순수 가상으로 바꾸기 전 임시 구현
 //void CStrap::addPoint(PointF point){}

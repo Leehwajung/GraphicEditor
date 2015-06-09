@@ -52,7 +52,7 @@ void CGraphicEditorView::OnEditCopy()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CGraphicEditorDoc* pDoc = GetDocument();
 	CFigure* figure;
-
+	
 	m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
 	
 	/* 단, m_FiguresList에는 계속 존재해야하므로 삭제하지 않음.*/
@@ -69,8 +69,8 @@ void CGraphicEditorView::OnEditCopy()
 		{
 			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
 			m_BufferList.AddTail(figure);
-		}
 	}
+}
 }
 
 void CGraphicEditorView::OnEditCut()//잘라내기
@@ -80,7 +80,7 @@ void CGraphicEditorView::OnEditCut()//잘라내기
 	CGraphicEditorDoc* pDoc = GetDocument();
 	CFigure* figure;
 	m_BufferList.RemoveAll();//잘라내기 발생. 그동안 저장되어있던 리스트를 비워줌.
-
+	
 	if (m_SelectedFigures.hasOne()){
 		//삭제할위치를 얻기위해
 		POSITION deletePos = m_SelectedFigures.getForwardPos();
@@ -92,7 +92,7 @@ void CGraphicEditorView::OnEditCut()//잘라내기
 	else{// 다중
 		const POSITION* positionArray = m_SelectedFigures.getData();
 		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
-		{
+	{
 			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
 			m_BufferList.AddTail(figure);
 			m_SelectedFigures.deselect(positionArray[i]);
@@ -111,7 +111,7 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	CFigure* figure;
 	POSITION headpos = m_BufferList.GetHeadPosition();
 	//m_BufferList에 있는 것들을 ist에 추가해서 그릴 것
-
+	
 	if (m_BufferList.hasOneFigure()){//하나가 저장되어있는 경우
 		CFigure* figure = m_BufferList.GetHead();
 		pDoc->m_FiguresList.AddHead(figure);//figure를 추가해줌
@@ -417,4 +417,16 @@ void CGraphicEditorView::OnPolylineIndividualInsert()
 		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
 		Invalidate();
 	}
+}
+
+
+void CGraphicEditorView::OnPointmove()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CFigure* figure;
+	if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
+		figure = m_SelectedFigures.getOneFigure();
+		((CStrap*)figure)->SetEditFlag(TRUE);
+	}
+	Invalidate();
 }
