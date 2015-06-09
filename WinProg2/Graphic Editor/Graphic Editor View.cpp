@@ -438,15 +438,15 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 			case CGraphicEditorView::SELECTED: {
 				m_selectedPosition = m_SelectedFigures.contains(m_CurrPoint);	// 개체 내 선택 위치를 가져옴
-
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText)))
+					ShowCaret();
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					m_EditPointFlag = FALSE;
 					if ((nFlags & MK_SHIFT) || (nFlags & MK_CONTROL)) {				// shift나 control을 누르고 드래그하면
 						// 현재 리스트를 삭제하지 않고 추가
 					}
 					else{
-						if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText)))
-							HideCaret();
+						HideCaret();
 						m_SelectedFigures.deselectAll();		// SELECTABLE 상태로 전환
 					}
 					m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);
@@ -493,7 +493,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::STRING:
-					preInsert();								// 이전 선택 개체 제거
+					preInsert();// 이전 선택 개체 제거
+				
 					m_CreateBuffer = new CText(this, &dd, &ff);
 					break;
 
@@ -593,6 +594,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::STRING:
 					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					clearInsertFlag();
 					postInsert();
 					break;
 
@@ -841,18 +843,35 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 	case VK_ESCAPE:
 	case VK_CANCEL:
-	case VK_BACK:
-		cancelInsert();
+		switch (getOperationModeFlag())
+		{
+		case CGraphicEditorView::SELECTABLE:
+			break;
+		case CGraphicEditorView::SELECTED:
+			m_SelectedFigures.deselectAll();
+			break;
+		case CGraphicEditorView::CREATE:
+			cancelInsert();
+			break;
+		case CGraphicEditorView::MOVE:
+			m_SelectedFigures.deselectAll();
+			break;
+		case CGraphicEditorView::RESIZE:
+			m_SelectedFigures.deselectAll();
+			break;
+		default:
+			break;
+		}
 		break;
 	case VK_DELETE:
 		OnEditDelete();
 		break;
-	case 'A':
-	case 'a':
-		if (nFlags & 13) {
-			m_SelectedFigures.selectAll();
-			Invalidate();
-		}
+	//case 'A':
+	//case 'a':
+	//	if (nFlags & 13) {
+	//		m_SelectedFigures.selectAll();
+	//		Invalidate();
+	//	}
 		break;
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -862,7 +881,33 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
+	CText* text = NULL;
+
+	switch (getOperationModeFlag())
+	{
+	case CGraphicEditorView::SELECTABLE:
+		break;
+
+	case CGraphicEditorView::SELECTED:
+		if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
+			text = (CText*)m_SelectedFigures.getOneFigure();
+		}
+		break;
+
+	case CGraphicEditorView::CREATE:
+		if (m_CreateBuffer && m_CreateBuffer->IsKindOf((RUNTIME_CLASS(CText)))) {
+			text = (CText*)m_CreateBuffer;
+		}
+		break;
+
+	case CGraphicEditorView::MOVE:
+		break;
+
+	case CGraphicEditorView::RESIZE:
+		break;
+	}
+	
+	if (text) {
 		switch (nChar) {
 			// 백스페이스 입력시
 		case VK_BACK:
@@ -874,11 +919,11 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 			// 위의 케이스를 제외한 문자저장
 		default:
-			((CText*)m_SelectedFigures.getOneFigure())->addChar(nChar);
+			text->addChar(nChar);
+			break;
 		}
-	CView::OnChar(nChar, nRepCnt, nFlags);
+		CView::OnChar(nChar, nRepCnt, nFlags);
 	}
-
 }
 
 void CGraphicEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -943,6 +988,7 @@ void CGraphicEditorView::preInsert()	// 삽입(생성) 작업 전에 해야 할 작업
 void CGraphicEditorView::postInsert()	// 삽입(생성) 작업 후에 해야 할 작업
 {
 	GetDocument()->m_FiguresList.AddHead(m_CreateBuffer);	// 전체 개체 리스트에 추가
+	m_SelectedFigures.select();
 	//m_selectedPosition = CFigure::OUTSIDE;
 	m_CreateBuffer = NULL;
 }
@@ -950,6 +996,9 @@ void CGraphicEditorView::postInsert()	// 삽입(생성) 작업 후에 해야 할 작업
 void CGraphicEditorView::cancelInsert()	// 삽입(생성) 작업 취소 시에 해야 할 작업
 {
 	setOperationModeFlag(SELECTABLE);
+	if (m_CreateBuffer) {
+		m_CreateBuffer->destroy();
+	}
 	Invalidate();
 }
 
@@ -1019,6 +1068,7 @@ void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFla
 	case CGraphicEditorView::SELECTABLE:
 	m_InsertFlag = NONE;
 		m_selectedPosition = CFigure::OUTSIDE;
+		HideCaret();
 		m_SelectedFigures.deselectAll();
 		break;
 
