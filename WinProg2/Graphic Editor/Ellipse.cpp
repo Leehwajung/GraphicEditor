@@ -468,8 +468,16 @@ void CEllipse::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{	// storing code
+		ar << m_FillBrush;
+		ar << m_OutlinePen;
+		ar << m_Rect.X;
+		ar << m_Rect.Y;
+		ar << m_Rect.Width;
 	}
 	else
 	{	// loading code
+		ar >> m_Rect.X;
+		ar >> m_Rect.Y;
+		ar >> m_Rect.Width;
 	}
 }
