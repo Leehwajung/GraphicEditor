@@ -214,6 +214,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 				((CPolyLine*)m_CreateBuffer)->draw(graphicsCanvas);
 				/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
 			}
+			else if (m_CreateBuffer && getOperationModeFlag() == CREATE
+				&& m_InsertFlag == POLYGON && m_PolyCreatableFlag == FALSE) {
+				((CPolygon*)m_CreateBuffer)->draw(graphicsCanvas);
+				((CPolygon*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
+			}
 		} break;
 
 
@@ -272,6 +277,8 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 						/* LBUTTON CREATE POLYGON/CLOSEDCURVE */
 						case CGraphicEditorView::POLYGON:
+							// do nothing
+							break;;
 						case CGraphicEditorView::CLOSEDCURVE:
 
 							break;
@@ -297,6 +304,11 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 							if (m_EditPointFlag== TRUE)
 								((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
+						else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							if (m_EditPointFlag == TRUE)
+								((CPolygon*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+						}
+
 						else {								// 개체 한 개 크기 변경
 							figure->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
 						}
@@ -495,11 +507,13 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::POLYGON:
-					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
+					if (m_PolyCreatableFlag) {							// CPolygon객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
 						m_CreateBuffer = new CPolygon(&dd, &ff);		// 객체 생성
-						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
+						m_PolyCreatableFlag = FALSE;					// CPolygon 객체 생성 불가능 상태로 변경
 					}
+					((CPolygon*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
+
 					break;
 
 				case CGraphicEditorView::CLOSEDCURVE:
@@ -588,6 +602,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::POLYGON:
+					// 아무 동작도 하지 않음 //((CPolyLine*)m_CurrentFigure)->addPoint(m_CurrPoint, CFigure::FREECREATE);
 					break;
 
 				case CGraphicEditorView::CLOSEDCURVE:
@@ -613,6 +628,10 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
 					if (m_EditPointFlag == TRUE)
 					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
+				}
+				else if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
+					if (m_EditPointFlag == TRUE)
+						((CPolygon*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
@@ -645,7 +664,7 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		// 더블클릭하면 폴리라인 생성 완료
-		if (m_InsertFlag == CGraphicEditorView::POLYLINE/* && m_SelectedFigures.hasOne()*/) {
+		if (m_InsertFlag == CGraphicEditorView::POLYLINE /* && m_SelectedFigures.hasOne()*/) {
 			((CPolyLine*)m_CreateBuffer)->create(CFigure::FREECREATE);
 			
 			m_PolyCreatableFlag = TRUE;

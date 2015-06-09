@@ -249,8 +249,13 @@ void CSelectedFigureArray::drawArea(IN Graphics& graphics, IN BOOL editPointFlag
 	if (hasOne()) {
 		CFigure* figure = getOneFigure();
 
-		if (editPointFlag && figure->IsKindOf(RUNTIME_CLASS(CStrap))) {
-			((CStrap*)figure)->drawLineHandle(graphics);
+		if (editPointFlag){
+			if(figure->IsKindOf(RUNTIME_CLASS(CStrap))){
+				((CStrap*)figure)->drawLineHandle(graphics);
+			}
+			else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){
+				((CPolygon*)figure)->drawLineHandle(graphics);
+			}
 		}
 		//else if (figure->IsKindOf(RUNTIME_CLASS(CLine))) {
 		//	((CLine*)figure)->drawArea(graphics);

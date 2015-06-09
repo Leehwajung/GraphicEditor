@@ -392,7 +392,6 @@ void CPolyLine::drawLineHandle(IN Graphics& graphics){
 	graphics.DrawLines(&pen, pointsArray.GetData(), pointsArray.GetSize());
 
 	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
-	CFigure::drawArea(graphics);
 }
 
 // 도형 작업 후에 호출
