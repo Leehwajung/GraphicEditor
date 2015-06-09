@@ -22,6 +22,11 @@ CPencil::CPencil(IN Pen* pen)
 
 }
 
+CPencil::CPencil(IN Pen* pen, CList <PointF, PointF&>& list)
+: CPolyLine(pen,list)
+{
+
+}
 CPencil::~CPencil()
 {
 
@@ -29,7 +34,7 @@ CPencil::~CPencil()
 
 
 CFigure* CPencil::clone(){
-	return new CPencil(m_OutlinePen);
+	return new CPencil(m_OutlinePen,m_PointsList);
 }
 
 // CPencil ¸â¹ö ÇÔ¼ö

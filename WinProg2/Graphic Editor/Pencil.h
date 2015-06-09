@@ -12,6 +12,7 @@ class CPencil : public CPolyLine
 public:
 	CPencil();
 	CPencil(IN Pen* pen);
+	CPencil(IN Pen* pen, CList <PointF, PointF&>& list);
 	DECLARE_SERIAL(CPencil)
 	~CPencil();
 	CFigure* clone();

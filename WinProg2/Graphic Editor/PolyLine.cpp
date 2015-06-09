@@ -27,10 +27,17 @@ CPolyLine::~CPolyLine()
 {
 }
 
+CPolyLine::CPolyLine(IN Pen* pen, CList <PointF, PointF&>& list)
+: CStrap(pen)
+{
+	for (POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos)) {
+		m_PointsList.AddTail(list.GetAt(pos));
+	}
+}
 
 // CPolyLine ¸â¹ö ÇÔ¼ö
 CFigure* CPolyLine::clone(){
-	return new CPolyLine(m_OutlinePen);
+	return new CPolyLine(m_OutlinePen, m_PointsList);
 }
 
 void CPolyLine::Serialize(CArchive& ar)
