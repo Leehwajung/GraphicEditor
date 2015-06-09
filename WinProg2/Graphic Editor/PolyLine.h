@@ -95,7 +95,7 @@ public:
 	// ok!!
 	RectF creating(IN Graphics& graphics, IN PointF addingPoint, IN CreateFlag createFlag = FREECREATE);
 
-private:
+protected:
 	// 생성 그리기
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수

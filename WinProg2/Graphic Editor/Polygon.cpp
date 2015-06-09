@@ -65,7 +65,6 @@ BOOL CPolygon::create(void* param1, ...) {
 	CreateFlag* createFlag = (CreateFlag*)param1;
 	va_end(vaList);
 
-	//m_CreatedFlag = TRUE;
 	resetArea();
 
 	return FALSE;
@@ -274,7 +273,7 @@ void CPolygon::draw(IN Graphics& graphics) {
 		pointsArray.Add(m_PointsList.GetAt(pos));
 	}
 
-	// Draw the lines.
+	// Draw the Ploygon.
 	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	graphics.FillPolygon(m_FillBrush, pointsArray.GetData(), pointsArray.GetSize());
 	graphics.DrawPolygon(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
@@ -310,7 +309,7 @@ RectF CPolygon::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF t
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
 
-	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
+	// Ploygon을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
 
 	for (pos= m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
@@ -319,7 +318,7 @@ RectF CPolygon::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF t
 	PointF head = m_PointsList.GetHead();
 	pointsArray.Add(head + RelativePoint);
 
-	// Draw the lines.
+	// Draw the Ploygon.
 
 	graphics.FillPolygon(CGlobal::crateIngBrush(m_FillBrush), pointsArray.GetData(), pointsArray.GetSize());
 	graphics.DrawLines(CGlobal::crateIngPen(m_OutlinePen), pointsArray.GetData(), pointsArray.GetSize());
@@ -337,7 +336,7 @@ RectF CPolygon::pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF
 
 	BOOL SameHandle = FALSE;
 
-	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
+	// Ploygon을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
 	CArray<RectF, RectF&> HandleRectArray;
 

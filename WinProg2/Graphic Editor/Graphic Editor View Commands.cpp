@@ -276,6 +276,7 @@ void CGraphicEditorView::OnInsertCurve()
 {
 	//m_SelectedFigures.deselectAll();	// 수정 금지 (선택 개체 제거)
 	m_InsertFlag = CURVE;			// 수정 금지
+	m_PolyCreatableFlag = TRUE;
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
@@ -283,6 +284,7 @@ void CGraphicEditorView::OnUpdateInsertCurve(CCmdUI *pCmdUI)
 {
 	pCmdUI->SetCheck(m_InsertFlag == CURVE);	// 수정 금지
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+
 }
 
 void CGraphicEditorView::OnInsertEllipse()
@@ -495,6 +497,7 @@ void CGraphicEditorView::OnPolyIndividualInsert()
 	if (m_SelectedFigures.hasOne()) {
 		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine)))
 		((CPolyLine*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
+
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon)))
 			((CPolygon*)m_SelectedFigures.getOneFigure())->InsertPoint(m_RButtonPoint);
 		Invalidate();
