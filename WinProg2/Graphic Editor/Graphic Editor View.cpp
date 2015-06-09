@@ -111,8 +111,6 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_POLYLINE_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolylineIndividualInsert)
 END_MESSAGE_MAP()
 
-CLIPFORMAT CGraphicEditorView::m_cfsDraw = (CLIPFORMAT)//포멧설정
-::RegisterClipboardFormat(_T("GraphicEditor"));
 
 /*** CGraphicEditorView 생성/소멸 ***/
 
@@ -226,8 +224,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 					/* LBUTTON CREATE PENCIL */
 					case CGraphicEditorView::PENCIL:
-						if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
-							&& m_InsertFlag == PENCIL && m_PolyCreatableFlag == FALSE) {
+						if (m_CurrentFigures.hasOneFigure() && m_PolyCreatableFlag == FALSE) {
 							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
 							((CPencil*)m_CurrentFigures.GetHead())->draw(graphicsCanvas);
 						}
@@ -240,7 +237,16 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 					/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
 					case CGraphicEditorView::ELLIPSE:
+						if (m_CurrentFigures.hasOneFigure()) {
+							((CRectangle*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+						}
+						break;
 					case CGraphicEditorView::RECTANGLE:
+						if (m_CurrentFigures.hasOneFigure()) {
+							((CEllipse*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+						
+						}
+						break;
 					case CGraphicEditorView::STRING:
 
 						break;
@@ -789,15 +795,10 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	switch (nChar)
 	{
-	case VK_ESCAPE://esc
+	case VK_ESCAPE:
 	case VK_CANCEL:
 	case VK_BACK:
 		cancelInsert();
-		break;
-	case VK_DELETE:
-		if (!m_CurrentFigures.IsEmpty()) {
-			OnDestroy(); // destroy 호출
-		}
 		break;
 	}
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
