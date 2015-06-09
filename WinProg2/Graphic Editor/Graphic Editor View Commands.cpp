@@ -135,7 +135,7 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 void CGraphicEditorView::OnEditDelete()
 {
 	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	// TODO: 여기에 명령 처리기 코드를 
 	CGraphicEditorDoc* pDoc = GetDocument();
 
 	if (m_SelectedFigures.hasOne()){
@@ -144,16 +144,16 @@ void CGraphicEditorView::OnEditDelete()
 		m_SelectedFigures.deselect(deletePos);
 		pDoc->m_FiguresList.RemoveAt(deletePos);//원본 리스트에서 삭제
 	}
-
 	else{// 다중
+		//정적 배열을 얻어옴
 		const POSITION* positionArray = m_SelectedFigures.getData();
 		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
 		{
-			m_SelectedFigures.deselect(positionArray[i]);
-			pDoc->m_FiguresList.RemoveAt(positionArray[i]);		
+			pDoc->m_FiguresList.RemoveAt(positionArray[i]);//원본 리스트에서 삭제
 		}
+		m_SelectedFigures.deselectAll();
 	}
-	Invalidate();//삭제 출력
+	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
 //void CGraphicEditorView::OnEditRepeat()
