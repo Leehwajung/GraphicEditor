@@ -30,6 +30,10 @@ CEllipse::~CEllipse()
 {
 }
 
+CFigure* CEllipse::clone()
+{
+	return new CEllipse(m_OutlinePen, m_FillBrush, m_Rect);
+}
 // CEllipse 멤버 함수
 /* 연산 */
 BOOL CEllipse::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/)

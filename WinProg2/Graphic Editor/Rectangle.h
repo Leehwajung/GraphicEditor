@@ -18,7 +18,7 @@ public:
 	virtual ~CRectangle();
 
 
-
+	CFigure* clone();
 // 작업 및 재정의
 public:
 	/* 직렬화 */

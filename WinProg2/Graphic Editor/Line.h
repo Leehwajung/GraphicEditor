@@ -13,6 +13,8 @@ public:
 	CLine();
 	CLine(IN Pen* pen);
 	CLine(IN Pen* pen, PointF startingPoint, PointF endingPoint);
+
+	CFigure* clone();
 	DECLARE_SERIAL(CLine)
 	~CLine();
 

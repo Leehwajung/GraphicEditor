@@ -610,7 +610,8 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
-				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap)) && m_EditPointFlag== TRUE) {
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
+					if (m_EditPointFlag == TRUE)
 					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else {
@@ -837,7 +838,9 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_BACK:
 		cancelInsert();
 		break;
-
+	case VK_DELETE:
+		OnEditDelete();
+		break;
 	case 'A':
 	case 'a':
 		if (nFlags & 13) {

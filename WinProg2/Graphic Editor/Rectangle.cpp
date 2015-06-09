@@ -525,7 +525,10 @@ RectF CRectangle::resizing(IN Graphics& graphics, IN Position selectedHandle, IN
 	return drawnArea;
 }
 
-
+CFigure* CRectangle::clone()
+{
+	return new CRectangle(m_OutlinePen, m_FillBrush, m_Rect);
+}
 
 
 //CRectangle::CRectangle()

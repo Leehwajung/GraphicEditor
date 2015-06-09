@@ -45,24 +45,32 @@
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
+
 void CGraphicEditorView::OnEditCopy()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	
 	CGraphicEditorDoc* pDoc = GetDocument();
+	CFigure* figure;
 	
-	pDoc->m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
+	m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
+
+	/* 단, m_FiguresList에는 계속 존재해야하므로 삭제하지 않음.*/
 	if (m_SelectedFigures.hasOne()){//하나가 선택된 경우
-		// 선택된 도형을 m_BufferList에 복사한다.
-		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
+		figure = m_SelectedFigures.getOneFigure();
+		m_BufferList.AddTail(figure->clone());//figure를 추가해줌
 	}
 
 	else // 다중 선택 case
 	{
+		//정적 배열을 얻어옴
+		const POSITION* positionArray = m_SelectedFigures.getData();
+		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
+		{
+			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
+			m_BufferList.AddTail(figure->clone());
 	}
-	
-	//
+}
 }
 
 void CGraphicEditorView::OnUpdateEditCopy(CCmdUI *pCmdUI)
@@ -72,21 +80,33 @@ void CGraphicEditorView::OnUpdateEditCopy(CCmdUI *pCmdUI)
 	pCmdUI->Enable(getCopyableFlag());
 }
 
-void CGraphicEditorView::OnEditCut()
+void CGraphicEditorView::OnEditCut()//잘라내기
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	CGraphicEditorDoc* pDoc = GetDocument();
-	POSITION deletePos = pDoc->m_FiguresList.GetHeadPosition(); //삭제할위치를 얻기위해
+	CFigure* figure;
+	m_BufferList.RemoveAll();//잘라내기 발생. 그동안 저장되어있던 리스트를 비워줌.
 	
-	while (deletePos != NULL)
-	{
-		pDoc->m_FiguresList.GetNext(deletePos); // 삭제할 위치를 찾을 때까지
-		//if ()// deletepos와 선택된 도형이 맞으면 break;
+	if (m_SelectedFigures.hasOne()){
+		//삭제할위치를 얻기위해
+		POSITION deletePos = m_SelectedFigures.getForwardPos();
+		figure = m_SelectedFigures.getOneFigure();
+		m_BufferList.AddTail(figure);//figure를 추가해줌
+		m_SelectedFigures.deselect(deletePos);
+		pDoc->m_FiguresList.RemoveAt(deletePos);//원본 리스트에서 삭제
 	}
-	//pDoc->m_BufferList.AddTail();//원본리스트에서 버퍼리스트로 복사
-	pDoc->m_FiguresList.deleteAt(deletePos);//원본 리스트에서 삭제
-
+	else{// 다중
+		//정적 배열을 얻어옴
+		const POSITION* positionArray = m_SelectedFigures.getData();
+		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
+	{
+			figure = pDoc->m_FiguresList.GetAt(positionArray[i]);
+			m_BufferList.AddTail(figure->clone());
+			pDoc->m_FiguresList.RemoveAt(positionArray[i]);//원본 리스트에서 삭제
+		}
+		m_SelectedFigures.deselectAll();
+	}
 	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
@@ -107,11 +127,28 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CGraphicEditorDoc* pDoc = GetDocument();
-	POSITION headpos = pDoc->m_BufferList.GetHeadPosition();
-	
-	//m_BufferList에 있는 것들을 m_FigureList에 추가해서 그릴 것.\
 
+	CGraphicEditorDoc* pDoc = GetDocument();
+	CFigure* figure;
+	POSITION headpos = m_BufferList.GetHeadPosition();
+	//m_BufferList에 있는 것들을 ist에 추가해서 그릴 것
+	
+	if (m_BufferList.hasOneFigure()){//하나가 저장되어있는 경우
+		CFigure* figure = m_BufferList.GetHead();
+		pDoc->m_FiguresList.AddHead(figure);//figure를 추가해줌
+		m_SelectedFigures.select();
+	}
+
+	else{//다중 저장
+		//CFigure* figure = m_BufferList.GetHead();
+		for (int i = 0; i < m_BufferList.GetCount(); i++)// 저장된 수만큼
+		{
+			figure = m_BufferList.GetAt(headpos);
+			m_BufferList.GetNext(headpos);
+			pDoc->m_FiguresList.AddHead(figure);//figure를 추가해
+			m_SelectedFigures.select();
+		}
+	}
 	Invalidate();
 }
 
@@ -125,7 +162,25 @@ void CGraphicEditorView::OnUpdateEditPaste(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnEditDelete()
 {
 	clearInsertFlag();
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	// TODO: 여기에 명령 처리기 코드를 
+	CGraphicEditorDoc* pDoc = GetDocument();
+
+	if (m_SelectedFigures.hasOne()){
+		//삭제할위치를 얻기위해
+		POSITION deletePos = m_SelectedFigures.getForwardPos();
+		m_SelectedFigures.deselect(deletePos);
+		pDoc->m_FiguresList.RemoveAt(deletePos);//원본 리스트에서 삭제
+	}
+	else{// 다중
+		//정적 배열을 얻어옴
+		const POSITION* positionArray = m_SelectedFigures.getData();
+		for (int i = 0; i < m_SelectedFigures.getSize(); i++)// 저장된 수만큼
+		{
+			pDoc->m_FiguresList.RemoveAt(positionArray[i]);//원본 리스트에서 삭제
+		}
+		m_SelectedFigures.deselectAll();
+	}
+	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
 void CGraphicEditorView::OnUpdateEditDelete(CCmdUI *pCmdUI)
