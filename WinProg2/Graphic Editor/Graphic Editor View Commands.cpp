@@ -135,7 +135,7 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	
 	if (m_BufferList.hasOneFigure()){//하나가 저장되어있는 경우
 		CFigure* figure = m_BufferList.GetHead();
-		pDoc->m_FiguresList.AddHead(figure);//figure를 추가해줌
+		pDoc->m_FiguresList.AddHead(figure->clone());//figure를 추가해줌
 		m_SelectedFigures.select();
 	}
 
@@ -145,7 +145,7 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 		{
 			figure = m_BufferList.GetAt(headpos);
 			m_BufferList.GetNext(headpos);
-			pDoc->m_FiguresList.AddHead(figure);//figure를 추가해
+			pDoc->m_FiguresList.AddHead(figure->clone());//figure를 추가해
 			m_SelectedFigures.select();
 		}
 	}
@@ -477,8 +477,8 @@ void CGraphicEditorView::OnPointmove()
 
 	m_EditPointFlag = m_EditPointFlag ? FALSE : TRUE;
 	
-	Invalidate();
-}
+		Invalidate();
+	}
 
 void CGraphicEditorView::OnUpdatePointmove(CCmdUI *pCmdUI)
 {
@@ -515,8 +515,8 @@ void CGraphicEditorView::OnPolylineIndividualDelete()
 		}
 		else 
 			(polyLine)->RemovePoint(m_RButtonPoint);
-		Invalidate();
-	}
+	Invalidate();
+}
 }
 
 void CGraphicEditorView::OnUpdatePolylineIndividualDelete(CCmdUI *pCmdUI)
