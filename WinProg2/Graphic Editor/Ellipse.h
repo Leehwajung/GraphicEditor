@@ -14,6 +14,7 @@ public:
 	CEllipse(IN Pen* pen, IN BrushPtr brush);
 	CEllipse(IN Pen* pen, IN BrushPtr brush, IN RectF rect);
 
+	CFigure* clone();
 	DECLARE_SERIAL(CEllipse)
 	virtual ~CEllipse();
 

@@ -47,6 +47,9 @@ void CLine::Serialize(CArchive& ar)
 }
 
 
+CFigure* CLine::clone(){
+	return new CLine(m_OutlinePen, m_StartingPoint, m_EndPoint);
+}
 // LButtonUp
 /* 생성 완료 */
 BOOL CLine::create(IN PointF startingPoint, IN PointF endingPoint, IN CreateFlag createFlag/* = FREECREATE*/) {

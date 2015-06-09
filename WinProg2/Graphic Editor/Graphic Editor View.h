@@ -30,6 +30,7 @@ public:
 	//CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
 	//CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
 	CSelectedFigureArray m_SelectedFigures;		// 현재 선택한 개체 배열
+	CFigurePtrList m_BufferList;				// 선택한 개체를 저장할 버퍼리스트
 	CFigure* m_CreateBuffer;
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
 
@@ -96,6 +97,11 @@ public:
 	void clearInsertFlag();
 	OperationModeFlag getOperationModeFlag();
 	void setOperationModeFlag(OperationModeFlag operationModeFlag = SELECTABLE);
+	BOOL getCopyableFlag();
+	BOOL getPastableFlag();
+	BOOL getDeletableFlag();
+	BOOL getGroupableFlag();
+	BOOL getUngroupableFlag();
 	
 // 재정의입니다.
 public:
@@ -146,10 +152,14 @@ protected:
 	//afx_msg void OnEditClear();
 	//afx_msg void OnEditClearAll();
 	afx_msg void OnEditCopy();
+	afx_msg void OnUpdateEditCopy(CCmdUI *pCmdUI);
 	afx_msg void OnEditCut();
+	afx_msg void OnUpdateEditCut(CCmdUI *pCmdUI);
 	//afx_msg void OnEditFind();
 	afx_msg void OnEditPaste();
+	afx_msg void OnUpdateEditPaste(CCmdUI *pCmdUI);
 	afx_msg void OnEditDelete();
+	afx_msg void OnUpdateEditDelete(CCmdUI *pCmdUI);
 	//afx_msg void OnEditRepeat();
 	//afx_msg void OnEditReplace();
 	afx_msg void OnEditSelectAll();
@@ -180,6 +190,7 @@ protected:
 	afx_msg void OnArrangeBringForward();
 	afx_msg void OnArrangeSendBackward();
 	afx_msg void OnArrangeGrouping();
+	afx_msg void OnUpdateArrangeGrouping(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeGroup();
 	afx_msg void OnUpdateArrangeGroup(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeUngroup();

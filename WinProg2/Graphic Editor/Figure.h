@@ -60,7 +60,6 @@ public:
 	virtual ~CFigure();
 
 
-
 // 작업
 public:
 /** 직렬화 **/
@@ -95,6 +94,9 @@ public:
 	//		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 	virtual void resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag = FREERESIZE, IN PointF* anchorPoint = NULL);
 	
+	// 복/붙/잘을 위한 함수
+	virtual CFigure* clone();
+
 	// 삭제 (순수 가상)
 	// 개체를 삭제하고 메모리를 해제
 	virtual void destroy();

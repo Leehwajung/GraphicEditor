@@ -29,7 +29,9 @@ CPolyLine::~CPolyLine()
 
 
 // CPolyLine 멤버 함수
-
+CFigure* CPolyLine::clone(){
+	return new CPolyLine(m_OutlinePen);
+}
 
 void CPolyLine::Serialize(CArchive& ar)
 {
@@ -364,7 +366,7 @@ RectF CPolyLine::resizing(IN Graphics& graphics, IN Position selectedHandle, IN 
 
 	// 그리기 용 펜은 이 펜을 하용하도록: CGlobal::crateIngPen(m_OutlinePen)
 	RectF drawnArea;
-
+	
 	return drawnArea;
 
 }
