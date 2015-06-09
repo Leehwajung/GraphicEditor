@@ -833,7 +833,9 @@ void CGraphicEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case VK_BACK:
 		cancelInsert();
 		break;
-
+	case VK_DELETE:
+		OnEditDelete();
+		break;
 	case 'A':
 	case 'a':
 		if (nFlags & 13) {
