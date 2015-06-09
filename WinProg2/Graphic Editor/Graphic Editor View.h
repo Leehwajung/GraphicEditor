@@ -16,6 +16,7 @@
 #include "Group.h"
 #include "Line.h"
 #include "Global.h"
+#include "SelectedFigureArray.h"
 
 class CGraphicEditorView : public CView
 {
@@ -27,9 +28,10 @@ protected: // serialization에서만 만들어집니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
 	//CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
-	CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
+	//CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
+	CSelectedFigureArray m_SelectedFigures;		// 현재 선택한 개체 배열
+	CFigure* m_CreateBuffer;
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
-	//CRect m_DrawnArea;
 
 	PointF m_CurrPoint;							// 현재 마우스의 좌표
 	PointF m_LButtonPoint;						// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)

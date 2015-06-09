@@ -122,6 +122,7 @@ CGraphicEditorView::CGraphicEditorView()
 	m_MouseButtonFlag = NBUTTON;
 	m_InsertFlag = NONE;
 	m_PolyCreatableFlag = FALSE;
+	m_CreateBuffer = NULL;
 	//// m_OperationModeFlag = SELECTABLE;
 }
 
@@ -145,6 +146,7 @@ void CGraphicEditorView::OnInitialUpdate()
 	CView::OnInitialUpdate();
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	m_SelectedFigures.setFigurePtrList(&GetDocument()->m_FiguresList);
 }
 
 // CGraphicEditorView 그리기
@@ -158,7 +160,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	
 	/* 출력 대상 */
 	Graphics graphicsDC(*pDC);	// gdi+ 그리기를 위한 객체 https://msdn.microsoft.com/en-us/library/windows/desktop/ms534453(v=vs.85).aspx
-
+	
 	/****************************** 더블 버퍼링 ******************************/
 	CRect rect;
 	GetClientRect(rect);
@@ -166,7 +168,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	Graphics graphicsCanvas(&bmpCanvas);			// 캔버스 그래픽스 생성
 	graphicsCanvas.Clear(Color::White);				// 캔버스 배경색 지정
 	/*************************************************************************/
-
+	
+	graphicsCanvas.SetSmoothingMode(SmoothingModeHighQuality);	// Antialising
+	
+	
 	// TODO: 여기에 원시 데이터에 대한 그리기 코드를 추가합니다.
 
 	// GDI+			https://msdn.microsoft.com/en-us/library/windows/desktop/ms533798(v=vs.85).aspx
@@ -179,8 +184,8 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	}
 
 	// 선택된 개체의 선택 영역 및 핸들을 그림
-	if (!m_CurrentFigures.IsEmpty()) {
-		m_CurrentFigures.drawArea(graphicsCanvas);
+	if (!m_SelectedFigures.isEmpty()) {
+		m_SelectedFigures.drawArea(graphicsCanvas);
 	}
 
 	// 환경에 따른 그리기
@@ -188,10 +193,10 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	{
 		/*** NO BUTTON ***/
 		case CGraphicEditorView::NBUTTON: {
-			if (m_CurrentFigures.hasOneFigure() && getOperationModeFlag() == CREATE
+			if (m_CreateBuffer && getOperationModeFlag() == CREATE
 				&& m_InsertFlag == POLYLINE && m_PolyCreatableFlag == FALSE) {
-				((CPolyLine*)m_CurrentFigures.GetHead())->draw(graphicsCanvas);
-				/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, m_CurrPoint);
+				((CPolyLine*)m_CreateBuffer)->draw(graphicsCanvas);
+				/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
 			}
 		} break;
 
@@ -210,75 +215,76 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 				/** LBUTTON CREATE **/
 				case CGraphicEditorView::CREATE: {
-					switch (m_InsertFlag)
-					{
-					/* LBUTTON CREATE LINE */
-					case CGraphicEditorView::LINE:
-						m_CurrentFigures.GetHead()->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
-						break;
-					
-					/* LBUTTON CREATE POLYLINE */
-					//case CGraphicEditorView::POLYLINE:
-						// 아무 동작을 하지 않음
-						//break;
+					if (m_CreateBuffer) {
+						switch (m_InsertFlag)
+						{
+						/* LBUTTON CREATE LINE */
+						case CGraphicEditorView::LINE:
+							m_CreateBuffer->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							break;
 
-					/* LBUTTON CREATE PENCIL */
-					case CGraphicEditorView::PENCIL:
-						if (m_CurrentFigures.hasOneFigure() && m_PolyCreatableFlag == FALSE) {
-							((CPencil*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
-							((CPencil*)m_CurrentFigures.GetHead())->draw(graphicsCanvas);
+							/* LBUTTON CREATE POLYLINE */
+							//case CGraphicEditorView::POLYLINE:
+							// 아무 동작을 하지 않음
+							//break;
+
+						/* LBUTTON CREATE PENCIL */
+						case CGraphicEditorView::PENCIL:
+							if (m_PolyCreatableFlag == FALSE) {
+								((CPencil*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
+								((CPencil*)m_CreateBuffer)->draw(graphicsCanvas);
+							}
+							break;
+
+						/* LBUTTON CREATE CURVE */
+						case CGraphicEditorView::CURVE:
+							/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CreateBuffer->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							break;
+
+						/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
+						case CGraphicEditorView::ELLIPSE:
+							((CRectangle*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							break;
+
+						case CGraphicEditorView::RECTANGLE:
+							((CEllipse*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							break;
+
+						case CGraphicEditorView::STRING:
+
+							break;
+
+						/* LBUTTON CREATE POLYGON/CLOSEDCURVE */
+						case CGraphicEditorView::POLYGON:
+						case CGraphicEditorView::CLOSEDCURVE:
+
+							break;
 						}
-						break;
-
-					/* LBUTTON CREATE CURVE */
-					case CGraphicEditorView::CURVE:
-						/*m_DrawnArea = CGlobal::RectFToCRect(*/m_CurrentFigures.GetHead()->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
-						break;
-
-					/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
-					case CGraphicEditorView::ELLIPSE:
-						if (m_CurrentFigures.hasOneFigure()) {
-							((CRectangle*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
-						}
-						break;
-					case CGraphicEditorView::RECTANGLE:
-						if (m_CurrentFigures.hasOneFigure()) {
-							((CEllipse*)m_CurrentFigures.GetHead())->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
-						
-						}
-						break;
-					case CGraphicEditorView::STRING:
-
-						break;
-
-					/* LBUTTON CREATE POLYGON/CLOSEDCURVE */
-					case CGraphicEditorView::POLYGON:
-					case CGraphicEditorView::CLOSEDCURVE:
-
-						break;
 					}
 				} break;
 
 				/** LBUTTON MOVE **/
 				case CGraphicEditorView::MOVE: {			// 개체 이동
-					m_CurrentFigures.moving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+					m_SelectedFigures.moving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 				} break;
 
 				/** LBUTTON RESIZE **/
 				case CGraphicEditorView::RESIZE: {
-					if (m_CurrentFigures.hasOneFigure()) {	// 현재 선택 개체 하나
-						if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							((CLine*)m_CurrentFigures.GetHead())->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+					if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
+						CFigure* figure = m_SelectedFigures.getOneFigure();
+
+						if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
-						else if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							((CPolyLine*)m_CurrentFigures.GetHead())->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+						else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
+							((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
 						}
 						else {								// 개체 한 개 크기 변경
-							m_CurrentFigures.GetHead()->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
+							figure->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
 						}
 					}
 					else {									// 현재 선택 개체 여러 개 크기 변경
-						m_CurrentFigures.resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
+						m_SelectedFigures.resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
 					}
 				} break;
 			}
@@ -403,23 +409,23 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		switch (getOperationModeFlag())
 		{
 			case CGraphicEditorView::SELECTABLE: {
-				m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);		// 전체 개체 리스트(그룹)을 순차로 순회
+				m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);		// 전체 개체 리스트(그룹)을 순차로 순회
 				// 선택 도형 갱신 (OUTSIDE/INSIDE 두 개의 값으로만 m_selectedPosition 갱신)
 				// Invalidate 호출 (선택 영역을 그리기 위해)
 			} break;
 
 			case CGraphicEditorView::SELECTED: {
-				m_selectedPosition = m_CurrentFigures.pointInFigure(m_CurrPoint);	// 개체 내 선택 위치를 가져옴
+				m_selectedPosition = m_SelectedFigures.contains(m_CurrPoint);	// 개체 내 선택 위치를 가져옴
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					if ((nFlags & MK_SHIFT) || (nFlags & MK_CONTROL)) {				// shift나 control을 누르고 드래그하면
 						// 현재 리스트를 삭제하지 않고 추가
 					}
 					else{
-					if (m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CText)))
-						HideCaret();
-					m_CurrentFigures.RemoveAll();		// SELECTABLE 상태로 전환
+						if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText)))
+							HideCaret();
+						m_SelectedFigures.deselectAll();		// SELECTABLE 상태로 전환
 					}
-					m_selectedPosition = GetDocument()->m_FiguresList.getFigure(m_CurrPoint, m_CurrentFigures);
+					m_selectedPosition = m_selectedPosition = m_SelectedFigures.select(m_CurrPoint);
 				}
 			} break;
 
@@ -429,31 +435,22 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					/* CREATE 상태 */
 				case CGraphicEditorView::LINE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CurrentFigures.AddTail(new CLine(&dd));	// 새로운 생성 개체 선택
+					m_CreateBuffer = new CLine(&dd);	// 새로운 생성 개체 선택
 					break;
 
 				case CGraphicEditorView::POLYLINE:
 					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CurrentFigures.AddTail(new CPolyLine(&dd));	// 객체 생성
+						m_CreateBuffer = new CPolyLine(&dd);	// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
 					}
-
-					((CPolyLine*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
-
-					//if (m_CurrentFigures.IsEmpty()/* || ((CPolyLine*)m_CurrentFigures.GetHead())->GetCreatedFlag()*/) {
-					//	m_CurrentFigures.AddTail(new CPolyLine(&dd));
-					//	((CPolyLine*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);
-					//}
-					//else if (m_CurrentFigures.hasOneFigure()) {
-					//	((CPolyLine*)m_CurrentFigures.GetHead())->addPoint(m_CurrPoint, CFigure::FREECREATE);
-					//}
+					((CPolyLine*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
 					break;
 
 				case CGraphicEditorView::PENCIL:
 					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CurrentFigures.AddTail(new CPencil(&dd));	// 객체 생성
+						m_CreateBuffer = new CPencil(&dd);	// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
 					}
 					break;
@@ -463,23 +460,23 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::ELLIPSE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CurrentFigures.AddTail(new CEllipse(&dd, &ff));
+					m_CreateBuffer = new CEllipse(&dd, &ff);
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CurrentFigures.AddTail(new CRectangle(&dd, &ff));
+					m_CreateBuffer = new CRectangle(&dd, &ff);
 					break;
 
 				case CGraphicEditorView::STRING:
 					preInsert();								// 이전 선택 개체 제거
-					m_CurrentFigures.AddTail(new CText(this, &dd, &ff));
+					m_CreateBuffer = new CText(this, &dd, &ff);
 					break;
 
 				case CGraphicEditorView::POLYGON:
 					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CurrentFigures.AddTail(new CPolygon(&dd, &ff));	// 객체 생성
+						m_CreateBuffer = new CPolygon(&dd, &ff);		// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
 					}
 					break;
@@ -534,7 +531,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 				switch (m_InsertFlag)
 				{
 				case CGraphicEditorView::LINE:
-					m_CurrentFigures.GetHead()->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 					postInsert();
 					break;
 
@@ -543,26 +540,26 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::PENCIL:
-			((CPencil*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
-			m_PolyCreatableFlag = TRUE;
-			postInsert();
+					((CPencil*)m_CreateBuffer)->create(CFigure::FREECREATE);
+					m_PolyCreatableFlag = TRUE;
+					postInsert();
 					break;
 
 				case CGraphicEditorView::CURVE:
 					break;
 
 				case CGraphicEditorView::ELLIPSE:
-					m_CurrentFigures.GetHead()->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 					postInsert();
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
-					m_CurrentFigures.GetHead()->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 					postInsert();
 					break;
 
 				case CGraphicEditorView::STRING:
-					m_CurrentFigures.GetHead()->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
 					postInsert();
 					break;
 
@@ -580,7 +577,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 				//	moveFlag = CFigure::;
 				//}
 
-				m_CurrentFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
+				m_SelectedFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
 
@@ -590,11 +587,11 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
-				if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf(RUNTIME_CLASS(CStrap))) {
-					((CStrap*)m_CurrentFigures.GetHead())->pointMove(m_LButtonPoint, m_CurrPoint);
+				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
+					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else {
-					m_CurrentFigures.resize(m_selectedPosition, m_LButtonPoint, m_CurrPoint, resizeFlag);
+					m_SelectedFigures.resize(m_selectedPosition, m_LButtonPoint, m_CurrPoint, resizeFlag);
 				}
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
@@ -627,16 +624,16 @@ void CGraphicEditorView::OnLButtonDblClk(UINT nFlags, CPoint point)
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 		// 더블클릭하면 폴리라인 생성 완료
-		if (m_InsertFlag == CGraphicEditorView::POLYLINE/* && m_CurrentFigures.hasOneFigure()*/) {
-			((CPolyLine*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+		if (m_InsertFlag == CGraphicEditorView::POLYLINE/* && m_SelectedFigures.hasOne()*/) {
+			((CPolyLine*)m_CreateBuffer)->create(CFigure::FREECREATE);
 			
 			m_PolyCreatableFlag = TRUE;
 			postInsert();
 			//clearInsertFlag();
 		}
 
-		if (m_InsertFlag == CGraphicEditorView::POLYGON/* && m_CurrentFigures.hasOneFigure()*/) {
-			((CPolygon*)m_CurrentFigures.GetHead())->create(CFigure::FREECREATE);
+		else if (m_InsertFlag == CGraphicEditorView::POLYGON/* && m_SelectedFigures.hasOne()*/) {
+			((CPolygon*)m_CreateBuffer)->create(CFigure::FREECREATE);
 			m_PolyCreatableFlag = TRUE;
 			postInsert();
 			//clearInsertFlag();
@@ -755,7 +752,7 @@ BOOL CGraphicEditorView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		::GetCursorPos(&point);		// 스크린좌표
 		ScreenToClient(&point);		// 클라이언트좌표로변환
 
-		//if (m_CurrentFigures.GetSize() == 1){
+		//if (m_SelectedFigures.GetSize() == 1){
 		//	::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HELP));
 		//	return true;
 		//}
@@ -808,11 +805,11 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	
-	if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf((RUNTIME_CLASS(CText)))) {
+	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
 		switch (nChar) {
 			// 백스페이스 입력시
 		case VK_BACK:
-			((CText*)m_CurrentFigures.GetHead())->delChar(); // 문자삭제
+			((CText*)m_SelectedFigures.getOneFigure())->delChar(); // 문자삭제
 			break;
 			// 한줄 입력이므로 엔터키는 배열에 들어가지 않아도됨
 		case VK_RETURN:
@@ -820,7 +817,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 			// 위의 케이스를 제외한 문자저장
 		default:
-			((CText*)m_CurrentFigures.GetHead())->addChar(nChar);
+			((CText*)m_SelectedFigures.getOneFigure())->addChar(nChar);
 		}
 	CView::OnChar(nChar, nRepCnt, nFlags);
 	}
@@ -883,13 +880,14 @@ void CGraphicEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void CGraphicEditorView::preInsert()	// 삽입(생성) 작업 전에 해야 할 작업
 {
-	m_CurrentFigures.RemoveAll();	// 선택 개체 제거
+	m_SelectedFigures.deselectAll();	// 선택 개체 제거
 }
 
 void CGraphicEditorView::postInsert()	// 삽입(생성) 작업 후에 해야 할 작업
 {
-	GetDocument()->m_FiguresList.AddHead(m_CurrentFigures.GetHead());	// 전체 개체 리스트에 추가
+	GetDocument()->m_FiguresList.AddHead(m_CreateBuffer);	// 전체 개체 리스트에 추가
 	//m_selectedPosition = CFigure::OUTSIDE;
+	m_CreateBuffer = NULL;
 }
 
 void CGraphicEditorView::cancelInsert()	// 삽입(생성) 작업 취소 시에 해야 할 작업
@@ -909,7 +907,7 @@ CGraphicEditorView::OperationModeFlag CGraphicEditorView::getOperationModeFlag()
 	/*
 		### Comments about OperationModeFlag ###
 		
-	 $	m_InsertFlag, m_CurrentFigures, m_selectedPosition에 종속적이다.
+	 $	m_InsertFlag, m_SelectedFigures, m_selectedPosition에 종속적이다.
 
 	 $	SELECTABLE:	CREATE 상태가 아니면서 선택된 개체가 없는 상태이다.
 		SELECTED:	개체가 선택된 상태로 연산을 하지 않고 있는 상태이다.
@@ -933,7 +931,7 @@ CGraphicEditorView::OperationModeFlag CGraphicEditorView::getOperationModeFlag()
 	}
 
 	// 선택된 개체가 있을 때,
-	if (!m_CurrentFigures.IsEmpty()) {
+	if (!m_SelectedFigures.isEmpty()) {
 		if (m_selectedPosition & CFigure::ONHANDLE) {		// 선택 위치가 핸들이면,
 			return RESIZE;									// RESIZE 상태
 		}
@@ -946,7 +944,7 @@ CGraphicEditorView::OperationModeFlag CGraphicEditorView::getOperationModeFlag()
 		//	return SELECTED;
 		//}
 		//
-		//else if (m_CurrentFigures.hasOneFigure() && m_CurrentFigures.GetHead()->IsKindOf((RUNTIME_CLASS(CText)))) {
+		//else if (m_SelectedFigures.hasOneFigure() && m_SelectedFigures.GetHead()->IsKindOf((RUNTIME_CLASS(CText)))) {
 		//
 		//}
 
@@ -964,7 +962,7 @@ void CGraphicEditorView::setOperationModeFlag(OperationModeFlag operationModeFla
 	case CGraphicEditorView::SELECTABLE:
 	m_InsertFlag = NONE;
 		m_selectedPosition = CFigure::OUTSIDE;
-		m_CurrentFigures.RemoveAll();
+		m_SelectedFigures.deselectAll();
 		break;
 
 	case CGraphicEditorView::SELECTED:

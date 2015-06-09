@@ -56,6 +56,7 @@
 #include "Text.h"
 #include "FigurePtrList.h"
 #include "Polygon.h"
+#include "SelectedFigureArray.h"
 
 
 
