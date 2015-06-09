@@ -123,6 +123,9 @@ void CGraphicEditorView::OnEditSelectAll()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	m_SelectedFigures.selectAll();
+	Invalidate();
 }
 
 void CGraphicEditorView::OnEditUndo()
@@ -298,6 +301,10 @@ void CGraphicEditorView::OnArrangeGrouping()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
+	GetDocument()->m_FiguresList.AddHead(new CGroup(m_SelectedFigures));
+
+	Invalidate();
 }
 
 void CGraphicEditorView::OnArrangeGroup()

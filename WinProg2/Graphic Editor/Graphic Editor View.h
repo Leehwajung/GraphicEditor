@@ -33,6 +33,8 @@ public:
 	CFigure* m_CreateBuffer;
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
 
+	RectF m_SelectArea;
+
 	PointF m_CurrPoint;							// 현재 마우스의 좌표
 	PointF m_LButtonPoint;						// 마우스 왼쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
 	PointF m_RButtonPoint;						// 마우스 오른쪽 버튼 이벤트가 마지막으로 발생한 좌표 (Down, UP, DblClk 시에 저장)
