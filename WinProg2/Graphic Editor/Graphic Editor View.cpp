@@ -112,13 +112,45 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ZOOM_OUT, &CGraphicEditorView::OnZoomOut)
 	ON_COMMAND(ID_ZOOM_100, &CGraphicEditorView::OnZoom100)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_100, &CGraphicEditorView::OnUpdateZoom100)
+	ON_COMMAND(ID_OUTLINE_COLOR, &CGraphicEditorView::OnOutlineColor)
+	ON_UPDATE_COMMAND_UI(ID_OUTLINE_COLOR, &CGraphicEditorView::OnUpdateOutlineColor)
+	ON_COMMAND(ID_OUTLINE_WIDTH, &CGraphicEditorView::OnOutlineWidth)
+	ON_UPDATE_COMMAND_UI(ID_OUTLINE_WIDTH, &CGraphicEditorView::OnUpdateOutlineWidth)
+	ON_COMMAND(ID_OUTLINE_PATTERN, &CGraphicEditorView::OnOutlinePattern)
+	ON_UPDATE_COMMAND_UI(ID_OUTLINE_PATTERN, &CGraphicEditorView::OnUpdateOutlinePattern)
+	ON_COMMAND(ID_FILL_COLOR, &CGraphicEditorView::OnFillColor)
+	ON_UPDATE_COMMAND_UI(ID_FILL_COLOR, &CGraphicEditorView::OnUpdateFillColor)
+	ON_COMMAND(ID_FILL_GRADATION, &CGraphicEditorView::OnFillGradation)
+	ON_UPDATE_COMMAND_UI(ID_FILL_GRADATION, &CGraphicEditorView::OnUpdateFillGradation)
+	ON_COMMAND(ID_FILL_PATTERN, &CGraphicEditorView::OnFillPattern)
+	ON_UPDATE_COMMAND_UI(ID_FILL_PATTERN, &CGraphicEditorView::OnUpdateFillPattern)
+	ON_COMMAND(ID_POSITION_VERTICAL, &CGraphicEditorView::OnPositionVertical)
+	ON_UPDATE_COMMAND_UI(ID_POSITION_VERTICAL, &CGraphicEditorView::OnUpdatePositionVertical)
+	ON_COMMAND(ID_POSITION_HORIZONTAL, &CGraphicEditorView::OnPositionHorizontal)
+	ON_UPDATE_COMMAND_UI(ID_POSITION_HORIZONTAL, &CGraphicEditorView::OnUpdatePositionHorizontal)
+	ON_COMMAND(ID_SIZE_HEIGHT, &CGraphicEditorView::OnSizeHeight)
+	ON_UPDATE_COMMAND_UI(ID_SIZE_HEIGHT, &CGraphicEditorView::OnUpdateSizeHeight)
+	ON_COMMAND(ID_SIZE_WIDTH, &CGraphicEditorView::OnSizeWidth)
+	ON_UPDATE_COMMAND_UI(ID_SIZE_WIDTH, &CGraphicEditorView::OnUpdateSizeWidth)
+	ON_COMMAND(ID_FONT_CHARSET, &CGraphicEditorView::OnFontCharset)
+	ON_UPDATE_COMMAND_UI(ID_FONT_CHARSET, &CGraphicEditorView::OnUpdateFontCharset)
+	ON_COMMAND(ID_FONT_SIZE, &CGraphicEditorView::OnFontSize)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SIZE, &CGraphicEditorView::OnUpdateFontSize)
+	ON_COMMAND(ID_FONT_BOLD, &CGraphicEditorView::OnFontBold)
+	ON_UPDATE_COMMAND_UI(ID_FONT_BOLD, &CGraphicEditorView::OnUpdateFontBold)
+	ON_COMMAND(ID_FONT_ITALIC, &CGraphicEditorView::OnFontItalic)
+	ON_UPDATE_COMMAND_UI(ID_FONT_ITALIC, &CGraphicEditorView::OnUpdateFontItalic)
+	ON_COMMAND(ID_FONT_UNDERLINE, &CGraphicEditorView::OnFontUnderline)
+	ON_UPDATE_COMMAND_UI(ID_FONT_UNDERLINE, &CGraphicEditorView::OnUpdateFontUnderline)
+	ON_COMMAND(ID_FONT_COLOR, &CGraphicEditorView::OnFontColor)
+	ON_UPDATE_COMMAND_UI(ID_FONT_COLOR, &CGraphicEditorView::OnUpdateFontColor)
 	ON_COMMAND(ID_POINTMOVE, &CGraphicEditorView::OnPointmove)
 	ON_UPDATE_COMMAND_UI(ID_POINTMOVE, &CGraphicEditorView::OnUpdatePointmove)
-	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
-	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnPolyIndividualInsert)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
-END_MESSAGE_MAP()
+	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
+	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
+	END_MESSAGE_MAP()
 
 
 /*** CGraphicEditorView 생성/소멸 ***/
@@ -126,7 +158,9 @@ END_MESSAGE_MAP()
 CGraphicEditorView::CGraphicEditorView()
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
+
 	//m_CurrentFigure = NULL;
+	m_WndRibbonBar = ((CMDIFrameWndEx*)AfxGetMainWnd())->GetRibbonBar();
 	m_MouseVKFlags = 0;
 	m_MouseButtonFlag = NBUTTON;
 	m_InsertFlag = NONE;
@@ -157,6 +191,7 @@ void CGraphicEditorView::OnInitialUpdate()
 
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	m_SelectedFigures.setFigurePtrList(&GetDocument()->m_FiguresList);
+
 }
 
 // CGraphicEditorView 그리기
@@ -712,6 +747,15 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
+		//CMFCRibbonBar* pRibbon = ((CMDIFrameWndEx*)AfxGetMainWnd())->GetRibbonBar();
+		//ASSERT_VALID(pRibbon);
+
+		//CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		//	CMFCRibbonColorButton, pRibbon->FindByID(ID_OUTLINE_COLOR));
+		//
+		//Color dd;
+		//dd.SetFromCOLORREF(pColor->GetColor());
+		//m_SelectedFigures.getOneFigure()->setFillColor(dd);
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
@@ -1214,3 +1258,5 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
+
+

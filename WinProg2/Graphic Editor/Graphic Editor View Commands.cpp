@@ -471,6 +471,207 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
+void CGraphicEditorView::OnOutlineColor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateOutlineColor(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnOutlineWidth()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateOutlineWidth(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnOutlinePattern()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateOutlinePattern(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFillColor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FILL_COLOR));
+	
+	Color color;
+	color.SetFromCOLORREF(pColor->GetColor());
+	m_SelectedFigures.setFillColor(color);
+
+	Invalidate();
+}
+
+
+void CGraphicEditorView::OnUpdateFillColor(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFillGradation()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFillGradation(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFillPattern()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFillPattern(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnPositionVertical()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdatePositionVertical(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnPositionHorizontal()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdatePositionHorizontal(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnSizeHeight()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateSizeHeight(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnSizeWidth()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateSizeWidth(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontCharset()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontCharset(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontSize()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontSize(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontBold()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontBold(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontItalic()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontItalic(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontUnderline()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontUnderline(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnFontColor()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+
+void CGraphicEditorView::OnUpdateFontColor(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
 
 void CGraphicEditorView::OnPointmove()
 {
@@ -479,7 +680,7 @@ void CGraphicEditorView::OnPointmove()
 	m_EditPointFlag = m_EditPointFlag ? FALSE : TRUE;
 	
 		Invalidate();
-	}
+}
 
 void CGraphicEditorView::OnUpdatePointmove(CCmdUI *pCmdUI)
 {
@@ -513,13 +714,13 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	if (m_SelectedFigures.hasOne()) {
 		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
-		CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
+			CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
 
-		if (polyLine->GetPointsList().GetSize() == 1){
-			polyLine->destroy();
-		}
-		else 
-			(polyLine)->RemovePoint(m_RButtonPoint);
+			if (polyLine->GetPointsList().GetSize() == 1){
+				polyLine->destroy();
+			}
+			else
+				(polyLine)->RemovePoint(m_RButtonPoint);
 		}
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
 			CPolygon* polygon = (CPolygon*)m_SelectedFigures.getOneFigure();
@@ -530,8 +731,8 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 			else
 				(polygon)->RemovePoint(m_RButtonPoint);
 		}
-	Invalidate();
-}
+		Invalidate();
+	}
 }
 
 void CGraphicEditorView::OnUpdatePolyIndividualDelete(CCmdUI *pCmdUI)

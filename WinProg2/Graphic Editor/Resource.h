@@ -47,19 +47,13 @@
 #define IDS_EDIT_MENU                   306
 #define IDR_RIBBON                      307
 #define ID_WRITE_PASTEASHYPERLINK       32770
-#define ID_CONTEXTDRAWING               32771
-#define ID_CONTEXTSTRING                32772
-#define ID_BUTTON2                      32860
-#define ID_BUTTON3                      32861
 #define ID_CONTEXT_DRAWING              32862
 #define ID_CONTEXT_STRING               32863
-#define ID_32864                        32864
 #define ID_POLYLINE_DELETE              32865
-#define ID_POLY_INDIVIDUAL_DELETE   32866
-#define ID_32867                        32867
-#define ID_POLY_INDIVIDUAL_INSERT   32868
-#define ID_32869                        32869
+#define ID_POLY_INDIVIDUAL_DELETE       32866
+#define ID_POLY_INDIVIDUAL_INSERT       32868
 #define ID_POINTMOVE                    32870
+#define ID_BUTTON10                     32879
 #define ID_EDIT_DELETE                  57638
 #define ID_IMAGE_CANVAS_SIZE            57690
 #define ID_INSERT_LINE                  57700
@@ -105,7 +99,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32871
+#define _APS_NEXT_COMMAND_VALUE         32881
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -27,6 +27,7 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CGraphicEditorDoc* GetDocument() const;
+	CMFCRibbonBar* m_WndRibbonBar;				// 리본 메뉴 https://social.msdn.microsoft.com/Forums/en-US/db5d5dcd-d7a7-47ca-afb7-496d6e86d23d/how-to-display-ribbon-context-tab-in-mfc?forum=vcmfcatl
 	//CGroup m_SelectedFiguresList;				// 사용자가 선택한 개체들의 목록
 	//CFigurePtrList m_CurrentFigures;			// 현재 선택한 개체 리스트
 	CSelectedFigureArray m_SelectedFigures;		// 현재 선택한 개체 배열
@@ -191,6 +192,38 @@ protected:
 	afx_msg void OnZoomOut();
 	afx_msg void OnZoom100();
 	afx_msg void OnUpdateZoom100(CCmdUI *pCmdUI);
+	afx_msg void OnOutlineColor();
+	afx_msg void OnUpdateOutlineColor(CCmdUI *pCmdUI);
+	afx_msg void OnOutlineWidth();
+	afx_msg void OnUpdateOutlineWidth(CCmdUI *pCmdUI);
+	afx_msg void OnOutlinePattern();
+	afx_msg void OnUpdateOutlinePattern(CCmdUI *pCmdUI);
+	afx_msg void OnFillColor();
+	afx_msg void OnUpdateFillColor(CCmdUI *pCmdUI);
+	afx_msg void OnFillGradation();
+	afx_msg void OnUpdateFillGradation(CCmdUI *pCmdUI);
+	afx_msg void OnFillPattern();
+	afx_msg void OnUpdateFillPattern(CCmdUI *pCmdUI);
+	afx_msg void OnPositionVertical();
+	afx_msg void OnUpdatePositionVertical(CCmdUI *pCmdUI);
+	afx_msg void OnPositionHorizontal();
+	afx_msg void OnUpdatePositionHorizontal(CCmdUI *pCmdUI);
+	afx_msg void OnSizeHeight();
+	afx_msg void OnUpdateSizeHeight(CCmdUI *pCmdUI);
+	afx_msg void OnSizeWidth();
+	afx_msg void OnUpdateSizeWidth(CCmdUI *pCmdUI);
+	afx_msg void OnFontCharset();
+	afx_msg void OnUpdateFontCharset(CCmdUI *pCmdUI);
+	afx_msg void OnFontSize();
+	afx_msg void OnUpdateFontSize(CCmdUI *pCmdUI);
+	afx_msg void OnFontBold();
+	afx_msg void OnUpdateFontBold(CCmdUI *pCmdUI);
+	afx_msg void OnFontItalic();
+	afx_msg void OnUpdateFontItalic(CCmdUI *pCmdUI);
+	afx_msg void OnFontUnderline();
+	afx_msg void OnUpdateFontUnderline(CCmdUI *pCmdUI);
+	afx_msg void OnFontColor();
+	afx_msg void OnUpdateFontColor(CCmdUI *pCmdUI);
 	afx_msg void OnPointmove();
 	afx_msg void OnUpdatePointmove(CCmdUI *pCmdUI);
 	afx_msg void OnPolyIndividualInsert();
