@@ -141,7 +141,7 @@ void  CText::increasewidth(){
 
 	//rectSize.Width += m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	
+
 	rectSize.Width = m_Rect.Width + 20;
 	rectSize.Height = 30;
 
@@ -154,7 +154,6 @@ void  CText::increasewidth(){
 
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	count++;
 }
 void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
@@ -167,7 +166,7 @@ void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	PointF sp;
 	m_Rect.GetLocation(&sp);
 	m_Rect = RectF(sp, rectSize);
-	cur.x = m_Rect.X + count * 20;
+	cur.x = m_Rect.X + m_String.GetSize() * 20;
 	cur.y = m_Rect.Y;
 	
 
@@ -191,7 +190,6 @@ void  CText::decreasewidth(){
 	}
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	count--;
 }
 // 
 void CText::draw(IN Graphics& graphics){
@@ -201,10 +199,10 @@ void CText::draw(IN Graphics& graphics){
 	SolidBrush blackBrush(Color(255, 0,0, 0));
 
 	// Draw string.
-	if (count > 0){
+	if (m_String.GetSize() > 0){
 		graphics.DrawString(
 			m_String.GetData(),
-			count,
+			m_String.GetSize(),
 			&m_Font,
 			m_Rect,
 			&m_StringFormat,
