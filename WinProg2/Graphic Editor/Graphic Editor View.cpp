@@ -642,6 +642,9 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					if (m_EditPointFlag == TRUE)
 						((CPolygon*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
+				else {
+					m_SelectedFigures.resize(m_selectedPosition, m_LButtonPoint, m_CurrPoint, resizeFlag);
+				}
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
 		}

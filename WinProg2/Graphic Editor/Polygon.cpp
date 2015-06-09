@@ -19,10 +19,22 @@ CPolygon::CPolygon(IN Pen* pen, IN BrushPtr brush)
 	: CShape(pen, brush)
 {
 }
+
+CPolygon::CPolygon(IN Pen* pen, IN BrushPtr brush, CList <PointF, PointF&>& list)
+   : CShape(pen,brush)
+{
+	for (POSITION pos = list.GetHeadPosition(); pos; list.GetNext(pos)) {
+		m_PointsList.AddTail(list.GetAt(pos));
+	}
+}
+
 CPolygon::~CPolygon()
 {
 }
 
+CFigure* CPolygon::clone(){
+	return new CPolygon(m_OutlinePen,m_FillBrush, m_PointsList);
+}
 
 void CPolygon::Serialize(CArchive& ar)
 {
@@ -35,7 +47,7 @@ void CPolygon::Serialize(CArchive& ar)
 }
 
 
-// CPolyLine 멤버 함수
+// CPolygon 멤버 함수
 //LButtonUp
 void CPolygon::addPoint(IN PointF addingPoint, IN CreateFlag createFlag/* = FREECREATE*/){
 	m_PointsList.AddTail(addingPoint);
@@ -100,7 +112,107 @@ void CPolygon::pointMove(IN PointF originPoint, IN PointF targetPoint){
 	resetArea();
 }
 
-/* 선 크기(길이) 변경 */
+// 개별 좌표 삭제
+void CPolygon::RemovePoint(IN PointF originPoint){
+	PointF  point = m_PointsList.GetHead();
+	POSITION pos = m_PointsList.GetHeadPosition(), prevpos = m_PointsList.GetHeadPosition();
+
+	while (pos != NULL){
+		point = m_PointsList.GetNext(pos);
+
+		RectF handleRect;
+		handleRect = getHandleRect(point);
+
+		if (handleRect.Contains(originPoint)) {
+			m_PointsList.RemoveAt(prevpos);
+			break;
+		}
+
+		prevpos = pos;
+	}
+	resetArea();
+}
+
+void CPolygon::InsertPoint(IN PointF originPoint){
+
+	POSITION pos = m_PointsList.GetHeadPosition();
+	POSITION prevpos = m_PointsList.GetHeadPosition();
+	PointF first_point = m_PointsList.GetNext(pos);
+	PointF second_point;
+	REAL Gradient;
+
+	while (pos != NULL){
+		prevpos = pos;
+		second_point = m_PointsList.GetNext(pos);
+		Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
+
+		const int count = 4;
+
+		REAL tmp_theta = atan(-1 / Gradient);
+		REAL theta = 90 - tmp_theta;
+
+		PointF points[count];
+		GraphicsPath path;
+		int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
+		if (Gradient >= 0){
+			points[0] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+		}
+		else if (Gradient < 0){
+			points[0] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+			points[1] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+			points[2] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+			points[3] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+		}
+		path.AddPolygon(points, count);
+
+		Region rgn(&path);
+		if (rgn.IsVisible(originPoint)){
+			m_PointsList.InsertBefore(prevpos, originPoint);
+			resetArea();
+			return;
+		}
+		first_point = second_point;
+	}
+
+	// Polygon이기때문에 마지막 좌표에대한 작업을 해주어야 한다.
+	first_point = m_PointsList.GetTail();
+	second_point = m_PointsList.GetHead();
+	Gradient = (first_point.Y - second_point.Y) / (first_point.X - second_point.X);
+
+	const int count = 4;
+
+	REAL tmp_theta = atan(-1 / Gradient);
+	REAL theta = 90 - tmp_theta;
+
+	PointF points[count];
+	GraphicsPath path;
+	int width = (m_OutlinePen->GetWidth() > HANDLESIZE) ? m_OutlinePen->GetWidth() : HANDLESIZE;
+	if (Gradient >= 0){
+		points[0] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+		points[1] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+		points[2] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+		points[3] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+	}
+	else if (Gradient < 0){
+		points[0] = PointF(first_point.X - width / 2 * cos(theta), first_point.Y + width / 2 * sin(theta));
+		points[1] = PointF(first_point.X + width / 2 * cos(theta), first_point.Y - width / 2 * sin(theta));
+		points[2] = PointF(second_point.X + width / 2 * cos(theta), second_point.Y - width / 2 * sin(theta));
+		points[3] = PointF(second_point.X - width / 2 * cos(theta), second_point.Y + width / 2 * sin(theta));
+	}
+	path.AddPolygon(points, count);
+
+	Region rgn(&path);
+	if (rgn.IsVisible(originPoint)){
+		m_PointsList.AddTail(originPoint);
+		resetArea();
+		return;
+	}
+}
+
+/* 크기(길이) 변경 */
 void CPolygon::resize(IN Position selcetedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
 
 
@@ -133,7 +245,7 @@ CFigure::Position CPolygon::pointInFigure(IN PointF point) {
 			return ONHANDLE;
 	}
 
-	// 2. 현재 좌표가 선이 있는 영역에 있을 때 INSIDE이다.
+	// 2. 현재 좌표가 내부 영역에 있을 때 INSIDE이다.
 	CArray<PointF, PointF&> pointsArray;
 
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
@@ -155,7 +267,7 @@ CFigure::Position CPolygon::pointInFigure(IN PointF point) {
 /* 선 그리기 */
 void CPolygon::draw(IN Graphics& graphics) {
 
-	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
+	// polygon을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
 
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
@@ -332,4 +444,9 @@ void CPolygon::drawLineHandle(IN Graphics& graphics){
 	graphics.DrawLines(&pen, pointsArray.GetData(), pointsArray.GetSize());
 
 	drawHandles(graphics, pointsArray.GetData(), pointsArray.GetSize());
+}
+
+
+CList <PointF, PointF&>& CPolygon::GetPointsList(){
+	return m_PointsList;
 }

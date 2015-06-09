@@ -248,8 +248,8 @@ BEGIN
         MENUITEM "º¹»ç(&C)\tCtrl+C",              ID_EDIT_COPY
         MENUITEM "ºÙ¿©³Ö±â(&P)\tCtrl+V",            ID_EDIT_PASTE
         MENUITEM "Á¡ ÆíÁý",                        ID_POINTMOVE
-        MENUITEM "PolyLine °³º° ÁÂÇ¥ »ðÀÔ ",          ID_POLYLINE_INDIVIDUAL_INSERT
-        MENUITEM "PolyLine °³º° ÁÂÇ¥ »èÁ¦",           ID_POLYLINE_INDIVIDUAL_DELETE
+        MENUITEM "Poly °³º° ÁÂÇ¥ »ðÀÔ ",              ID_POLYLINE_INDIVIDUAL_INSERT
+        MENUITEM "Poly °³º° ÁÂÇ¥ »èÁ¦",               ID_POLYLINE_INDIVIDUAL_DELETE
     END
 END
 

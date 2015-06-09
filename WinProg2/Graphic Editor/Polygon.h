@@ -13,6 +13,8 @@ public:
 	CPolygon();
 	virtual ~CPolygon();
 	CPolygon(IN Pen* pen, IN BrushPtr brush);
+	CPolygon(IN Pen* pen, IN BrushPtr brush, CList <PointF, PointF&>& list);
+	CFigure* clone();
 	DECLARE_SERIAL(CPolygon)
 	
 
@@ -130,6 +132,10 @@ public:
 		virtual RectF pointMoving(Graphics& graphics, IN PointF originPoint, IN PointF targetPoint);
 
 		void drawLineHandle(IN Graphics& graphics);
+
+		void RemovePoint(IN PointF originPoint);
+
+		void InsertPoint(IN PointF originPoint);
 
 
 	protected:
