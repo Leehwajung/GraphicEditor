@@ -929,6 +929,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 
 	case CGraphicEditorView::SELECTED:
+	case CGraphicEditorView::RESIZE:
 	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
 			text = (CText*)m_SelectedFigures.getOneFigure();
 		}
@@ -943,15 +944,16 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case CGraphicEditorView::MOVE:
 		break;
 
-	case CGraphicEditorView::RESIZE:
-		break;
+	
 	}
 	
 	if (text) {
 		switch (nChar) {
 			// 백스페이스 입력시
 		case VK_BACK:
-			((CText*)m_SelectedFigures.getOneFigure())->delChar(); // 문자삭제
+			//((CText*)m_SelectedFigures.getOneFigure())->delChar(); // 문자삭제
+			text->delChar();
+			Invalidate();
 			break;
 			// 한줄 입력이므로 엔터키는 배열에 들어가지 않아도됨
 		case VK_RETURN:
@@ -960,6 +962,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 			// 위의 케이스를 제외한 문자저장
 		default:
 			text->addChar(nChar);
+			Invalidate();
 			break;
 		}
 	CView::OnChar(nChar, nRepCnt, nFlags);

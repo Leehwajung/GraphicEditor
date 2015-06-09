@@ -180,6 +180,7 @@ void CGraphicEditorView::OnEditDelete()
 		}
 		m_SelectedFigures.deselectAll();
 	}
+	HideCaret();//
 	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
