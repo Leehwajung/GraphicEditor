@@ -49,12 +49,38 @@ void CGraphicEditorView::OnEditCopy()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	
+	CGraphicEditorDoc* pDoc = GetDocument();
+	
+	pDoc->m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
+	if (m_CurrentFigures.hasOneFigure()){//하나가 선택된 경우
+		// 선택된 도형을 m_BufferList에 복사한다.
+		//pDoc->m_BufferList.AddTail(); //단, m_FiguresList에는 계속 존재
+}
+
+	else // 다중 선택 case
+	{
+	}
+	
+	//
 }
 
 void CGraphicEditorView::OnEditCut()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CGraphicEditorDoc* pDoc = GetDocument();
+	POSITION deletePos = pDoc->m_FiguresList.GetHeadPosition(); //삭제할위치를 얻기위해
+	
+	while (deletePos != NULL)
+	{
+		pDoc->m_FiguresList.GetNext(deletePos); // 삭제할 위치를 찾을 때까지
+		//if ()// deletepos와 선택된 도형이 맞으면 break;
+	}
+	//pDoc->m_BufferList.AddTail();//원본리스트에서 버퍼리스트로 복사
+	pDoc->m_FiguresList.deleteAt(deletePos);//원본 리스트에서 삭제
+
+	Invalidate();//잘라내기를 했으므로, 뷰에서 지워짐
 }
 
 //void CGraphicEditorView::OnEditFind()
@@ -63,10 +89,16 @@ void CGraphicEditorView::OnEditCut()
 //	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 //}
 
-void CGraphicEditorView::OnEditPaste()
+void CGraphicEditorView::OnEditPaste()//붙여넣기
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CGraphicEditorDoc* pDoc = GetDocument();
+	POSITION headpos = pDoc->m_BufferList.GetHeadPosition();
+	
+	//m_BufferList에 있는 것들을 m_FigureList에 추가해서 그릴 것.\
+
+	Invalidate();
 }
 
 void CGraphicEditorView::OnEditDelete()
