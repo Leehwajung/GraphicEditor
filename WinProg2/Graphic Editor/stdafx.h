@@ -54,6 +54,7 @@
 #include "Ellipse.h"
 //#include "Rectangle.h"
 #include "Text.h"
+#include "Group.h"
 #include "FigurePtrList.h"
 #include "Polygon.h"
 #include "SelectedFigureArray.h"

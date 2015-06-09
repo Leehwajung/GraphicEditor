@@ -23,6 +23,24 @@ CGroup::CGroup(IN CFigurePtrList& figurePtrList)
 	create(figurePtrList);
 }
 
+CGroup::CGroup(IN CSelectedFigureArray& selectedFigureArray)
+	: CFigure()
+{
+	const POSITION* positionArray = selectedFigureArray.getData();
+	CFigurePtrList* figurePtrList = selectedFigureArray.getFigurePtrList();
+	int size = selectedFigureArray.getSize();
+	CFigure* figure;
+
+	for (int i = 0; i < size; i++) {
+		figure = figurePtrList->GetAt(positionArray[i]);		// 전체 리스트에서 개체를 가져옴
+		m_FiguresList.AddTail(figure);						// 그룹의 리스트에 개체를 저장
+		m_Area.Intersect(figure->getArea());					// 그룹의 영역에 개체의 영역을 합침
+		figurePtrList->RemoveAt(positionArray[i]);			// 전체 리스트에서 원소를 삭제
+	}
+
+	selectedFigureArray.deselectAll();		// 선택 전체 해제
+}
+
 CGroup::~CGroup()
 {
 }
@@ -48,7 +66,7 @@ void CGroup::Serialize(CArchive& ar)
 // 생성
 // 매개변수의 값을 기준으로 새로운 개체를 정의
 // - IN 매개변수
-//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
+//		CFigurePtrList& figurePtrList: 개체 포인터 목록
 // - 반환 값 (BOOL)
 //		TRUE: 생성 실패
 //		FALSE: 생성 성공
@@ -59,6 +77,34 @@ BOOL CGroup::create(IN CFigurePtrList& figurePtrList)
 	for (POSITION pos = m_FiguresList.GetHeadPosition(); pos; m_FiguresList.GetNext(pos)) {
 		m_Area.Intersect(m_FiguresList.GetAt(pos)->getArea());
 	}
+
+	return FALSE;
+}
+
+// 생성
+// 매개변수의 값을 기준으로 새로운 개체를 정의
+// - IN 매개변수
+//		CSelectedFigureArray& figurePtrList: 개체 포지션 배열
+// - 반환 값 (BOOL)
+//		TRUE: 생성 실패
+//		FALSE: 생성 성공
+BOOL CGroup::create(IN CSelectedFigureArray& selectedFigureArray)
+{
+	const POSITION* positionArray = selectedFigureArray.getData();
+	CFigurePtrList* figurePtrList = selectedFigureArray.getFigurePtrList();
+	int size = selectedFigureArray.getSize();
+	CFigure* figure;
+
+	for (int i = 0; i < size; i++) {
+		figure = figurePtrList->GetAt(positionArray[i]);		// 전체 리스트에서 개체를 가져옴
+		m_FiguresList.AddTail(figure);						// 그룹의 리스트에 개체를 저장
+		RectF::Union(m_Area, m_Area, figure->getArea());		// 그룹의 영역에 개체의 영역을 합침
+		figurePtrList->RemoveAt(positionArray[i]);			// 전체 리스트에서 원소를 삭제
+	}
+
+	figurePtrList->AddHead(this);			// 그룹을 전체 리스트에 등록
+	selectedFigureArray.deselectAll();		// 선택 전체 해제
+	selectedFigureArray.select(/*figurePtrList->GetHeadPosition()*/);			// 그룹 선택
 
 	return FALSE;
 }
@@ -183,6 +229,29 @@ void CGroup::unGroup(OUT CFigurePtrList& figurePtrList)
 	figurePtrList = m_FiguresList;
 
 	this->~CGroup();
+}
+
+// 해제
+// 그룹을 해제하고 그룹 개체를 삭제
+// - OUT 매개변수
+//		CSelectedFigureArray& selectedFigureArray: 그룹에 해당하는 선택 개체 배열
+void CGroup::unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFigureArray)
+{
+	const POSITION* positionArray = selectedFigureArray.getData();
+	CFigurePtrList* figurePtrList = selectedFigureArray.getFigurePtrList();
+
+	for (POSITION pos = m_FiguresList.GetTailPosition(); pos; m_FiguresList.GetPrev(pos)) {
+		figurePtrList->InsertAfter(position, m_FiguresList.GetAt(pos));		// 그룹의 개체를 전체 리스트에 등록
+	}
+
+	POSITION pos = position;
+	m_FiguresList.GetNext(pos);
+	for (int i = 0; i < m_FiguresList.GetSize(); i++) {
+		selectedFigureArray.select(pos);		// 선택 리스트에 그룹에서 해제된 개체 등록
+		m_FiguresList.GetNext(pos);
+	}
+
+	m_FiguresList.RemoveAll();
 }
 
 

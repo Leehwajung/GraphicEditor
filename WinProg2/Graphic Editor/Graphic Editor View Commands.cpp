@@ -273,8 +273,9 @@ void CGraphicEditorView::OnArrangeGroup()
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
-	//GetDocument()->m_FiguresList.AddHead(new CGroup(m_CurrentFigures));
+	GetDocument()->m_FiguresList.AddHead(new CGroup(m_SelectedFigures));
 
+	Invalidate();
 	//for (POSITION pos = figurelist->GetTailPosition(); pos; figurelist->GetPrev(pos)) {
 	//	m_CurrentFigures.InsertAfter(pos, figurelist->GetAt(subpos));
 	//}
@@ -303,6 +304,9 @@ void CGraphicEditorView::OnArrangeUngroup()
 	//		
 	//	}
 	//}
+
+	m_SelectedFigures.unGroup();
+	Invalidate();
 }
 
 void CGraphicEditorView::OnUpdateArrangeUngroup(CCmdUI *pCmdUI)

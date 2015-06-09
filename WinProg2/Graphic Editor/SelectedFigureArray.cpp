@@ -82,6 +82,12 @@ void CSelectedFigureArray::select()
 	m_FigurePosArray.Add(m_FigurePtrList->GetHeadPosition());
 }
 
+// 포지션의 개체 선택
+void CSelectedFigureArray::select(POSITION position)
+{
+	m_FigurePosArray.Add(position);
+}
+
 // point의 위치에 있는 개체 선택
 CFigure::Position CSelectedFigureArray::select(PointF point)	// getFigure
 {
@@ -118,6 +124,21 @@ void CSelectedFigureArray::selectAll()
 void CSelectedFigureArray::deselect()
 {
 	m_FigurePosArray.RemoveAt(0);
+}
+
+// 포지션의 개체 선택 해제
+BOOL CSelectedFigureArray::deselect(POSITION position)
+{
+	BOOL NOTfindFlag = TRUE;
+
+	for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
+		if (m_FigurePosArray[i] == position) {
+			m_FigurePosArray.RemoveAt(i);
+			NOTfindFlag = FALSE;
+		}
+	}
+
+	return NOTfindFlag;
 }
 
 // point의 위치이 있는 개체 선택 해제
@@ -176,6 +197,20 @@ void CSelectedFigureArray::resize(IN CFigure::Position selectedHandle, IN PointF
 {
 	for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
 		m_FigurePtrList->GetAt(m_FigurePosArray[i])->resize(selectedHandle, targetPoint, resizeFlag, anchorPoint);
+	}
+}
+
+// 선택 개체 중 그룹 해제
+void CSelectedFigureArray::unGroup()
+{
+	CFigure* figure;
+
+	for (int i = 0; i < m_FigurePosArray.GetSize(); i++) {
+		figure = m_FigurePtrList->GetAt(m_FigurePosArray[i]);
+
+		if (figure->IsKindOf(RUNTIME_CLASS(CGroup))) {
+			((CGroup*)figure)->unGroup(m_FigurePosArray[i] , * this);
+		}
 	}
 }
 
@@ -317,6 +352,18 @@ void CSelectedFigureArray::setFigurePtrList(CFigurePtrList* lpFigurePtrList)
 {
 	m_FigurePosArray.RemoveAll();
 	m_FigurePtrList = lpFigurePtrList;
+}
+
+// 포지션의 정적 배열을 얻음
+const POSITION* CSelectedFigureArray::getData()
+{
+	return m_FigurePosArray.GetData();
+}
+
+// 포지션의 정적 배열의 원소 개수를 얻음
+int CSelectedFigureArray::getSize()
+{
+	return m_FigurePosArray.GetSize();
 }
 
 // 맨 앞의 포지션 획득

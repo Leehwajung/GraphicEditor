@@ -3,6 +3,7 @@
 // @Author Lee Hwajung
 
 #pragma once
+#include "FigurePtrList.h"
 
 // CSelectedFigureArray 명령 대상입니다.
 
@@ -35,6 +36,9 @@ public:
 	// 최상위 개체 선택
 	void select();
 
+	// 포지션의 개체 선택
+	void select(POSITION position);
+
 	// point의 위치에 있는 개체 선택
 	CFigure::Position select(PointF point);		// getFigure
 
@@ -46,6 +50,9 @@ public:
 
 	// 최상위 개체 선택 해제
 	void deselect();
+
+	// 포지션의 개체 선택 해제 (성공: FALSE, 실패: TRUE)
+	BOOL deselect(POSITION position);
 
 	// point의 위치이 있는 개체 선택 해제
 	void deselect(PointF point);
@@ -67,6 +74,9 @@ public:
 	
 	// 선택 개체 크기 변경
 	void resize(IN CFigure::Position selectedHandle, IN PointF originPoint, IN PointF targetPoint, IN CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE, IN PointF* anchorPoint = NULL);
+
+	// 선택 개체 중 그룹 해제
+	void unGroup();
 
 	// 선택 개체 그리기
 	void draw(IN Graphics& graphics);
@@ -103,6 +113,12 @@ public:
 
 	// FigurePtrList 설정
 	void setFigurePtrList(CFigurePtrList* lpFigurePtrList);
+
+	// 포지션의 정적 배열을 얻음
+	const POSITION* getData();
+
+	// 포지션의 정적 배열의 원소 개수를 얻음
+	int getSize();
 
 private:
 	// 맨 앞의 포지션 획득

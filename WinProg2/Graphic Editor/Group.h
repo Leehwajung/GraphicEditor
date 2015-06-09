@@ -4,6 +4,7 @@
 
 #pragma once
 #include "Figure.h"
+#include "SelectedFigureArray.h"
 
 // CGroup 명령 대상입니다.
 
@@ -13,6 +14,7 @@ class CGroup : public CFigure
 public:
 	CGroup();
 	CGroup(IN CFigurePtrList& figurePtrList);
+	CGroup(IN CSelectedFigureArray& selectedFigureArray);
 	DECLARE_SERIAL(CGroup)
 	virtual ~CGroup();
 
@@ -31,6 +33,15 @@ public:
 	//		TRUE: 생성 실패
 	//		FALSE: 생성 성공
 	BOOL create(IN CFigurePtrList& figurePtrList);
+
+	// 생성
+	// 매개변수의 값을 기준으로 새로운 개체를 정의
+	// - IN 매개변수
+	//		CSelectedFigureArray& figurePtrList: 개체 포지션 배열
+	// - 반환 값 (BOOL)
+	//		TRUE: 생성 실패
+	//		FALSE: 생성 성공
+	BOOL create(IN CSelectedFigureArray& selectedFigureArray);
 
 	// 생성
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
@@ -79,6 +90,13 @@ public:
 	// - OUT 매개변수
 	//		CFigurePtrList& figurePtrList: 원래 그룹의 개체 리스트
 	void unGroup(OUT CFigurePtrList& figurePtrList);
+
+	// 해제
+	// 그룹을 해제하고 그룹 개체를 삭제
+	// - OUT 매개변수
+	//		POSITION position: 해제된 그룹이 들어갈 포지션
+	//		CSelectedFigureArray& selectedFigureArray: 그룹에 해당하는 선택 개체 배열
+	void unGroup(IN POSITION position, OUT CSelectedFigureArray& selectedFigureArray);
 
 	// 좌표 위치 확인
 	// 점이 개체 안에 있는지 확인하고 그 위치를 반환함
