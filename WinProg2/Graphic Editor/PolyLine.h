@@ -13,6 +13,7 @@ public:
 
 	CPolyLine();
 	CPolyLine(IN Pen* pen);
+	CPolyLine(IN Pen* pen, CList <PointF, PointF&>& list);
 	DECLARE_SERIAL(CPolyLine)
 	~CPolyLine();
 	CFigure* clone();
