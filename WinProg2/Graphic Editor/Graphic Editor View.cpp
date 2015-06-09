@@ -908,6 +908,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 
 	case CGraphicEditorView::SELECTED:
+	case CGraphicEditorView::RESIZE:
 	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf((RUNTIME_CLASS(CText)))) {
 			text = (CText*)m_SelectedFigures.getOneFigure();
 		}
@@ -922,8 +923,7 @@ void CGraphicEditorView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 	case CGraphicEditorView::MOVE:
 		break;
 
-	case CGraphicEditorView::RESIZE:
-		break;
+	
 	}
 	
 	if (text) {

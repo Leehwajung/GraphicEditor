@@ -125,14 +125,14 @@ BOOL CText::create(void* param1, ...)
 	//rectSize.Width = m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
 	rectSize.Width = 50;
-	rectSize.Height = 50;
+	rectSize.Height = 30;
 	m_Rect = RectF(*startingPoint, rectSize);
 	st_p = *startingPoint;
 	resetArea();
 	cur.x= startingPoint->X;
 	cur.y =startingPoint->Y;
 	//m_View->CreateSolidCaret(2, m_String.GetSize());
-	m_View->CreateSolidCaret(5,45);
+	m_View->CreateSolidCaret(5,25);
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret();
 	return FALSE;
@@ -142,13 +142,13 @@ void  CText::increasewidth(){
 
 	//rectSize.Width += m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width += 16;
+	rectSize.Width += 20;
 	rectSize.Height = 50;
 
 	m_Rect = RectF(st_p, rectSize);
 	resetArea();
 	//cur.x = cur.x + m_Font->GetSize();
-	cur.x = cur.x + 16;
+	cur.x = cur.x + 20;
 
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
@@ -162,7 +162,7 @@ void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_Rect.Offset(offset);
 	resetArea();
 	
-	cur.x = m_Rect.X + count * 16;
+	cur.x = m_Rect.X + count * 20;
 	cur.y = m_Rect.Y;
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
@@ -171,14 +171,14 @@ void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 void  CText::decreasewidth(){
 	//rectSize.Width = rectSize.Width-m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width = rectSize.Width - 50;
-	rectSize.Height = 50;
+	rectSize.Width = rectSize.Width - 20;
+	rectSize.Height = 30;
 
 	m_Rect = RectF(st_p, rectSize);
 	resetArea();
 	if (cur.x > 0){
 		//	cur.x = cur.x - m_Font->GetSize();
-		cur.x = cur.x - 16;
+		cur.x = cur.x - 20;
 	}
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
@@ -192,16 +192,16 @@ void CText::draw(IN Graphics& graphics){
 	SolidBrush blackBrush(Color(255, 255, 0, 0));
 
 	// Draw string.
-	graphics.DrawString(
-		m_String.GetData(),
-		11,
-		&m_Font,
-		m_Rect,
-		&m_StringFormat,
-		&blackBrush);
-
+	if (count > 0){
+		graphics.DrawString(
+			m_String.GetData(),
+			count,
+			&m_Font,
+			m_Rect,
+			&m_StringFormat,
+			&blackBrush);
+	}
 }//CpaintDC 사용
-
 
 
 // m_String에 문자 추가
