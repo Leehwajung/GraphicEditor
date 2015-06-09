@@ -124,10 +124,9 @@ BOOL CText::create(void* param1, ...)
 	SizeF rectSize;
 	//rectSize.Width = m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width = 50;
+	rectSize.Width = 60;
 	rectSize.Height = 30;
 	m_Rect = RectF(*startingPoint, rectSize);
-	st_p = *startingPoint;
 	resetArea();
 	cur.x= startingPoint->X;
 	cur.y =startingPoint->Y;
@@ -142,10 +141,13 @@ void  CText::increasewidth(){
 
 	//rectSize.Width += m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
-	rectSize.Width += 20;
-	rectSize.Height = 50;
+	
+	rectSize.Width = m_Rect.Width + 20;
+	rectSize.Height = 30;
 
-	m_Rect = RectF(st_p, rectSize);
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
 	resetArea();
 	//cur.x = cur.x + m_Font->GetSize();
 	cur.x = cur.x + 20;
@@ -162,11 +164,16 @@ void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveF
 	m_Rect.Offset(offset);
 	resetArea();
 	
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
 	cur.x = m_Rect.X + count * 20;
 	cur.y = m_Rect.Y;
+	
+
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
-	
+
 }
 void  CText::decreasewidth(){
 	//rectSize.Width = rectSize.Width-m_Font->GetSize();
@@ -174,7 +181,9 @@ void  CText::decreasewidth(){
 	rectSize.Width = rectSize.Width - 20;
 	rectSize.Height = 30;
 
-	m_Rect = RectF(st_p, rectSize);
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
 	resetArea();
 	if (cur.x > 0){
 		//	cur.x = cur.x - m_Font->GetSize();
@@ -189,7 +198,7 @@ void CText::draw(IN Graphics& graphics){
 	FontFamily fontfamily(L"Arial");
 	Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	StringFormat m_StringFormat;
-	SolidBrush blackBrush(Color(255, 255, 0, 0));
+	SolidBrush blackBrush(Color(255, 0,0, 0));
 
 	// Draw string.
 	if (count > 0){
