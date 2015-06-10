@@ -385,63 +385,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 		} break;
 	}
-	
-
-
-
-	//////////////////////////////////////////////////////////////////////////
-	///*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
-	//switch(m_mode){
-	//	case 1: // 폴리라인
-	//		break;
-	//	case 2: // 도형
-	//		break;
-	//	case 3 :// 텍스트
-	//	
-	//		break;
-	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
-	// graphicsCanvas 포인터를 멤버 변수(m_graphicsCanvas)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
-	//
-	//}
-	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
-	// GDI+ 예제 코드 (사각형 그리기)
-	SolidBrush sb(Color(255,255,0,0));
-	graphicsCanvas.FillRectangle(&sb, Rect(33, 44, 55, 66));
-
-	// Set up the arc.
-	Pen redPen(Color(255, 255, 0, 0), 3);
-	RectF ellipseRect(0, 0, 200, 100);
-	REAL startAngle = 0.0f;
-	REAL sweepAngle = 90.0f;
-
-	// Draw the arc.
-	graphicsCanvas.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
-
-	// 문자열 출력 테스트
-	// Create a string.
-	WCHAR string[] = L"Sample Text";
-
-	// Initialize arguments.
-	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font myFont(&fontfamily, 16, FontStyleRegular, UnitPixel);
-	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
-	StringFormat format;
-	SolidBrush blackBrush(Color(255, 255, 0, 0));
-
-	// Draw string.
-	graphicsCanvas.DrawString(
-		string,
-		11,
-		&myFont,
-		layoutRect,
-		&format,
-		&blackBrush);
-
-	// Draw layoutRect.
-	graphicsCanvas.DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
-	///////////////////////////////// 여기까지 예제 코드 ///////////////////////////////////////////////////////////////
-	
-	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), m_psMemDC, 0, 0, SRCCOPY);
 
 
 	/**************************************** 더블 버퍼링 ****************************************/
@@ -568,6 +511,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					FontFamily fontfamily(pDoc->m_FigureSettings.m_FontName);
 					Gdiplus::Font font(&fontfamily, pDoc->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
 					((CText*)m_CreateBuffer)->setFont(&font);
+					((CText*)m_CreateBuffer)->setFontBrush(&SolidBrush(pDoc->m_FigureSettings.m_FontColor));
 					} break;
 
 				case CGraphicEditorView::POLYGON:

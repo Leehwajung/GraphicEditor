@@ -773,6 +773,26 @@ void CGraphicEditorView::OnUpdateFontUnderline(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFontColor()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FONT_COLOR));
+
+	Color color;
+	color.SetFromCOLORREF(pColor->GetColor());
+	GetDocument()->m_FigureSettings.m_FontColor = color;
+
+	if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+
+		//FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
+		//Gdiplus::Font font(&fontfamily, GetDocument()->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
+
+		((CText*)m_SelectedFigures.getOneFigure())->setFontBrush(&SolidBrush(color));
+	}
+	m_SelectedFigures.setFillSubcolor(color);
+
+	Invalidate();
 }
 
 
