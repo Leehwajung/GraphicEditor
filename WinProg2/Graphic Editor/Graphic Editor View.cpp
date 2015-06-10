@@ -150,7 +150,9 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
-END_MESSAGE_MAP()
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_ORDER, &CGraphicEditorView::OnUpdateArrangeOrder)
+	ON_UPDATE_COMMAND_UI(ID_IMAGE_CANVAS_SIZE, &CGraphicEditorView::OnUpdateImageCanvasSize)
+	END_MESSAGE_MAP()
 
 
 /*** CGraphicEditorView 생성/소멸 ***/
@@ -1236,3 +1238,18 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
+
+
+void CGraphicEditorView::OnUpdateArrangeOrder(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(FALSE);
+}
+
+
+
+void CGraphicEditorView::OnUpdateImageCanvasSize(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(FALSE);
+}

@@ -231,6 +231,9 @@ protected:
 	afx_msg void OnPolyIndividualDelete();
 	afx_msg void OnUpdatePolyIndividualDelete(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnUpdateArrangeOrder(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateImageCanvasSize(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전

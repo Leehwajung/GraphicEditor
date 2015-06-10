@@ -1,6 +1,6 @@
 // FigureSettings.cpp : CFigureSettings 클래스의 구현
 // CFigureSettings : 도형 생성 및 속성 변경을 위한 기본 설정을 저장하는 클래스
-// @Author Lee Hwajung
+// 
 
 #include "stdafx.h"
 #include "Graphic Editor.h"
@@ -11,8 +11,10 @@
 
 CFigureSettings::CFigureSettings()
 {
+	m_OutlineWidth = 1;
+
 	m_StringFormat = new StringFormat();
-	m_FontSize = 10;
+	m_FontSize = 30;
 	m_FontName = _T("굴림");
 	m_FontColor = Color::Black;
 }
