@@ -12,6 +12,8 @@ using namespace Gdiplus;
 #ifndef defaultValue
 #define defaultValue
 #define defaultColor Color::Black
+#define defaultSubcolor Color::Aqua
+#define defaultHatch HatchStyle::HatchStyleHorizontal
 #define defaultPen Pen(Color::Black)
 #define defaultBrush SolidBrush(Color::Black)
 #define NULLColor Color(0, 255, 255, 255)		// Åõ¸í»ö

@@ -14,51 +14,57 @@ public:
 
 	/** 속성 설정 **/
 public:
-	// 윤곽선 색 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setOutlineColor(IN const Color& outlineColor);
+	// 윤곽선 색 설정
+	void setOutlineColor(IN const Color& outlineColor);
 
-	// 윤곽선 두께 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setOutlineWidth(IN const REAL outlineWidth);
+	// 윤곽선 두께 설정
+	void setOutlineWidth(IN const REAL outlineWidth);
 
-	// 윤곽선 패턴 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setOutlinePattern(IN const DashStyle outlinePattern);
+	// 윤곽선 패턴 설정
+	void setOutlinePattern(IN const DashStyle outlinePattern);
 
-	// 주 채우기 색 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setFillColor(IN const Color& fillColor);
+	// 주 채우기 색 설정
+	void setFillColor(IN const Color& fillColor);
 
-	// 보조 채우기 색 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setFillSubcolor(IN const Color& fillSubcolor);
+	// 보조 채우기 색 설정
+	void setFillSubcolor(IN const Color& fillSubcolor);
 
-	// 채우기 패턴 설정 (순수 가상)
-	// - 반환 값 (BOOL)
-	//		TRUE: 설정 실패
-	//		FALSE: 설정 성공
-	BOOL setFillPattern(IN const HatchStyle fillPattern);
+	// 채우기 패턴 설정
+	void setFillPattern(IN const HatchStyle fillPattern);
 
-	Pen* getOutlinePen() { return m_OutlinePen; }
-	Brush* getFillBrush() { return m_FillBrush; }
-	Brush* getFontBrush() { return m_FontBrush; }
+	// 주 글꼴색 설정
+	void setFontColor(IN const Color& fontColor);
 
-private:
-	Pen* m_OutlinePen;
-	SolidBrush* m_FillSolidBrush;
+	// 보조 글꼴색 설정
+	void setFontSubcolor(IN const Color& fontSubcolor);
 
-	Brush* m_FontBrush;
+	// 글꼴색 패턴 설정
+	void setFontPattern(IN const HatchStyle fontPattern);
+
+	// 글꼴 속성 설정
+	void setFontLog(IN const LOGFONT fontLog);
+
+	// 문자열 포맷 설정
+	void setStringFormat(IN const StringFormat& StringFormat);
+
+	Pen* getOutlinePen(Pen* outlinepen);
+	Brush* getFillBrush(Brush* fillBrush);
+	Brush* getFontBrush(Brush* fontBrush);
+	LOGFONT* getFontLog();
+	StringFormat* getStringFormat();
+
+public:
+	Color m_OutlineColor;
+	REAL m_OutlineWidth;
+	DashStyle m_OutlinePattern;
+	Color m_FillColor;
+	Color m_FillSubcolor;
+	HatchStyle m_FillPattern;
+	Color m_FontColor;
+	Color m_FontSubcolor;
+	HatchStyle m_FontPattern;
+	LOGFONT m_FontLog;
+	StringFormat* m_StringFormat;
 };
 
 

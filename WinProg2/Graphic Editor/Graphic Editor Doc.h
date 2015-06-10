@@ -14,6 +14,7 @@
 
 #pragma once
 #include "Figure.h"
+#include "FigureSettings.h"
 
 class CGraphicEditorDoc : public CDocument
 {
@@ -23,9 +24,20 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 public:
-	CFigurePtrList m_FiguresList;			// 모든 개체 리스트
+	CFigurePtrList m_FiguresList;		// 모든 개체 리스트
 	
-	CFigureProperties m_FigureProperties;	// 사용자가 메뉴를 통해 선택한 속성 설정을 저장 (마지막에 선택한 내용을 다음 번 실행에서 그대로 반영하기 위하여 Doc에 선언)
+	CFigureSettings m_FigureSettings;	// 사용자가 메뉴를 통해 선택한 속성 설정을 저장 (마지막에 선택한 내용을 다음 번 실행에서 그대로 반영하기 위하여 Doc에 선언)
+	Color m_OutlineColor;
+	REAL m_OutlineWidth;
+	DashStyle m_OutlinePattern;
+	Color m_FillColor;
+	Color m_FillSubcolor;
+	HatchStyle m_FillPattern;
+	Color m_FontColor;
+	Color m_FontSubcolor;
+	HatchStyle m_FontPattern;
+	LOGFONT m_FontLog;
+	StringFormat* m_StringFormat;
 
 // 작업입니다.
 public:
