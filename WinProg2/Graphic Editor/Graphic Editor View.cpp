@@ -486,7 +486,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		Pen settedPen(pDoc->m_FigureSettings.m_OutlineColor, pDoc->m_FigureSettings.m_OutlineWidth);
 		settedPen.SetDashStyle(pDoc->m_FigureSettings.m_OutlinePattern);
 		
-		Brush* settedBrush = &SolidBrush(Color::Azure);	// 테스트용 브러시
+		SolidBrush settedBrush(pDoc->m_FigureSettings.m_FillColor);	// 테스트용 브러시
 
 
 		switch (getOperationModeFlag())
@@ -553,24 +553,27 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::ELLIPSE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CEllipse(&settedPen, settedBrush);
+					m_CreateBuffer = new CEllipse(&settedPen, &settedBrush);
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CRectangle(&settedPen, settedBrush);
+					m_CreateBuffer = new CRectangle(&settedPen, &settedBrush);
 					break;
 
-				case CGraphicEditorView::STRING:
+				case CGraphicEditorView::STRING: {
 					preInsert();// 이전 선택 개체 제거
-				
-					m_CreateBuffer = new CText(this, &settedPen, settedBrush);
-					break;
+
+					m_CreateBuffer = new CText(this, &settedPen, &settedBrush);
+					FontFamily fontfamily(pDoc->m_FigureSettings.m_FontName);
+					Gdiplus::Font font(&fontfamily, pDoc->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
+					((CText*)m_CreateBuffer)->setFont(&font);
+					} break;
 
 				case CGraphicEditorView::POLYGON:
 					if (m_PolyCreatableFlag) {							// CPolygon객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPolygon(&settedPen, settedBrush);		// 객체 생성
+						m_CreateBuffer = new CPolygon(&settedPen, &settedBrush);		// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolygon 객체 생성 불가능 상태로 변경
 					}
 					((CPolygon*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가

@@ -193,8 +193,8 @@ void  CText::decreasewidth(){
 }
 // 
 void CText::draw(IN Graphics& graphics){
-	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
+	//FontFamily fontfamily(L"Arial");
+	//Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	StringFormat m_StringFormat;
 	SolidBrush blackBrush(Color(255, 0,0, 0));
 
@@ -203,7 +203,7 @@ void CText::draw(IN Graphics& graphics){
 		graphics.DrawString(
 			m_String.GetData(),
 			m_String.GetSize(),
-			&m_Font,
+			m_Font,
 			m_Rect,
 			&m_StringFormat,
 			&blackBrush);

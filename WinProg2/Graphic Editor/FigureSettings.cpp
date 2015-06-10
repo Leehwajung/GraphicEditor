@@ -12,6 +12,8 @@
 CFigureSettings::CFigureSettings()
 {
 	m_StringFormat = new StringFormat();
+	m_FontSize = 10;
+	m_FontName = _T("±¼¸²");
 }
 
 CFigureSettings::~CFigureSettings()
