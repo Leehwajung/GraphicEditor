@@ -53,7 +53,6 @@
 #define ID_POLY_INDIVIDUAL_DELETE       32866
 #define ID_POLY_INDIVIDUAL_INSERT       32868
 #define ID_POINTMOVE                    32870
-#define ID_BUTTON10                     32879
 #define ID_EDIT_DELETE                  57638
 #define ID_IMAGE_CANVAS_SIZE            57690
 #define ID_INSERT_LINE                  57700

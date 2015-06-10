@@ -500,6 +500,25 @@ void CGraphicEditorView::OnUpdateOutlineColor(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnOutlineWidth()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	//CMFCRibbonSpinButtonCtrl* pColor = DYNAMIC_DOWNCAST(
+	//	CMFCRibbonSpinButtonCtrl, m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH));
+
+	//CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(
+	//	CMFCRibbonEdit, m_WndRibbonBar->FindByID(ID_OUTLINE_COLOR));
+
+	CMFCRibbonEdit* pSpin = (CMFCRibbonEdit*)m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH);
+
+	//Color color;
+	//color.SetFromCOLORREF(pColor->GetColor());
+	//GetDocument()->m_FigureSettings.m_FillColor = color;
+	//m_SelectedFigures.setFillColor(color);
+	GetDocument()->m_FigureSettings.m_OutlineWidth = pSpin->GetWidth(TRUE);
+	m_SelectedFigures.setOutlineWidth(pSpin->GetWidth(TRUE));
+
+	Invalidate();
 }
 
 
@@ -512,6 +531,19 @@ void CGraphicEditorView::OnUpdateOutlineWidth(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnOutlinePattern()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+
+
+
+	//CMFCRibbonComboBox* pCombo = (CMFCRibbonComboBox*)m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH);
+
+	//GetDocument()->m_FigureSettings.m_OutlinePattern = pCombo->GetHighlighted();
+
+	//CMFCRibbonitem item = pCombo->GetHighlighted()
+
+	//m_SelectedFigures.setOutlinePattern();
+
+	Invalidate();
 }
 
 
@@ -566,6 +598,7 @@ void CGraphicEditorView::OnFillGradation()
 void CGraphicEditorView::OnUpdateFillGradation(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(FALSE);
 }
 
 
@@ -634,6 +667,33 @@ void CGraphicEditorView::OnUpdateSizeWidth(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFontCharset()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	CMFCRibbonFontComboBox* pFontComboBox = DYNAMIC_DOWNCAST(
+		CMFCRibbonFontComboBox, m_WndRibbonBar->FindByID(ID_FONT_CHARSET));
+	// Get the selected index
+	int nCurSel = pFontComboBox->GetCurSel();
+	if (nCurSel >= 0)
+	{
+		CString item = pFontComboBox->GetItem(nCurSel);
+		//CString sMessage = _T("");
+		//sMessage.Format(_T("Current Selected Item is \"%s\"."), item);
+		//MessageBox(sMessage, _T("Combo Box Item"), MB_OK);
+
+		GetDocument()->m_FigureSettings.m_FontName = item;
+		if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+
+			//FontFamily fontfamily(item.GetString());
+			FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
+			Gdiplus::Font font(&fontfamily, GetDocument()->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
+
+			((CText*)m_SelectedFigures.getOneFigure())->setFont(&font);
+		}
+	}
+	else
+	{
+		//MessageBox(_T("Please select one item from droplist of Combo Box."), _T("Combo Box Item"), MB_OK);
+	}
+	Invalidate();
 }
 
 
@@ -646,6 +706,25 @@ void CGraphicEditorView::OnUpdateFontCharset(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFontSize()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+
+	//CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(
+	//	CMFCRibbonSpinButtonCtrl, pSpin->FindByID(ID_FONT_SIZE));
+	CMFCRibbonEdit* pSpin = (CMFCRibbonEdit*)m_WndRibbonBar->FindByID(ID_FONT_SIZE);
+
+	GetDocument()->m_FigureSettings.m_FontSize = pSpin->GetData();
+
+	if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+
+		FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
+		Gdiplus::Font font(&fontfamily, *((DWORD*)pSpin->GetData()), FontStyleRegular, UnitPixel);
+
+		((CText*)m_SelectedFigures.getOneFigure())->setFont(&font);
+	}
+
+
+
+	Invalidate();
 }
 
 
@@ -694,6 +773,26 @@ void CGraphicEditorView::OnUpdateFontUnderline(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFontColor()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FONT_COLOR));
+
+	Color color;
+	color.SetFromCOLORREF(pColor->GetColor());
+	GetDocument()->m_FigureSettings.m_FontColor = color;
+
+	if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+
+		//FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
+		//Gdiplus::Font font(&fontfamily, GetDocument()->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
+
+		((CText*)m_SelectedFigures.getOneFigure())->setFontBrush(&SolidBrush(color));
+	}
+	m_SelectedFigures.setFillSubcolor(color);
+
+	Invalidate();
 }
 
 

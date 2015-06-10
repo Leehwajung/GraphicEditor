@@ -387,63 +387,6 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	}
 	
 
-
-
-	//////////////////////////////////////////////////////////////////////////
-	///*int */m_mode = 0;// 일단 모드라고 해놓겠음. // 일단 컴파일 에러로 임의 값 설정해둠.
-	//switch(m_mode){
-	//	case 1: // 폴리라인
-	//		break;
-	//	case 2: // 도형
-	//		break;
-	//	case 3 :// 텍스트
-	//	
-	//		break;
-	// view 객체 넘겨서? 받아서 각각 함수에서 다 처리하는 방식으로 하자는 거지??
-	// graphicsCanvas 포인터를 멤버 변수(m_graphicsCanvas)로 둬서 각 개체 클래스에서 그리기를 정의하고, 그 함수를 호출하는 방식으로 할거야
-	//
-	//}
-	//////////////////////////////////////////////// 여기서부터 예제 코드 ///////////////////////////////////////////////////////
-	// GDI+ 예제 코드 (사각형 그리기)
-	SolidBrush sb(Color(255,255,0,0));
-	graphicsCanvas.FillRectangle(&sb, Rect(33, 44, 55, 66));
-
-	// Set up the arc.
-	Pen redPen(Color(255, 255, 0, 0), 3);
-	RectF ellipseRect(0, 0, 200, 100);
-	REAL startAngle = 0.0f;
-	REAL sweepAngle = 90.0f;
-
-	// Draw the arc.
-	graphicsCanvas.DrawArc(&redPen, ellipseRect, startAngle, sweepAngle);
-
-	// 문자열 출력 테스트
-	// Create a string.
-	WCHAR string[] = L"Sample Text";
-
-	// Initialize arguments.
-	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font myFont(&fontfamily, 16, FontStyleRegular, UnitPixel);
-	RectF layoutRect(100.0f, 0.0f, 200.0f, 50.0f);
-	StringFormat format;
-	SolidBrush blackBrush(Color(255, 255, 0, 0));
-
-	// Draw string.
-	graphicsCanvas.DrawString(
-		string,
-		11,
-		&myFont,
-		layoutRect,
-		&format,
-		&blackBrush);
-
-	// Draw layoutRect.
-	graphicsCanvas.DrawRectangle(&Pen(Color::Blue, 3), layoutRect);
-	///////////////////////////////// 여기까지 예제 코드 ///////////////////////////////////////////////////////////////
-	
-	//pDC->BitBlt(0, 0, rect.Width(), rect.Height(), m_psMemDC, 0, 0, SRCCOPY);
-
-
 	/**************************************** 더블 버퍼링 ****************************************/
 	graphicsDC.DrawImage(&bmpCanvas, rect.left, rect.top, rect.right, rect.bottom);	// 캔버스 그리기
 	/*********************************************************************************************/
@@ -485,8 +428,8 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		
 		Pen settedPen(pDoc->m_FigureSettings.m_OutlineColor, pDoc->m_FigureSettings.m_OutlineWidth);
 		settedPen.SetDashStyle(pDoc->m_FigureSettings.m_OutlinePattern);
-
-		Brush* settedBrush = &SolidBrush(Color::Azure);	// 테스트용 브러시
+		
+		SolidBrush settedBrush(pDoc->m_FigureSettings.m_FillColor);	// 테스트용 브러시
 
 
 		switch (getOperationModeFlag())
@@ -553,24 +496,28 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::ELLIPSE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CEllipse(&settedPen, settedBrush);
+					m_CreateBuffer = new CEllipse(&settedPen, &settedBrush);
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CRectangle(&settedPen, settedBrush);
+					m_CreateBuffer = new CRectangle(&settedPen, &settedBrush);
 					break;
 
-				case CGraphicEditorView::STRING:
+				case CGraphicEditorView::STRING: {
 					preInsert();// 이전 선택 개체 제거
 				
-					m_CreateBuffer = new CText(this, &settedPen, settedBrush);
-					break;
+					m_CreateBuffer = new CText(this, &settedPen, &settedBrush);
+					FontFamily fontfamily(pDoc->m_FigureSettings.m_FontName);
+					Gdiplus::Font font(&fontfamily, pDoc->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
+					((CText*)m_CreateBuffer)->setFont(&font);
+					((CText*)m_CreateBuffer)->setFontBrush(&SolidBrush(pDoc->m_FigureSettings.m_FontColor));
+					} break;
 
 				case CGraphicEditorView::POLYGON:
 					if (m_PolyCreatableFlag) {							// CPolygon객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPolygon(&settedPen, settedBrush);		// 객체 생성
+						m_CreateBuffer = new CPolygon(&settedPen, &settedBrush);		// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolygon 객체 생성 불가능 상태로 변경
 					}
 					((CPolygon*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가

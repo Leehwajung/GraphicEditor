@@ -193,20 +193,20 @@ void  CText::decreasewidth(){
 }
 // 
 void CText::draw(IN Graphics& graphics){
-	FontFamily fontfamily(L"Arial");
-	Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
+	//FontFamily fontfamily(L"Arial");
+	//Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	StringFormat m_StringFormat;
-	SolidBrush blackBrush(Color(255, 0,0, 0));
+	//SolidBrush blackBrush(Color(255, 0,0, 0));
 
 	// Draw string.
 	if (m_String.GetSize() > 0){
 		graphics.DrawString(
 			m_String.GetData(),
 			m_String.GetSize(),
-			&m_Font,
+			m_Font,
 			m_Rect,
 			&m_StringFormat,
-			&blackBrush);
+			m_FontBrush);
 	}
 }//CpaintDC »ç¿ë
 

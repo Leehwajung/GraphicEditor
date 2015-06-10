@@ -64,6 +64,8 @@ public:
 	Color m_FontSubcolor;
 	HatchStyle m_FontPattern;
 	LOGFONT m_FontLog;
+	CString m_FontName;
+	REAL m_FontSize;
 	StringFormat* m_StringFormat;
 };
 
