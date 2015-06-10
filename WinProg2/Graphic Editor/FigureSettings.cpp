@@ -11,12 +11,20 @@
 
 CFigureSettings::CFigureSettings()
 {
+	m_OutlineColor = Color::DarkGreen;
 	m_OutlineWidth = 1;
+	m_OutlinePattern = DashStyleSolid;
+	m_FillColor = Color::AliceBlue;
+	m_FillSubcolor = Color::DarkSeaGreen;
+	m_FillPattern = HatchStyleHorizontal;
+	m_FillGradientAngle = 0;
+	m_FontColor = Color::Black;
+	m_FontSubcolor = Color::RoyalBlue;
+	m_FontPattern = HatchStyleTrellis;
+	m_FontName = _T("±¼¸²");
+	m_FontSize = 30;
 
 	m_StringFormat = new StringFormat();
-	m_FontSize = 30;
-	m_FontName = _T("±¼¸²");
-	m_FontColor = Color::Black;
 }
 
 CFigureSettings::~CFigureSettings()

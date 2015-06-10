@@ -121,8 +121,8 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_OUTLINE_PATTERN, &CGraphicEditorView::OnUpdateOutlinePattern)
 	ON_COMMAND(ID_FILL_COLOR, &CGraphicEditorView::OnFillColor)
 	ON_UPDATE_COMMAND_UI(ID_FILL_COLOR, &CGraphicEditorView::OnUpdateFillColor)
-	ON_COMMAND(ID_FILL_GRADATION, &CGraphicEditorView::OnFillGradation)
-	ON_UPDATE_COMMAND_UI(ID_FILL_GRADATION, &CGraphicEditorView::OnUpdateFillGradation)
+	ON_COMMAND(ID_FILL_SUBCOLOR, &CGraphicEditorView::OnFillSubcolor)
+	ON_UPDATE_COMMAND_UI(ID_FILL_SUBCOLOR, &CGraphicEditorView::OnUpdateFillSubcolor)
 	ON_COMMAND(ID_FILL_PATTERN, &CGraphicEditorView::OnFillPattern)
 	ON_UPDATE_COMMAND_UI(ID_FILL_PATTERN, &CGraphicEditorView::OnUpdateFillPattern)
 	ON_COMMAND(ID_POSITION_VERTICAL, &CGraphicEditorView::OnPositionVertical)
@@ -166,6 +166,7 @@ CGraphicEditorView::CGraphicEditorView()
 
 	//m_CurrentFigure = NULL;
 	m_WndRibbonBar = ((CMDIFrameWndEx*)AfxGetMainWnd())->GetRibbonBar();
+	m_CurrentBrushType = BrushTypeSolidColor;
 	m_MouseVKFlags = 0;
 	m_MouseButtonFlag = NBUTTON;
 	m_InsertFlag = NONE;
@@ -434,8 +435,32 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		Pen settedPen(pDoc->m_FigureSettings.m_OutlineColor, pDoc->m_FigureSettings.m_OutlineWidth);
 		settedPen.SetDashStyle(pDoc->m_FigureSettings.m_OutlinePattern);
 		
-		SolidBrush settedBrush(pDoc->m_FigureSettings.m_FillColor);	// 테스트용 브러시
+		SolidBrush solidBrush(pDoc->m_FigureSettings.m_FillColor);
+		HatchBrush hatchBrush(pDoc->m_FigureSettings.m_FillPattern, pDoc->m_FigureSettings.m_FillSubcolor, pDoc->m_FigureSettings.m_FillColor);
+		Brush* settedBrush = &solidBrush;
 
+		switch (m_CurrentBrushType)
+		{
+		case Gdiplus::BrushTypeSolidColor:
+			settedBrush = &solidBrush;
+			break;
+
+		case Gdiplus::BrushTypeHatchFill:
+			settedBrush = &hatchBrush;
+			break;
+
+		//case Gdiplus::BrushTypeTextureFill:
+		//
+		//	break;
+
+		//case Gdiplus::BrushTypePathGradient:
+		//
+		//	break;
+
+		//case Gdiplus::BrushTypeLinearGradient:
+		//
+		//	break;
+		}
 
 		switch (getOperationModeFlag())
 		{
@@ -501,18 +526,18 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::ELLIPSE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CEllipse(&settedPen, &settedBrush);
+					m_CreateBuffer = new CEllipse(&settedPen, settedBrush);
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CRectangle(&settedPen, &settedBrush);
+					m_CreateBuffer = new CRectangle(&settedPen, settedBrush);
 					break;
 
 				case CGraphicEditorView::STRING: {
 					preInsert();// 이전 선택 개체 제거
 
-					m_CreateBuffer = new CText(this, &settedPen, &settedBrush);
+					m_CreateBuffer = new CText(this, &settedPen, settedBrush);
 					FontFamily fontfamily(pDoc->m_FigureSettings.m_FontName);
 					Gdiplus::Font font(&fontfamily, pDoc->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
 					((CText*)m_CreateBuffer)->setFont(&font);
@@ -522,7 +547,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				case CGraphicEditorView::POLYGON:
 					if (m_PolyCreatableFlag) {							// CPolygon객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPolygon(&settedPen, &settedBrush);		// 객체 생성
+						m_CreateBuffer = new CPolygon(&settedPen, settedBrush);		// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolygon 객체 생성 불가능 상태로 변경
 					}
 					((CPolygon*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
@@ -797,6 +822,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	case CGraphicEditorView::SELECTABLE:
 		if (m_MouseButtonFlag == LBUTTON) {
 
+			// 드래그 영역
 			PointF startingPoint = m_LButtonPoint;
 			SizeF rectSize;
 			rectSize.Width = abs(m_LButtonPoint.X - m_CurrPoint.X);
@@ -811,6 +837,7 @@ void CGraphicEditorView::OnMouseMove(UINT nFlags, CPoint point)
 			}
 
 			m_SelectArea = RectF(startingPoint, rectSize);
+			// 여기까지 드래그 영역
 		}
 		//break;
 
@@ -844,35 +871,96 @@ BOOL CGraphicEditorView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 		::GetCursorPos(&point);		// 스크린좌표
 		ScreenToClient(&point);		// 클라이언트좌표로변환
 
-		//if (m_SelectedFigures.GetSize() == 1){
-		//	::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HELP));
-		//	return true;
-		//}
+		CFigure::Position PosAtAll = GetDocument()->m_FiguresList.pointInFigure(m_CurrPoint);
 
 		switch (getOperationModeFlag())
 		{
-		case CGraphicEditorView::SELECTABLE:
-			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
-			break;
 		case CGraphicEditorView::SELECTED:
-			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_HAND));
+			switch (m_SelectedFigures.contains(m_CurrPoint))
+			{
+			case CFigure::OUTSIDE:
+				if (PosAtAll == CFigure::INSIDE) {
+					::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEALL));
+				}
+				else {
+					::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
+				}
+				break;
+
+			case CFigure::INSIDE:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEALL));
+				break;
+
+				//case CFigure::ONHANDLE:
+			case CFigure::START:
+			case CFigure::END:
+			case CFigure::TOPLEFT:
+			case CFigure::BOTTOMRIGHT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENWSE));
+				break;
+
+			case CFigure::TOP:
+			case CFigure::BOTTOM:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENS));
+				break;
+
+			case CFigure::TOPRIGHT:
+			case CFigure::BOTTOMLEFT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENESW));
+				break;
+
+			case CFigure::RIGHT:
+			case CFigure::LEFT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEWE));
+				break;
+			}
 			break;
+
+		case CGraphicEditorView::SELECTABLE:
+			if (PosAtAll == CFigure::INSIDE) {
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEALL));
+			}
+			else {
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_ARROW));
+			}
+			break;
+
 		case CGraphicEditorView::CREATE:
 			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_CROSS));
 			break;
+
 		case CGraphicEditorView::MOVE:
 			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEALL));
 			break;
+
 		case CGraphicEditorView::RESIZE:
-			::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENESW));
+			switch (m_selectedPosition)
+			{
+			//case CFigure::ONHANDLE:
+			case CFigure::START:
+			case CFigure::END:
+			case CFigure::TOPLEFT:
+			case CFigure::BOTTOMRIGHT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENWSE));
+				break;
+
+			case CFigure::TOP:
+			case CFigure::BOTTOM:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENS));
+				break;
+
+			case CFigure::TOPRIGHT:
+			case CFigure::BOTTOMLEFT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZENESW));
+				break;
+
+			case CFigure::RIGHT:
+			case CFigure::LEFT:
+				::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_SIZEWE));
+				break;
+			}
 			break;
 		}
-		//CRgn rgn;
-		//rgn.CreateEllipticRgn(50, 50, 500, 200);
-		//if (rgn.PtInRegion(point))
-		//	::SetCursor(AfxGetApp()->LoadCursor(IDC_CURSOR1);
-		//else
-		//	::SetCursor(AfxGetApp()->LoadStandardCursor(IDC_CROSS);
 		return TRUE;
 	}
 

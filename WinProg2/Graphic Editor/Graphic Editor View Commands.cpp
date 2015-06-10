@@ -516,12 +516,16 @@ void CGraphicEditorView::OnOutlineColor()
 	Invalidate();
 }
 
-
 void CGraphicEditorView::OnUpdateOutlineColor(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-}
 
+	//if (!m_SelectedFigures.isEmpty()) {
+	//	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+	//		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_OUTLINE_COLOR));
+	//	pColor->SetColor(m_SelectedFigures.getOneFigure()->get)
+	//}
+}
 
 void CGraphicEditorView::OnOutlineWidth()
 {
@@ -529,20 +533,14 @@ void CGraphicEditorView::OnOutlineWidth()
 
 	ASSERT_VALID(m_WndRibbonBar);
 
-	//CMFCRibbonSpinButtonCtrl* pColor = DYNAMIC_DOWNCAST(
-	//	CMFCRibbonSpinButtonCtrl, m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH));
+	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH));
+	REAL OutlineWidth = _wtof(pSpin->GetEditText());
 
-	//CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(
-	//	CMFCRibbonEdit, m_WndRibbonBar->FindByID(ID_OUTLINE_COLOR));
+	GetDocument()->m_FigureSettings.m_OutlineWidth = OutlineWidth;
 
-	CMFCRibbonEdit* pSpin = (CMFCRibbonEdit*)m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH);
-
-	//Color color;
-	//color.SetFromCOLORREF(pColor->GetColor());
-	//GetDocument()->m_FigureSettings.m_FillColor = color;
-	//m_SelectedFigures.setFillColor(color);
-	GetDocument()->m_FigureSettings.m_OutlineWidth = pSpin->GetWidth(TRUE);
-	m_SelectedFigures.setOutlineWidth(pSpin->GetWidth(TRUE));
+	if (!m_SelectedFigures.isEmpty()) {
+		m_SelectedFigures.getOneFigure()->setOutlineWidth(OutlineWidth);
+	}
 
 	Invalidate();
 }
@@ -558,16 +556,40 @@ void CGraphicEditorView::OnOutlinePattern()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	ASSERT_VALID(m_WndRibbonBar);
 
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(
+		CMFCRibbonComboBox, m_WndRibbonBar->FindByID(ID_OUTLINE_PATTERN));
+	// Get the selected index
+	int nCurSel = pComboBox->GetCurSel();
+	if (nCurSel >= 0)
+	{
+		CString item = pComboBox->GetItem(nCurSel);
+		DashStyle dashStyle;
 
+		//if (item.Compare(_T("Solid"))) {
+		//	dashStyle = DashStyleSolid;
+		//}
+		//else if (item.Compare(_T("Dash"))) {
+		//	dashStyle = DashStyleDash;
+		//}
+		//else if (item.Compare(_T("Dot"))) {
+		//	dashStyle = DashStyleDot;
+		//}
+		//else if (item.Compare(_T("Dash-Dot"))) {
+		//	dashStyle = DashStyleDashDot;
+		//}
+		//else if (item.Compare(_T("Dash-Dot-Dot"))) {
+		//	dashStyle = DashStyleDashDotDot;
+		//}
+		dashStyle = (DashStyle)nCurSel;
 
-	//CMFCRibbonComboBox* pCombo = (CMFCRibbonComboBox*)m_WndRibbonBar->FindByID(ID_OUTLINE_WIDTH);
+		GetDocument()->m_FigureSettings.m_OutlinePattern = dashStyle;
 
-	//GetDocument()->m_FigureSettings.m_OutlinePattern = pCombo->GetHighlighted();
-
-	//CMFCRibbonitem item = pCombo->GetHighlighted()
-
-	//m_SelectedFigures.setOutlinePattern();
+		if (!m_SelectedFigures.isEmpty()) {
+			m_SelectedFigures.setOutlinePattern(dashStyle);
+		}
+	}
 
 	Invalidate();
 }
@@ -591,7 +613,9 @@ void CGraphicEditorView::OnFillColor()
 	Color color;
 	color.SetFromCOLORREF(pColor->GetColor());
 	GetDocument()->m_FigureSettings.m_FillColor = color;
-	m_SelectedFigures.setFillColor(color);
+	if (!m_SelectedFigures.isEmpty()) {
+		m_SelectedFigures.setFillColor(color);
+	}
 
 	Invalidate();
 }
@@ -603,28 +627,29 @@ void CGraphicEditorView::OnUpdateFillColor(CCmdUI *pCmdUI)
 }
 
 
-void CGraphicEditorView::OnFillGradation()
+void CGraphicEditorView::OnFillSubcolor()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
 	ASSERT_VALID(m_WndRibbonBar);
 
 	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
-		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FILL_GRADATION));
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FILL_SUBCOLOR));
 
 	Color color;
 	color.SetFromCOLORREF(pColor->GetColor());
 	GetDocument()->m_FigureSettings.m_FillSubcolor = color;
-	m_SelectedFigures.setFillSubcolor(color);
+	if (!m_SelectedFigures.isEmpty()) {
+		m_SelectedFigures.setFillSubcolor(color);
+	}
 
 	Invalidate();
 }
 
 
-void CGraphicEditorView::OnUpdateFillGradation(CCmdUI *pCmdUI)
+void CGraphicEditorView::OnUpdateFillSubcolor(CCmdUI *pCmdUI)
 {
 	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-	pCmdUI->Enable(FALSE);
 }
 
 
@@ -632,7 +657,47 @@ void CGraphicEditorView::OnFillPattern()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	ASSERT_VALID(m_WndRibbonBar);
 
+	CMFCRibbonComboBox* pComboBox = DYNAMIC_DOWNCAST(
+		CMFCRibbonComboBox, m_WndRibbonBar->FindByID(ID_FILL_PATTERN));
+	// Get the selected index
+	int nCurSel = pComboBox->GetCurSel();
+	if (nCurSel >= 0)
+	{
+		CString item = pComboBox->GetItem(nCurSel);
+
+		switch (nCurSel)
+		{
+			case 0: {	// SolidBrush
+				m_CurrentBrushType = BrushTypeSolidColor;
+				if (!m_SelectedFigures.isEmpty()) {
+					m_SelectedFigures.setFillBrush(&SolidBrush(GetDocument()->m_FigureSettings.m_FillColor), TRUE);
+				}
+			} break;
+
+				//Linear - Gradient;
+			//case 1: {	// LinearGradientBrush
+			//	m_CurrentBrushType = BrushTypeLinearGradient;
+			//	if (!m_SelectedFigures.isEmpty()) {
+			//		m_SelectedFigures.setFillBrush(&LinearGradientBrush(RectF(100, 100, 100, 100), GetDocument()->m_FigureSettings.m_FillColor, GetDocument()->m_FigureSettings.m_FillSubcolor, LinearGradientModeHorizontal/*GetDocument()->m_FigureSettings.m_FillGradientAngle*/), TRUE);
+			//	}
+			//} break;
+
+			default: {	// HatchBrush
+				m_CurrentBrushType = BrushTypeHatchFill;
+				HatchStyle hatchStyle = (HatchStyle)(nCurSel - 1);
+				GetDocument()->m_FigureSettings.m_FillPattern = hatchStyle;
+
+				if (!m_SelectedFigures.isEmpty()) {
+					m_SelectedFigures.setFillBrush(&HatchBrush(hatchStyle, GetDocument()->m_FigureSettings.m_FillSubcolor, GetDocument()->m_FigureSettings.m_FillColor), TRUE);
+					m_SelectedFigures.setFillPattern(hatchStyle);
+				}
+			} break;
+		}
+	}
+
+	Invalidate();
 }
 
 
@@ -694,6 +759,8 @@ void CGraphicEditorView::OnFontCharset()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	ASSERT_VALID(m_WndRibbonBar);
+
 	CMFCRibbonFontComboBox* pFontComboBox = DYNAMIC_DOWNCAST(
 		CMFCRibbonFontComboBox, m_WndRibbonBar->FindByID(ID_FONT_CHARSET));
 	// Get the selected index
@@ -701,24 +768,17 @@ void CGraphicEditorView::OnFontCharset()
 	if (nCurSel >= 0)
 	{
 		CString item = pFontComboBox->GetItem(nCurSel);
-		//CString sMessage = _T("");
-		//sMessage.Format(_T("Current Selected Item is \"%s\"."), item);
-		//MessageBox(sMessage, _T("Combo Box Item"), MB_OK);
 
 		GetDocument()->m_FigureSettings.m_FontName = item;
-		if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+		if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
 
-			//FontFamily fontfamily(item.GetString());
 			FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
 			Gdiplus::Font font(&fontfamily, GetDocument()->m_FigureSettings.m_FontSize, FontStyleRegular, UnitPixel);
 
 			((CText*)m_SelectedFigures.getOneFigure())->setFont(&font);
 		}
 	}
-	else
-	{
-		//MessageBox(_T("Please select one item from droplist of Combo Box."), _T("Combo Box Item"), MB_OK);
-	}
+
 	Invalidate();
 }
 
@@ -733,22 +793,18 @@ void CGraphicEditorView::OnFontSize()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(CMFCRibbonEdit, m_WndRibbonBar->FindByID(ID_FONT_SIZE));
+	REAL fontSize = _wtof(pSpin->GetEditText());
+	
+	GetDocument()->m_FigureSettings.m_FontSize = fontSize;
 
-	//CMFCRibbonEdit* pSpin = DYNAMIC_DOWNCAST(
-	//	CMFCRibbonSpinButtonCtrl, pSpin->FindByID(ID_FONT_SIZE));
-	CMFCRibbonEdit* pSpin = (CMFCRibbonEdit*)m_WndRibbonBar->FindByID(ID_FONT_SIZE);
-
-	GetDocument()->m_FigureSettings.m_FontSize = pSpin->GetData();
-
-	if (/*m_SelectedFigures.hasOne() && */m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
+	if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CText))) {
 
 		FontFamily fontfamily(GetDocument()->m_FigureSettings.m_FontName);
-		Gdiplus::Font font(&fontfamily, *((DWORD*)pSpin->GetData()), FontStyleRegular, UnitPixel);
+		Gdiplus::Font font(&fontfamily, fontSize, FontStyleRegular, UnitPixel);
 
 		((CText*)m_SelectedFigures.getOneFigure())->setFont(&font);
 	}
-
-
 
 	Invalidate();
 }

@@ -337,4 +337,5 @@ BOOL CFigure::setOutlinePattern(IN const DashStyle outlinePattern){ return TRUE;
 BOOL CFigure::setFillColor(IN const Color& fillColor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setFillSubcolor(IN const Color& fillSubcolor){ return TRUE; /* 임시 반환값 */ }
 BOOL CFigure::setFillPattern(IN const HatchStyle fillPattern){ return TRUE; /* 임시 반환값 */ }
+void CFigure::setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag /*= FALSE*/){ }
 RectF CFigure::resetArea(){ return m_Area; /* 임시 반환값 */ }

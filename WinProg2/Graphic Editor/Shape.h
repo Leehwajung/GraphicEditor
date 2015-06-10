@@ -24,11 +24,11 @@ public:
 
 // 작업
 public:
-	// 펜 획득
-	Pen* getPen();
+	// 윤곽선 펜 획득
+	Pen* getOutlinePen();
 
-	// 브러시 획득
-	Brush* getBrush();
+	// 채우기 브러시 획득
+	Brush* getFillBrush();
 
 	// 브러시 타입 획득
 	BrushType getBrushType();
@@ -51,16 +51,17 @@ public:
 	// 채우기 패턴 획득
 	HatchStyle getFillPattern();
 	
-	// 펜 설정
+	// 윤곽선 펜 설정
 	// 각 객체가 별도의 펜을 가지고 있어야 하므로 인자로 받은 Pen을 변경하지 않음
-	void setPen(IN const Pen* pen);
-
-	// 브러시 설정
-	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
-	void setBrush(IN const Brush* brush);
+	void setOutlinePen(IN const Pen* pen);
 
 // 재정의
 public:
+	// 채우기 브러시 설정
+	// 각 객체가 별도의 브러시를 가지고 있어야 하므로 인자로 받은 Brush를 변경하지 않음
+	virtual void setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag = FALSE);
+
+
 	// 윤곽선 색 설정
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
@@ -96,7 +97,7 @@ public:
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setFillPattern(IN const HatchStyle fillPattern);
-
+	
 
 
 // 보조 작업
@@ -127,6 +128,12 @@ protected:
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	static BOOL setBrushPattern(IN BrushPtr& brush, IN const HatchStyle fillPattern);
+
+	// 브러시 설정
+	// - 반환 값 (BOOL)
+	//		TRUE: 설정 실패
+	//		FALSE: 설정 성공
+	static BOOL setBrush(IN BrushPtr& brush, IN Brush* srcBrush, IN BOOL PropertyMaintenanceFlag = FALSE);
 
 // 특성
 protected:

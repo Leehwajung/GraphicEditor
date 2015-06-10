@@ -363,6 +363,12 @@ RectF CGroup::resizing(IN Graphics& graphics, IN Position selectedHandle, IN Poi
 
 
 /** 속성 설정 **/
+// 채우기 브러시 설정
+void CGroup::setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag/* = FALSE*/)
+{
+	m_FiguresList.setFillBrush(brush, PropertyMaintenanceFlag);
+}
+
 // 윤곽선 색 설정
 // - 반환 값 (BOOL)
 //		TRUE: 설정 실패

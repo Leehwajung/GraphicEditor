@@ -143,7 +143,7 @@ void  CText::increasewidth(){
 	//rectSize.Height = m_Font->GetSize();
 
 	rectSize.Width = m_Rect.Width + 20;
-	rectSize.Height = 30;
+	rectSize.Height = m_Font->GetSize();
 
 	PointF sp;
 	m_Rect.GetLocation(&sp);
@@ -178,7 +178,7 @@ void  CText::decreasewidth(){
 	//rectSize.Width = rectSize.Width-m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
 	rectSize.Width = rectSize.Width - 20;
-	rectSize.Height = 30;
+	rectSize.Height = m_Font->GetSize();
 
 	PointF sp;
 	m_Rect.GetLocation(&sp);
@@ -197,6 +197,8 @@ void CText::draw(IN Graphics& graphics){
 	//Gdiplus::Font m_Font(&fontfamily, 16, FontStyleRegular, UnitPixel);
 	//StringFormat m_StringFormat;
 	//SolidBrush blackBrush(Color(255, 0,0, 0));
+
+	CRectangle::draw(graphics);
 
 	// Draw string.
 	if (m_String.GetSize() > 0){

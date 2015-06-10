@@ -108,6 +108,9 @@ public:
 	// 선택 개체 채우기 패턴 설정
 	BOOL setFillPattern(IN const HatchStyle fillPattern);
 
+	// 선택 개체 채우기 브러시 설정
+	void setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag = FALSE);
+
 	// FigurePtrList 획득
 	CFigurePtrList* getFigurePtrList();
 

@@ -60,6 +60,7 @@ public:
 	Color m_FillColor;
 	Color m_FillSubcolor;
 	HatchStyle m_FillPattern;
+	REAL m_FillGradientAngle;
 	Color m_FontColor;
 	Color m_FontSubcolor;
 	HatchStyle m_FontPattern;

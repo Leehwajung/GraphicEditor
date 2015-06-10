@@ -34,6 +34,7 @@ public:
 	CFigurePtrList m_BufferList;				// 선택한 개체를 저장할 버퍼리스트
 	CFigure* m_CreateBuffer;
 	//CFigure* m_CurrentFigure;					// 현재 선택학 개체
+	BrushType m_CurrentBrushType;				// 현재 메뉴에서 설정되어있는 브러시의 타입
 
 	RectF m_SelectArea;
 
@@ -205,8 +206,8 @@ protected:
 	afx_msg void OnUpdateOutlinePattern(CCmdUI *pCmdUI);
 	afx_msg void OnFillColor();
 	afx_msg void OnUpdateFillColor(CCmdUI *pCmdUI);
-	afx_msg void OnFillGradation();
-	afx_msg void OnUpdateFillGradation(CCmdUI *pCmdUI);
+	afx_msg void OnFillSubcolor();
+	afx_msg void OnUpdateFillSubcolor(CCmdUI *pCmdUI);
 	afx_msg void OnFillPattern();
 	afx_msg void OnUpdateFillPattern(CCmdUI *pCmdUI);
 	afx_msg void OnPositionVertical();

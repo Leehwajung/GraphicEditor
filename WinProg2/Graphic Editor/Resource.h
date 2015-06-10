@@ -77,7 +77,7 @@
 #define ID_OUTLINE_WIDTH                57721
 #define ID_OUTLINE_PATTERN              57722
 #define ID_FILL_COLOR                   57725
-#define ID_FILL_GRADATION               57726
+#define ID_FILL_SUBCOLOR                57726
 #define ID_FILL_PATTERN                 57727
 #define ID_POSITION_VERTICAL            57730
 #define ID_POSITION_HORIZONTAL          57731
@@ -98,7 +98,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32881
+#define _APS_NEXT_COMMAND_VALUE         32882
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

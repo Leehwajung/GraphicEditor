@@ -35,6 +35,7 @@ public:
 	BOOL setOutlineColor(IN const Color& outlineColor);
 	BOOL setOutlineWidth(IN const REAL outlineWidth);
 	BOOL setOutlinePattern(IN const DashStyle outlinePattern);
+	void setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag = FALSE);
 	BOOL setFillColor(IN const Color& fillColor);
 	BOOL setFillSubcolor(IN const Color& fillSubcolor);
 	BOOL setFillPattern(IN const HatchStyle fillPattern);

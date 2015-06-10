@@ -59,6 +59,15 @@ CFigure::Position CSelectedFigureArray::contains(PointF point)	// pointInFigure
 		else if (getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))) {
 			return ((CPolyLine*)figure)->pointInFigure(point);
 		}
+		//else if (getOneFigure()->IsKindOf(RUNTIME_CLASS(CPencil))) {
+		//	return ((CPolyLine*)figure)->pointInFigure(point);
+		//}
+		//else if (getOneFigure()->IsKindOf(RUNTIME_CLASS(CCurve))) {
+		//	return ((CPolyLine*)figure)->pointInFigure(point);
+		//}
+		else if (getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))) {
+			return ((CPolyLine*)figure)->pointInFigure(point);
+		}
 		else {
 			return figure->pointInFigure(point);
 		}
@@ -230,7 +239,9 @@ void CSelectedFigureArray::unGroup()
 		figure = m_FigurePtrList->GetAt(m_FigurePosArray[i]);
 
 		if (figure->IsKindOf(RUNTIME_CLASS(CGroup))) {
+			int groupsize = ((CGroup*)figure)->getFiguresList().GetSize();
 			((CGroup*)figure)->unGroup(m_FigurePosArray[i] , *this);
+			i += (groupsize - 1);
 		}
 	}
 }
@@ -366,6 +377,14 @@ BOOL CSelectedFigureArray::setFillPattern(IN const HatchStyle fillPattern)
 	}
 
 	return FALSE;
+}
+
+// 선택 개체 채우기 브러시 설정
+void CSelectedFigureArray::setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag/* = FALSE*/)
+{
+	for (int i = m_FigurePosArray.GetSize() - 1; i >= 0; i--) {
+		m_FigurePtrList->GetAt(m_FigurePosArray[i])->setFillBrush(brush, PropertyMaintenanceFlag);
+	}
 }
 
 // FigurePtrList 획득

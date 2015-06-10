@@ -189,7 +189,6 @@ CFigure::Position CLine::pointInFigure(IN PointF point) {
 // OnDraw
 /* 선 그리기 */
 void CLine::draw(IN Graphics& graphics) {
-	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	graphics.DrawLine(m_OutlinePen, m_StartingPoint, m_EndPoint);
 }
 

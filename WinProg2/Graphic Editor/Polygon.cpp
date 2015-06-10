@@ -274,7 +274,6 @@ void CPolygon::draw(IN Graphics& graphics) {
 	}
 
 	// Draw the Ploygon.
-	m_OutlinePen->SetDashStyle(DashStyleSolid);
 	graphics.FillPolygon(m_FillBrush, pointsArray.GetData(), pointsArray.GetSize());
 	graphics.DrawPolygon(m_OutlinePen, pointsArray.GetData(), pointsArray.GetSize());
 

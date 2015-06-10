@@ -243,6 +243,9 @@ protected:
 
 /** 속성 설정 **/
 public:
+	// 채우기 브러시 설정
+	virtual void setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag = FALSE);
+
 	// 윤곽선 색 설정 (순수 가상)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패

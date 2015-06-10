@@ -222,6 +222,13 @@ BOOL CFigurePtrList::setOutlinePattern(IN const DashStyle outlinePattern)
 	return FALSE;
 }
 
+void CFigurePtrList::setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag/* = FALSE*/)
+{
+	for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
+		this->GetAt(pos)->setFillBrush(brush, PropertyMaintenanceFlag);
+	}
+}
+
 BOOL CFigurePtrList::setFillColor(IN const Color& fillColor)
 {
 	for (POSITION pos = this->GetHeadPosition(); pos; this->GetNext(pos)) {
