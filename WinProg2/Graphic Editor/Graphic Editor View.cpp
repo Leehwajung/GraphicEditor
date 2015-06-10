@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_INSERT_CLOSEDCURVE, &CGraphicEditorView::OnInsertClosedcurve)
 	ON_UPDATE_COMMAND_UI(ID_INSERT_CLOSEDCURVE, &CGraphicEditorView::OnUpdateInsertClosedcurve)
 	ON_COMMAND(ID_ARRANGE_ORDER, &CGraphicEditorView::OnArrangeOrder)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_ORDER, &CGraphicEditorView::OnUpdateArrangeOrder)
 	ON_COMMAND(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnArrangeBringFront)
 	ON_COMMAND(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnArrangeSendBack)
 	ON_COMMAND(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnArrangeBringForward)
@@ -150,8 +151,10 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_ORDER, &CGraphicEditorView::OnUpdateArrangeOrder)
-	ON_UPDATE_COMMAND_UI(ID_IMAGE_CANVAS_SIZE, &CGraphicEditorView::OnUpdateImageCanvasSize)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnUpdateArrangeBringFront)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnUpdateArrangeSendBack)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnUpdateArrangeBringForward)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnUpdateArrangeSendBackward)
 	END_MESSAGE_MAP()
 
 
@@ -1239,17 +1242,3 @@ CGraphicEditorDoc* CGraphicEditorView::GetDocument() const // 디버그되지 않은 버
 
 /*** CGraphicEditorView 추가로 생성된 명령, 메시지 처리기 및 재정의 ***/
 
-
-void CGraphicEditorView::OnUpdateArrangeOrder(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-	pCmdUI->Enable(FALSE);
-}
-
-
-
-void CGraphicEditorView::OnUpdateImageCanvasSize(CCmdUI *pCmdUI)
-{
-	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
-	pCmdUI->Enable(FALSE);
-}

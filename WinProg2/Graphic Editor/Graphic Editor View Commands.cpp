@@ -359,10 +359,21 @@ void CGraphicEditorView::OnArrangeOrder()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
+void CGraphicEditorView::OnUpdateArrangeOrder(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+	pCmdUI->Enable(FALSE);
+}
+
 void CGraphicEditorView::OnArrangeBringFront()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+void CGraphicEditorView::OnUpdateArrangeBringFront(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
 void CGraphicEditorView::OnArrangeSendBack()
@@ -371,16 +382,31 @@ void CGraphicEditorView::OnArrangeSendBack()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
+void CGraphicEditorView::OnUpdateArrangeSendBack(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
 void CGraphicEditorView::OnArrangeBringForward()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 }
 
+void CGraphicEditorView::OnUpdateArrangeBringForward(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
+}
+
 void CGraphicEditorView::OnArrangeSendBackward()
 {
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+}
+
+void CGraphicEditorView::OnUpdateArrangeSendBackward(CCmdUI *pCmdUI)
+{
+	// TODO: 여기에 명령 업데이트 UI 처리기 코드를 추가합니다.
 }
 
 void CGraphicEditorView::OnArrangeGrouping()

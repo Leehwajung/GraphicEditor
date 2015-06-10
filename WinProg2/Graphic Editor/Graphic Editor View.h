@@ -178,10 +178,15 @@ protected:
 	afx_msg void OnInsertClosedcurve();
 	afx_msg void OnUpdateInsertClosedcurve(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeOrder();
+	afx_msg void OnUpdateArrangeOrder(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeBringFront();
+	afx_msg void OnUpdateArrangeBringFront(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeSendBack();
+	afx_msg void OnUpdateArrangeSendBack(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeBringForward();
+	afx_msg void OnUpdateArrangeBringForward(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeSendBackward();
+	afx_msg void OnUpdateArrangeSendBackward(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeGrouping();
 	afx_msg void OnUpdateArrangeGrouping(CCmdUI *pCmdUI);
 	afx_msg void OnArrangeGroup();
@@ -231,9 +236,6 @@ protected:
 	afx_msg void OnPolyIndividualDelete();
 	afx_msg void OnUpdatePolyIndividualDelete(CCmdUI *pCmdUI);
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnUpdateArrangeOrder(CCmdUI *pCmdUI);
-	afx_msg void OnUpdateImageCanvasSize(CCmdUI *pCmdUI);
 };
 
 #ifndef _DEBUG  // Graphic Editor View.cpp의 디버그 버전
