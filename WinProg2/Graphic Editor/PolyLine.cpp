@@ -182,7 +182,35 @@ void CPolyLine::InsertPoint(IN PointF originPoint){
 
 /* 선 크기(길이) 변경 */
 void CPolyLine::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/) {
+	PointF startingPoint;
+	PointF fixedPoint;
+	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
 
+	SizeF rectSize;
+
+	switch (selectedHandle)
+	{
+	case CFigure::TOPLEFT:
+	case CFigure::TOPRIGHT:
+	case CFigure::BOTTOMRIGHT:
+	case CFigure::BOTTOMLEFT:
+	
+
+	case CFigure::TOP:
+	case CFigure::BOTTOM:
+//
+	case CFigure::RIGHT:
+	case CFigure::LEFT:
+		// 
+		break;
+
+	default:
+		// 잘못된 selectedHandle
+		// 아무 동작을 하지 않음
+		return;
+	}
+
+	resetArea();
 }
 
 // Menu Item
@@ -200,7 +228,18 @@ void CPolyLine::destroy() {
 /* 커서 위치 찾기 (커서로 만든 선택 영역 안에 도형이 들어 있는지) */
 CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 
-	// 1. 현재 좌표가 ONHANDLE 일 때
+	// 1. m_Area의 Handle을 눌렀을 때 
+	RectF handleRect;
+
+	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
+
+		getHandleRect((Position)handleIndex, &handleRect);
+		if (handleRect.Contains(point)) {
+			return (Position)handleIndex;
+		}
+	}
+
+	// 2. 현재 좌표가 ONHANDLE 일 때
 	POSITION pos = m_PointsList.GetHeadPosition();
 	while (pos != NULL){
 		PointF  tmp_point = m_PointsList.GetNext(pos);
@@ -212,7 +251,7 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 			return ONHANDLE;
 	}
 
-	// 2. 현재 좌표가 선이 있는 영역에 있을 때 INSIDE이다.
+	// 3. 현재 좌표가 선이 있는 영역에 있을 때 INSIDE이다.
 	pos = m_PointsList.GetHeadPosition();
 	PointF first_point = m_PointsList.GetNext(pos);
 	while (pos != NULL){
@@ -247,21 +286,6 @@ CFigure::Position CPolyLine::pointInFigure(IN PointF point) {
 			return INSIDE;
 		}
 		first_point = second_point;
-	}
-
-	// 3. m_Area의 Handle을 눌렀을 때 
-	RectF handleRect;
-
-	for (int handleIndex = TOPLEFT; handleIndex <= LEFT; handleIndex++) {
-
-		getHandleRect((Position)handleIndex, &handleRect);
-		if (handleRect.Contains(point)) {
-			return (Position)handleIndex;
-		}
-	}
-
-	if (m_Area.Contains(point)) {
-		return INSIDE;
 	}
 
 	// 바깥 영역

@@ -51,8 +51,7 @@ public:
 	BOOL setFillPattern(IN const HatchStyle fillPattern);
 
 	Pen* getOutlinePen() { return m_OutlinePen; }
-	Brush* getFillBrush() { return m_FillBrush; }
-	Brush* getFontBrush() { return m_FontBrush; }
+	Brush* getFontBrush() { return m_FillSolidBrush; }
 
 private:
 	Pen* m_OutlinePen;
