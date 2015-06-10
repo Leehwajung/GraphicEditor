@@ -485,7 +485,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 		
 		Pen settedPen(pDoc->m_FigureSettings.m_OutlineColor, pDoc->m_FigureSettings.m_OutlineWidth);
 		settedPen.SetDashStyle(pDoc->m_FigureSettings.m_OutlinePattern);
-		
+
 		Brush* settedBrush = &SolidBrush(Color::Azure);	// 테스트용 브러시
 
 
