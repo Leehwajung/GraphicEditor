@@ -477,9 +477,16 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
+		/* CGraphicEditorDoc */
+		CGraphicEditorDoc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
 		
-		Pen dd(Color(255, 0, 0));			// 테스트용 펜
-		SolidBrush ff(Color::DarkGreen);	// 테스트용 브러시
+		Pen settedPen(pDoc->m_FigureSettings.m_OutlineColor, pDoc->m_FigureSettings.m_OutlineWidth);
+		settedPen.SetDashStyle(pDoc->m_FigureSettings.m_OutlinePattern);
+		
+		Brush* settedBrush = &SolidBrush(Color::Azure);	// 테스트용 브러시
 
 
 		switch (getOperationModeFlag())
@@ -515,13 +522,13 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					/* CREATE 상태 */
 				case CGraphicEditorView::LINE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CLine(&dd);	// 새로운 생성 개체 선택
+					m_CreateBuffer = new CLine(&settedPen);	// 새로운 생성 개체 선택
 					break;
 
 				case CGraphicEditorView::POLYLINE:
 					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPolyLine(&dd);	// 객체 생성
+						m_CreateBuffer = new CPolyLine(&settedPen);	// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
 					}
 					((CPolyLine*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
@@ -530,7 +537,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				case CGraphicEditorView::PENCIL:
 					if (m_PolyCreatableFlag) {							// CPolyLine 객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPencil(&dd);	// 객체 생성
+						m_CreateBuffer = new CPencil(&settedPen);	// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolyLine 객체 생성 불가능 상태로 변경
 					}
 					break;
@@ -538,7 +545,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 				case CGraphicEditorView::CURVE:
 					if (m_PolyCreatableFlag) {							// CCurve객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CCurve(&dd);	            // 객체 생성
+						m_CreateBuffer = new CCurve(&settedPen);	            // 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CCurve 객체 생성 불가능 상태로 변경
 					}
 					((CCurve*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
@@ -546,24 +553,24 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 
 				case CGraphicEditorView::ELLIPSE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CEllipse(&dd, &ff);
+					m_CreateBuffer = new CEllipse(&settedPen, settedBrush);
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
 					preInsert();								// 이전 선택 개체 제거
-					m_CreateBuffer = new CRectangle(&dd, &ff);
+					m_CreateBuffer = new CRectangle(&settedPen, settedBrush);
 					break;
 
 				case CGraphicEditorView::STRING:
 					preInsert();// 이전 선택 개체 제거
 				
-					m_CreateBuffer = new CText(this, &dd, &ff);
+					m_CreateBuffer = new CText(this, &settedPen, settedBrush);
 					break;
 
 				case CGraphicEditorView::POLYGON:
 					if (m_PolyCreatableFlag) {							// CPolygon객체 생성 가능 상태
 						preInsert();									// 이전 선택 개체 제거
-						m_CreateBuffer = new CPolygon(&dd, &ff);		// 객체 생성
+						m_CreateBuffer = new CPolygon(&settedPen, settedBrush);		// 객체 생성
 						m_PolyCreatableFlag = FALSE;					// CPolygon 객체 생성 불가능 상태로 변경
 					}
 					((CPolygon*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가

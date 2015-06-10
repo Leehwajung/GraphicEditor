@@ -476,6 +476,18 @@ void CGraphicEditorView::OnUpdateZoom100(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnOutlineColor()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_OUTLINE_COLOR));
+
+	Color color;
+	color.SetFromCOLORREF(pColor->GetColor());
+	GetDocument()->m_FigureSettings.m_OutlineColor = color;
+	m_SelectedFigures.setOutlineColor(color);
+
+	Invalidate();
 }
 
 
@@ -520,6 +532,7 @@ void CGraphicEditorView::OnFillColor()
 	
 	Color color;
 	color.SetFromCOLORREF(pColor->GetColor());
+	GetDocument()->m_FigureSettings.m_FillColor = color;
 	m_SelectedFigures.setFillColor(color);
 
 	Invalidate();
@@ -535,6 +548,18 @@ void CGraphicEditorView::OnUpdateFillColor(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFillGradation()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+	ASSERT_VALID(m_WndRibbonBar);
+
+	CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
+		CMFCRibbonColorButton, m_WndRibbonBar->FindByID(ID_FILL_GRADATION));
+
+	Color color;
+	color.SetFromCOLORREF(pColor->GetColor());
+	GetDocument()->m_FigureSettings.m_FillSubcolor = color;
+	m_SelectedFigures.setFillSubcolor(color);
+
+	Invalidate();
 }
 
 
@@ -547,6 +572,8 @@ void CGraphicEditorView::OnUpdateFillGradation(CCmdUI *pCmdUI)
 void CGraphicEditorView::OnFillPattern()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+
 }
 
 
