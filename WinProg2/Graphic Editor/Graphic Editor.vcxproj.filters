@@ -210,6 +210,7 @@
     <None Include="res\ribbon.mfcribbon-ms">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Graphic Editor.rc">
@@ -259,5 +260,6 @@
     <Image Include="res\properties_wnd_hc.ico">
       <Filter>리소스 파일\Icons</Filter>
     </Image>
+    <Image Include="ClassDiagram.png" />
   </ItemGroup>
 </Project>

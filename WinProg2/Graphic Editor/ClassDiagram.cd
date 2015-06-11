@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CAboutDlg" Collapsed="true">
+    <Position X="2.75" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Graphic Editor.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFigure" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJAggBBAAQAAgACAIAIAIEQAgDEAGACQgQhAGAAAABQ=</HashCode>
+      <FileName>Figure.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGroup" Collapsed="true">
+    <Position X="14" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AZAggAAAAAAAAACAQAIAIEAAgDUBGACAAQBAABAAAAA=</HashCode>
+      <FileName>Group.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEllipse" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAAACAAAIAIEAAACEACAAAAQRAEAAAIBA=</HashCode>
+      <FileName>Ellipse.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPolygon" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggpCAAAAEAACAAAIAMGAQACEACAAAAQBAEAQAAAA=</HashCode>
+      <FileName>Polygon.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRectangle" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAACAAACAAAIAIEQAACEACAAAAQRAEAAAAAA=</HashCode>
+      <FileName>Rectangle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShape" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAACAgIEQBAoAAGCAAAAAAAgDEIEACAAxAAMAADAAg=</HashCode>
+      <FileName>Shape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CText" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAgEIAAAACSIcIIAAIBAADQkiIEIAQBAAxACAAA=</HashCode>
+      <FileName>Text.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCurve" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgkAAAAAAAAAAAAAIAICAAACEAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Curve.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLine" Collapsed="true">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAQAEAACAAAIAMGQAADEACAEAQQBAEAgAAAA=</HashCode>
+      <FileName>Line.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPencil" Collapsed="true">
+    <Position X="9.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAEAAAQAAAAgEAAAAAA=</HashCode>
+      <FileName>Pencil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPolyLine" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggpAgAAAEAACAAAIAMGAAACEACAAAAQBAEAQAEAA=</HashCode>
+      <FileName>PolyLine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStrap" Collapsed="true">
+    <Position X="9.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIAAAAAAAQAEAAACAAgAECAAgDEAEAAAAQAAoAAAAAg=</HashCode>
+      <FileName>Strap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFigurePtrList" Collapsed="true">
+    <Position X="11.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAggAAAAAgAAACAAAIADAABgDEAEACAAQAgAAAAACQ=</HashCode>
+      <FileName>FigurePtrList.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFigureSettings" Collapsed="true">
+    <Position X="11.75" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIgAIBAIAGxAAAAIYBsAEAAAhBAAWoAAAUAQAAACAAA=</HashCode>
+      <FileName>FigureSettings.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGlobal" Collapsed="true">
+    <Position X="14" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>iAAABAQAAAAFAAQEAAAEAAAAAACAAAAAAAAAAAEQAAA=</HashCode>
+      <FileName>Global.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSelectedFigureArray" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AJIwgAAAIICAGAKgAAYAAAAAoBVAEADAAQAAIAAAQAQ=</HashCode>
+      <FileName>SelectedFigureArray.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CChildFrame" Collapsed="true">
+    <Position X="2.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABQIAAAAAAQACAAAgAAAgAAAAEAAAAAAAAQIAAA=</HashCode>
+      <FileName>ChildFrm.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGraphicEditorDoc" Collapsed="true">
+    <Position X="5" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAECgACAAACAMAkAAgBTghQoAEAAAQAAAEAAA=</HashCode>
+      <FileName>Graphic Editor Doc.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGraphicEditorView" Collapsed="true">
+    <Position X="5" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>YIQDp8DmVXHnoB+zHFN2mUNVwBIKLwNjtQotUEYbg54=</HashCode>
+      <FileName>Graphic Editor View.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGraphicEditorApp" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAADQAAAAAQCAAARAAACQAA=</HashCode>
+      <FileName>Graphic Editor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMainFrame" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAQAAIAAAAACAASiAAEoCCAAgAACAAQAAAAAJA=</HashCode>
+      <FileName>MainFrm.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPropertiesToolBar" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>PropertiesWnd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPropertiesWnd" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAFkAAQCAAAQAmAAAACAAAAUAgJAACBQAAAA=</HashCode>
+      <FileName>PropertiesWnd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Typedef Name="PenPtr" Collapsed="true">
+    <Position X="7.25" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Figure.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="BrushPtr" Collapsed="true">
+    <Position X="7.25" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Figure.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="CFigurePtr" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Figure.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="CPositionArray" Collapsed="true">
+    <Position X="11.75" Y="5.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SelectedFigureArray.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

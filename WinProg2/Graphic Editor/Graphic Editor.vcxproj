@@ -158,6 +158,7 @@
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Graphic Editor.reg" />
     <None Include="res\GraphicEditor.rc2" />
     <None Include="res\ribbon.mfcribbon-ms" />
@@ -166,6 +167,7 @@
     <ResourceCompile Include="Graphic Editor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ClassDiagram.png" />
     <Image Include="res\buttons.bmp" />
     <Image Include="res\filelarge.bmp" />
     <Image Include="res\filesmall.bmp" />

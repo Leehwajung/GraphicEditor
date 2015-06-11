@@ -369,10 +369,12 @@ RectF  CEllipse::resizing(IN Graphics& graphics, IN Position selectedHandle, IN 
 	 PointF startingPoint;
 	 PointF fixedPoint;
 	 PointF Gradeint;
-	 getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
+	 getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint); //핸들반대점
+	 REAL t_grad, h_grad, h_oppositegrad;
 
 	 SizeF rectSize;
-
+	 h_grad = rect.Y / rect.X;
+	 h_oppositegrad = -h_grad;
 	 if(resizeFlag == FREERESIZE){
 	switch (selectedHandle)
 		 {
@@ -449,33 +451,54 @@ RectF  CEllipse::resizing(IN Graphics& graphics, IN Position selectedHandle, IN 
 		 case CFigure::TOPRIGHT:
 		 case CFigure::BOTTOMRIGHT:
 		 case CFigure::BOTTOMLEFT:
+
 			 rectSize.Width = fixedPoint.X > targetPoint.X ?
 				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
 			 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
 				 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
-			 
+			 // 초기 렉트사이즈
+
+			 if (fixedPoint.X > targetPoint.X) {
+				 startingPoint.X = targetPoint.X;
+			 }
+			 else {
+				 startingPoint.X = fixedPoint.X;
+			 }
+
+			 if (fixedPoint.Y > targetPoint.Y) {
+				 startingPoint.Y = targetPoint.Y;
+			 }
+			 else {
+				 startingPoint.Y = fixedPoint.Y;
+			 }
+
 			 // 기울기가 무한대와 0인 케이스를 걸러냄
 			 if (targetPoint.X == fixedPoint.X || targetPoint.Y == fixedPoint.Y)
 				 break;
-			 float t_grad, h_grad, h_oppositegrad;
-			 h_grad = rect.Y / rect.X;
-			 if (h_grad < 0){
-				 h_grad = -h_grad;//아래 연산을 위해
-			 }
-			 h_oppositegrad = -h_grad;
-			 Gradeint = fixedPoint - targetPoint;
-			 t_grad = Gradeint.Y / Gradeint.X;
-
+			
+			 t_grad = (targetPoint.Y - fixedPoint.Y) / (targetPoint.X - fixedPoint.X);
 	 
-			 if (t_grad <= h_grad && t_grad >= h_oppositegrad)// x를기준으로
+			 if (t_grad < h_grad && t_grad > h_oppositegrad)// x를기준으로
 			 {
-				 startingPoint.X = targetPoint.X;
-				 startingPoint.Y = targetPoint.X*(1 / h_grad);
+				 rectSize.Width = fixedPoint.X > targetPoint.X ?
+					 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+				 rectSize.Height = h_grad*rectSize.Width;
+			 }
+
+			 else if (t_grad == h_grad && t_grad == h_oppositegrad)
+			 {
+				 rectSize.Width = fixedPoint.X > targetPoint.X ?
+					 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
+				 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+					 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+				 // 초기 렉트사이즈
+				 break;
 			 }
 			 else
 			 {
-				 startingPoint.Y = targetPoint.Y;
-				 startingPoint.X = targetPoint.Y*(1 / h_grad);
+				 rectSize.Height = fixedPoint.Y > targetPoint.Y ?
+					 fixedPoint.Y - targetPoint.Y : targetPoint.Y - fixedPoint.Y;
+				 rectSize.Width = 1/h_grad*rectSize.Height;
 			 }
 			 break;
 
@@ -502,7 +525,7 @@ RectF  CEllipse::resizing(IN Graphics& graphics, IN Position selectedHandle, IN 
 		 case CFigure::LEFT:
 			 rectSize.Width = fixedPoint.X > targetPoint.X ?
 				 fixedPoint.X - targetPoint.X : targetPoint.X - fixedPoint.X;
-			 rectSize.Height = m_Rect.Height;
+			 rectSize.Height = rect.Height;
 
 			 if (fixedPoint.X > targetPoint.X) {
 				 startingPoint.X = targetPoint.X;
