@@ -125,7 +125,7 @@ BOOL CText::create(void* param1, ...)
 	//rectSize.Width = m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();
 	rectSize.Width = 60;
-	rectSize.Height = 30;
+	rectSize.Height = m_Font->GetSize();
 	m_Rect = RectF(*startingPoint, rectSize);
 	resetArea();
 	cur.x= startingPoint->X;
@@ -135,6 +135,28 @@ BOOL CText::create(void* param1, ...)
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret();
 	return FALSE;
+}
+
+void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
+{
+	// originPoint: ButtonDown
+	// targetPoint: ButtonUp
+	//PointF offset = targetPoint - originPoint;
+	//m_Rect.Offset(offset);
+	//resetArea();
+	CRectangle::move(originPoint, targetPoint, moveFlag);
+
+	PointF sp;
+	m_Rect.GetLocation(&sp);
+	m_Rect = RectF(sp, rectSize);
+	cur.x = m_Rect.X + m_String.GetSize() * 20;
+	cur.y = m_Rect.Y;
+
+
+	m_View->SetCaretPos(cur);
+	m_View->ShowCaret(); // 커서이동
+
+	resetArea();
 }
 
 void  CText::increasewidth(){
@@ -155,25 +177,7 @@ void  CText::increasewidth(){
 	m_View->SetCaretPos(cur);
 	m_View->ShowCaret(); // 커서이동
 }
-void CText::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
-{
-	// originPoint: ButtonDown
-	// targetPoint: ButtonUp
-	PointF offset = targetPoint - originPoint;
-	m_Rect.Offset(offset);
-	resetArea();
-	
-	PointF sp;
-	m_Rect.GetLocation(&sp);
-	m_Rect = RectF(sp, rectSize);
-	cur.x = m_Rect.X + m_String.GetSize() * 20;
-	cur.y = m_Rect.Y;
-	
 
-	m_View->SetCaretPos(cur);
-	m_View->ShowCaret(); // 커서이동
-
-}
 void  CText::decreasewidth(){
 	//rectSize.Width = rectSize.Width-m_Font->GetSize();
 	//rectSize.Height = m_Font->GetSize();

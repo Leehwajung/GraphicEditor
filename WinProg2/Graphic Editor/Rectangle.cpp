@@ -75,32 +75,46 @@ BOOL CRectangle::create(void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
-	PointF* startingPoint = (PointF*)param1;
+	PointF* fixedPoint = (PointF*)param1;
 	PointF* endingPoint = va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+	PointF startingPoint = *fixedPoint;
+
 	SizeF rectSize;
-	rectSize.Width = startingPoint->X > endingPoint->X ? startingPoint->X - endingPoint->X : endingPoint->X - startingPoint->X;
-	rectSize.Height = startingPoint->Y > endingPoint->Y ? startingPoint->Y - endingPoint->Y : endingPoint->Y - startingPoint->Y;
-	
-	if (startingPoint->X > endingPoint->X) {
-		startingPoint->X = endingPoint->X;
+	rectSize.Width = abs(fixedPoint->X - endingPoint->X);
+	rectSize.Height = abs(fixedPoint->Y - endingPoint->Y);
+
+	switch (createFlag)
+	{
+		case CFigure::FREECREATE: {
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = endingPoint->X;
+			}
+
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = endingPoint->Y;
+			}
+		} break;
+
+		case CFigure::REGULAR: {
+			REAL regularSize = max(rectSize.Width, rectSize.Height);
+
+			rectSize.Width = regularSize;
+			rectSize.Height = regularSize;
+
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = fixedPoint->X - regularSize;
+			}
+
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = fixedPoint->Y - regularSize;
+			}
+		} break;
 	}
-	
-	if (startingPoint->Y > endingPoint->Y) {
-		startingPoint->Y = endingPoint->Y;
-	}
-	
-	//RectF* rect = new RectF(*startingPoint, rectSize);
 
-	//if (!rect) {
-	//	return TRUE;
-	//}
-
-	//m_Rect = *rect;
-
-	m_Rect = RectF(*startingPoint, rectSize);
+	m_Rect = RectF(startingPoint, rectSize);
 
 	resetArea();
 
@@ -120,6 +134,22 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 	
 	PointF offset = targetPoint - originPoint;
 
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(offset.X) > abs(offset.Y)) {
+			offset.Y = 0;
+		}
+		else {
+			offset.X = 0;
+		}
+		break;
+	}
+
 	m_Rect.Offset(offset);
 	resetArea();
 }
@@ -133,6 +163,108 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	//PointF startingPoint;
+	//getHandlePoint(selectedHandle, &startingPoint);
+	//PointF oppositePoint;
+	//getHandlePoint(getOppositeHandle(selectedHandle), &oppositePoint);
+	//PointF fixedPoint;
+	//if (anchorPoint) {
+	//	fixedPoint = *anchorPoint;
+	//}
+	//else{
+	//	fixedPoint = oppositePoint;
+	//}
+	//
+	//SizeF anchorRectSize;
+	//anchorRectSize.Width = abs(fixedPoint.X - oppositePoint.X);
+	//anchorRectSize.Height = abs(fixedPoint.Y - oppositePoint.Y);
+
+	//SizeF bigRectSize;
+	//bigRectSize.Width = abs(fixedPoint.X - startingPoint.X);
+	//bigRectSize.Height = abs(fixedPoint.Y - startingPoint.Y);
+
+	//SizeF targetRectSize;
+	//targetRectSize.Width = abs(fixedPoint.X - targetPoint.X);
+	//targetRectSize.Height = abs(fixedPoint.Y - targetPoint.Y);
+
+	//SizeF ratioRect;
+	//ratioRect.Width = targetRectSize.Width / bigRectSize.Width;
+	//ratioRect.Height = targetRectSize.Height / bigRectSize.Height;
+
+	//SizeF newAnchorRectSize;
+	//SizeF newBigRectSize;
+
+	//switch (selectedHandle)
+	//{
+	//case CFigure::TOPLEFT:
+	//case CFigure::TOPRIGHT:
+	//case CFigure::BOTTOMRIGHT:
+	//case CFigure::BOTTOMLEFT:
+	//	newAnchorRectSize.Width = anchorRectSize.Width * ratioRect.Width;
+	//	newAnchorRectSize.Height = anchorRectSize.Height * ratioRect.Height;
+
+	//	if (fixedPoint.X > targetPoint.X) {
+	//		startingPoint.X = targetPoint.X;
+	//	}
+	//	else {
+	//		startingPoint.X = fixedPoint.X - m_Rect.X;
+	//	}
+
+	//	if (fixedPoint.Y > targetPoint.Y) {
+	//		startingPoint.Y = targetPoint.Y;
+	//	}
+	//	else {
+	//		startingPoint.Y = fixedPoint.Y;
+	//	}
+
+	//	break;
+
+	//case CFigure::TOP:
+	//case CFigure::BOTTOM:
+	//	newAnchorRectSize.Height = anchorRectSize.Height;
+	//	newAnchorRectSize.Height = anchorRectSize.Height * ratioRect.Height;
+
+	//	startingPoint.X = m_Rect.X;
+
+	//	if (fixedPoint.Y > targetPoint.Y) {
+	//		startingPoint.Y = targetPoint.Y;
+	//	}
+	//	else {
+	//		startingPoint.Y = fixedPoint.Y;
+	//	}
+
+	//	break;
+
+	//case CFigure::RIGHT:
+	//case CFigure::LEFT:
+	//	newAnchorRectSize.Width = anchorRectSize.Width * ratioRect.Width;
+	//	newAnchorRectSize.Height = anchorRectSize.Height;
+
+	//	if (fixedPoint.X > targetPoint.X) {
+	//		startingPoint.X = targetPoint.X;
+	//	}
+	//	else {
+	//		startingPoint.X = fixedPoint.X;
+	//	}
+
+	//	startingPoint.Y = m_Rect.Y;
+
+	//	break;
+
+	//default:
+	//	// 잘못된 selectedHandle
+	//	// 아무 동작을 하지 않음
+	//	return;
+	//}
+
+
+
+	/*PointF AP;
+
+	if (anchorPoint == NULL){
+	getHandlePoint(getOppositeHandle(selectedHandle), &AP);
+	anchorPoint = &AP;
+	}*/
 	PointF startingPoint;
 	PointF fixedPoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
@@ -279,28 +411,48 @@ RectF CRectangle::creating(IN Graphics& graphics, void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
-	PointF startingPoint = *(PointF*)param1;
-	PointF targetPoint = *va_arg(vaList, PointF*);
+	PointF* fixedPoint = (PointF*)param1;
+	PointF* endingPoint = va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
-	RectF drawnArea;
+	PointF startingPoint = *fixedPoint;
 
 	SizeF rectSize;
-	rectSize.Width = startingPoint.X > targetPoint.X ? startingPoint.X - targetPoint.X : targetPoint.X - startingPoint.X;
-	rectSize.Height = startingPoint.Y > targetPoint.Y ? startingPoint.Y - targetPoint.Y : targetPoint.Y - startingPoint.Y;
+	rectSize.Width = abs(fixedPoint->X - endingPoint->X);
+	rectSize.Height = abs(fixedPoint->Y - endingPoint->Y);
 
-	if (startingPoint.X > targetPoint.X) {
-		startingPoint.X = targetPoint.X;
+	switch (createFlag)
+	{
+		case CFigure::FREECREATE: {
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = endingPoint->X;
+			}
+
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = endingPoint->Y;
+			}
+		} break;
+
+		case CFigure::REGULAR: {
+			REAL regularSize = max(rectSize.Width, rectSize.Height);
+
+			rectSize.Width = regularSize;
+			rectSize.Height = regularSize;
+
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = fixedPoint->X - regularSize;
+			}
+
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = fixedPoint->Y - regularSize;
+			}
+		} break;
 	}
 
-	if (startingPoint.Y > targetPoint.Y) {
-		startingPoint.Y = targetPoint.Y;
-	}
-
-	RectF rect = RectF(startingPoint, rectSize);
-	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), rect);
-	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), rect);
+	RectF drawnArea = RectF(startingPoint, rectSize);
+	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), drawnArea);
+	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), drawnArea);
 
 	return drawnArea;
 }
@@ -314,38 +466,28 @@ RectF CRectangle::creating(IN Graphics& graphics, void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	RectF drawnArea;
-	RectF rect = m_Rect;
-	PointF offset;
-
-	// 자유이동
-	if (moveFlag == FREEMOVE) {
-		offset = targetPoint - originPoint;
-	}
-
-
-	else//!=FREEMOVE인 case
+	PointF offset = targetPoint - originPoint;
+	
+	switch (moveFlag)
 	{
-		PointF ratio;
-		ratio.X = rect.GetLeft();
-		ratio.Y = rect.GetTop();
-		
-		// 좌우 이동
-		if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y) {
-			offset.X = targetPoint.X - originPoint.X;
-			offset.Y = originPoint.Y;
-		}
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
 
-		// 상하이동
-		else {
-			offset.X = originPoint.X;
-			offset.Y = targetPoint.Y - originPoint.Y;
+	case CFigure::FOURWAY:
+		if (abs(offset.X) > abs(offset.Y)) {
+			offset.Y = 0;
 		}
+		else {
+			offset.X = 0;
+		}
+		break;
 	}
 
-	rect.Offset(offset);
-	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), rect);
-	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), rect);
+	RectF drawnArea = m_Rect;
+	drawnArea.Offset(offset);
+	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), drawnArea);
+	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), drawnArea);
 
 	return drawnArea;
 }

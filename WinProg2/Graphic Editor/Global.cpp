@@ -64,9 +64,11 @@ Pen* CGlobal::crateIngPen(IN const Pen* originalPen)
 	clearIngPen();
 
 	m_BufPen = originalPen->Clone();
-	m_BufPen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_BufPen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+	if (m_BufPen->GetDashStyle() == Gdiplus::DashStyleSolid) {
+		m_BufPen->SetDashStyle(DashStyleCustom);
+		REAL aDash[] = { 5.0f, 5.0f };
+		m_BufPen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
+	}
 
 	return m_BufPen;
 }

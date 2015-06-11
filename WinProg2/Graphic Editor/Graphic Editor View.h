@@ -81,6 +81,9 @@ public:
 	BOOL m_PolyCreatableFlag;	// CPolyLine 및 CPolygon 객체 생성 가능 상태 플래그
 	BOOL m_EditPointFlag;
 
+private:
+	static REAL m_offset;
+
 // 작업입니다.
 public:
 	void preInsert();		// 삽입(생성) 작업 전에 해야 할 작업

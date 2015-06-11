@@ -54,6 +54,7 @@ void CGraphicEditorView::OnEditCopy()
 	CFigure* figure;
 	
 	m_BufferList.RemoveAll();//복사가 일어남으로 그동안 저장되어있던 리스트를 비워줌.
+	m_offset = 0;//버퍼 리스트를 초기화할 때 붙여넣기 오프셋 초기화
 
 	/* 단, m_FiguresList에는 계속 존재해야하므로 삭제하지 않음.*/
 	if (m_SelectedFigures.hasOne()){//하나가 선택된 경우
@@ -87,6 +88,7 @@ void CGraphicEditorView::OnEditCut()//잘라내기
 	CGraphicEditorDoc* pDoc = GetDocument();
 	CFigure* figure;
 	m_BufferList.RemoveAll();//잘라내기 발생. 그동안 저장되어있던 리스트를 비워줌.
+	m_offset = 0;//버퍼 리스트를 초기화할 때 붙여넣기 오프셋 초기화
 	
 	if (m_SelectedFigures.hasOne()){
 		//삭제할위치를 얻기위해
@@ -128,6 +130,8 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	clearInsertFlag();
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 
+	m_offset = m_offset + 10;
+
 	CGraphicEditorDoc* pDoc = GetDocument();
 	CFigure* figure;
 	POSITION headpos = m_BufferList.GetHeadPosition();
@@ -136,17 +140,20 @@ void CGraphicEditorView::OnEditPaste()//붙여넣기
 	if (m_BufferList.hasOneFigure()){//하나가 저장되어있는 경우
 		CFigure* figure = m_BufferList.GetHead();
 		pDoc->m_FiguresList.AddHead(figure->clone());//figure를 추가해줌
+		pDoc->m_FiguresList.GetHead()->move(PointF(0, 0), PointF(m_offset, m_offset));
 		m_SelectedFigures.select();
 	}
 
 	else{//다중 저장
 		//CFigure* figure = m_BufferList.GetHead();
+
 		for (int i = 0; i < m_BufferList.GetCount(); i++)// 저장된 수만큼
 		{
 			figure = m_BufferList.GetAt(headpos);
 			m_BufferList.GetNext(headpos);
 			pDoc->m_FiguresList.AddHead(figure->clone());//figure를 추가해
-			m_SelectedFigures.select();
+			pDoc->m_FiguresList.GetHead()->move(PointF(0, 0), PointF(m_offset, m_offset));
+			m_SelectedFigures.select(pDoc->m_FiguresList.GetHeadPosition());
 		}
 	}
 	Invalidate();

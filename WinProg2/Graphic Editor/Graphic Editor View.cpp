@@ -100,9 +100,13 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ARRANGE_ORDER, &CGraphicEditorView::OnArrangeOrder)
 	ON_UPDATE_COMMAND_UI(ID_ARRANGE_ORDER, &CGraphicEditorView::OnUpdateArrangeOrder)
 	ON_COMMAND(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnArrangeBringFront)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnUpdateArrangeBringFront)
 	ON_COMMAND(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnArrangeSendBack)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnUpdateArrangeSendBack)
 	ON_COMMAND(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnArrangeBringForward)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnUpdateArrangeBringForward)
 	ON_COMMAND(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnArrangeSendBackward)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnUpdateArrangeSendBackward)
 	ON_COMMAND(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnArrangeGrouping)
 	ON_UPDATE_COMMAND_UI(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnUpdateArrangeGrouping)
 	ON_COMMAND(ID_ARRANGE_GROUP, &CGraphicEditorView::OnArrangeGroup)
@@ -151,10 +155,6 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnUpdateArrangeBringFront)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnUpdateArrangeSendBack)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnUpdateArrangeBringForward)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnUpdateArrangeSendBackward)
 	END_MESSAGE_MAP()
 
 
@@ -175,6 +175,8 @@ CGraphicEditorView::CGraphicEditorView()
 	m_EditPointFlag = FALSE;
 	//// m_OperationModeFlag = SELECTABLE;
 }
+
+REAL CGraphicEditorView::m_offset = 0;
 
 CGraphicEditorView::~CGraphicEditorView()
 {
@@ -253,23 +255,35 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 	{
 		/*** NO BUTTON ***/
 		case CGraphicEditorView::NBUTTON: {
-			if (m_CreateBuffer && getOperationModeFlag() == CREATE
-				&& m_InsertFlag == POLYLINE && m_PolyCreatableFlag == FALSE) {
-				((CPolyLine*)m_CreateBuffer)->draw(graphicsCanvas);
-				/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
-			}
-			else if (m_CreateBuffer && getOperationModeFlag() == CREATE
-				&& m_InsertFlag == POLYGON && m_PolyCreatableFlag == FALSE) {
-				((CPolygon*)m_CreateBuffer)->draw(graphicsCanvas);
-				((CPolygon*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
-			}
-			else if (m_CreateBuffer && getOperationModeFlag() == CREATE
-				&& m_InsertFlag == CURVE && m_PolyCreatableFlag == FALSE) {
-				((CCurve*)m_CreateBuffer)->draw(graphicsCanvas);
-				((CCurve*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint);
-			}
-		} break;
+			if (m_CreateBuffer && getOperationModeFlag() == CREATE && m_PolyCreatableFlag == FALSE) {
+				CFigure::CreateFlag createFlag = CFigure::FREECREATE;
+				if (m_MouseVKFlags & MK_SHIFT) {
+					createFlag = CFigure::REGULAR;
+				}
 
+				switch (m_InsertFlag)
+				{
+				case CGraphicEditorView::POLYLINE:
+					((CPolyLine*)m_CreateBuffer)->draw(graphicsCanvas);		// 현재까지 생성된 것을 그림
+					/*m_drawnArea = CGlobal::RectFToCRect(*/((CPolyLine*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint, createFlag);
+					break;
+
+				case CGraphicEditorView::CURVE:
+					((CCurve*)m_CreateBuffer)->draw(graphicsCanvas);
+					((CCurve*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint, createFlag);
+					break;
+
+				case CGraphicEditorView::POLYGON:
+					((CPolygon*)m_CreateBuffer)->draw(graphicsCanvas);
+					((CPolygon*)m_CreateBuffer)->creating(graphicsCanvas, m_CurrPoint, createFlag);
+					break;
+
+				//case CGraphicEditorView::CLOSEDCURVE:
+				//	break;
+				}
+			}
+		}
+	
 
 		/*** LBUTTON ***/
 		case CGraphicEditorView::LBUTTON: {
@@ -285,39 +299,44 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 
 				/** LBUTTON CREATE **/
 				case CGraphicEditorView::CREATE: {
+					CFigure::CreateFlag createFlag = CFigure::FREECREATE;
+					if (m_MouseVKFlags & MK_SHIFT) {
+						createFlag = CFigure::REGULAR;
+					}
+
 					if (m_CreateBuffer) {
 						switch (m_InsertFlag)
 						{
 						/* LBUTTON CREATE LINE */
 						case CGraphicEditorView::LINE:
-							m_CreateBuffer->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							m_CreateBuffer->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint, createFlag);
 							break;
 
-							/* LBUTTON CREATE POLYLINE */
-							//case CGraphicEditorView::POLYLINE:
-							// 아무 동작을 하지 않음
-							//break;
+						/* LBUTTON CREATE POLYLINE */
+						//case CGraphicEditorView::POLYLINE:
+						//	// 아무 동작을 하지 않음
+						//break;
 
 						/* LBUTTON CREATE PENCIL */
 						case CGraphicEditorView::PENCIL:
 							if (m_PolyCreatableFlag == FALSE) {
-								((CPencil*)m_CreateBuffer)->addPoint(m_CurrPoint, CFigure::FREECREATE);	// 점 추가
-								((CPencil*)m_CreateBuffer)->draw(graphicsCanvas);
+								((CPencil*)m_CreateBuffer)->addPoint(m_CurrPoint, createFlag);	// 점 추가
+								((CPencil*)m_CreateBuffer)->draw(graphicsCanvas);				// 현재까지 생성된 것을 그림
 							}
 							break;
 
-						/* LBUTTON CREATE CURVE */
-						case CGraphicEditorView::CURVE:
-							
-							break;
+						///* LBUTTON CREATE CURVE */
+						//case CGraphicEditorView::CURVE:
+						//	// 아무 동작을 하지 않음
+						//	break;
 
 						/* LBUTTON CREATE ELLIPSE/RECTANGLE/STRING */
 						case CGraphicEditorView::ELLIPSE:
-							((CRectangle*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							((CEllipse*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint, createFlag);
 							break;
 
 						case CGraphicEditorView::RECTANGLE:
-							((CEllipse*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint);
+							((CRectangle*)m_CreateBuffer)->creating(graphicsCanvas, &m_LButtonPoint, &m_CurrPoint, createFlag);
 							break;
 
 						case CGraphicEditorView::STRING:
@@ -325,49 +344,57 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 							break;
 
 						/* LBUTTON CREATE POLYGON/CLOSEDCURVE */
-						case CGraphicEditorView::POLYGON:
-							// do nothing
-							break;;
-						case CGraphicEditorView::CLOSEDCURVE:
+						//case CGraphicEditorView::POLYGON:
+						//	// do nothing
+						//	break;;
 
-							break;
+						//case CGraphicEditorView::CLOSEDCURVE:
+						//	// do nothing
+						//	break;
 						}
 					}
 				} break;
 
 				/** LBUTTON MOVE **/
 				case CGraphicEditorView::MOVE: {			// 개체 이동
-					m_SelectedFigures.moving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+					CFigure::MoveFlag moveFlag = CFigure::FREEMOVE;
+					if (m_MouseVKFlags & MK_SHIFT) {
+						moveFlag = CFigure::FOURWAY;
+					}
+
+					m_SelectedFigures.moving(graphicsCanvas, m_LButtonPoint, m_CurrPoint, moveFlag);
 				} break;
 
 				/** LBUTTON RESIZE **/
 				case CGraphicEditorView::RESIZE: {
+					CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
+					if (m_MouseVKFlags & MK_SHIFT) {		// 정비례 크기 변경 구현 후 주석 제거
+						resizeFlag = CFigure::PROPORTIONAL;
+					}
+					
 					if (m_SelectedFigures.hasOne()) {	// 현재 선택 개체 하나
 						CFigure* figure = m_SelectedFigures.getOneFigure();
 
-						if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (m_EditPointFlag == TRUE)
+						if (m_EditPointFlag == TRUE) {	// 점 편집 상태 (RESIZE 상태에서 동작함)
+							if (figure->IsKindOf(RUNTIME_CLASS(CLine))){			// CLine 점 이동
 								((CLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
-						}
-						else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (m_EditPointFlag== TRUE)
+							}
+							else if (figure->IsKindOf(RUNTIME_CLASS(CPolyLine))){	// CPolyLine 점 이동
 								((CPolyLine*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
-						}
-						else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){	// CPolygon 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (m_EditPointFlag == TRUE)
+							}
+							else if (figure->IsKindOf(RUNTIME_CLASS(CPolygon))){	// CPolygon 점 이동
 								((CPolygon*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
-						}
-						else if (figure->IsKindOf(RUNTIME_CLASS(CCurve))){	// CCurve 점 이동 (점 이동을 크기 변경 동작 중 하나로 간주)
-							if (m_EditPointFlag == TRUE)
+							}
+							else if (figure->IsKindOf(RUNTIME_CLASS(CCurve))){		// CCurve 점 이동
 								((CCurve*)figure)->pointMoving(graphicsCanvas, m_LButtonPoint, m_CurrPoint);
+							}
 						}
-
 						else {								// 개체 한 개 크기 변경
-							figure->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
+							figure->resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint, resizeFlag);
 						}
 					}
 					else {									// 현재 선택 개체 여러 개 크기 변경
-						m_SelectedFigures.resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint);
+						m_SelectedFigures.resizing(graphicsCanvas, m_selectedPosition, m_CurrPoint, resizeFlag);
 					}
 				} break;
 			}
@@ -478,7 +505,7 @@ void CGraphicEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 					ShowCaret();
 				if (m_selectedPosition == CFigure::OUTSIDE) {
 					m_EditPointFlag = FALSE;
-					if ((nFlags & MK_SHIFT) || (nFlags & MK_CONTROL)) {				// shift나 control을 누르고 드래그하면
+					if ((m_MouseVKFlags & MK_SHIFT) || (m_MouseVKFlags & MK_CONTROL)) {				// shift나 control을 누르고 드래그하면
 						// 현재 리스트를 삭제하지 않고 추가
 					}
 					else{
@@ -610,10 +637,15 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 			/* CREATE 상태 */
 			case CGraphicEditorView::CREATE: {
+				CFigure::CreateFlag createFlag = CFigure::FREECREATE;
+				if (m_MouseVKFlags & MK_SHIFT) {
+					createFlag = CFigure::REGULAR;
+				}
+
 				switch (m_InsertFlag)
 				{
 				case CGraphicEditorView::LINE:
-					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, createFlag);
 					postInsert();
 					break;
 
@@ -622,7 +654,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::PENCIL:
-					((CPencil*)m_CreateBuffer)->create(CFigure::FREECREATE);
+					((CPencil*)m_CreateBuffer)->create(createFlag);
 					m_PolyCreatableFlag = TRUE;
 					postInsert();
 					break;
@@ -632,23 +664,24 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					break;
 
 				case CGraphicEditorView::ELLIPSE:
-					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, createFlag);
 					postInsert();
 					break;
 
 				case CGraphicEditorView::RECTANGLE:
-					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, createFlag);
 					postInsert();
 					break;
 
 				case CGraphicEditorView::STRING:
-					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, CFigure::FREECREATE);
+					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, createFlag);
 					clearInsertFlag();
 					postInsert();
+					m_SelectedFigures.select();
 					break;
 
 				case CGraphicEditorView::POLYGON:
-					// 아무 동작도 하지 않음 //((CPolyLine*)m_CurrentFigure)->addPoint(m_CurrPoint, CFigure::FREECREATE);
+					// 아무 동작도 하지 않음 //((CPolyLine*)m_CurrentFigure)->addPoint(m_CurrPoint, createFlag);
 					break;
 
 				case CGraphicEditorView::CLOSEDCURVE:
@@ -658,22 +691,23 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 			case CGraphicEditorView::MOVE: {
 				CFigure::MoveFlag moveFlag = CFigure::FREEMOVE;
-				//if (nFlags & MK_SHIFT) {
-				//	moveFlag = CFigure::;
-				//}
+				if (m_MouseVKFlags & MK_SHIFT) {
+					moveFlag = CFigure::FOURWAY;
+				}
+
 				m_SelectedFigures.move(m_LButtonPoint, m_CurrPoint, moveFlag);
 				m_selectedPosition = CFigure::OUTSIDE;
 			} break;
 
 			case CGraphicEditorView::RESIZE: {
 				CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
-				if (nFlags & MK_SHIFT) {
+				if (m_MouseVKFlags & MK_SHIFT) {		// 정비례 크기 변경 구현 후 주석 제거
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
 				if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CStrap))) {
 					if (m_EditPointFlag == TRUE)
-					((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
+						((CStrap*)m_SelectedFigures.getOneFigure())->pointMove(m_LButtonPoint, m_CurrPoint);
 				}
 				else if (m_SelectedFigures.hasOne() && m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
 					if (m_EditPointFlag == TRUE)
@@ -751,16 +785,6 @@ void CGraphicEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 		m_MouseVKFlags = nFlags;
 
 		// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
-		//CMFCRibbonBar* pRibbon = ((CMDIFrameWndEx*)AfxGetMainWnd())->GetRibbonBar();
-		//ASSERT_VALID(pRibbon);
-
-		//CMFCRibbonColorButton* pColor = DYNAMIC_DOWNCAST(
-		//	CMFCRibbonColorButton, pRibbon->FindByID(ID_OUTLINE_COLOR));
-		//
-		//Color dd;
-		//dd.SetFromCOLORREF(pColor->GetColor());
-		//m_SelectedFigures.getOneFigure()->setFillColor(dd);
 
 
 		/*********** 이 부분은 변경하지 마시오. ***********/
@@ -1122,7 +1146,7 @@ void CGraphicEditorView::preInsert()	// 삽입(생성) 작업 전에 해야 할 작업
 void CGraphicEditorView::postInsert()	// 삽입(생성) 작업 후에 해야 할 작업
 {
 	GetDocument()->m_FiguresList.AddHead(m_CreateBuffer);	// 전체 개체 리스트에 추가
-	m_SelectedFigures.select();
+	//m_SelectedFigures.select();
 	//m_selectedPosition = CFigure::OUTSIDE;
 	m_CreateBuffer = NULL;
 }
