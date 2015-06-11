@@ -176,6 +176,8 @@ CGraphicEditorView::CGraphicEditorView()
 	//// m_OperationModeFlag = SELECTABLE;
 }
 
+REAL CGraphicEditorView::m_offset = 0;
+
 CGraphicEditorView::~CGraphicEditorView()
 {
 }

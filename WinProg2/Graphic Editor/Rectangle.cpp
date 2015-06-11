@@ -88,30 +88,30 @@ BOOL CRectangle::create(void* param1, ...)
 
 	switch (createFlag)
 	{
-	case CFigure::FREECREATE:
-		if (fixedPoint->X > endingPoint->X) {
-			startingPoint.X = endingPoint->X;
-		}
+		case CFigure::FREECREATE: {
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = endingPoint->X;
+			}
 
-		if (fixedPoint->Y > endingPoint->Y) {
-			startingPoint.Y = endingPoint->Y;
-		}
-		break;
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = endingPoint->Y;
+			}
+		} break;
 
-	case CFigure::REGULAR:
-		REAL regularSize = max(rectSize.Width, rectSize.Height);
+		case CFigure::REGULAR: {
+			REAL regularSize = max(rectSize.Width, rectSize.Height);
 
-		rectSize.Width = regularSize;
-		rectSize.Height = regularSize;
+			rectSize.Width = regularSize;
+			rectSize.Height = regularSize;
 
-		if (fixedPoint->X > endingPoint->X) {
-			startingPoint.X = fixedPoint->X - regularSize;
-		}
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = fixedPoint->X - regularSize;
+			}
 
-		if (fixedPoint->Y > endingPoint->Y) {
-			startingPoint.Y = fixedPoint->Y - regularSize;
-		}
-		break;
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = fixedPoint->Y - regularSize;
+			}
+		} break;
 	}
 
 	m_Rect = RectF(startingPoint, rectSize);
@@ -163,6 +163,108 @@ void CRectangle::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag 
 //		PointF* anchorPoint = NULL: 크기 변경의 기준(고정) 좌표 (NULL일 경우, selectedHandle을 통해 얻은 Default 기준 좌표 )
 void CRectangle::resize(IN Position selectedHandle, IN PointF targetPoint, IN ResizeFlag resizeFlag/* = FREERESIZE*/, IN PointF* anchorPoint/* = NULL*/)
 {
+	//PointF startingPoint;
+	//getHandlePoint(selectedHandle, &startingPoint);
+	//PointF oppositePoint;
+	//getHandlePoint(getOppositeHandle(selectedHandle), &oppositePoint);
+	//PointF fixedPoint;
+	//if (anchorPoint) {
+	//	fixedPoint = *anchorPoint;
+	//}
+	//else{
+	//	fixedPoint = oppositePoint;
+	//}
+	//
+	//SizeF anchorRectSize;
+	//anchorRectSize.Width = abs(fixedPoint.X - oppositePoint.X);
+	//anchorRectSize.Height = abs(fixedPoint.Y - oppositePoint.Y);
+
+	//SizeF bigRectSize;
+	//bigRectSize.Width = abs(fixedPoint.X - startingPoint.X);
+	//bigRectSize.Height = abs(fixedPoint.Y - startingPoint.Y);
+
+	//SizeF targetRectSize;
+	//targetRectSize.Width = abs(fixedPoint.X - targetPoint.X);
+	//targetRectSize.Height = abs(fixedPoint.Y - targetPoint.Y);
+
+	//SizeF ratioRect;
+	//ratioRect.Width = targetRectSize.Width / bigRectSize.Width;
+	//ratioRect.Height = targetRectSize.Height / bigRectSize.Height;
+
+	//SizeF newAnchorRectSize;
+	//SizeF newBigRectSize;
+
+	//switch (selectedHandle)
+	//{
+	//case CFigure::TOPLEFT:
+	//case CFigure::TOPRIGHT:
+	//case CFigure::BOTTOMRIGHT:
+	//case CFigure::BOTTOMLEFT:
+	//	newAnchorRectSize.Width = anchorRectSize.Width * ratioRect.Width;
+	//	newAnchorRectSize.Height = anchorRectSize.Height * ratioRect.Height;
+
+	//	if (fixedPoint.X > targetPoint.X) {
+	//		startingPoint.X = targetPoint.X;
+	//	}
+	//	else {
+	//		startingPoint.X = fixedPoint.X - m_Rect.X;
+	//	}
+
+	//	if (fixedPoint.Y > targetPoint.Y) {
+	//		startingPoint.Y = targetPoint.Y;
+	//	}
+	//	else {
+	//		startingPoint.Y = fixedPoint.Y;
+	//	}
+
+	//	break;
+
+	//case CFigure::TOP:
+	//case CFigure::BOTTOM:
+	//	newAnchorRectSize.Height = anchorRectSize.Height;
+	//	newAnchorRectSize.Height = anchorRectSize.Height * ratioRect.Height;
+
+	//	startingPoint.X = m_Rect.X;
+
+	//	if (fixedPoint.Y > targetPoint.Y) {
+	//		startingPoint.Y = targetPoint.Y;
+	//	}
+	//	else {
+	//		startingPoint.Y = fixedPoint.Y;
+	//	}
+
+	//	break;
+
+	//case CFigure::RIGHT:
+	//case CFigure::LEFT:
+	//	newAnchorRectSize.Width = anchorRectSize.Width * ratioRect.Width;
+	//	newAnchorRectSize.Height = anchorRectSize.Height;
+
+	//	if (fixedPoint.X > targetPoint.X) {
+	//		startingPoint.X = targetPoint.X;
+	//	}
+	//	else {
+	//		startingPoint.X = fixedPoint.X;
+	//	}
+
+	//	startingPoint.Y = m_Rect.Y;
+
+	//	break;
+
+	//default:
+	//	// 잘못된 selectedHandle
+	//	// 아무 동작을 하지 않음
+	//	return;
+	//}
+
+
+
+	/*PointF AP;
+
+	if (anchorPoint == NULL){
+	getHandlePoint(getOppositeHandle(selectedHandle), &AP);
+	anchorPoint = &AP;
+	}*/
 	PointF startingPoint;
 	PointF fixedPoint;
 	getHandlePoint(getOppositeHandle(selectedHandle), &fixedPoint);
@@ -322,30 +424,30 @@ RectF CRectangle::creating(IN Graphics& graphics, void* param1, ...)
 
 	switch (createFlag)
 	{
-	case CFigure::FREECREATE:
-		if (fixedPoint->X > endingPoint->X) {
-			startingPoint.X = endingPoint->X;
-		}
+		case CFigure::FREECREATE: {
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = endingPoint->X;
+			}
 
-		if (fixedPoint->Y > endingPoint->Y) {
-			startingPoint.Y = endingPoint->Y;
-		}
-		break;
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = endingPoint->Y;
+			}
+		} break;
 
-	case CFigure::REGULAR:
-		REAL regularSize = max(rectSize.Width, rectSize.Height);
+		case CFigure::REGULAR: {
+			REAL regularSize = max(rectSize.Width, rectSize.Height);
 
-		rectSize.Width = regularSize;
-		rectSize.Height = regularSize;
+			rectSize.Width = regularSize;
+			rectSize.Height = regularSize;
 
-		if (fixedPoint->X > endingPoint->X) {
-			startingPoint.X = fixedPoint->X - regularSize;
-		}
+			if (fixedPoint->X > endingPoint->X) {
+				startingPoint.X = fixedPoint->X - regularSize;
+			}
 
-		if (fixedPoint->Y > endingPoint->Y) {
-			startingPoint.Y = fixedPoint->Y - regularSize;
-		}
-		break;
+			if (fixedPoint->Y > endingPoint->Y) {
+				startingPoint.Y = fixedPoint->Y - regularSize;
+			}
+		} break;
 	}
 
 	RectF drawnArea = RectF(startingPoint, rectSize);
@@ -364,7 +466,6 @@ RectF CRectangle::creating(IN Graphics& graphics, void* param1, ...)
 //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
 {
-	RectF drawnArea = m_Rect;
 	PointF offset = targetPoint - originPoint;
 	
 	switch (moveFlag)
@@ -383,6 +484,7 @@ RectF CRectangle::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF
 		break;
 	}
 
+	RectF drawnArea = m_Rect;
 	drawnArea.Offset(offset);
 	graphics.FillRectangle(CGlobal::crateIngBrush(m_FillBrush), drawnArea);
 	graphics.DrawRectangle(CGlobal::crateIngPen(m_OutlinePen), drawnArea);
