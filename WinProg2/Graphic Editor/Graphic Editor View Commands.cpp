@@ -925,19 +925,18 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	if (m_SelectedFigures.hasOne()) {
 		if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolyLine))){
-		CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
-
-		if (polyLine->GetPointsList().GetSize() == 1){
-			polyLine->destroy();
-		}
-		else 
+			CPolyLine* polyLine = (CPolyLine*)m_SelectedFigures.getOneFigure();
+			if (polyLine->GetPointsList().GetSize() == 1){
+				OnEditDelete();
+			}
+			else
 			(polyLine)->RemovePoint(m_RButtonPoint);
 		}
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
 			CPolygon* polygon = (CPolygon*)m_SelectedFigures.getOneFigure();
 
-			if (polygon->GetPointsList().GetSize() == 1){
-				polygon->destroy();
+			if (polygon->GetPointsList().GetSize() == 0){
+				OnEditDelete();
 			}
 			else
 				(polygon)->RemovePoint(m_RButtonPoint);

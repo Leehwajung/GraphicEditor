@@ -129,7 +129,6 @@ void CPolyLine::RemovePoint(IN PointF originPoint){
 			m_PointsList.RemoveAt(prevpos);
 			break;
 		}
-
 		prevpos = pos;
 	}
 	resetArea();
@@ -421,7 +420,6 @@ void CPolyLine::drawLineHandle(IN Graphics& graphics){
 // 도형 작업 후에 호출
 /* 개체 영역 갱신 */
 RectF CPolyLine::resetArea() {
-
 	REAL x_start, y_start, x_end = 0, y_end = 0;
 	
 	POSITION pos = m_PointsList.GetHeadPosition();
