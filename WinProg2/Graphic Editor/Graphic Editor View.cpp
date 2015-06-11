@@ -100,9 +100,13 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_COMMAND(ID_ARRANGE_ORDER, &CGraphicEditorView::OnArrangeOrder)
 	ON_UPDATE_COMMAND_UI(ID_ARRANGE_ORDER, &CGraphicEditorView::OnUpdateArrangeOrder)
 	ON_COMMAND(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnArrangeBringFront)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnUpdateArrangeBringFront)
 	ON_COMMAND(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnArrangeSendBack)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnUpdateArrangeSendBack)
 	ON_COMMAND(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnArrangeBringForward)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnUpdateArrangeBringForward)
 	ON_COMMAND(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnArrangeSendBackward)
+	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnUpdateArrangeSendBackward)
 	ON_COMMAND(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnArrangeGrouping)
 	ON_UPDATE_COMMAND_UI(ID_ARRANGE_GROUPING, &CGraphicEditorView::OnUpdateArrangeGrouping)
 	ON_COMMAND(ID_ARRANGE_GROUP, &CGraphicEditorView::OnArrangeGroup)
@@ -151,10 +155,6 @@ BEGIN_MESSAGE_MAP(CGraphicEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_INSERT, &CGraphicEditorView::OnUpdatePolyIndividualInsert)
 	ON_COMMAND(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnPolyIndividualDelete)
 	ON_UPDATE_COMMAND_UI(ID_POLY_INDIVIDUAL_DELETE, &CGraphicEditorView::OnUpdatePolyIndividualDelete)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FRONT, &CGraphicEditorView::OnUpdateArrangeBringFront)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACK, &CGraphicEditorView::OnUpdateArrangeSendBack)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_BRING_FORWARD, &CGraphicEditorView::OnUpdateArrangeBringForward)
-	ON_UPDATE_COMMAND_UI(ID_ARRANGE_SEND_BACKWARD, &CGraphicEditorView::OnUpdateArrangeSendBackward)
 	END_MESSAGE_MAP()
 
 
@@ -368,7 +368,7 @@ void CGraphicEditorView::OnDraw(CDC* pDC)
 				/** LBUTTON RESIZE **/
 				case CGraphicEditorView::RESIZE: {
 					CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
-					if (m_MouseVKFlags & MK_SHIFT) {
+					if (m_MouseVKFlags & MK_SHIFT) {		// 정비례 크기 변경 구현 후 주석 제거
 						resizeFlag = CFigure::PROPORTIONAL;
 					}
 					
@@ -677,6 +677,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 					m_CreateBuffer->create(&m_LButtonPoint, &m_CurrPoint, createFlag);
 					clearInsertFlag();
 					postInsert();
+					m_SelectedFigures.select();
 					break;
 
 				case CGraphicEditorView::POLYGON:
@@ -700,7 +701,7 @@ void CGraphicEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 			case CGraphicEditorView::RESIZE: {
 				CFigure::ResizeFlag resizeFlag = CFigure::FREERESIZE;
-				if (m_MouseVKFlags & MK_SHIFT) {
+				if (m_MouseVKFlags & MK_SHIFT) {		// 정비례 크기 변경 구현 후 주석 제거
 					resizeFlag = CFigure::PROPORTIONAL;
 				}
 
