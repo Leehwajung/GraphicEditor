@@ -67,7 +67,7 @@ public:
 	virtual void Serialize(CArchive& ar);
 
 /** 연산 **/
-	// 생성 (순수 가상)
+	// 생성 (코드 없는 함수)
 	// 매개변수의 값을 기준으로 새로운 개체를 정의
 	// - IN 매개변수
 	//		void* param1, ...: 각 파생 클래스에서 필요한대로 정의
@@ -77,7 +77,7 @@ public:
 	//		FALSE: 생성 성공
 	virtual BOOL create(void* param1, ...);
 	
-	// 이동 (순수 가상)
+	// 이동 (코드 없는 함수)
 	// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 개체를 이동
 	// - IN 매개변수
 	//		PointF originPoint: 이동의 시작 좌표
@@ -85,7 +85,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual void move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
-	// 크기 변경 (순수 가상)
+	// 크기 변경 (코드 없는 함수)
 	// 선택한 핸들의 좌표를 변경하여 크기 변경 (기준 좌표를 설정하면 이를 기준으로 각 좌표를 변경하여 크기 변경)
 	// - IN 매개변수
 	//		Position selectedHandle: 개체의 선택된 핸들
@@ -97,11 +97,11 @@ public:
 	// 복/붙/잘을 위한 함수
 	virtual CFigure* clone();
 
-	// 삭제 (순수 가상)
+	// 삭제 (코드 없는 함수)
 	// 개체를 삭제하고 메모리를 해제
 	virtual void destroy();
 	
-	// 좌표 위치 확인 (순수 가상)
+	// 좌표 위치 확인 (코드 없는 함수)
 	// 점이 개체 안에 있는지 확인하고 그 위치를 반환함
 	// - IN 매개변수
 	//		PointF point: 확인할 좌표
@@ -120,7 +120,7 @@ public:
 
 
 	/* 개체 영역 관리 */
-	// 개체 영역 갱신 (순수 가상)
+	// 개체 영역 갱신 (코드 없는 함수)
 	virtual RectF resetArea();
 
 	// 개체 영역
@@ -175,10 +175,10 @@ protected:
 
 /** 그리기 **/
 public:
-	// 개체 그리기 (순수 가상)
+	// 개체 그리기 (코드 없는 함수)
 	virtual void draw(IN Graphics& graphics);
 
-	// 생성 그리기 (순수 가상)
+	// 생성 그리기 (코드 없는 함수)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -186,7 +186,7 @@ public:
 	//		[CreateFlag createFlag = FREECREATE]: 생성 설정 플래그, 필요하면 추가하기
 	virtual RectF creating(IN Graphics& graphics, void* param1, ...);
 
-	// 이동 그리기 (순수 가상)
+	// 이동 그리기 (코드 없는 함수)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -195,7 +195,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 	
-	// 크기 변경 그리기 (순수 가상)
+	// 크기 변경 그리기 (코드 없는 함수)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -247,37 +247,37 @@ public:
 	// 채우기 브러시 설정
 	virtual void setFillBrush(IN const Brush* brush, IN BOOL PropertyMaintenanceFlag = FALSE);
 
-	// 윤곽선 색 설정 (순수 가상)
+	// 윤곽선 색 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setOutlineColor(IN const Color& outlineColor);
 
-	// 윤곽선 두께 설정 (순수 가상)
+	// 윤곽선 두께 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setOutlineWidth(IN const REAL outlineWidth);
 
-	// 윤곽선 패턴 설정 (순수 가상)
+	// 윤곽선 패턴 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setOutlinePattern(IN const DashStyle outlinePattern);
 
-	// 주 채우기 색 설정 (순수 가상)
+	// 주 채우기 색 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setFillColor(IN const Color& fillColor);
 
-	// 보조 채우기 색 설정 (순수 가상)
+	// 보조 채우기 색 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공
 	virtual BOOL setFillSubcolor(IN const Color& fillSubcolor);
 
-	// 채우기 패턴 설정 (순수 가상)
+	// 채우기 패턴 설정 (코드 없는 함수)
 	// - 반환 값 (BOOL)
 	//		TRUE: 설정 실패
 	//		FALSE: 설정 성공

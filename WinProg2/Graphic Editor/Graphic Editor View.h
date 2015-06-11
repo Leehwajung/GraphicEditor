@@ -55,7 +55,7 @@ public:
 	enum InsertFlag {
 		NONE			= NULL,					// 삽입 패널 버튼이 눌리지 않은 상태
 		LINE			= ID_INSERT_LINE,		// 직선 버튼
-		POLYLINE		= ID_INSERT_POLYLINE,	// 꺽인 선 버튼
+		POLYLINE		= ID_INSERT_POLYLINE,	// 꺾인 선 버튼
 		PENCIL			= ID_INSERT_PENCIL,		// 펜 버튼
 		CURVE			= ID_INSERT_CURVE,		// 곡선 버튼
 		ELLIPSE			= ID_INSERT_ELLIPSE,	// 타원 버튼

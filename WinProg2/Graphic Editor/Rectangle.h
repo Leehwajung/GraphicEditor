@@ -86,7 +86,7 @@ protected:
 
 
 public:
-	// 개체 그리기 (순수 가상)
+	// 개체 그리기 (코드 없는 함수)
 	virtual void draw(IN Graphics& graphics);
 
 	// 생성 그리기
@@ -98,7 +98,7 @@ public:
 	//		CreateFlag createFlag = FREECREATE: 생성 설정 플래그
 	RectF creating(IN Graphics& graphics, IN PointF startingPoint, IN PointF targetPoint, IN CreateFlag createFlag = FREECREATE);
 
-	// 생성 그리기 (순수 가상)
+	// 생성 그리기 (코드 없는 함수)
 	// 생성 시에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -107,7 +107,7 @@ public:
 	virtual RectF creating(IN Graphics& graphics, void* param1, ...);
 
 public:
-	// 이동 그리기 (순수 가상)
+	// 이동 그리기 (코드 없는 함수)
 	// 이동 중에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics
@@ -116,7 +116,7 @@ public:
 	//		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 	virtual RectF moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag = FREEMOVE);
 
-	// 크기 변경 그리기 (순수 가상)
+	// 크기 변경 그리기 (코드 없는 함수)
 	// 크기 변경 중에 보여줄 그리기
 	// - IN 매개변수
 	//		Graphics& graphics: 그리기 대상 Graphics

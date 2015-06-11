@@ -50,7 +50,7 @@ UINT CFigure::IDcount = 0;
 // CFigure 멤버 함수
 
 /** 직렬화 **/
-// 직렬화 (순수가상함수로 바꿀지 검토)
+// 직렬화
 void CFigure::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())

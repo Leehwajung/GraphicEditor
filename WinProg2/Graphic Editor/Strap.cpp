@@ -133,5 +133,5 @@ BOOL CStrap::setOutlinePattern(IN const DashStyle outlinePattern)
 {
 	return m_OutlinePen->SetDashStyle(outlinePattern) ? TRUE : FALSE;
 }
-// 점 추가 (순수 가상): 순수 가상으로 바꾸기 전 임시 구현
+// 점 추가 (코드 없는 함수): 순수 가상으로 바꾸기 전 임시 구현
 //void CStrap::addPoint(PointF point){}
