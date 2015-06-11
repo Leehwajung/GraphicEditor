@@ -942,7 +942,7 @@ void CGraphicEditorView::OnPolyIndividualDelete()
 		else if (m_SelectedFigures.getOneFigure()->IsKindOf(RUNTIME_CLASS(CPolygon))){
 			CPolygon* polygon = (CPolygon*)m_SelectedFigures.getOneFigure();
 
-			if (polygon->GetPointsList().GetSize() == 0){
+			if (polygon->GetPointsList().GetSize() == 1){
 				OnEditDelete();
 			}
 			else
