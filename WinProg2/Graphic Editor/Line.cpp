@@ -243,10 +243,7 @@ RectF CLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targ
 	PointF RelativePoint = targetPoint - originPoint;
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash,sizeof(aDash)/sizeof(aDash[0]));
-	graphics.DrawLine(m_OutlinePen, m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
+	graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);
 
 	return drawnArea;
 }
@@ -267,17 +264,13 @@ RectF CLine::pointMoving(IN Graphics& graphics, IN PointF originPoint, IN PointF
 
 	RectF handleRect;
 
-	m_OutlinePen->SetDashStyle(DashStyleCustom);
-	REAL aDash[] = { 5.0f, 5.0f };
-	m_OutlinePen->SetDashPattern(aDash, sizeof(aDash) / sizeof(aDash[0]));
-
 	getHandleRect(START, &handleRect);
 	if (handleRect.Contains(originPoint))
-		graphics.DrawLine(m_OutlinePen, targetPoint, m_EndPoint);
+		graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), targetPoint, m_EndPoint);
 
 	getHandleRect(END, &handleRect);
 	if (handleRect.Contains(originPoint))
-		graphics.DrawLine(m_OutlinePen, m_StartingPoint, targetPoint);
+		graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), m_StartingPoint, targetPoint);
 
 	return drawnArea;
 }
