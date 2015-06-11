@@ -40,39 +40,18 @@
     <Filter Include="소스 파일\Figure\Strap">
       <UniqueIdentifier>{b85c2f14-10d7-4272-8998-b8fc39415a1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\App">
+      <UniqueIdentifier>{d79491b4-121c-4f99-8cca-c02d993502cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\App">
+      <UniqueIdentifier>{9dcaf931-da79-4365-afb9-6dfa0b5f710a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
     <Text Include="Gdi+ Figures List.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Graphic Editor.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ChildFrm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic Editor Doc.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphic Editor View.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PropertiesWnd.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Figure.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
@@ -121,29 +100,35 @@
     <ClInclude Include="FigureSettings.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic Editor Doc.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic Editor View.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphic Editor.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일\App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Graphic Editor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ChildFrm.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphic Editor Doc.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphic Editor View.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PropertiesWnd.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Figure.cpp">
       <Filter>소스 파일\Figure</Filter>
     </ClCompile>
@@ -171,9 +156,6 @@
     <ClCompile Include="Global.cpp">
       <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
-    <ClCompile Include="Graphic Editor View Commands.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Strap.cpp">
       <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
@@ -194,6 +176,30 @@
     </ClCompile>
     <ClCompile Include="FigureSettings.cpp">
       <Filter>소스 파일\Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic Editor Doc.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic Editor View Commands.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic Editor View.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphic Editor.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>소스 파일\App</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>소스 파일\App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
