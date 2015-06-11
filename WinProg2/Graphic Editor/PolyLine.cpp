@@ -79,6 +79,21 @@ void CPolyLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag m
 
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(RelativePoint.X) > abs(RelativePoint.Y)) {
+			RelativePoint.Y = 0;
+		}
+		else {
+			RelativePoint.X = 0;
+		}
+		break;
+	}
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	POSITION pos = m_PointsList.GetHeadPosition();
@@ -339,10 +354,24 @@ RectF CPolyLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF 
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(RelativePoint.X) > abs(RelativePoint.Y)) {
+			RelativePoint.Y = 0;
+		}
+		else {
+			RelativePoint.X = 0;
+		}
+		break;
+	}
 
 	// polyLine을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;
-
 	for (POSITION pos = m_PointsList.GetHeadPosition(); pos; m_PointsList.GetNext(pos)) {
 		pointsArray.Add(m_PointsList.GetAt(pos) + RelativePoint);
 	}

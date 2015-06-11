@@ -44,26 +44,46 @@ BOOL CEllipse::create(void* param1, ...)
 {
 	va_list vaList;
 	va_start(vaList, param1);
-	PointF* startingPoint = (PointF*)param1;
+	PointF* fixedPoint = (PointF*)param1;
 	PointF* endingPoint = va_arg(vaList, PointF*);
 	CreateFlag createFlag = va_arg(vaList, CreateFlag);
 	va_end(vaList);
 
+	PointF startingPoint = *fixedPoint;
+
 	SizeF rectSize;
-	rectSize.Width = startingPoint->X > endingPoint->X ? 
-		startingPoint->X - endingPoint->X : endingPoint->X - startingPoint->X;
-	rectSize.Height = startingPoint->Y > endingPoint->Y ? 
-		startingPoint->Y - endingPoint->Y : endingPoint->Y - startingPoint->Y;
+	rectSize.Width = abs(fixedPoint->X - endingPoint->X);
+	rectSize.Height = abs(fixedPoint->Y - endingPoint->Y);
 
-	if (startingPoint->X > endingPoint->X) {
-		startingPoint->X = endingPoint->X;
+	switch (createFlag)
+	{
+	case CFigure::FREECREATE:
+		if (fixedPoint->X > endingPoint->X) {
+			startingPoint.X = endingPoint->X;
+		}
+
+		if (fixedPoint->Y > endingPoint->Y) {
+			startingPoint.Y = endingPoint->Y;
+		}
+		break;
+
+	case CFigure::REGULAR:
+		REAL regularSize = max(rectSize.Width, rectSize.Height);
+
+		rectSize.Width = regularSize;
+		rectSize.Height = regularSize;
+
+		if (fixedPoint->X > endingPoint->X) {
+			startingPoint.X = fixedPoint->X - regularSize;
+		}
+
+		if (fixedPoint->Y > endingPoint->Y) {
+			startingPoint.Y = fixedPoint->Y - regularSize;
+		}
+		break;
 	}
 
-	if (startingPoint->Y > endingPoint->Y) {
-		startingPoint->Y = endingPoint->Y;
-	}
-
-	m_Rect = RectF(*startingPoint, rectSize);
+	m_Rect = RectF(startingPoint, rectSize);
 
 	resetArea();
 
@@ -76,6 +96,22 @@ void CEllipse::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag mo
 	// targetPoint: ButtonUp
 
 	PointF offset = targetPoint - originPoint;
+
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(offset.X) > abs(offset.Y)) {
+			offset.Y = 0;
+		}
+		else {
+			offset.X = 0;
+		}
+		break;
+	}
 
 	m_Rect.Offset(offset);
 	resetArea();
@@ -212,31 +248,50 @@ RectF CEllipse::creating(IN Graphics& graphics, IN PointF startingPoint, IN Poin
 
 RectF  CEllipse::creating(IN Graphics& graphics, void* param1, ...)
  {
-	va_list vaList;
-	va_start(vaList, param1);
-	PointF startingPoint = *(PointF*)param1;
-	PointF targetPoint = *va_arg(vaList, PointF*);
-	CreateFlag createFlag = va_arg(vaList, CreateFlag);
-	va_end(vaList);
+	 va_list vaList;
+	 va_start(vaList, param1);
+	 PointF* fixedPoint = (PointF*)param1;
+	 PointF* endingPoint = va_arg(vaList, PointF*);
+	 CreateFlag createFlag = va_arg(vaList, CreateFlag);
+	 va_end(vaList);
 
-	RectF drawnArea;
+	 PointF startingPoint = *fixedPoint;
 
-	SizeF rectSize;
-	rectSize.Width = startingPoint.X > targetPoint.X ? startingPoint.X - targetPoint.X : targetPoint.X - startingPoint.X;
-	rectSize.Height = startingPoint.Y > targetPoint.Y ? startingPoint.Y - targetPoint.Y : targetPoint.Y - startingPoint.Y;
+	 SizeF rectSize;
+	 rectSize.Width = abs(fixedPoint->X - endingPoint->X);
+	 rectSize.Height = abs(fixedPoint->Y - endingPoint->Y);
 
-	if (startingPoint.X > targetPoint.X) {
-		startingPoint.X = targetPoint.X;
-	}
+	 switch (createFlag)
+	 {
+	 case CFigure::FREECREATE:
+		 if (fixedPoint->X > endingPoint->X) {
+			 startingPoint.X = endingPoint->X;
+		 }
 
-	if (startingPoint.Y > targetPoint.Y) {
-		startingPoint.Y = targetPoint.Y;
-	}
+		 if (fixedPoint->Y > endingPoint->Y) {
+			 startingPoint.Y = endingPoint->Y;
+		 }
+		 break;
 
-	RectF rect = RectF(startingPoint, rectSize);
-	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), rect);
-	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), rect);
+	 case CFigure::REGULAR:
+		 REAL regularSize = max(rectSize.Width, rectSize.Height);
 
+		 rectSize.Width = regularSize;
+		 rectSize.Height = regularSize;
+
+		 if (fixedPoint->X > endingPoint->X) {
+			 startingPoint.X = fixedPoint->X - regularSize;
+		 }
+
+		 if (fixedPoint->Y > endingPoint->Y) {
+			 startingPoint.Y = fixedPoint->Y - regularSize;
+		 }
+		 break;
+	 }
+
+	 RectF drawnArea = RectF(startingPoint, rectSize);
+	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), drawnArea);
+	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), drawnArea);
 
 	 return drawnArea;
  }
@@ -249,34 +304,51 @@ RectF  CEllipse::creating(IN Graphics& graphics, void* param1, ...)
  //		MoveFlag moveFlag = FREEMOVE: 이동 설정 플래그
 RectF  CEllipse::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/)
  {
-	 RectF drawnArea;
+	 RectF drawnArea = m_Rect;
 
-	 RectF rect = m_Rect;
-	 PointF offset;
-	 if (moveFlag == FREEMOVE)//자유이동 case일 때
+	 //RectF rect = m_Rect;
+	 PointF offset = targetPoint - originPoint;
+
+	 switch (moveFlag)
 	 {
-		 offset = targetPoint - originPoint;
-	 }
-	 else//!=FREEMOVE인 case
-	 {
-		 PointF ratio;
-		 ratio.X = rect.GetLeft();
-		 ratio.Y = rect.GetTop();
-		 // 좌우 이동
-		 if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
-			 offset.X = targetPoint.X - originPoint.X;
-			 offset.Y = originPoint.Y;
+	 case CFigure::FREEMOVE:
+		 // 추가 작업 없음
+		 break;
+
+	 case CFigure::FOURWAY:
+		 if (abs(offset.X) > abs(offset.Y)) {
+			 offset.Y = 0;
 		 }
-		 else// 상하이동
-		 {
-			 offset.X = originPoint.X;
-			 offset.Y = targetPoint.Y - originPoint.Y;
+		 else {
+			 offset.X = 0;
 		 }
+		 break;
 	 }
 
-	 rect.Offset(offset);
-	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), rect); // ellipse 채우기
-	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), rect);
+	 //if (moveFlag == FREEMOVE)//자유이동 case일 때
+	 //{
+		// offset = targetPoint - originPoint;
+	 //}
+	 //else//!=FREEMOVE인 case
+	 //{
+		// PointF ratio;
+		// ratio.X = rect.GetLeft();
+		// ratio.Y = rect.GetTop();
+		// // 좌우 이동
+		// if (targetPoint.X - ratio.X >= targetPoint.Y - ratio.Y){
+		//	 offset.X = targetPoint.X - originPoint.X;
+		//	 offset.Y = originPoint.Y;
+		// }
+		// else// 상하이동
+		// {
+		//	 offset.X = originPoint.X;
+		//	 offset.Y = targetPoint.Y - originPoint.Y;
+		// }
+	 //}
+
+	 drawnArea.Offset(offset);
+	 graphics.FillEllipse(CGlobal::crateIngBrush(m_FillBrush), drawnArea); // ellipse 채우기
+	 graphics.DrawEllipse(CGlobal::crateIngPen(m_OutlinePen), drawnArea);
 
 	 return drawnArea;
  }

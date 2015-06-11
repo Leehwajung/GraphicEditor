@@ -108,6 +108,21 @@ RectF CCurve::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF tar
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(RelativePoint.X) > abs(RelativePoint.Y)) {
+			RelativePoint.Y = 0;
+		}
+		else {
+			RelativePoint.X = 0;
+		}
+		break;
+	}
 
 	// Curve을 그려주기 전에 CList를 CArray로 바꿔주는 방법을 사용하기로 한다.
 	CArray<PointF, PointF&> pointsArray;

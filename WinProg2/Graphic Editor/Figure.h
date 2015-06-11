@@ -36,11 +36,12 @@ public:
 
 	enum CreateFlag {
 		FREECREATE		= NULL,				// 자유 생성
-		REAULAR			= MK_SHIFT			// 정다면체 또는 정방향선 생성
+		REGULAR			= MK_SHIFT			// 정다면체 또는 정방향선 생성
 	};
 
 	enum MoveFlag {
 		FREEMOVE		= NULL,				// 자유 이동
+		FOURWAY			= MK_SHIFT			// 4방향 이동 (상하좌우)
 	};
 
 	enum ResizeFlag {

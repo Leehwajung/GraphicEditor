@@ -79,6 +79,21 @@ BOOL CLine::create(void* param1, ...) {
 void CLine::move(IN PointF originPoint, IN PointF targetPoint, IN MoveFlag moveFlag/* = FREEMOVE*/) {
 	/* 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(RelativePoint.X) > abs(RelativePoint.Y)) {
+			RelativePoint.Y = 0;
+		}
+		else {
+			RelativePoint.X = 0;
+		}
+		break;
+	}
 
 	m_StartingPoint = m_StartingPoint + RelativePoint;
 	m_EndPoint = m_EndPoint + RelativePoint;
@@ -241,6 +256,21 @@ RectF CLine::moving(IN Graphics& graphics, IN PointF originPoint, IN PointF targ
 
 	/* 끌고 이동 할 때 이동한 상대 값을 구하기 위함 */
 	PointF RelativePoint = targetPoint - originPoint;
+	switch (moveFlag)
+	{
+	case CFigure::FREEMOVE:
+		// 추가 작업 없음
+		break;
+
+	case CFigure::FOURWAY:
+		if (abs(RelativePoint.X) > abs(RelativePoint.Y)) {
+			RelativePoint.Y = 0;
+		}
+		else {
+			RelativePoint.X = 0;
+		}
+		break;
+	}
 
 	/* 원래 좌표에서 상대 좌표를 더해준 것이 이동 결과 좌표가 된다. */
 	graphics.DrawLine(CGlobal::crateIngPen(m_OutlinePen), m_StartingPoint + RelativePoint, m_EndPoint + RelativePoint);

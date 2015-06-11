@@ -79,9 +79,6 @@
     <ClInclude Include="Group.h">
       <Filter>헤더 파일\Figure</Filter>
     </ClInclude>
-    <ClInclude Include="FigureProperties.h">
-      <Filter>헤더 파일\Assistant</Filter>
-    </ClInclude>
     <ClInclude Include="Strap.h">
       <Filter>헤더 파일\Figure\Strap</Filter>
     </ClInclude>
@@ -118,9 +115,6 @@
     <ClInclude Include="Curve.h">
       <Filter>헤더 파일\Figure\Strap</Filter>
     </ClInclude>
-    <ClInclude Include="Sine.h">
-      <Filter>헤더 파일\Figure\Strap</Filter>
-    </ClInclude>
     <ClInclude Include="SelectedFigureArray.h">
       <Filter>헤더 파일\Assistant</Filter>
     </ClInclude>
@@ -155,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="Group.cpp">
       <Filter>소스 파일\Figure</Filter>
-    </ClCompile>
-    <ClCompile Include="FigureProperties.cpp">
-      <Filter>소스 파일\Assistant</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
       <Filter>소스 파일\Figure\Strap</Filter>
@@ -196,9 +187,6 @@
       <Filter>소스 파일\Figure\Shape</Filter>
     </ClCompile>
     <ClCompile Include="Curve.cpp">
-      <Filter>소스 파일\Figure\Strap</Filter>
-    </ClCompile>
-    <ClCompile Include="Sine.cpp">
       <Filter>소스 파일\Figure\Strap</Filter>
     </ClCompile>
     <ClCompile Include="SelectedFigureArray.cpp">
