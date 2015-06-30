@@ -44,7 +44,7 @@ public:
 		//		TRUE: 생성 실패
 		//		FALSE: 생성 성공
 		virtual BOOL create(void* param1, ...);
-
+		
 	public:
 		// 이동
 		// 시작 좌표부터 끝 좌표까지의 Offset을 기준으로 직선을 이동
